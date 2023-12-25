@@ -18,17 +18,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <algorithm>
+#include <EASTL/algorithm.h>
+#include <EASTL/sort.h>
 #include <random>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/inplace_merge.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/inplace_merge.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
 RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
-
+//TODO:15) Eastl random support is barebones considering the limitations of uniform_int_distribution, lac of discrete_distribution and generators.
 namespace
 {
     std::mt19937 gen;
@@ -41,16 +42,16 @@ namespace
         int* ia = new int[N];
         for (unsigned i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
-        std::sort(ia, ia+M);
-        std::sort(ia+M, ia+N);
+        eastl::shuffle(ia, ia+N, gen);
+        eastl::sort(ia, ia+M);
+        eastl::sort(ia+M, ia+N);
         auto res = ranges::inplace_merge(Iter(ia), Iter(ia+M), Sent(ia+N));
         CHECK(res == Iter(ia+N));
         if(N > 0)
         {
             CHECK(ia[0] == 0);
             CHECK(ia[N-1] == (int)N-1);
-            CHECK(std::is_sorted(ia, ia+N));
+            CHECK(eastl::is_sorted(ia, ia+N));
         }
         delete [] ia;
     }
@@ -63,28 +64,28 @@ namespace
         int* ia = new int[N];
         for (unsigned i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
-        std::sort(ia, ia+M);
-        std::sort(ia+M, ia+N);
+        eastl::shuffle(ia, ia+N, gen);
+        eastl::sort(ia, ia+M);
+        eastl::sort(ia+M, ia+N);
         auto res = ranges::inplace_merge(ranges::make_subrange(Iter(ia), Sent(ia+N)), Iter(ia+M));
         CHECK(res == Iter(ia+N));
         if(N > 0)
         {
             CHECK(ia[0] == 0);
             CHECK(ia[N-1] == (int)N-1);
-            CHECK(std::is_sorted(ia, ia+N));
+            CHECK(eastl::is_sorted(ia, ia+N));
         }
 
-        std::shuffle(ia, ia+N, gen);
-        std::sort(ia, ia+M);
-        std::sort(ia+M, ia+N);
+        eastl::shuffle(ia, ia+N, gen);
+        eastl::sort(ia, ia+M);
+        eastl::sort(ia+M, ia+N);
         auto res2 = ranges::inplace_merge(::MakeTestRange(Iter(ia), Sent(ia+N)), Iter(ia+M));
         CHECK(::is_dangling(res2));
         if(N > 0)
         {
             CHECK(ia[0] == 0);
             CHECK(ia[N-1] == (int)N-1);
-            CHECK(std::is_sorted(ia, ia+N));
+            CHECK(eastl::is_sorted(ia, ia+N));
         }
 
         delete [] ia;

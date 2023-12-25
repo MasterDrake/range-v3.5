@@ -8,18 +8,32 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 // Project home: https://github.com/ericniebler/range-v3
-#include <range/v3/algorithm/starts_with.hpp>
+#include <EASTL/ranges/algorithm/starts_with.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
-#include <forward_list>
-#include <range/v3/range/conversion.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/slice.hpp>
-#include <range/v3/view/take_exactly.hpp>
-#include <range/v3/view/istream.hpp>
+#include <EASTL/slist.h>
+#include <EASTL/ranges/range/conversion.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/slice.hpp>
+#include <EASTL/ranges/view/take_exactly.hpp>
+#include <EASTL/ranges/view/istream.hpp>
 #include <sstream>
-#include <vector>
+#include <EASTL/vector.h>
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 
 void test_defaults()
 {
@@ -57,11 +71,11 @@ void test_defaults()
    }
    { // checks starts_with works for random-access ranges
 #ifdef RANGES_WORKAROUND_MSVC_779708
-      auto const long_range = views::iota(0, 100) | to<std::vector>();
-      auto const short_range = views::iota(0, 10) | to<std::vector>();
+      auto const long_range = views::iota(0, 100) | to<eastl::vector>();
+      auto const short_range = views::iota(0, 10) | to<eastl::vector>();
 #else // ^^^ workaround / no workaround vvv
-      auto const long_range = views::iota(0, 100) | to<std::vector>;
-      auto const short_range = views::iota(0, 10) | to<std::vector>;
+      auto const long_range = views::iota(0, 100) | to<eastl::vector>;
+      auto const short_range = views::iota(0, 10) | to<eastl::vector>;
 #endif // RANGES_WORKAROUND_MSVC_779708
 
       CHECK(starts_with(begin(long_range), end(long_range), begin(short_range), end(short_range)));
@@ -107,12 +121,10 @@ void test_comparison()
    using namespace ranges;
    auto const long_range = views::iota(0, 100);
    auto const short_range = views::iota(1, 51);
-   CHECK(starts_with(begin(long_range), end(long_range), begin(short_range), end(short_range),
-      less{}));
+   CHECK(starts_with(begin(long_range), end(long_range), begin(short_range), end(short_range), less{}));
    CHECK(starts_with(long_range, short_range, less{}));
 
-   CHECK(!starts_with(begin(long_range), end(long_range), begin(short_range), end(short_range),
-      greater{}));
+   CHECK(!starts_with(begin(long_range), end(long_range), begin(short_range), end(short_range), greater{}));
    CHECK(!starts_with(long_range, short_range, greater{}));
 }
 

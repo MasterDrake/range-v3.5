@@ -10,16 +10,29 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <forward_list>
-#include <list>
-#include <vector>
-#include <limits>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/take_while.hpp>
+#include <EASTL/slist.h>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
+#include <EASTL/numeric_limits.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/take_while.hpp>
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 template<typename I, typename S>
 void test_iterators(I first, S last, ranges::iter_difference_t<I> n)
@@ -30,8 +43,8 @@ void test_iterators(I first, S last, ranges::iter_difference_t<I> n)
     CHECK(distance_compare(first, last, n) == 0);
     CHECK(distance_compare(first, last, n - 1) > 0);
     CHECK(distance_compare(first, last, n + 1) < 0);
-    CHECK(distance_compare(first, last, (std::numeric_limits<iter_difference_t<I>>::min)()) > 0);
-    CHECK(distance_compare(first, last, (std::numeric_limits<iter_difference_t<I>>::max)()) < 0);
+    CHECK(distance_compare(first, last, (eastl::numeric_limits<iter_difference_t<I>>::min)()) > 0);
+    CHECK(distance_compare(first, last, (eastl::numeric_limits<iter_difference_t<I>>::max)()) < 0);
 }
 
 template<typename Rng>
@@ -43,8 +56,8 @@ void test_range(Rng&& rng, ranges::range_difference_t<Rng> n)
     CHECK(distance_compare(rng, n) == 0);
     CHECK(distance_compare(rng, n - 1) > 0);
     CHECK(distance_compare(rng, n + 1) < 0);
-    CHECK(distance_compare(rng, (std::numeric_limits<range_difference_t<Rng>>::min)()) > 0);
-    CHECK(distance_compare(rng, (std::numeric_limits<range_difference_t<Rng>>::max)()) < 0);
+    CHECK(distance_compare(rng, (eastl::numeric_limits<range_difference_t<Rng>>::min)()) > 0);
+    CHECK(distance_compare(rng, (eastl::numeric_limits<range_difference_t<Rng>>::max)()) < 0);
 }
 
 template<typename Rng>
@@ -55,16 +68,16 @@ void test_infinite_range(Rng&& rng)
     CHECK(distance_compare(rng, 0) > 0);
     CHECK(distance_compare(rng,-1) > 0);
     CHECK(distance_compare(rng, 1) > 0);
-    CHECK(distance_compare(rng, (std::numeric_limits<range_difference_t<Rng>>::min)()) > 0);
+    CHECK(distance_compare(rng, (eastl::numeric_limits<range_difference_t<Rng>>::min)()) > 0);
     if (is_infinite<Rng>::value) {
         // For infinite ranges that can be detected by is_infinite<Rng> traits,
         // distance_compare can compute the result in constant time.
-        CHECK(distance_compare(rng, (std::numeric_limits<range_difference_t<Rng>>::max)()) > 0);
+        CHECK(distance_compare(rng, (eastl::numeric_limits<range_difference_t<Rng>>::max)()) > 0);
     }
     else {
         // For other infinite ranges, comparing to a huge number might take too much time.
         // Thus commented out the test.
-        // CHECK(distance_compare(rng, (std::numeric_limits<range_difference_t<Rng>>::max)()) > 0);
+        // CHECK(distance_compare(rng, (eastl::numeric_limits<range_difference_t<Rng>>::max)()) > 0);
     }
 }
 
@@ -86,14 +99,14 @@ constexpr bool test_constexpr()
     STATIC_CHECK_RETURN(distance_compare(bit, eit, n) == 0);
     STATIC_CHECK_RETURN(distance_compare(bit, eit, n - 1) > 0);
     STATIC_CHECK_RETURN(distance_compare(bit, eit, n + 1) < 0);
-    STATIC_CHECK_RETURN(distance_compare(bit, eit, (std::numeric_limits<iter_difference_t<I>>::min)()) > 0);
-    STATIC_CHECK_RETURN(distance_compare(bit, eit, (std::numeric_limits<iter_difference_t<I>>::max)()) < 0);
+    STATIC_CHECK_RETURN(distance_compare(bit, eit, (eastl::numeric_limits<iter_difference_t<I>>::min)()) > 0);
+    STATIC_CHECK_RETURN(distance_compare(bit, eit, (eastl::numeric_limits<iter_difference_t<I>>::max)()) < 0);
     STATIC_CHECK_RETURN(distance(rng) == n);
     STATIC_CHECK_RETURN(distance_compare(rng, n) == 0);
     STATIC_CHECK_RETURN(distance_compare(rng, n - 1) > 0);
     STATIC_CHECK_RETURN(distance_compare(rng, n + 1) < 0);
-    STATIC_CHECK_RETURN(distance_compare(rng, (std::numeric_limits<range_difference_t<Rng>>::min)()) > 0);
-    STATIC_CHECK_RETURN(distance_compare(rng, (std::numeric_limits<range_difference_t<Rng>>::max)()) < 0);
+    STATIC_CHECK_RETURN(distance_compare(rng, (eastl::numeric_limits<range_difference_t<Rng>>::min)()) > 0);
+    STATIC_CHECK_RETURN(distance_compare(rng, (eastl::numeric_limits<range_difference_t<Rng>>::max)()) < 0);
 
     STATIC_CHECK_RETURN(en.first == 10);
     STATIC_CHECK_RETURN(en.second == eit);
@@ -106,7 +119,7 @@ int main()
     using namespace ranges;
 
     {
-        using cont_t = std::vector<int>;
+        using cont_t = eastl::vector<int>;
         cont_t c {1, 2, 3, 4};
         test_range(c, 4);
         test_iterators(c.begin(), c.end(), 4);
@@ -117,7 +130,7 @@ int main()
     }
 
     {
-        using cont_t = std::list<int>;
+        using cont_t = eastl::list<int>;
         cont_t c {1, 2, 3, 4};
         test_range(c, 4);
         test_iterators(c.begin(), c.end(), 4);
@@ -128,7 +141,7 @@ int main()
     }
 
     {
-        using cont_t = std::forward_list<int>;
+        using cont_t = eastl::slist<int>;
         cont_t c {1, 2, 3, 4};
         test_range(c, 4);
         test_iterators(c.begin(), c.end(), 4);

@@ -9,8 +9,8 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/functional/bind_back.hpp>
-#include <range/v3/functional/concepts.hpp>
+#include <EASTL/ranges/functional/bind_back.hpp>
+#include <EASTL/ranges/functional/concepts.hpp>
 #include "../simple_test.hpp"
 
 using namespace ranges;

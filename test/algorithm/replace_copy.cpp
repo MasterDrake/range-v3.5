@@ -22,12 +22,20 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <utility>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/replace_copy.hpp>
+#include <EASTL/utility.h>
+#include <EASTL/string.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/replace_copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 
 template<class InIter, class OutIter, class Sent = InIter>
 void test_iter()
@@ -123,10 +131,10 @@ int main()
 
     // Test projection
     {
-        using P = std::pair<int, std::string>;
+        using P = eastl::pair<int, eastl::string>;
         P in[] = {{0, "0"}, {1, "1"}, {2, "2"}, {3, "3"}, {4, "4"}};
         P out[ranges::size(in)] = {};
-        ranges::replace_copy_result<P *, P *> r = ranges::replace_copy(in, out, 2, P{5, "5"}, &std::pair<int, std::string>::first);
+        ranges::replace_copy_result<P *, P *> r = ranges::replace_copy(in, out, 2, P{5, "5"}, &eastl::pair<int, eastl::string>::first);
         CHECK(r.in == ranges::end(in));
         CHECK(r.out == ranges::end(out));
         CHECK(out[0] == P{0, "0"});

@@ -9,14 +9,27 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/delimit.hpp>
-#include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/delimit.hpp>
+#include <EASTL/ranges/algorithm/for_each.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -27,10 +40,10 @@ int main()
     CPP_assert(view_<decltype(rng0)>);
     CPP_assert(!common_range<decltype(rng0)>);
     CPP_assert(random_access_iterator<decltype(rng0.begin())>);
-    CPP_assert(view_<delimit_view<views::all_t<std::vector<int> &>, int>>);
-    CPP_assert(random_access_range<delimit_view<views::all_t<std::vector<int> &>, int>>);
+    CPP_assert(view_<delimit_view<views::all_t<eastl::vector<int> &>, int>>);
+    CPP_assert(random_access_range<delimit_view<views::all_t<eastl::vector<int> &>, int>>);
 
-    std::vector<int> vi{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    eastl::vector<int> vi{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     auto rng1 = vi | views::delimit(50);
     ::check_equal(rng1, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
 

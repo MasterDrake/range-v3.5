@@ -10,7 +10,7 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <range/v3/algorithm/contains.hpp>
+#include <EASTL/ranges/algorithm/contains.hpp>
 
 #include "../simple_test.hpp"
 

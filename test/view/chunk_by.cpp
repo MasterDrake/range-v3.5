@@ -9,15 +9,15 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
+#include <eASTL/list.h>
+#include <eASTL/vector.h>
 
-#include <range/v3/core.hpp>
-#include <range/v3/view/chunk_by.hpp>
-#include <range/v3/view/counted.hpp>
-#include <range/v3/view/cycle.hpp>
-#include <range/v3/view/remove_if.hpp>
-#include <range/v3/view/take.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/chunk_by.hpp>
+#include <EASTL/ranges/view/counted.hpp>
+#include <EASTL/ranges/view/cycle.hpp>
+#include <EASTL/ranges/view/remove_if.hpp>
+#include <EASTL/ranges/view/take.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
@@ -25,12 +25,24 @@
 
 RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 int main()
 {
     using namespace ranges;
-    using P = std::pair<int, int>;
+    using P = eastl::pair<int, int>;
 
-    std::vector<std::pair<int, int>> v = {
+    eastl::vector<eastl::pair<int, int>> v = {
         {1, 1},
         {1, 1},
         {1, 2},
@@ -67,7 +79,7 @@ int main()
     }
 
     {
-        ForwardIterator<std::vector<P>::iterator> b{v.begin()};
+        ForwardIterator<eastl::vector<P>::iterator> b{v.begin()};
         auto rng0 = views::counted(b, v.size()) |
                     views::chunk_by([](P p0, P p1) { return p0.second == p1.second; });
         CPP_assert(forward_range<decltype(rng0)>);
@@ -97,7 +109,7 @@ int main()
     }
 
     {
-        std::vector<int> v2{0, 1, 2, 6, 8, 10, 15, 17, 18, 29};
+        eastl::vector<int> v2{0, 1, 2, 6, 8, 10, 15, 17, 18, 29};
         auto rng0 = ranges::views::chunk_by(v2, [](int i, int j) { return j - i < 3; });
         check_equal(*rng0.begin(), {0, 1, 2});
         check_equal(*next(rng0.begin()), {6, 8, 10});
@@ -107,7 +119,7 @@ int main()
     }
 
     {
-        std::vector<int> v3{1, 2, 3, 4, 5};
+        eastl::vector<int> v3{1, 2, 3, 4, 5};
         int count_invoc = 0;
         auto rng = views::chunk_by(v3, [&](int, int) {
             ++count_invoc;
@@ -128,8 +140,8 @@ int main()
     }
 
     {
-        std::vector<int> v4 = {2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 0};
-        auto rng = v4 | views::chunk_by(std::less<>{});
+        eastl::vector<int> v4 = {2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 0};
+        auto rng = v4 | views::chunk_by(eastl::less<>{});
         CHECK(distance(rng) == 4);
         check_equal(*rng.begin(), {2, 3, 4, 5});
         check_equal(*next(rng.begin()), {0, 1, 2, 3, 4, 5, 6});
@@ -138,21 +150,21 @@ int main()
     }
 
     {
-        std::vector<int> v5 = {0, 1, 2};
-        auto rng = views::cycle(v5) | views::take(6) | views::chunk_by(std::less<>{});
+        eastl::vector<int> v5 = {0, 1, 2};
+        auto rng = views::cycle(v5) | views::take(6) | views::chunk_by(eastl::less<>{});
         CHECK(distance(rng) == 2);
         check_equal(*rng.begin(), v5);
         check_equal(*next(rng.begin()), v5);
     }
 
     {
-        std::vector<int> e;
-        auto rng = e | views::chunk_by(std::less<>{});
+        eastl::vector<int> e;
+        auto rng = e | views::chunk_by(eastl::less<>{});
         CHECK(distance(rng) == 0);
     }
 
     {
-        std::vector<int> single{2};
+        eastl::vector<int> single{2};
         auto rng = single | views::chunk_by([](int, int) -> bool { throw 0; });
 
         CHECK(distance(rng) == 1);
@@ -160,8 +172,8 @@ int main()
     }
 
     {
-        std::vector<int> v6 = {3, 6, 9, 4, 5, 0, 3, 2};
-        auto rng = v6 | views::chunk_by(std::less<>{});
+        eastl::vector<int> v6 = {3, 6, 9, 4, 5, 0, 3, 2};
+        auto rng = v6 | views::chunk_by(eastl::less<>{});
         check_equal(*rng.begin(), {3, 6, 9});
         check_equal(*next(rng.begin()), {4, 5});
         check_equal(*next(rng.begin(), 2), {0, 3});

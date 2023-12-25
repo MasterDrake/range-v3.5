@@ -18,20 +18,22 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <memory>
+#include <EASTL/memory.h>
 #include <random>
-#include <vector>
-#include <algorithm>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/sort.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/view/for_each.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/repeat_n.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/zip.hpp>
-#include <range/v3/view/transform.hpp>
-#include <range/v3/range/conversion.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/algorithm.h>
+#include <EASTL/utility.h>
+#include <EASTL/sort.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/sort.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/view/for_each.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/repeat_n.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/zip.hpp>
+#include <EASTL/ranges/view/transform.hpp>
+#include <EASTL/ranges/range/conversion.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -40,11 +42,26 @@ RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 RANGES_DIAGNOSTIC_IGNORE_UNNEEDED_INTERNAL
 
+//TODO:19) Serious bug, linking problem with eastl::swap???? in concepts::adl_swap_detail:: -> ranges/concepts/swap.hpp :((
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 // BUGBUG
 namespace std
 {
     template<typename F, typename S>
-    std::ostream & operator<<(std::ostream &sout, std::pair<F,S> const & p)
+    std::ostream & operator<<(std::ostream &sout, eastl::pair<F,S> const & p)
     {
         return sout << '[' << p.first << ',' << p.second << ']';
     }
@@ -73,20 +90,20 @@ namespace
             value_type* save(new value_type[len]);
             do
             {
-                std::copy(f, l, save);
+                eastl::copy(f, l, save);
                 sort(save, save+len).check([&](int *res)
                 {
                     CHECK(res == save+len);
-                    CHECK(std::is_sorted(save, save+len));
-                    std::copy(f, l, save);
+                    CHECK(eastl::is_sorted(save, save+len));
+                    eastl::copy(f, l, save);
                 });
-                sort(save, save+len, std::greater<int>{}).check([&](int *res)
+                sort(save, save+len, eastl::greater<int>{}).check([&](int *res)
                 {
                     CHECK(res == save+len);
-                    CHECK(std::is_sorted(save, save+len, std::greater<int>{}));
-                    std::copy(f, l, save);
+                    CHECK(eastl::is_sorted(save, save+len, eastl::greater<int>{}));
+                    eastl::copy(f, l, save);
                 });
-            } while (std::next_permutation(f, l));
+            } while (eastl::next_permutation(f, l));
             delete [] save;
         }
     }
@@ -142,27 +159,27 @@ namespace
 
         // test saw tooth pattern
         CHECK(ranges::sort(array, array+N) == array+N);
-        CHECK(std::is_sorted(array, array+N));
+        CHECK(eastl::is_sorted(array, array+N));
         // test random pattern
         std::shuffle(array, array+N, gen);
         CHECK(ranges::sort(array, array+N) == array+N);
-        CHECK(std::is_sorted(array, array+N));
+        CHECK(eastl::is_sorted(array, array+N));
         // test sorted pattern
         CHECK(ranges::sort(array, array+N) == array+N);
-        CHECK(std::is_sorted(array, array+N));
+        CHECK(eastl::is_sorted(array, array+N));
         // test reverse sorted pattern
-        std::reverse(array, array+N);
+        eastl::reverse(array, array+N);
         CHECK(ranges::sort(array, array+N) == array+N);
-        CHECK(std::is_sorted(array, array+N));
+        CHECK(eastl::is_sorted(array, array+N));
         // test swap ranges 2 pattern
-        std::swap_ranges(array, array+N/2, array+N/2);
+        eastl::swap_ranges(array, array+N/2, array+N/2);
         CHECK(ranges::sort(array, array+N) == array+N);
-        CHECK(std::is_sorted(array, array+N));
+        CHECK(eastl::is_sorted(array, array+N));
         // test reverse swap ranges 2 pattern
-        std::reverse(array, array+N);
-        std::swap_ranges(array, array+N/2, array+N/2);
+        eastl::reverse(array, array+N);
+        eastl::swap_ranges(array, array+N/2, array+N/2);
         CHECK(ranges::sort(array, array+N) == array+N);
-        CHECK(std::is_sorted(array, array+N));
+        CHECK(eastl::is_sorted(array, array+N));
         delete [] array;
     }
 
@@ -256,7 +273,7 @@ int main()
 
     // Check move-only types
     {
-        std::vector<std::unique_ptr<int> > v(1000);
+        eastl::vector<eastl::unique_ptr<int> > v(1000);
         for(int i = 0; (std::size_t)i < v.size(); ++i)
             v[i].reset(new int((int)v.size() - i - 1));
         ranges::sort(v, indirect_less());
@@ -266,13 +283,13 @@ int main()
 
     // Check projections
     {
-        std::vector<S> v(1000, S{});
+        eastl::vector<S> v(1000, S{});
         for(int i = 0; (std::size_t)i < v.size(); ++i)
         {
             v[i].i = (int)v.size() - i - 1;
             v[i].j = i;
         }
-        ranges::sort(v, std::less<int>{}, &S::i);
+        ranges::sort(v, eastl::less<int>{}, &S::i);
         for(int i = 0; (std::size_t)i < v.size(); ++i)
         {
             CHECK(v[i].i == i);
@@ -282,13 +299,13 @@ int main()
 
     // Check rvalue range
     {
-        std::vector<S> v(1000, S{});
+        eastl::vector<S> v(1000, S{});
         for(int i = 0; (std::size_t)i < v.size(); ++i)
         {
             v[i].i = (int)v.size() - i - 1;
             v[i].j = i;
         }
-        CHECK(ranges::sort(ranges::views::all(v), std::less<int>{}, &S::i) == v.end());
+        CHECK(ranges::sort(ranges::views::all(v), eastl::less<int>{}, &S::i) == v.end());
         for(int i = 0; (std::size_t)i < v.size(); ++i)
         {
             CHECK(v[i].i == i);
@@ -296,13 +313,13 @@ int main()
         }
     }
     {
-        std::vector<S> v(1000, S{});
+        eastl::vector<S> v(1000, S{});
         for(int i = 0; (std::size_t)i < v.size(); ++i)
         {
             v[i].i = (int)v.size() - i - 1;
             v[i].j = i;
         }
-        CHECK(::is_dangling(ranges::sort(std::move(v), std::less<int>{}, &S::i)));
+        CHECK(::is_dangling(ranges::sort(eastl::move(v), eastl::less<int>{}, &S::i)));
         for(int i = 0; (std::size_t)i < v.size(); ++i)
         {
             CHECK(v[i].i == i);
@@ -316,8 +333,8 @@ int main()
         auto v0 =
             views::for_each(views::ints(1,6) | views::reverse, [](int i){
                 return ranges::yield_from(views::repeat_n(i,i));
-            }) | to<std::vector>();
-        auto v1 = ranges::to<std::vector<Int>>(
+            }) | to<eastl::vector>();
+        auto v1 = ranges::to<eastl::vector<Int>>(
             {1,2,2,3,3,3,4,4,4,4,5,5,5,5,5});
         auto rng = views::zip(v0, v1);
         ::check_equal(v0,{5,5,5,5,5,4,4,4,4,3,3,3,2,2,1});

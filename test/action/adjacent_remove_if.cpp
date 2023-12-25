@@ -11,20 +11,33 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
-#include <range/v3/action/adjacent_remove_if.hpp>
+#include <EASTL/ranges/action/adjacent_remove_if.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <vector>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/vector.h>
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
 
-    auto v = views::ints(1,21) | to<std::vector>();
+    auto v = views::ints(1,21) | to<eastl::vector>();
     auto & v2 = actions::adjacent_remove_if(v, [](int x, int y){ return (x + y) % 3 == 0; });
-    CHECK(std::addressof(v) == std::addressof(v2));
+    CHECK(eastl::addressof(v) == eastl::addressof(v2));
     check_equal(v, {2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20});
 
     v |= actions::adjacent_remove_if([](int x, int y){ return (y - x) == 2; });

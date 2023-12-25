@@ -14,11 +14,16 @@ else()
     set(is_standalone NO)
 endif()
 
+set(VCPKG_LIBRARY_LINKAGE static)
+include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+
 project(Range-v3 CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Export compilation data-base
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+find_package(EASTL CONFIG REQUIRED)
 
 include(ranges_options)
 include(ranges_env)
@@ -31,6 +36,8 @@ target_include_directories(range-v3-meta SYSTEM INTERFACE $<INSTALL_INTERFACE:$<
 target_compile_options(range-v3-meta INTERFACE $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->
                                                $<$<COMPILE_LANG_AND_ID:CUDA,MSVC>:-Xcompiler=/permissive->)
 
+target_link_libraries(range-v3-meta INTERFACE EASTL)
+
 add_library(range-v3-concepts INTERFACE)
 add_library(range-v3::concepts ALIAS range-v3-concepts)
 target_include_directories(range-v3-concepts INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>)
@@ -39,6 +46,8 @@ target_compile_options(range-v3-concepts INTERFACE $<$<COMPILE_LANG_AND_ID:CXX,M
                                                    $<$<COMPILE_LANG_AND_ID:CUDA,MSVC>:-Xcompiler=/permissive->)
 target_link_libraries(range-v3-concepts INTERFACE range-v3::meta)
 
+target_link_libraries(range-v3-concepts INTERFACE EASTL)
+
 add_library(range-v3 INTERFACE)
 add_library(range-v3::range-v3 ALIAS range-v3)
 target_include_directories(range-v3 INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>)
@@ -46,6 +55,8 @@ target_include_directories(range-v3 SYSTEM INTERFACE $<INSTALL_INTERFACE:$<INSTA
 target_compile_options(range-v3 INTERFACE $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->
                                           $<$<COMPILE_LANG_AND_ID:CUDA,MSVC>:-Xcompiler=/permissive->)
 target_link_libraries(range-v3 INTERFACE range-v3::concepts range-v3::meta)
+
+target_link_libraries(range-v3 INTERFACE EASTL)
 
 function(rv3_add_test TESTNAME EXENAME FIRSTSOURCE)
   add_executable(range.v3.${EXENAME} ${FIRSTSOURCE} ${ARGN})

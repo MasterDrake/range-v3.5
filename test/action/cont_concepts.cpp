@@ -7,14 +7,16 @@
 //  file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#include <array>
-#include <vector>
-#include <memory>
-#include <range/v3/core.hpp>
-#include <range/v3/action/concepts.hpp>
-#include <range/v3/view/ref.hpp>
+#include <EASTL/array.h>
+#include <EASTL/vector.h>
+#include <EASTL/unique_ptr.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/action/concepts.hpp>
+#include <EASTL/ranges/view/ref.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+
 
 int main()
 {
@@ -24,18 +26,18 @@ int main()
     CPP_assert(range<decltype(rgi)>);
     CPP_assert(!semi_container<decltype(rgi)>);
 
-    std::array<int, 6> a;
+    eastl::array<int, 6> a;
     CPP_assert(semi_container<decltype(a)>);
     CPP_assert(!container<decltype(a)>);
 
-    std::vector<int> v;
+    eastl::vector<int> v;
     CPP_assert(container<decltype(v)>);
 
-    std::vector<std::unique_ptr<int>> v2;
+    eastl::vector<eastl::unique_ptr<int>> v2;
     CPP_assert(container<decltype(v2)>);
 
     CPP_assert(lvalue_container_like<decltype((v2))>);
-    CPP_assert(!lvalue_container_like<decltype(std::move(v2))>);
+    CPP_assert(!lvalue_container_like<decltype(eastl::move(v2))>);
 
     CPP_assert(lvalue_container_like<decltype(views::ref(v2))>);
 

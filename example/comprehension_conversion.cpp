@@ -15,20 +15,33 @@
 // then convert it to a std::vector.
 
 #include <iostream>
-#include <vector>
+#include <EASTL/vector.h>
 
-#include <range/v3/range/conversion.hpp>
-#include <range/v3/view/for_each.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/repeat_n.hpp>
+#include <EASTL/ranges/range/conversion.hpp>
+#include <EASTL/ranges/view/for_each.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/repeat_n.hpp>
 using std::cout;
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
     auto vi = views::for_each(views::ints(1, 6),
                               [](int i) { return yield_from(views::repeat_n(i, i)); }) |
-              to<std::vector>();
+              to<eastl::vector>();
     // prints: [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5]
     cout << views::all(vi) << '\n';
 }

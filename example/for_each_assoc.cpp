@@ -19,39 +19,49 @@
 // unordered_map: three:3 one:1 two:2
 // unordered_set: 6 5 4 3 2 1
 
+#include <EASTL/map.h>
+#include <EASTL/ranges/algorithm/for_each.hpp>
+#include <EASTL/set.h>
+#include <EASTL/string.h>
+#include <EASTL/unordered_map.h>
+#include <EASTL/unordered_set.h>
 #include <iostream>
-#include <map>
-#include <range/v3/algorithm/for_each.hpp>
-#include <set>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
+using eastl::string;
 using std::cout;
-using std::string;
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 auto print = [](int i) { cout << i << ' '; };
 // must take a pair for map types
-auto printm = [](std::pair<string, int> p) {
-    cout << p.first << ":" << p.second << ' ';
+auto printm = [](eastl::pair<string, int> p) {
+    cout << p.first.data() << ":" << p.second << ' ';
 };
 
-int
-main()
+int main()
 {
     cout << "set:           ";
-    std::set<int> si{1, 2, 3, 4, 5, 6};
+    eastl::set<int> si{1, 2, 3, 4, 5, 6};
     ranges::for_each(si, print);
 
     cout << "\nmap:           ";
-    std::map<string, int> msi{{"one", 1}, {"two", 2}, {"three", 3}};
+    eastl::map<string, int> msi{{"one", 1}, {"two", 2}, {"three", 3}};
     ranges::for_each(msi, printm);
 
     cout << "\nunordered map: ";
-    std::unordered_map<string, int> umsi{{"one", 1}, {"two", 2}, {"three", 3}};
+    eastl::unordered_map<string, int> umsi{{"one", 1}, {"two", 2}, {"three", 3}};
     ranges::for_each(umsi, printm);
 
     cout << "\nunordered set: ";
-    std::unordered_set<int> usi{1, 2, 3, 4, 5, 6};
+    eastl::unordered_set<int> usi{1, 2, 3, 4, 5, 6};
     ranges::for_each(usi, print);
     cout << '\n';
 }

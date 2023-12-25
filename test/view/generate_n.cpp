@@ -9,9 +9,9 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/core.hpp>
-#include <range/v3/view/drop_exactly.hpp>
-#include <range/v3/view/generate_n.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/drop_exactly.hpp>
+#include <EASTL/ranges/view/generate_n.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -22,7 +22,7 @@ int main()
     // Test for constant generator functions
     {
         int i = 0, j = 1;
-        auto fib = views::generate_n([&]()->int{int tmp = i; i += j; std::swap(i, j); return tmp;}, 10);
+        auto fib = views::generate_n([&]()->int{int tmp = i; i += j; eastl::swap(i, j); return tmp;}, 10);
         CPP_assert(ranges::input_range<decltype(fib)> && ranges::view_<decltype(fib)>);
         check_equal(fib, {0,1,1,2,3,5,8,13,21,34});
     }
@@ -30,7 +30,7 @@ int main()
     // Test for mutable-only generator functions
     {
         int i = 0, j = 1;
-        auto fib = views::generate_n([=]()mutable->int{int tmp = i; i += j; std::swap(i, j); return tmp;}, 10);
+        auto fib = views::generate_n([=]()mutable->int{int tmp = i; i += j; eastl::swap(i, j); return tmp;}, 10);
         CPP_assert(ranges::input_range<decltype(fib)> && ranges::view_<decltype(fib)>);
         check_equal(fib, {0,1,1,2,3,5,8,13,21,34});
         // The generator cannot be called when it's const-qualified, so "fib const"
@@ -51,7 +51,7 @@ int main()
         CHECK(bool(*rng.begin() == MoveOnlyString{"hi"}));
         CPP_assert(ranges::input_range<decltype(rng)> && ranges::view_<decltype(rng)>);
         check_equal(rng, {MoveOnlyString{"hi"}, MoveOnlyString{"ii"}});
-        static_assert(std::is_same<ranges::range_reference_t<decltype(rng)>, MoveOnlyString &&>::value, "");
+        static_assert(eastl::is_same<ranges::range_reference_t<decltype(rng)>, MoveOnlyString &&>::value, "");
     }
 
     // Test for generator functions that return internal references
@@ -59,7 +59,7 @@ int main()
     {
         int i = 42;
         auto rng = views::generate_n([i]{return &i;}, 2);
-        auto rng2 = std::move(rng);
+        auto rng2 = eastl::move(rng);
         auto it = rng2.begin();
         auto p = *it;
         auto p2 = *++it;
@@ -71,7 +71,7 @@ int main()
     {
         int i = 0;
         auto rng = views::generate_n([&i]{return ++i;}, 2);
-        auto rng2 = std::move(rng);
+        auto rng2 = eastl::move(rng);
         auto it = rng2.begin();
         CHECK(i == 0);
         CHECK(*it == 1);
@@ -94,14 +94,14 @@ int main()
     // Test that skipping past positions works correctly
     // https://github.com/ericniebler/range-v3/issues/1258
     {
-        auto fib = [p = std::make_pair(0, 1)]() mutable -> int {
+        auto fib = [p = eastl::make_pair(0, 1)]() mutable -> int 
+            {
             auto a = p.first;
             p = {p.second, p.first + p.second};
             return a;
         };
 
-        auto rng = ranges::views::generate_n(fib, 8)
-            | ranges::views::drop_exactly(3);
+        auto rng = ranges::views::generate_n(fib, 8) | ranges::views::drop_exactly(3);
 
         check_equal(rng, {2,3,5,8,13});
     }

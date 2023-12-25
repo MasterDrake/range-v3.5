@@ -23,11 +23,11 @@
 //===----------------------------------------------------------------------===//
 
 #include <cstring>
-#include <utility>
-#include <algorithm>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/permutation.hpp>
-#include <range/v3/algorithm/equal.hpp>
+#include <EASTL/utility.h>
+#include <EASTL/algorithm.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/permutation.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -52,14 +52,14 @@ void test_iter()
         bool x;
         do
         {
-            std::copy(ia, ia+e, prev);
+            eastl::copy(ia, ia+e, prev);
             x = ranges::prev_permutation(Iter(ia), Sent(ia+e));
             if(e > 1)
             {
                 if(!x)
-                    CHECK(std::lexicographical_compare(prev, prev+e, ia, ia+e));
+                    CHECK(eastl::lexicographical_compare(prev, prev+e, ia, ia+e));
                 else
-                    CHECK(std::lexicographical_compare(ia, ia+e, prev, prev+e));
+                    CHECK(eastl::lexicographical_compare(ia, ia+e, prev, prev+e));
             }
             ++count;
         } while(x);
@@ -79,14 +79,14 @@ void test_range()
         bool x;
         do
         {
-            std::copy(ia, ia+e, prev);
+            eastl::copy(ia, ia+e, prev);
             x = ranges::prev_permutation(ranges::make_subrange(Iter(ia), Sent(ia+e)));
             if(e > 1)
             {
                 if(!x)
-                    CHECK(std::lexicographical_compare(prev, prev+e, ia, ia+e));
+                    CHECK(eastl::lexicographical_compare(prev, prev+e, ia, ia+e));
                 else
-                    CHECK(std::lexicographical_compare(ia, ia+e, prev, prev+e));
+                    CHECK(eastl::lexicographical_compare(ia, ia+e, prev, prev+e));
             }
             ++count;
         } while(x);
@@ -97,7 +97,7 @@ void test_range()
 template<typename Iter, typename Sent = Iter>
 void test_iter_comp()
 {
-    typedef std::greater<int> C;
+    typedef eastl::greater<int> C;
     int ia[] = {1, 2, 3, 4, 5, 6};
     const int sa = sizeof(ia)/sizeof(ia[0]);
     int prev[sa];
@@ -107,14 +107,14 @@ void test_iter_comp()
         bool x;
         do
         {
-            std::copy(ia, ia+e, prev);
+            eastl::copy(ia, ia+e, prev);
             x = ranges::prev_permutation(Iter(ia), Sent(ia+e), C());
             if(e > 1)
             {
                 if(!x)
-                    CHECK(std::lexicographical_compare(prev, prev+e, ia, ia+e, C()));
+                    CHECK(eastl::lexicographical_compare(prev, prev+e, ia, ia+e, C()));
                 else
-                    CHECK(std::lexicographical_compare(ia, ia+e, prev, prev+e, C()));
+                    CHECK(eastl::lexicographical_compare(ia, ia+e, prev, prev+e, C()));
             }
             ++count;
         } while (x);
@@ -125,7 +125,7 @@ void test_iter_comp()
 template<typename Iter, typename Sent = Iter>
 void test_range_comp()
 {
-    typedef std::greater<int> C;
+    typedef eastl::greater<int> C;
     int ia[] = {1, 2, 3, 4, 5, 6};
     const int sa = sizeof(ia)/sizeof(ia[0]);
     int prev[sa];
@@ -135,14 +135,14 @@ void test_range_comp()
         bool x;
         do
         {
-            std::copy(ia, ia+e, prev);
+            eastl::copy(ia, ia+e, prev);
             x = ranges::prev_permutation(ranges::make_subrange(Iter(ia), Sent(ia+e)), C());
             if(e > 1)
             {
                 if(!x)
-                    CHECK(std::lexicographical_compare(prev, prev+e, ia, ia+e, C()));
+                    CHECK(eastl::lexicographical_compare(prev, prev+e, ia, ia+e, C()));
                 else
-                    CHECK(std::lexicographical_compare(ia, ia+e, prev, prev+e, C()));
+                    CHECK(eastl::lexicographical_compare(ia, ia+e, prev, prev+e, C()));
             }
             ++count;
         } while (x);
@@ -166,7 +166,7 @@ struct c_str
 };
 
 // For debugging the projection test
-std::ostream &operator<<(std::ostream& sout, std::pair<int, c_str> p)
+std::ostream &operator<<(std::ostream& sout, eastl::pair<int, c_str> p)
 {
     return sout << "{" << p.first << "," << p.second.value << "}";
 }
@@ -217,14 +217,14 @@ int main()
 
     // Test projection
 
-    using C = std::less<int>;
-    using I = std::initializer_list<std::pair<int, c_str>>;
-    std::pair<int, c_str> ia[] = {{6, {"six"}}, {5,{"five"}}, {4,{"four"}}, {3,{"three"}}, {2,{"two"}}, {1,{"one"}}};
-    CHECK(ranges::prev_permutation(ia, C(), &std::pair<int,c_str>::first));
+    using C = eastl::less<int>;
+    using I = std::initializer_list<eastl::pair<int, c_str>>;
+    eastl::pair<int, c_str> ia[] = {{6, {"six"}}, {5,{"five"}}, {4,{"four"}}, {3,{"three"}}, {2,{"two"}}, {1,{"one"}}};
+    CHECK(ranges::prev_permutation(ia, C(), &eastl::pair<int,c_str>::first));
     ::check_equal(ia, I{{6, {"six"}}, {5,{"five"}}, {4,{"four"}}, {3,{"three"}}, {1,{"one"}}, {2,{"two"}}});
-    CHECK(ranges::prev_permutation(ia, C(), &std::pair<int,c_str>::first));
+    CHECK(ranges::prev_permutation(ia, C(), &eastl::pair<int,c_str>::first));
     ::check_equal(ia, I{{6, {"six"}}, {5,{"five"}}, {4,{"four"}}, {2,{"two"}}, {3,{"three"}}, {1,{"one"}}});
-    CHECK(ranges::prev_permutation(ia, C(), &std::pair<int,c_str>::first));
+    CHECK(ranges::prev_permutation(ia, C(), &eastl::pair<int,c_str>::first));
     ::check_equal(ia, I{{6, {"six"}}, {5,{"five"}}, {4,{"four"}}, {2,{"two"}}, {1,{"one"}}, {3,{"three"}}});
     // etc..
 

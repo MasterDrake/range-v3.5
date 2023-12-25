@@ -9,14 +9,27 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
-#include <string>
-#include <range/v3/action/remove.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
+#include <EASTL/ranges/action/remove.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
 using namespace ranges;
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct Data
 {
@@ -54,7 +67,7 @@ void simple_test()
 
 void string_test()
 {
-    std::vector<std::string> list = {"aaa", "bbb", "ccc"};
+    eastl::vector<eastl::string> list = {"aaa", "bbb", "ccc"};
     list |= actions::remove("bbb");
     check_equal(list, {"aaa", "ccc"});
 }

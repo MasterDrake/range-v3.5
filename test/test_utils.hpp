@@ -10,21 +10,21 @@
 #ifndef RANGES_TEST_UTILS_HPP
 #define RANGES_TEST_UTILS_HPP
 
-#include <algorithm>
+#include <EASTL/algorithm.h>
 #include <cstring>
-#include <functional>
-#include <initializer_list>
+#include <EASTL/functional.h>
+#include <EASTL/initializer_list.h>
 #include <ostream>
 
-#include <meta/meta.hpp>
+#include <EASTL/ranges/meta/meta.hpp>
 
-#include <range/v3/iterator/concepts.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/iterator/traits.hpp>
-#include <range/v3/range/access.hpp>
-#include <range/v3/range/concepts.hpp>
-#include <range/v3/range/traits.hpp>
-#include <range/v3/view/subrange.hpp>
+#include <EASTL/ranges/iterator/concepts.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/iterator/traits.hpp>
+#include <EASTL/ranges/range/access.hpp>
+#include <EASTL/ranges/range/concepts.hpp>
+#include <EASTL/ranges/range/traits.hpp>
+#include <EASTL/ranges/view/subrange.hpp>
 
 #include "./debug_view.hpp"
 #include "./simple_test.hpp"
@@ -84,20 +84,14 @@ CPP_concept both_ranges = ranges::input_range<T> && ranges::input_range<U>;
 
 struct check_equal_fn
 {
-    CPP_template(typename T, typename U)(
-        requires(!both_ranges<T, U>))     //
-    constexpr void operator()(
-        T && actual, U && expected,
-        source_location sloc = source_location::current()) const
+    CPP_template(typename T, typename U)(requires(!both_ranges<T, U>))     //
+    constexpr void operator()(T && actual, U && expected, source_location sloc = source_location::current()) const
     {
         CHECK_SLOC(sloc, (T &&) actual == (U &&) expected);
     }
 
-    CPP_template(typename Rng1, typename Rng2)(
-        requires both_ranges<Rng1, Rng2>)
-    constexpr void operator()(
-        Rng1 && actual, Rng2 && expected,
-        source_location sloc = source_location::current()) const
+    CPP_template(typename Rng1, typename Rng2)(requires both_ranges<Rng1, Rng2>)
+    constexpr void operator()(Rng1 && actual, Rng2 && expected, source_location sloc = source_location::current()) const
     {
         auto begin0 = ranges::begin(actual);
         auto end0 = ranges::end(actual);
@@ -109,11 +103,8 @@ struct check_equal_fn
         CHECK_SLOC(sloc, begin1 == end1);
     }
 
-    CPP_template(typename Rng, typename Val)(
-        requires ranges::input_range<Rng>)
-    constexpr void operator()(
-        Rng && actual, std::initializer_list<Val> && expected,
-        source_location sloc = source_location::current()) const
+    CPP_template(typename Rng, typename Val)(requires ranges::input_range<Rng>)
+    constexpr void operator()(Rng && actual, std::initializer_list<Val> && expected, source_location sloc = source_location::current()) const
     {
         (*this)(actual, expected, sloc);
     }
@@ -127,12 +118,10 @@ inline namespace function_objects
 template<typename Expected, typename Actual>
 constexpr void has_type(Actual &&)
 {
-    static_assert(std::is_same<Expected, Actual>::value, "Not the same");
+    static_assert(eastl::is_same<Expected, Actual>::value, "Not the same");
 }
 
-template<ranges::cardinality Expected, 
-         typename Rng, 
-         ranges::cardinality Actual = ranges::range_cardinality<Rng>::value>
+template<ranges::cardinality Expected, typename Rng, ranges::cardinality Actual = ranges::range_cardinality<Rng>::value>
 constexpr void has_cardinality(Rng &&)
 {
     static_assert(Actual == Expected, "Unexpected cardinality");
@@ -177,11 +166,11 @@ template<typename T>
 struct checker
 {
 private:
-    std::function<void(function_ref<void(T)>)> algo_;
+    eastl::function<void(function_ref<void(T)>)> algo_;
 
 public:
-    explicit checker(std::function<void(function_ref<void(T)>)> algo)
-      : algo_(std::move(algo))
+    explicit checker(eastl::function<void(function_ref<void(T)>)> algo)
+      : algo_(eastl::move(algo))
     {}
     void check(function_ref<void(T)> const & check) const
     {
@@ -299,13 +288,13 @@ struct MoveOnlyString
     MoveOnlyString(char const * sz = "")
       : sz_(sz)
     {}
-    MoveOnlyString(MoveOnlyString && that)
+    MoveOnlyString(MoveOnlyString && that) EA_NOEXCEPT
       : sz_(that.sz_)
     {
         that.sz_ = "";
     }
     MoveOnlyString(MoveOnlyString const &) = delete;
-    MoveOnlyString & operator=(MoveOnlyString && that)
+    MoveOnlyString & operator=(MoveOnlyString && that) EA_NOEXCEPT
     {
         sz_ = that.sz_;
         that.sz_ = "";

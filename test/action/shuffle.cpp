@@ -7,19 +7,33 @@
 //  file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#include <vector>
+#include <EASTL/vector.h>
 #include <random>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/stride.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/algorithm/move.hpp>
-#include <range/v3/algorithm/is_sorted.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/algorithm/sort.hpp>
-#include <range/v3/action/shuffle.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/stride.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/algorithm/move.hpp>
+#include <EASTL/ranges/algorithm/is_sorted.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/algorithm/sort.hpp>
+#include <EASTL/ranges/action/shuffle.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -27,7 +41,7 @@ int main()
     std::mt19937 gen;
 
     // "Ints" view vs. shuffled
-    auto v = views::ints(0,100) | to<std::vector>();
+    auto v = views::ints(0,100) | to<eastl::vector>();
     auto v2 = v | copy | actions::shuffle(gen);
     CHECK(is_sorted(v));
     CHECK(!is_sorted(v2));
@@ -50,19 +64,19 @@ int main()
 
     // Container algorithms can also be called directly
     // in which case they take and return by reference
-    v = views::ints(0,100) | to<std::vector>();
+    v = views::ints(0,100) | to<eastl::vector>();
     auto & v3 = actions::shuffle(v, gen);
     CHECK(!is_sorted(v));
     CHECK(&v3 == &v);
 
     // Create and shuffle container reference
-    v = views::ints(0,100) | to<std::vector>();
+    v = views::ints(0,100) | to<eastl::vector>();
     auto r = views::ref(v);
     r |= actions::shuffle(gen);
     CHECK(!is_sorted(v));
 
     // Can pipe a view to a "container" algorithm.
-    v = views::ints(0,100) | to<std::vector>();
+    v = views::ints(0,100) | to<eastl::vector>();
     v | views::stride(2) | actions::shuffle(gen);
     CHECK(!is_sorted(v));
 

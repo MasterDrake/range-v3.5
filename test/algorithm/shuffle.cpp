@@ -22,11 +22,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <array>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/algorithm/shuffle.hpp>
-#include <range/v3/numeric/iota.hpp>
+#include <EASTL/array.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/algorithm/shuffle.hpp>
+#include <EASTL/ranges/numeric/iota.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -35,7 +35,7 @@ int main()
 {
     constexpr unsigned N = 100;
     {
-        std::array<int, N> a, b, c;
+        eastl::array<int, N> a, b, c;
         for (auto p : {&a, &b, &c})
             ranges::iota(*p, 0);
         std::minstd_rand g1, g2 = g1;
@@ -51,7 +51,7 @@ int main()
     }
 
     {
-        std::array<int, N> a, b, c;
+        eastl::array<int, N> a, b, c;
         for (auto p : {&a, &b, &c})
             ranges::iota(*p, 0);
         std::minstd_rand g1, g2 = g1;
@@ -67,12 +67,12 @@ int main()
         CHECK(!ranges::equal(b, c));
 
         ranges::iota(a, 0);
-        CHECK(::is_dangling(ranges::shuffle(std::move(rng), g1)));
+        CHECK(::is_dangling(ranges::shuffle(eastl::move(rng), g1)));
         CHECK(!ranges::equal(a, c));
     }
 
     {
-        std::array<int, N> a, b, c;
+        eastl::array<int, N> a, b, c;
         for (auto p : {&a, &b, &c})
             ranges::iota(*p, 0);
         ranges::shuffle(RandomAccessIterator<int*>(a.data()), Sentinel<int*>(a.data() + N));
@@ -84,7 +84,7 @@ int main()
     }
 
     {
-        std::array<int, N> a, b;
+        eastl::array<int, N> a, b;
         for (auto p : {&a, &b})
             ranges::iota(*p, 0);
         ranges::shuffle(a);

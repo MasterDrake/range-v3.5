@@ -10,19 +10,32 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <cctype>
-#include <string>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/view/delimit.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/transform.hpp>
-#include <range/v3/view/unique.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/iterator/insert_iterators.hpp>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/view/delimit.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/transform.hpp>
+#include <EASTL/ranges/view/unique.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/iterator/insert_iterators.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 using std::toupper;
 
@@ -60,7 +73,7 @@ int main()
 
     {
         int rgi[] = {1, 1, 1, 2, 3, 4, 4};
-        std::vector<int> out;
+        eastl::vector<int> out;
 
         auto rng = rgi | views::unique;
         has_type<int &>(*begin(rng));
@@ -76,7 +89,7 @@ int main()
     }
 
     {
-        std::vector<ci_string> rgs{"hello", "HELLO", "bye", "Bye", "BYE"};
+        eastl::vector<ci_string> rgs{"hello", "HELLO", "bye", "Bye", "BYE"};
         auto rng = rgs | views::unique;
         has_type<ci_string &>(*begin(rng));
         CPP_assert(view_<decltype(rng)>);
@@ -85,7 +98,7 @@ int main()
         CPP_assert(common_range<decltype(rng)>);
         CPP_assert(!sized_range<decltype(rng)>);
         CPP_assert(range<decltype(rng) const>);
-        auto fs = rng | views::transform([](ci_string s){return std::string(s.data(), s.size());});
+        auto fs = rng | views::transform([](ci_string s){return eastl::string(s.data(), s.size());});
         CPP_assert(view_<decltype(fs)>);
         CPP_assert(bidirectional_range<decltype(fs)>);
         ::check_equal(fs, {"hello","bye"});
@@ -109,7 +122,7 @@ int main()
     }
 
     {
-        auto const caseInsensitiveCompare = [](const std::string& s1, const std::string& s2){
+        auto const caseInsensitiveCompare = [](const eastl::string& s1, const eastl::string& s2){
             if (s1.size() != s2.size())
                 return false;
             for (unsigned i = 0; i < s1.size(); i++)
@@ -119,9 +132,9 @@ int main()
             return true;
         };
 
-        std::vector<std::string> rgs{"hello", "HELLO", "bye", "Bye", "BYE"};
+        eastl::vector<eastl::string> rgs{"hello", "HELLO", "bye", "Bye", "BYE"};
         auto rng = rgs | views::unique(caseInsensitiveCompare);
-        has_type<std::string &>(*begin(rng));
+        has_type<eastl::string &>(*begin(rng));
         CPP_assert(view_<decltype(rng)>);
         CPP_assert(bidirectional_range<decltype(rng)>);
         CPP_assert(!random_access_range<decltype(rng)>);

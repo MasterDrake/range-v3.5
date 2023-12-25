@@ -9,31 +9,44 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <map>
-#include <vector>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
 
-#include <range/v3/core.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/view/any_view.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/map.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/tail.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/take_exactly.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/view/any_view.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/map.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/tail.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/take_exactly.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 namespace
 {
     template<typename S, typename T, typename = void>
-    struct can_convert_to : std::false_type
+    struct can_convert_to : eastl::false_type
     {};
     template<typename S, typename T>
     struct can_convert_to<
-        S, T, meta::void_<decltype(ranges::polymorphic_downcast<T>(std::declval<S>()))>>
-      : std::true_type
+        S, T, meta::void_<decltype(ranges::polymorphic_downcast<T>(eastl::declval<S>()))>>
+      : eastl::true_type
     {};
 
     void test_polymorphic_downcast()
@@ -93,7 +106,7 @@ int main()
         any_view<int> ints = views::ints;
         CPP_assert(input_range<decltype(ints)> && view_<decltype(ints)>);
         CPP_assert(!(forward_range<decltype(ints)> && view_<decltype(ints)>));
-        ::check_equal(std::move(ints) | views::take(10), ten_ints);
+        ::check_equal(eastl::move(ints) | views::take(10), ten_ints);
     }
     {
         any_view<int> ints = views::ints | views::take_exactly(5);
@@ -177,7 +190,7 @@ int main()
     
     // Regression test for #446
     {
-        auto vec = std::vector<short>{begin(ten_ints), end(ten_ints)};
+        auto vec = eastl::vector<short>{begin(ten_ints), end(ten_ints)};
         ::check_equal(any_view<int>{vec}, ten_ints);
         ::check_equal(any_view<int>{ranges::detail::as_const(vec)}, ten_ints);
     
@@ -188,7 +201,7 @@ int main()
             Int(int i) : i_{i} {}
             operator int() const { return i_; }
         };
-        auto vec2 = std::vector<Int>{begin(ten_ints), end(ten_ints)};
+        auto vec2 = eastl::vector<Int>{begin(ten_ints), end(ten_ints)};
         ::check_equal(any_view<int>{vec2}, ten_ints);
     }
     
@@ -202,16 +215,15 @@ int main()
     // Regression test for #880
     {
         using namespace ranges;
-        std::map<int, int> mm{ {0, 1}, {2, 3} };
-        any_view<int, category::forward | category::sized> as_any =
-            mm | views::keys;
+        eastl::map<int, int> mm{ {0, 1}, {2, 3} };
+        any_view<int, category::forward | category::sized> as_any = mm | views::keys;
         (void)as_any;
     }
     
     // Regression test for #1101
     {
         using namespace ranges;
-        std::vector<int> v = { 1, 2, 3, 4, 5 };
+        eastl::vector<int> v = { 1, 2, 3, 4, 5 };
     
         using SizedAnyView =
             any_view<int, category::random_access | category::sized>;

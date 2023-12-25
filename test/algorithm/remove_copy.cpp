@@ -22,14 +22,27 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <memory>
-#include <utility>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/remove_copy.hpp>
+#include <EASTL/memory.h>
+#include <EASTL/utility.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/remove_copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 template<class InIter, class OutIter, class Sent = InIter>
 void
@@ -175,9 +188,9 @@ int main()
         S ia[] = {S{0}, S{1}, S{2}, S{3}, S{4}, S{2}, S{3}, S{4}, S{2}};
         constexpr auto sa = ranges::size(ia);
         S ib[sa] = {};
-        auto r0 = ranges::remove_copy(std::move(ia), ib, 2, &S::i);
+        auto r0 = ranges::remove_copy(eastl::move(ia), ib, 2, &S::i);
 #ifndef RANGES_WORKAROUND_MSVC_573728
-        static_assert(std::is_same<decltype(r0),
+        static_assert(eastl::is_same<decltype(r0),
             ranges::remove_copy_result<ranges::dangling, S *>>::value, "");
 #endif // RANGES_WORKAROUND_MSVC_573728
         CHECK(r0.out == ib + sa-3);
@@ -188,11 +201,10 @@ int main()
         CHECK(ib[4].i == 3);
         CHECK(ib[5].i == 4);
 
-        std::fill(ranges::begin(ib), ranges::end(ib), S{});
-        std::vector<S> vec(ranges::begin(ia), ranges::end(ia));
-        auto r1 = ranges::remove_copy(std::move(vec), ib, 2, &S::i);
-        static_assert(std::is_same<decltype(r1),
-            ranges::remove_copy_result<ranges::dangling, S *>>::value, "");
+        eastl::fill(ranges::begin(ib), ranges::end(ib), S{});
+        eastl::vector<S> vec(ranges::begin(ia), ranges::end(ia));
+        auto r1 = ranges::remove_copy(eastl::move(vec), ib, 2, &S::i);
+        static_assert(eastl::is_same<decltype(r1), ranges::remove_copy_result<ranges::dangling, S *>>::value, "");
         CHECK(r1.out == ib + sa-3);
         CHECK(ib[0].i == 0);
         CHECK(ib[1].i == 1);

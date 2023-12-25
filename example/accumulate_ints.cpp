@@ -16,20 +16,19 @@
 // to drop all but the first 10, and accumulate to sum them.
 
 #include <iostream>
-#include <vector>
 
-#include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/transform.hpp>
+#include <EASTL/ranges/numeric/accumulate.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/transform.hpp>
 using std::cout;
 
 int main()
 {
-    using namespace ranges;
-    int sum = accumulate(views::ints(1, unreachable) | views::transform([](int i) {
+    int sum = ranges::accumulate(ranges::views::ints(1, ranges::unreachable) | ranges::views::transform([](int i)
+                         {
                              return i * i;
-                         }) | views::take(10),
+                         }) | ranges::views::take(10),
                          0);
     // prints: 385
     cout << sum << '\n';

@@ -22,13 +22,27 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <utility>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/replace_if.hpp>
+#include <EASTL/utility.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/replace_if.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 template<typename Iter, typename Sent = Iter>
 void test_iter()
@@ -101,10 +115,9 @@ int main()
 
     // test projection
     {
-        using P = std::pair<int,std::string>;
+        using P = eastl::pair<int,eastl::string>;
         P ia[] = {{0,"0"}, {1,"1"}, {2,"2"}, {3,"3"}, {4,"4"}};
-        P *i = ranges::replace_if(ia, [](int j){return j==2;}, std::make_pair(42,"42"),
-            &std::pair<int,std::string>::first);
+        P *i = ranges::replace_if(ia, [](int j){return j==2;}, eastl::make_pair(42,"42"), &eastl::pair<int,eastl::string>::first);
         CHECK(ia[0] == P{0,"0"});
         CHECK(ia[1] == P{1,"1"});
         CHECK(ia[2] == P{42,"42"});
@@ -115,10 +128,9 @@ int main()
 
     // test rvalue ranges
     {
-        using P = std::pair<int,std::string>;
+        using P = eastl::pair<int,eastl::string>;
         P ia[] = {{0,"0"}, {1,"1"}, {2,"2"}, {3,"3"}, {4,"4"}};
-        auto i = ranges::replace_if(std::move(ia), [](int j){return j==2;}, std::make_pair(42,"42"),
-            &std::pair<int,std::string>::first);
+        auto i = ranges::replace_if(eastl::move(ia), [](int j){return j==2;}, eastl::make_pair(42,"42"), &eastl::pair<int,eastl::string>::first);
 #ifndef RANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(i));
 #endif // RANGES_WORKAROUND_MSVC_573728
@@ -130,10 +142,9 @@ int main()
     }
 
     {
-        using P = std::pair<int,std::string>;
-        std::vector<P> ia{{0,"0"}, {1,"1"}, {2,"2"}, {3,"3"}, {4,"4"}};
-        auto i = ranges::replace_if(std::move(ia), [](int j){return j==2;}, std::make_pair(42,"42"),
-            &std::pair<int,std::string>::first);
+        using P = eastl::pair<int,eastl::string>;
+        eastl::vector<P> ia{{0,"0"}, {1,"1"}, {2,"2"}, {3,"3"}, {4,"4"}};
+        auto i = ranges::replace_if(eastl::move(ia), [](int j){return j==2;}, eastl::make_pair(42,"42"), &eastl::pair<int,eastl::string>::first);
         CHECK(::is_dangling(i));
         CHECK(ia[0] == P{0,"0"});
         CHECK(ia[1] == P{1,"1"});

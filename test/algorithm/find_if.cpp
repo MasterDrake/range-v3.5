@@ -18,12 +18,26 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <utility>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/find_if.hpp>
+#include <EASTL/ranges/algorithm/find_if.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/utility.h>
+#include <EASTL/vector.h>
+
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct S
 {
@@ -50,59 +64,59 @@ int main()
     constexpr auto s = size(ia);
 
     {
-        InputIterator<const int*> r = find_if(InputIterator<const int*>(ia),
-                                              InputIterator<const int*>(ia + s),
-                                              [](int i){return i == 3;});
+        InputIterator<const int *> r = find_if(InputIterator<const int *>(ia),
+                                               InputIterator<const int *>(ia + s),
+                                               [](int i) { return i == 3; });
         CHECK(*r == 3);
-        r = find_if(InputIterator<const int*>(ia),
-                    InputIterator<const int*>(ia+s),
-                    [](int i){return i == 10;});
-        CHECK(r == InputIterator<const int*>(ia+s));
+        r = find_if(InputIterator<const int *>(ia),
+                    InputIterator<const int *>(ia + s),
+                    [](int i) { return i == 10; });
+        CHECK(r == InputIterator<const int *>(ia + s));
 
-        r = find_if(InputIterator<const int*>(ia),
-                    Sentinel<const int*>(ia+s),
-                    [](int i){return i == 3;});
+        r = find_if(InputIterator<const int *>(ia),
+                    Sentinel<const int *>(ia + s),
+                    [](int i) { return i == 3; });
         CHECK(*r == 3);
-        r = find_if(InputIterator<const int*>(ia),
-                    Sentinel<const int*>(ia+s),
-                    [](int i){return i == 10;});
-        CHECK(r == InputIterator<const int*>(ia+s));
+        r = find_if(InputIterator<const int *>(ia),
+                    Sentinel<const int *>(ia + s),
+                    [](int i) { return i == 10; });
+        CHECK(r == InputIterator<const int *>(ia + s));
     }
 
     {
-        int *pi = find_if(ia, [](int i){return i == 3;});
+        int * pi = find_if(ia, [](int i) { return i == 3; });
         CHECK(*pi == 3);
-        pi = find_if(ia, [](int i){return i == 10;});
-        CHECK(pi == ia+s);
+        pi = find_if(ia, [](int i) { return i == 10; });
+        CHECK(pi == ia + s);
     }
 
 #ifndef RANGES_WORKAROUND_MSVC_573728
     {
-        auto pj0 = find_if(std::move(ia), [](int i){return i == 3;});
+        auto pj0 = find_if(eastl::move(ia), [](int i) { return i == 3; });
         CHECK(::is_dangling(pj0));
-        auto pj1 = find_if(std::move(ia), [](int i){return i == 10;});
+        auto pj1 = find_if(eastl::move(ia), [](int i) { return i == 10; });
         CHECK(::is_dangling(pj1));
     }
 #endif // RANGES_WORKAROUND_MSVC_573728
 
     {
-        std::vector<int> const vec(begin(ia), end(ia));
-        auto pj0 = find_if(std::move(vec), [](int i){return i == 3;});
+        eastl::vector<int> const vec(begin(ia), end(ia));
+        auto pj0 = find_if(eastl::move(vec), [](int i) { return i == 3; });
         CHECK(::is_dangling(pj0));
-        auto pj1 = find_if(std::move(vec), [](int i){return i == 10;});
+        auto pj1 = find_if(eastl::move(vec), [](int i) { return i == 10; });
         CHECK(::is_dangling(pj1));
     }
 
     {
-        auto* ignore = find_if(ranges::views::all(ia), [](int i){return i == 10;});
+        auto * ignore = find_if(ranges::views::all(ia), [](int i) { return i == 10; });
         (void)ignore;
     }
 
     {
         S sa[] = {{0}, {1}, {2}, {3}, {4}, {5}};
-        S *ps = find_if(sa, [](int i){return i == 3;}, &S::i_);
+        S * ps = find_if(sa, [](int i) { return i == 3; }, &S::i_);
         CHECK(ps->i_ == 3);
-        ps = find_if(sa, [](int i){return i == 10;}, &S::i_);
+        ps = find_if(sa, [](int i) { return i == 10; }, &S::i_);
         CHECK(ps == end(sa));
     }
 

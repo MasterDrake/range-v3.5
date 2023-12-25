@@ -9,7 +9,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/all.hpp>
+#include <EASTL/ranges/all.hpp>
 #include "./simple_test.hpp"
 #include "./test_utils.hpp"
 #include "./test_iterators.hpp"

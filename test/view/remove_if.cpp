@@ -9,22 +9,35 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <array>
-#include <vector>
-#include <iterator>
-#include <functional>
-#include <range/v3/core.hpp>
-#include <range/v3/functional/not_fn.hpp>
-#include <range/v3/view/remove_if.hpp>
-#include <range/v3/view/filter.hpp>
-#include <range/v3/view/counted.hpp>
-#include <range/v3/view/concat.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/subrange.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/array.h>
+#include <EASTL/vector.h>
+#include <EASTL/iterator.h>
+#include <EASTL/functional.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/functional/not_fn.hpp>
+#include <EASTL/ranges/view/remove_if.hpp>
+#include <EASTL/ranges/view/filter.hpp>
+#include <EASTL/ranges/view/counted.hpp>
+#include <EASTL/ranges/view/concat.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/subrange.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct is_odd
 {
@@ -108,8 +121,8 @@ int main()
     }
 
     {
-        const std::array<int, 3> a{{0, 1, 2}};
-        const std::vector<int> b{3, 4, 5, 6};
+        const eastl::array<int, 3> a{{0, 1, 2}};
+        const eastl::vector<int> b{3, 4, 5, 6};
 
         auto r = views::concat(a, b);
         auto f = [](int i) { return i != 1 && i != 5; };
@@ -131,43 +144,43 @@ int main()
 
     {
         // with projection
-        const std::vector<my_data> some_my_datas{{1}, {2}, {3}, {4}};
+        const eastl::vector<my_data> some_my_datas{{1}, {2}, {3}, {4}};
 
         {
             // views::remove_if without pipe
             auto rng = ranges::views::remove_if(some_my_datas, is_even(), &my_data::i);
-            ::check_equal(rng, std::vector<my_data>{{1}, {3}});
+            ::check_equal(rng, eastl::vector<my_data>{{1}, {3}});
         }
 
         {
             // views::remove_if with pipe
             auto rng = some_my_datas | ranges::views::remove_if(is_even(), &my_data::i);
-            ::check_equal(rng, std::vector<my_data>{{1}, {3}});
+            ::check_equal(rng, eastl::vector<my_data>{{1}, {3}});
         }
 
         {
             // views::filter without pipe
             auto rng = ranges::views::filter(some_my_datas, is_even(), &my_data::i);
-            ::check_equal(rng, std::vector<my_data>{{2}, {4}});
+            ::check_equal(rng, eastl::vector<my_data>{{2}, {4}});
         }
 
         {
             // views::filter with pipe
             auto rng = some_my_datas | ranges::views::filter(is_even(), &my_data::i);
-            ::check_equal(rng, std::vector<my_data>{{2}, {4}});
+            ::check_equal(rng, eastl::vector<my_data>{{2}, {4}});
         }
     }
 
     // test constexpr binding
     {
         using namespace ranges;
-        constexpr std::array<int, 4> is = {{1,2,3,4}};
+        constexpr eastl::array<int, 4> is = {{1,2,3,4}};
         constexpr auto filter = views::remove_if(is_even()) | views::remove_if(is_odd());
         auto rng = is | filter;
         CHECK(rng.empty());
     }
     {
-        const std::vector<my_data> some_my_datas{{1}, {2}, {3}, {4}};
+        const eastl::vector<my_data> some_my_datas{{1}, {2}, {3}, {4}};
         constexpr auto filter = views::remove_if(is_even(), &my_data::i) | views::remove_if(is_odd(), &my_data::i);
         auto rng = some_my_datas | filter;
         CHECK(rng.empty());
@@ -175,7 +188,7 @@ int main()
 
     // test issue #1424 <https://github.com/ericniebler/range-v3/issues/1424>
     {
-        std::vector<int> v{1, 2, 3, 4};
+        eastl::vector<int> v{1, 2, 3, 4};
         auto rng = views::filter(v, is_odd());
         ::check_equal(rng, {1, 3});
     }

@@ -18,11 +18,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <memory>
+#include <EASTL/memory.h>
 #include <random>
-#include <algorithm>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/nth_element.hpp>
+#include <EASTL/algorithm.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/nth_element.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -39,7 +39,7 @@ namespace
     {
         RANGES_ENSURE(N != 0);
         RANGES_ENSURE(M < N);
-        std::unique_ptr<int[]> array{new int[N]};
+        eastl::unique_ptr<int[]> array{new int[N]};
         for (int i = 0; (unsigned)i < N; ++i)
             array[i] = i;
         std::shuffle(array.get(), array.get()+N, gen);
@@ -95,7 +95,7 @@ int main()
     for(int i = 0; i < N; ++i)
         ia[i].i = ia[i].j = i;
     std::shuffle(ia, ia+N, gen);
-    ranges::nth_element(ia, ia+M, std::less<int>(), &S::i);
+    ranges::nth_element(ia, ia+M, eastl::less<int>(), &S::i);
     CHECK(ia[M].i == M);
     CHECK(ia[M].j == M);
 

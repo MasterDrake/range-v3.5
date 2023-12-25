@@ -9,17 +9,23 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <iterator>
-#include <functional>
-#include <range/v3/core.hpp>
-#include <range/v3/view/const.hpp>
-#include <range/v3/view/counted.hpp>
-#include <range/v3/view/zip.hpp>
-#include <range/v3/view/move.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/iterator.h>
+#include <EASTL/functional.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/const.hpp>
+#include <EASTL/ranges/view/counted.hpp>
+#include <EASTL/ranges/view/zip.hpp>
+#include <EASTL/ranges/view/move.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -66,7 +72,7 @@ int main()
         CPP_assert(random_access_range<decltype(rng3)>);
         CPP_assert(common_range<decltype(rng3)>);
         CPP_assert(sized_range<decltype(rng3)>);
-        using P = std::pair<int,int>;
+        using P = eastl::pair<int,int>;
         ::check_equal(rng3, {P{1,1}, P{2,2}, P{3,3}, P{4,4}});
         CHECK(&(*begin(rng3)).first == &rgi[0]);
         CHECK(rng3.size() == 4u);
@@ -83,7 +89,7 @@ int main()
         CPP_assert(random_access_range<decltype(rng4)>);
         CPP_assert(common_range<decltype(rng4)>);
         CPP_assert(sized_range<decltype(rng4)>);
-        using P = std::pair<int,int>;
+        using P = eastl::pair<int,int>;
         ::check_equal(rng4, {P{1,1}, P{2,2}, P{3,3}, P{4,4}});
         CHECK(&(*begin(rng4)).first == &rgi[0]);
         CHECK(rng4.size() == 4u);

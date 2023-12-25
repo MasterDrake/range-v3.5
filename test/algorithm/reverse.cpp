@@ -22,9 +22,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <utility>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/reverse.hpp>
+#include <EASTL/utility.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/reverse.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

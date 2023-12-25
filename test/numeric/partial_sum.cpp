@@ -22,9 +22,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <range/v3/core.hpp>
-#include <range/v3/numeric/partial_sum.hpp>
-#include <range/v3/view/zip.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/numeric/partial_sum.hpp>
+#include <EASTL/ranges/view/zip.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
@@ -89,7 +89,7 @@ template<class InIter, class OutIter, class InSent = InIter> void test()
         int ib[s] = {0};
         auto rng = make_subrange(InIter(ia), InSent(ia + s));
         auto orng = make_subrange(OutIter(ib), OutIter(ib + s));
-        auto r = partial_sum(rng, orng, std::minus<int>());
+        auto r = partial_sum(rng, orng, eastl::minus<int>());
         CHECK(base(r.in) == ia + s);
         CHECK(base(r.out) == ib + s);
         for(unsigned i = 0; i < s; ++i)
@@ -139,7 +139,7 @@ int main()
         const unsigned s = sizeof(ir) / sizeof(ir[0]);
         int ib[s] = {0};
         auto r = partial_sum(ranges::begin(ia), ranges::begin(ia) + s, ranges::begin(ib),
-                             std::plus<int>(), &S::i);
+                             eastl::plus<int>(), &S::i);
         CHECK(base(r.in) == ia + s);
         CHECK(base(r.out) == ib + s);
         for(unsigned i = 0; i < s; ++i)
@@ -153,7 +153,7 @@ int main()
         int ir[] = {1, 2, 6, 24, 120};
         const unsigned s = sizeof(ir) / sizeof(ir[0]);
         int ib[s] = {0};
-        auto r = partial_sum(ia, ranges::begin(ib), std::multiplies<int>());
+        auto r = partial_sum(ia, ranges::begin(ib), eastl::multiplies<int>());
         CHECK(base(r.in) == ia + s);
         CHECK(base(r.out) == ib + s);
         for(unsigned i = 0; i < s; ++i)
@@ -167,7 +167,7 @@ int main()
         int ir[] = {1, 2, 6, 24, 120};
         const unsigned s = sizeof(ir) / sizeof(ir[0]);
         int ib[s] = {0};
-        auto r = partial_sum(ia, ib, std::multiplies<int>());
+        auto r = partial_sum(ia, ib, eastl::multiplies<int>());
         CHECK(base(r.in) == ia + s);
         CHECK(base(r.out) == ib + s);
         for(unsigned i = 0; i < s; ++i)
@@ -175,7 +175,7 @@ int main()
             CHECK(ib[i] == ir[i]);
         }
     }
-
+    //TODO:6) Remove all std include, even the ones eastl doesn't have a replacement for like std::except or streams.
     { // Test calling it with proxy iterators
         using namespace ranges;
         int ia[] = {1, 2, 3, 4, 5};
@@ -185,7 +185,7 @@ int main()
         int ic[s] = {0};
         auto rng = views::zip(ia, ib);
         using CR = iter_common_reference_t<iterator_t<decltype(rng)>>;
-        auto r = partial_sum(rng, ic, std::multiplies<int>(), [](CR p) {return p.first;});
+        auto r = partial_sum(rng, ic, eastl::multiplies<int>(), [](CR p) {return p.first;});
         CHECK(base(r.in) == ranges::begin(rng) + s);
         CHECK(base(r.out) == ic + s);
         for(unsigned i = 0; i < s; ++i)

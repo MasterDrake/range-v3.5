@@ -9,18 +9,31 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
-#include <string>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 #include <sstream>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/istream.hpp>
-#include <range/v3/view/slice.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/istream.hpp>
+#include <EASTL/ranges/view/slice.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -44,7 +57,7 @@ int main()
     CPP_assert(random_access_iterator<decltype(begin(rng1))>);
     ::check_equal(rng1, {8, 7, 6, 5, 4, 3});
 
-    std::vector<int> v{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    eastl::vector<int> v{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     auto rng2 = v | views::slice(3, 9) | views::reverse;
     has_type<int &>(*begin(rng2));
     CPP_assert(view_<decltype(rng2)>);
@@ -53,7 +66,7 @@ int main()
     CPP_assert(random_access_iterator<decltype(begin(rng2))>);
     ::check_equal(rng2, {8, 7, 6, 5, 4, 3});
 
-    std::list<int> l{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    eastl::list<int> l{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     auto rng3 = l | views::slice(3, 9);
     has_type<int &>(*begin(rng3));
     CPP_assert(view_<decltype(rng3)>);
@@ -108,15 +121,15 @@ int main()
     static_assert(is_infinite<decltype(rng9)>::value, "should be infinite");
 
     {
-        std::string str{"0 1 2 3 4 5 6 7 8 9"};
-        std::stringstream sin{str};
+        eastl::string str{"0 1 2 3 4 5 6 7 8 9"};
+        std::stringstream sin{str.c_str()};
         auto rng10 = istream<int>(sin)[{3,9}];
         ::check_equal(rng10, {3, 4, 5, 6, 7, 8});
     }
 
     {
-        std::string str{"0 1 2 3 4 5 6 7 8 9"};
-        std::stringstream sin{str};
+        eastl::string str{"0 1 2 3 4 5 6 7 8 9"};
+        std::stringstream sin{str.c_str()};
         auto rng11 = istream<int>(sin)[{3,end}];
         ::check_equal(rng11, {3, 4, 5, 6, 7, 8, 9});
     }

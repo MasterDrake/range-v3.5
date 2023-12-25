@@ -9,19 +9,34 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <string>
+#include <EASTL/string.h>
 #include <cctype>
 #include <sstream>
-#include <range/v3/core.hpp>
-#include <range/v3/view/counted.hpp>
-#include <range/v3/view/c_str.hpp>
-#include <range/v3/view/empty.hpp>
-#include <range/v3/view/remove_if.hpp>
-#include <range/v3/view/split.hpp>
-#include <range/v3/view/split_when.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/counted.hpp>
+#include <EASTL/ranges/view/c_str.hpp>
+#include <EASTL/ranges/view/empty.hpp>
+#include <EASTL/ranges/view/remove_if.hpp>
+#include <EASTL/ranges/view/split.hpp>
+#include <EASTL/ranges/view/split_when.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+//TODO: BUGBUG ranges doesn't like eastl::string at all :D, nothing here works
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
@@ -35,7 +50,7 @@ namespace
     struct starts_with_g
     {
         template<typename I, typename S>
-        std::pair<bool, I> operator()(I b, S) const
+        eastl::pair<bool, I> operator()(I b, S) const
         {
             return {*b == 'g', b};
         }
@@ -59,14 +74,14 @@ namespace
 void moar_tests()
 {
     using namespace ranges;
-    std::string greeting = "now is the time";
-    std::string pattern = " ";
+    eastl::string greeting = "now is the time";
+    eastl::string pattern = " ";
 
     {
 #if RANGES_CXX_DEDUCTION_GUIDES >= RANGES_CXX_DEDUCTION_GUIDES_17
         split_view sv{greeting, pattern};
 #else
-        split_view<views::all_t<std::string&>, views::all_t<std::string&>> sv{greeting, pattern};
+        split_view<views::all_t<eastl::string&>, views::all_t<eastl::string&>> sv{greeting, pattern};
 #endif
         auto i = sv.begin();
         check_equal(*i, {'n','o','w'});
@@ -91,7 +106,7 @@ void moar_tests()
 #if RANGES_CXX_DEDUCTION_GUIDES >= RANGES_CXX_DEDUCTION_GUIDES_17
         split_view sv{greeting, ' '};
 #else
-        split_view<views::all_t<std::string&>, single_view<char>> sv{greeting, ' '};
+        split_view<views::all_t<eastl::string&>, single_view<char>> sv{greeting, ' '};
 #endif
         auto i = sv.begin();
         CHECK(i != sv.end());
@@ -114,15 +129,15 @@ void moar_tests()
     }
 
     {
-        std::stringstream sin{greeting};
+        std::stringstream sin{greeting.c_str()};
 #if RANGES_CXX_DEDUCTION_GUIDES >= RANGES_CXX_DEDUCTION_GUIDES_17
         auto rng = subrange{
             std::istreambuf_iterator<char>{sin},
             std::istreambuf_iterator<char>{}};
 #else
         auto rng = make_subrange(
-            std::istreambuf_iterator<char>{sin},
-            std::istreambuf_iterator<char>{});
+            eastl::istreambuf_iterator<char>{sin},
+            eastl::istreambuf_iterator<char>{});
 #endif
 
         auto sv = views::split(rng, ' ');
@@ -148,7 +163,7 @@ void moar_tests()
     }
 
     {
-        std::string list{"eggs,milk,,butter"};
+        eastl::string list{"eggs,milk,,butter"};
         auto sv = views::split(list, ',');
         auto i = sv.begin();
         CHECK(i != sv.end());
@@ -167,8 +182,8 @@ void moar_tests()
     }
 
     {
-        std::string list{"eggs,milk,,butter"};
-        std::stringstream sin{list};
+        eastl::string list{"eggs,milk,,butter"};
+        std::stringstream sin{list.c_str()};
         auto rng = make_subrange(
             std::istreambuf_iterator<char>{sin},
             std::istreambuf_iterator<char>{});
@@ -190,7 +205,7 @@ void moar_tests()
     }
 
     {
-        std::string hello("hello");
+        eastl::string hello("hello");
         auto sv = views::split(hello, views::empty<char>);
         auto i = sv.begin();
         CHECK(i != sv.end());
@@ -212,8 +227,8 @@ void moar_tests()
     }
 
     {
-        std::string hello{"hello"};
-        std::stringstream sin{hello};
+        eastl::string hello{"hello"};
+        std::stringstream sin{hello.c_str()};
         auto rng = make_subrange(
             std::istreambuf_iterator<char>{sin},
             std::istreambuf_iterator<char>{});
@@ -238,7 +253,7 @@ void moar_tests()
     }
 
     {
-        std::string hello{"hello"};
+        eastl::string hello{"hello"};
         auto sv = views::split(hello, views::empty<char>);
         auto i = sv.begin();
         CHECK(i != sv.end());
@@ -257,8 +272,8 @@ void moar_tests()
     }
 
     {
-        std::string hello{"hello"};
-        std::stringstream sin{hello};
+        eastl::string hello{"hello"};
+        std::stringstream sin{hello.c_str()};
         auto rng = make_subrange(
             std::istreambuf_iterator<char>{sin},
             std::istreambuf_iterator<char>{});
@@ -285,7 +300,7 @@ int main()
     using namespace ranges;
 
     {
-        std::string str("Now is the time for all good men to come to the aid of their country.");
+        eastl::string str("Now is the time for all good men to come to the aid of their country.");
         auto rng = views::split(str, ' ');
         CHECK(distance(rng) == 16);
         if(distance(rng) == 16)
@@ -310,7 +325,7 @@ int main()
     }
 
     {
-        std::string str("Now is the time for all good men to come to the aid of their country.");
+        eastl::string str("Now is the time for all good men to come to the aid of their country.");
         auto rng = views::split(str, c_str(" "));
         CHECK(distance(rng) == 16);
         if(distance(rng) == 16)
@@ -335,7 +350,7 @@ int main()
     }
 
     {
-        std::string str("Now is the time for all ggood men to come to the aid of their country.");
+        eastl::string str("Now is the time for all ggood men to come to the aid of their country.");
         auto rng = views::split_when(str, starts_with_g{});
         CHECK(distance(rng) == 3);
         if(distance(rng) == 3)
@@ -347,8 +362,8 @@ int main()
     }
 
     {
-        std::string str("Now is the time for all ggood men to come to the aid of their country.");
-        ForwardIterator<std::string::iterator> i {str.begin()};
+        eastl::string str("Now is the time for all ggood men to come to the aid of their country.");
+        ForwardIterator<eastl::string::iterator> i {str.begin()};
         auto rng = views::counted(i, str.size()) | views::split_when(starts_with_g{});
         CHECK(distance(rng) == 3);
         if(distance(rng) == 3)
@@ -360,7 +375,7 @@ int main()
     }
 
     {
-        std::string str("meow");
+        eastl::string str("meow");
         auto rng = views::split(str, views::empty<char>);
         CHECK(distance(rng) == 4);
         if(distance(rng) == 4)
@@ -383,7 +398,7 @@ int main()
     }
 
     {
-        std::string str("now  is \t the\ttime");
+        eastl::string str("now  is \t the\ttime");
         auto rng = views::split_when(str, (int(*)(int))&std::isspace);
         CHECK(distance(rng) == 4);
         if(distance(rng) == 4)
@@ -402,7 +417,7 @@ int main()
     }
 
     {   // Regression test for #986
-        std::string s;
+        eastl::string s;
         s | ranges::views::split_when([](char) { return true; });
     }
 
@@ -410,7 +425,7 @@ int main()
 
     {   // Regression test for #1041
         auto is_escape = [](auto first, auto last) {
-            return std::make_pair(next(first) != last, first);
+            return eastl::make_pair(next(first) != last, first);
         };
 
         auto escapes = views::split_when(views::c_str(R"(\t)"), is_escape);

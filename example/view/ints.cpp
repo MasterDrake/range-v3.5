@@ -1,7 +1,7 @@
 //! [ints example]
 #include <iostream>
-#include <vector>
-#include <range/v3/view/iota.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/view/iota.hpp>
 
 int main()
 {

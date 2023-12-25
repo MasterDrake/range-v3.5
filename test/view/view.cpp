@@ -1,10 +1,23 @@
-#include <vector>
+#include <EASTL/vector.h>
 
-#include <range/v3/view/drop.hpp>
-#include <range/v3/view/view.hpp>
+#include <EASTL/ranges/view/drop.hpp>
+#include <EASTL/ranges/view/view.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 using namespace ranges;
 
@@ -23,8 +36,7 @@ struct my_drop_fn : my_drop_base_fn
     template<typename Int>
     constexpr auto operator()(Int n) const
     {
-        return make_view_closure([=](auto && rng) {
-            return my_drop_base_fn{}(std::forward<decltype(rng)>(rng), n); });
+        return make_view_closure([=](auto && rng) {return my_drop_base_fn{}(eastl::forward<decltype(rng)>(rng), n); });
     }
 };
 RANGES_INLINE_VARIABLE(my_drop_fn, my_drop)
@@ -36,7 +48,7 @@ void constexpr_test_1169()
     constexpr auto const drop1 = my_drop(1);
     constexpr auto const drop3 = drop1 | my_drop(2);
 
-    std::vector<int> vec = {1, 2, 3, 4};
+    eastl::vector<int> vec = {1, 2, 3, 4};
     check_equal(vec | drop3, {4});
 #endif
     (void)my_drop;

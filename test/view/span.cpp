@@ -13,18 +13,32 @@
 // THE SOFTWARE.
 //
 ///////////////////////////////////////////////////////////////////////////////
+//TODO: remember to use eastl::span instead in the library, not sure if that's the case or not, maybe I'm talking about string_view that isn't supported due the lack of char traits and the fact that easl::basic_string_view is all we have
+#include <EASTL/ranges/view/span.hpp>
 
-#include <range/v3/view/span.hpp>
-
-#include <array>
+#include <EASTL/array.h>
 #include <iostream>
-#include <list>
-#include <map>
-#include <memory>
+#include <EASTL/list.h>
+#include <EASTL/map.h>
+#include <EASTL/memory.h>
 #include <regex>
-#include <string>
-#include <vector>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 #include "../simple_test.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 using ranges::span;
 using ranges::dynamic_extent;
@@ -88,14 +102,15 @@ void test_case_size_optimization()
 void test_case_from_nullptr_constructor()
 {
     // This implementation doesn't support the silly nullptr_t constructor.
-    CPP_assert(!std::is_constructible<span<int>, std::nullptr_t>::value);
-    CPP_assert(!std::is_constructible<span<const int>, std::nullptr_t>::value);
+    //todo: there's nothing to do, just know that even eastl uses std::nullptr_t
+    CPP_assert(!eastl::is_constructible<span<int>, std::nullptr_t>::value);
+    CPP_assert(!eastl::is_constructible<span<const int>, std::nullptr_t>::value);
 
-    CPP_assert(!std::is_constructible<span<int, 0>, std::nullptr_t>::value);
-    CPP_assert(!std::is_constructible<span<const int, 0>, std::nullptr_t>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 0>, std::nullptr_t>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 0>, std::nullptr_t>::value);
 
-    CPP_assert(!std::is_constructible<span<int, 1>, std::nullptr_t>::value);
-    CPP_assert(!std::is_constructible<span<const int, 1>, std::nullptr_t>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 1>, std::nullptr_t>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 1>, std::nullptr_t>::value);
 }
 
 void test_case_from_nullptr_size_constructor()
@@ -241,11 +256,11 @@ void test_case_from_array_constructor()
 
     int arr2d[2][3] = {1, 2, 3, 4, 5, 6};
 
-    CPP_assert(!std::is_constructible<span<int, 6>, int(&)[5]>::value);
-    CPP_assert(!std::is_constructible<span<int, 0>, int(&)[5]>::value);
-    CPP_assert(!std::is_constructible<span<int>, decltype((arr2d))>::value);
-    CPP_assert(!std::is_constructible<span<int, 0>, decltype((arr2d))>::value);
-    CPP_assert(!std::is_constructible<span<int, 6>, decltype((arr2d))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 6>, int(&)[5]>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 0>, int(&)[5]>::value);
+    CPP_assert(!eastl::is_constructible<span<int>, decltype((arr2d))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 0>, decltype((arr2d))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 6>, decltype((arr2d))>::value);
 
     {
         span<int[3]> s{&(arr2d[0]), 1};
@@ -254,10 +269,10 @@ void test_case_from_array_constructor()
 
     int arr3d[2][3][2] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 
-    CPP_assert(!std::is_constructible<span<int>, decltype((arr3d))>::value);
-    CPP_assert(!std::is_constructible<span<int, 0>, decltype((arr3d))>::value);
-    CPP_assert(!std::is_constructible<span<int, 11>, decltype((arr3d))>::value);
-    CPP_assert(!std::is_constructible<span<int, 12>, decltype((arr3d))>::value);
+    CPP_assert(!eastl::is_constructible<span<int>, decltype((arr3d))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 0>, decltype((arr3d))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 11>, decltype((arr3d))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 12>, decltype((arr3d))>::value);
 
     {
         span<int[3][2]> s{&arr3d[0], 1};
@@ -282,7 +297,7 @@ void test_case_from_array_constructor()
 
 void test_case_from_std_array_constructor()
 {
-    std::array<int, 4> arr = {1, 2, 3, 4};
+    eastl::array<int, 4> arr = {1, 2, 3, 4};
 
     {
         span<int> s{arr};
@@ -300,20 +315,20 @@ void test_case_from_std_array_constructor()
         CHECK((cs.size() == narrow_cast<std::ptrdiff_t>(arr.size()) && cs.data() == arr.data()));
     }
 
-    CPP_assert(!std::is_constructible<span<int, 2>, decltype((arr))>::value);
-    CPP_assert(!std::is_constructible<span<const int, 2>, decltype((arr))>::value);
-    CPP_assert(!std::is_constructible<span<int, 0>, decltype((arr))>::value);
-    CPP_assert(!std::is_constructible<span<const int, 0>, decltype((arr))>::value);
-    CPP_assert(!std::is_constructible<span<int, 5>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 2>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 2>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 0>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 0>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 5>, decltype((arr))>::value);
 
     {
-        auto get_an_array = []() -> std::array<int, 4> { return {1, 2, 3, 4}; };
+        auto get_an_array = []() -> eastl::array<int, 4> { return {1, 2, 3, 4}; };
         auto take_a_span = [](span<int>) {};
         take_a_span(get_an_array());
     }
 
     {
-        auto get_an_array = []() -> std::array<int, 4> { return {1, 2, 3, 4}; };
+        auto get_an_array = []() -> eastl::array<int, 4> { return {1, 2, 3, 4}; };
         auto take_a_span = [](span<const int>) {};
         take_a_span(get_an_array());
     }
@@ -326,7 +341,7 @@ void test_case_from_std_array_constructor()
 
 void test_case_from_const_std_array_constructor()
 {
-    const std::array<int, 4> arr = {1, 2, 3, 4};
+    const eastl::array<int, 4> arr = {1, 2, 3, 4};
 
     {
         span<const int> s{arr};
@@ -338,12 +353,12 @@ void test_case_from_const_std_array_constructor()
         CHECK((s.size() == narrow_cast<std::ptrdiff_t>(arr.size()) && s.data() == arr.data()));
     }
 
-    CPP_assert(!std::is_constructible<span<const int, 2>, decltype((arr))>::value);
-    CPP_assert(!std::is_constructible<span<const int, 0>, decltype((arr))>::value);
-    CPP_assert(!std::is_constructible<span<const int, 5>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 2>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 0>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 5>, decltype((arr))>::value);
 
     {
-        auto get_an_array = []() -> const std::array<int, 4> { return {1, 2, 3, 4}; };
+        auto get_an_array = []() -> const eastl::array<int, 4> { return {1, 2, 3, 4}; };
         auto take_a_span = [](span<const int>) {};
         take_a_span(get_an_array());
     }
@@ -356,7 +371,7 @@ void test_case_from_const_std_array_constructor()
 
 void test_case_from_std_array_const_constructor()
 {
-    std::array<const int, 4> arr = {1, 2, 3, 4};
+    eastl::array<const int, 4> arr = {1, 2, 3, 4};
 
     {
         span<const int> s{arr};
@@ -368,10 +383,10 @@ void test_case_from_std_array_const_constructor()
         CHECK((s.size() == narrow_cast<std::ptrdiff_t>(arr.size()) && s.data() == arr.data()));
     }
 
-    CPP_assert(!std::is_constructible<span<const int, 2>, decltype((arr))>::value);
-    CPP_assert(!std::is_constructible<span<const int, 0>, decltype((arr))>::value);
-    CPP_assert(!std::is_constructible<span<const int, 5>, decltype((arr))>::value);
-    CPP_assert(!std::is_constructible<span<int, 4>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 2>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 0>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<const int, 5>, decltype((arr))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 4>, decltype((arr))>::value);
 
     {
         auto s = make_span(arr);
@@ -381,8 +396,8 @@ void test_case_from_std_array_const_constructor()
 
 void test_case_from_container_constructor()
 {
-    std::vector<int> v = {1, 2, 3};
-    const std::vector<int> cv = v;
+    eastl::vector<int> v = {1, 2, 3};
+    const eastl::vector<int> cv = v;
 
     {
         span<int> s{v};
@@ -392,8 +407,8 @@ void test_case_from_container_constructor()
         CHECK((cs.size() == narrow_cast<std::ptrdiff_t>(v.size()) && cs.data() == v.data()));
     }
 
-    std::string str = "hello";
-    const std::string cstr = "hello";
+    eastl::string str = "hello";
+    const eastl::string cstr = "hello";
 
     {
         span<char> s{str};
@@ -401,7 +416,7 @@ void test_case_from_container_constructor()
     }
 
     {
-        auto get_temp_string = []() -> std::string { return {}; };
+        auto get_temp_string = []() -> eastl::string { return {}; };
         auto use_span = [](span<char>) {};
         use_span(get_temp_string());
     }
@@ -412,39 +427,39 @@ void test_case_from_container_constructor()
     }
 
     {
-        auto get_temp_string = []() -> std::string { return {}; };
+        auto get_temp_string = []() -> eastl::string { return {}; };
         auto use_span = [](span<const char>) {};
         use_span(get_temp_string());
     }
 
     {
-        CPP_assert(!std::is_constructible<span<char>, decltype((cstr))>::value);
+        CPP_assert(!eastl::is_constructible<span<char>, decltype((cstr))>::value);
         span<const char> cs{cstr};
         CHECK((cs.size() == narrow_cast<std::ptrdiff_t>(cstr.size()) &&
               cs.data() == cstr.data()));
     }
 
     {
-        auto get_temp_vector = []() -> std::vector<int> { return {}; };
+        auto get_temp_vector = []() -> eastl::vector<int> { return {}; };
         auto use_span = [](span<int>) {};
         use_span(get_temp_vector());
     }
 
     {
-        auto get_temp_vector = []() -> std::vector<int> { return {}; };
+        auto get_temp_vector = []() -> eastl::vector<int> { return {}; };
         auto use_span = [](span<const int>) {};
         use_span(get_temp_vector());
     }
 
-    CPP_assert(!ranges::detail::is_convertible<const std::vector<int>, span<const char>>::value);
+    CPP_assert(!ranges::detail::is_convertible<const eastl::vector<int>, span<const char>>::value);
 
     {
-        auto get_temp_string = []() -> const std::string { return {}; };
+        auto get_temp_string = []() -> const eastl::string { return {}; };
         auto use_span = [](span<const char> s) { static_cast<void>(s); };
         use_span(get_temp_string());
     }
 
-    CPP_assert(!std::is_constructible<span<int>, std::map<int, int>&>::value);
+    CPP_assert(!eastl::is_constructible<span<int>, eastl::map<int, int>&>::value);
 
     {
         auto s = make_span(v);
@@ -463,11 +478,11 @@ void test_case_from_convertible_span_constructor()
         static_cast<void>(avcd);
     }
 
-    CPP_assert(!std::is_constructible<span<BaseClass>, span<DerivedClass>>::value);
-    CPP_assert(!std::is_constructible<span<DerivedClass>, span<BaseClass>>::value);
-    CPP_assert(!std::is_constructible<span<unsigned int>, span<int>>::value);
-    CPP_assert(!std::is_constructible<span<const unsigned int>, span<int>>::value);
-    CPP_assert(!std::is_constructible<span<short>, span<int>>::value);
+    CPP_assert(!eastl::is_constructible<span<BaseClass>, span<DerivedClass>>::value);
+    CPP_assert(!eastl::is_constructible<span<DerivedClass>, span<BaseClass>>::value);
+    CPP_assert(!eastl::is_constructible<span<unsigned int>, span<int>>::value);
+    CPP_assert(!eastl::is_constructible<span<const unsigned int>, span<int>>::value);
+    CPP_assert(!eastl::is_constructible<span<short>, span<int>>::value);
 }
 
 void test_case_copy_move_and_assignment()
@@ -503,29 +518,29 @@ RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
         int arr[] = {1, 2, 3, 4, 5};
         {
             span s{arr};
-            CPP_assert(std::is_same<span<int, 5>, decltype(s)>::value);
+            CPP_assert(eastl::is_same<span<int, 5>, decltype(s)>::value);
         }
         {
             span s{ranges::data(arr), ranges::size(arr)};
-            CPP_assert(std::is_same<span<int>, decltype(s)>::value);
+            CPP_assert(eastl::is_same<span<int>, decltype(s)>::value);
         }
         {
             span s{ranges::begin(arr), ranges::end(arr)};
-            CPP_assert(std::is_same<span<int>, decltype(s)>::value);
+            CPP_assert(eastl::is_same<span<int>, decltype(s)>::value);
         }
     }
     {
-        std::array<int, 5> arr = {1, 2, 3, 4, 5};
+        eastl::array<int, 5> arr = {1, 2, 3, 4, 5};
         {
             span s{arr};
-            CPP_assert(std::is_same<span<int, 5>, decltype(s)>::value);
+            CPP_assert(eastl::is_same<span<int, 5>, decltype(s)>::value);
         }
     }
     {
-        std::vector<int> vec = {1, 2, 3, 4, 5};
+        eastl::vector<int> vec = {1, 2, 3, 4, 5};
         {
             span s{vec};
-            CPP_assert(std::is_same<span<int>, decltype(s)>::value);
+            CPP_assert(eastl::is_same<span<int>, decltype(s)>::value);
         }
     }
 #if defined(__clang__) && __clang_major__ < 6
@@ -1029,8 +1044,8 @@ void test_case_fixed_size_conversions()
     int arr2[2] = {1, 2};
     (void)arr2;
 
-    CPP_assert(!std::is_constructible<span<int, 4>, decltype((arr2))>::value);
-    CPP_assert(!std::is_constructible<span<int, 4>, span<int, 2>>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 4>, decltype((arr2))>::value);
+    CPP_assert(!eastl::is_constructible<span<int, 4>, span<int, 2>>::value);
 }
 
 void test_case_interop_with_std_regex()
@@ -1058,9 +1073,9 @@ void test_case_interop_with_std_regex()
 
 void test_case_default_constructible()
 {
-    CHECK((std::is_default_constructible<span<int>>::value));
-    CHECK((std::is_default_constructible<span<int, 0>>::value));
-    CHECK((std::is_default_constructible<span<int, 42>>::value));
+    CHECK((eastl::is_default_constructible<span<int>>::value));
+    CHECK((eastl::is_default_constructible<span<int, 0>>::value));
+    CHECK((eastl::is_default_constructible<span<int, 42>>::value));
 }
 
 int main() {

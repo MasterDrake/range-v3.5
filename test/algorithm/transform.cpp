@@ -18,10 +18,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <functional>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/transform.hpp>
-#include <range/v3/view/unbounded.hpp>
+#include <EASTL/functional.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/transform.hpp>
+#include <EASTL/ranges/view/unbounded.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
@@ -37,9 +37,7 @@ test1()
         int ia[] = {0, 1, 2, 3, 4};
         constexpr auto sa = ranges::size(ia);
         int ib[sa] = {0};
-        ranges::unary_transform_result<InIter, OutIter> r =
-            ranges::transform(InIter(ia), Sentinel<int const *>(ia+sa), OutIter(ib),
-                              std::bind(std::plus<int>(), _1, 1));
+        ranges::unary_transform_result<InIter, OutIter> r =  ranges::transform(InIter(ia), Sentinel<int const *>(ia+sa), OutIter(ib), std::bind(eastl::plus<int>(), _1, 1));
         CHECK(base(r.in) == ia + sa);
         CHECK(base(r.out) == ib + sa);
         CHECK(ib[0] == 1);
@@ -54,9 +52,7 @@ test1()
         constexpr auto sa = ranges::size(ia);
         int ib[sa] = {0};
         auto rng = ranges::make_subrange(InIter(ia), Sentinel<int const *>(ia + sa));
-        ranges::unary_transform_result<InIter, OutIter> r =
-            ranges::transform(rng, OutIter(ib),
-                              std::bind(std::plus<int>(), _1, 1));
+        ranges::unary_transform_result<InIter, OutIter> r = ranges::transform(rng, OutIter(ib), std::bind(eastl::plus<int>(), _1, 1));
         CHECK(base(r.in) == ia + sa);
         CHECK(base(r.out) == ib + sa);
         CHECK(ib[0] == 1);
@@ -72,8 +68,7 @@ test1()
         int ib[sa] = {0};
         auto rng = ranges::make_subrange(InIter(ia), Sentinel<int const *>(ia + sa));
         auto r =
-            ranges::transform(std::move(rng), OutIter(ib),
-                              std::bind(std::plus<int>(), _1, 1));
+            ranges::transform(eastl::move(rng), OutIter(ib), std::bind(eastl::plus<int>(), _1, 1));
         CHECK(base(r.in) == ia + sa);
         CHECK(base(r.out) == ib + sa);
         CHECK(ib[0] == 1);
@@ -92,9 +87,7 @@ test2()
         int ia[] = {0, 1, 2, 3, 4};
         constexpr auto sa = ranges::size(ia);
         int ib[sa] = {1, 2, 3, 4, 5};
-        ranges::binary_transform_result<InIter1, InIter2, OutIter> r =
-            ranges::transform(InIter1(ib), Sentinel<int const *>(ib + sa), InIter2(ia),
-                              OutIter(ib), std::minus<int>());
+        ranges::binary_transform_result<InIter1, InIter2, OutIter> r = ranges::transform(InIter1(ib), Sentinel<int const *>(ib + sa), InIter2(ia), OutIter(ib), eastl::minus<int>());
         CHECK(base(r.in1) == ib + sa);
         CHECK(base(r.in2) == ia + sa);
         CHECK(base(r.out) == ib + sa);
@@ -112,7 +105,7 @@ test2()
         ranges::binary_transform_result<InIter1, InIter2, OutIter> r =
             ranges::transform(InIter1(ib), Sentinel<int const *>(ib + sa),
                               InIter2(ia), Sentinel<int const *>(ia + sa),
-                              OutIter(ib), std::minus<int>());
+                              OutIter(ib), eastl::minus<int>());
         CHECK(base(r.in1) == ib + sa);
         CHECK(base(r.in2) == ia + sa);
         CHECK(base(r.out) == ib + sa);
@@ -128,9 +121,7 @@ test2()
         constexpr auto sa = ranges::size(ia);
         int ib[sa] = {1, 2, 3, 4, 5};
         auto rng0 = ranges::make_subrange(InIter1(ib), Sentinel<int const *>(ib + sa));
-        ranges::binary_transform_result<InIter1, InIter2, OutIter> r =
-            ranges::transform(rng0, InIter2(ia),
-                              OutIter(ib), std::minus<int>());
+        ranges::binary_transform_result<InIter1, InIter2, OutIter> r = ranges::transform(rng0, InIter2(ia),OutIter(ib), eastl::minus<int>());
         CHECK(base(r.in1) == ib + sa);
         CHECK(base(r.in2) == ia + sa);
         CHECK(base(r.out) == ib + sa);
@@ -146,27 +137,7 @@ test2()
         constexpr auto sa = ranges::size(ia);
         int ib[sa] = {1, 2, 3, 4, 5};
         auto rng0 = ranges::make_subrange(InIter1(ib), Sentinel<int const *>(ib + sa));
-        auto r =
-            ranges::transform(std::move(rng0), InIter2(ia),
-                              OutIter(ib), std::minus<int>());
-        CHECK(base(r.in1) == ib + sa);
-        CHECK(base(r.in2) == ia + sa);
-        CHECK(base(r.out) == ib + sa);
-        CHECK(ib[0] == 1);
-        CHECK(ib[1] == 1);
-        CHECK(ib[2] == 1);
-        CHECK(ib[3] == 1);
-        CHECK(ib[4] == 1);
-    }
-
-    {
-        int ia[] = {0, 1, 2, 3, 4};
-        constexpr auto sa = ranges::size(ia);
-        int ib[sa] = {1, 2, 3, 4, 5};
-        auto rng0 = ranges::make_subrange(InIter1(ib), Sentinel<int const *>(ib + sa));
-        auto rng1 = ranges::make_subrange(InIter2(ia), Sentinel<int const *>(ia + sa));
-        ranges::binary_transform_result<InIter1, InIter2, OutIter> r =
-            ranges::transform(rng0, rng1, OutIter(ib), std::minus<int>());
+        auto r = ranges::transform(eastl::move(rng0), InIter2(ia), OutIter(ib), eastl::minus<int>());
         CHECK(base(r.in1) == ib + sa);
         CHECK(base(r.in2) == ia + sa);
         CHECK(base(r.out) == ib + sa);
@@ -183,8 +154,24 @@ test2()
         int ib[sa] = {1, 2, 3, 4, 5};
         auto rng0 = ranges::make_subrange(InIter1(ib), Sentinel<int const *>(ib + sa));
         auto rng1 = ranges::make_subrange(InIter2(ia), Sentinel<int const *>(ia + sa));
-        auto r =
-            ranges::transform(std::move(rng0), std::move(rng1), OutIter(ib), std::minus<int>());
+        ranges::binary_transform_result<InIter1, InIter2, OutIter> r = ranges::transform(rng0, rng1, OutIter(ib), eastl::minus<int>());
+        CHECK(base(r.in1) == ib + sa);
+        CHECK(base(r.in2) == ia + sa);
+        CHECK(base(r.out) == ib + sa);
+        CHECK(ib[0] == 1);
+        CHECK(ib[1] == 1);
+        CHECK(ib[2] == 1);
+        CHECK(ib[3] == 1);
+        CHECK(ib[4] == 1);
+    }
+
+    {
+        int ia[] = {0, 1, 2, 3, 4};
+        constexpr auto sa = ranges::size(ia);
+        int ib[sa] = {1, 2, 3, 4, 5};
+        auto rng0 = ranges::make_subrange(InIter1(ib), Sentinel<int const *>(ib + sa));
+        auto rng1 = ranges::make_subrange(InIter2(ia), Sentinel<int const *>(ia + sa));
+        auto r = ranges::transform(eastl::move(rng0), eastl::move(rng1), OutIter(ib), eastl::minus<int>());
         CHECK(base(r.in1) == ib + sa);
         CHECK(base(r.in2) == ia + sa);
         CHECK(base(r.out) == ib + sa);
@@ -440,11 +427,11 @@ int main()
     auto binary = [](int i, int j){return i + j; };
     S const s[] = {S{1}, S{2}, S{3}, S{4}};
     int const i[] = {1, 2, 3, 4};
-    static_assert(std::is_same<ranges::unary_transform_result<S const*, int*>,
+    static_assert(eastl::is_same<ranges::unary_transform_result<S const*, int*>,
         decltype(ranges::transform(s, p, unary, &S::i))>::value, "");
-    static_assert(std::is_same<ranges::binary_transform_result<S const*, int const *, int*>,
+    static_assert(eastl::is_same<ranges::binary_transform_result<S const*, int const *, int*>,
         decltype(ranges::transform(s, i, p, binary, &S::i))>::value, "");
-    static_assert(std::is_same<ranges::binary_transform_result<S const*, S const *, int*>,
+    static_assert(eastl::is_same<ranges::binary_transform_result<S const*, S const *, int*>,
         decltype(ranges::transform(s, s, p, binary, &S::i, &S::i))>::value, "");
 
     {

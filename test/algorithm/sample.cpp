@@ -23,22 +23,23 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <array>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/algorithm/sample.hpp>
-#include <range/v3/numeric/iota.hpp>
-#include <range/v3/iterator/move_iterators.hpp>
+#include <EASTL/array.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/algorithm/sample.hpp>
+#include <EASTL/ranges/numeric/iota.hpp>
+#include <EASTL/ranges/iterator/move_iterators.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+//TODO: random vs eastl
 
 namespace
 {
     template<typename I, typename S>
     auto in_sequence(I first, I mid, S last) ->
-        CPP_ret(bool)(
-            requires ranges::sentinel_for<S, I>)
+        CPP_ret(bool)(requires ranges::sentinel_for<S, I>)
     {
         for (; first != mid; ++first)
             RANGES_ENSURE(first != last);
@@ -53,14 +54,13 @@ int main()
     constexpr unsigned N = 100;
     constexpr unsigned K = 10;
     {
-        std::array<int, N> i;
+        eastl::array<int, N> i;
         ranges::iota(i, 0);
-        std::array<int, K> a{}, b{}, c{};
+        eastl::array<int, K> a{}, b{}, c{};
         std::minstd_rand g1, g2 = g1;
 
         {
-            auto result = ranges::sample(RandomAccessIterator<int*>(i.data()),
-                Sentinel<int*>(i.data()+N), a.begin(), K, g1);
+            auto result = ranges::sample(RandomAccessIterator<int*>(i.data()), Sentinel<int*>(i.data()+N), a.begin(), K, g1);
             CHECK(in_sequence(i.data(), result.in.base(), i.data() + N));
             CHECK(result.out == a.end());
             CHECK(!ranges::equal(a, c));
@@ -83,9 +83,9 @@ int main()
     }
 
     {
-        std::array<int, N> i;
+        eastl::array<int, N> i;
         ranges::iota(i, 0);
-        std::array<int, K> a{}, b{}, c{};
+        eastl::array<int, K> a{}, b{}, c{};
         std::minstd_rand g1, g2 = g1;
         auto rng = ranges::make_subrange(RandomAccessIterator<int*>(i.data()), Sentinel<int*>(i.data() + N));
 
@@ -113,7 +113,7 @@ int main()
 
         {
             a.fill(0);
-            auto result = ranges::sample(std::move(rng), a.begin(), K, g1);
+            auto result = ranges::sample(eastl::move(rng), a.begin(), K, g1);
             CHECK(in_sequence(ranges::begin(rng), result.in, ranges::end(rng)));
             CHECK(result.out == a.end());
             CHECK(!ranges::equal(a, c));
@@ -121,9 +121,9 @@ int main()
     }
 
     {
-        std::array<int, N> i;
+        eastl::array<int, N> i;
         ranges::iota(i, 0);
-        std::array<int, K> a{}, b{}, c{};
+        eastl::array<int, K> a{}, b{}, c{};
 
         {
             auto result = ranges::sample(RandomAccessIterator<int*>(i.data()),
@@ -143,8 +143,8 @@ int main()
     }
 
     {
-        std::array<MoveOnlyString, 10> source;
-        std::array<MoveOnlyString, 4> dest;
+        eastl::array<MoveOnlyString, 10> source;
+        eastl::array<MoveOnlyString, 4> dest;
         auto result = ranges::sample(ranges::make_move_iterator(source.begin()),
             ranges::make_move_sentinel(source.end()),
             ForwardIterator<MoveOnlyString*>(dest.data()), dest.size());
@@ -155,9 +155,9 @@ int main()
     }
 
     {
-        std::array<int, N> i;
+        eastl::array<int, N> i;
         ranges::iota(i, 0);
-        std::array<int, K> a{}, b{}, c{};
+        eastl::array<int, K> a{}, b{}, c{};
         std::minstd_rand g1, g2 = g1;
 
         {
@@ -185,9 +185,9 @@ int main()
     }
 
     {
-        std::array<int, N> i;
+        eastl::array<int, N> i;
         ranges::iota(i, 0);
-        std::array<int, K> a{}, b{}, c{};
+        eastl::array<int, K> a{}, b{}, c{};
         std::minstd_rand g1, g2 = g1;
         auto rng = ranges::make_subrange(RandomAccessIterator<int*>(i.data()), Sentinel<int*>(i.data() + N));
 
@@ -215,7 +215,7 @@ int main()
 
         {
             a.fill(0);
-            auto result = ranges::sample(std::move(rng), a, g1);
+            auto result = ranges::sample(eastl::move(rng), a, g1);
             CHECK(in_sequence(i.data(), result.in.base(), i.data() + N));
             CHECK(result.out == a.end());
             CHECK(!ranges::equal(a, c));
@@ -223,9 +223,9 @@ int main()
     }
 
     {
-        std::array<int, N> i;
+        eastl::array<int, N> i;
         ranges::iota(i, 0);
-        std::array<int, K> a{}, b{}, c{};
+        eastl::array<int, K> a{}, b{}, c{};
 
         {
             auto result = ranges::sample(RandomAccessIterator<int*>(i.data()),
@@ -245,8 +245,8 @@ int main()
     }
 
     {
-        std::array<MoveOnlyString, 10> source;
-        std::array<MoveOnlyString, 4> dest;
+        eastl::array<MoveOnlyString, 10> source;
+        eastl::array<MoveOnlyString, 4> dest;
         auto out = ranges::make_subrange(
             ForwardIterator<MoveOnlyString*>(dest.data()),
             Sentinel<MoveOnlyString*, true>(dest.data() + dest.size()));

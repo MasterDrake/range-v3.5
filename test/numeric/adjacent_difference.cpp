@@ -22,8 +22,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <range/v3/core.hpp>
-#include <range/v3/numeric/adjacent_difference.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/numeric/adjacent_difference.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
@@ -60,9 +60,7 @@ template<class InIter, class OutIter, class InSent = InIter> void test()
         CHECK(base(r.in) == ia + s);
         CHECK(base(r.out) == ib + s);
         for(unsigned i = 0; i < s; ++i)
-        {
             CHECK(ib[i] == ir[i]);
-        }
     }
 
     { // range + output range
@@ -88,7 +86,7 @@ template<class InIter, class OutIter, class InSent = InIter> void test()
         int ib[s] = {0};
         auto rng = make_subrange(InIter(ia), InSent(ia + s));
         auto orng = make_subrange(OutIter(ib), OutIter(ib + s));
-        auto r = adjacent_difference(rng, orng, std::plus<int>());
+        auto r = adjacent_difference(rng, orng, eastl::plus<int>());
         CHECK(base(r.in) == ia + s);
         CHECK(base(r.out) == ib + s);
         for(unsigned i = 0; i < s; ++i)
@@ -138,7 +136,7 @@ int main()
         const unsigned s = sizeof(ir) / sizeof(ir[0]);
         int ib[s] = {0};
         auto r = adjacent_difference(ranges::begin(ia), ranges::begin(ia) + s,
-                                     ranges::begin(ib), std::minus<int>(), &S::i);
+                                     ranges::begin(ib), eastl::minus<int>(), &S::i);
         CHECK(base(r.in) == ia + s);
         CHECK(base(r.out) == ib + s);
         for(unsigned i = 0; i < s; ++i)
@@ -152,7 +150,7 @@ int main()
         int ir[] = {15, 25, 16, 9, 4};
         const unsigned s = sizeof(ir) / sizeof(ir[0]);
         int ib[s] = {0};
-        auto r = adjacent_difference(ia, ranges::begin(ib), std::plus<int>());
+        auto r = adjacent_difference(ia, ranges::begin(ib), eastl::plus<int>());
         CHECK(base(r.in) == ia + s);
         CHECK(base(r.out) == ib + s);
         for(unsigned i = 0; i < s; ++i)
@@ -166,7 +164,7 @@ int main()
         int ir[] = {15, 25, 16, 9, 4};
         const unsigned s = sizeof(ir) / sizeof(ir[0]);
         int ib[s] = {0};
-        auto r = adjacent_difference(ia, ib, std::plus<int>());
+        auto r = adjacent_difference(ia, ib, eastl::plus<int>());
         CHECK(base(r.in) == ia + s);
         CHECK(base(r.out) == ib + s);
         for(unsigned i = 0; i < s; ++i)

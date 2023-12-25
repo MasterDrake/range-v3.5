@@ -18,13 +18,25 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/lexicographical_compare.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/lexicographical_compare.hpp>
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 template<class Iter1, class Iter2, class Sent1 = Iter1, class Sent2 = Iter2>
 void
 test_iter1()
@@ -102,7 +114,7 @@ test_iter_comp1()
     int ia[] = {1, 2, 3, 4};
     const unsigned sa = sizeof(ia)/sizeof(ia[0]);
     int ib[] = {1, 2, 3};
-    typedef std::greater<int> C;
+    typedef eastl::greater<int> C;
     C c;
     CHECK(!ranges::lexicographical_compare(Iter1(ia), Sent1(ia+sa), Iter2(ib), Sent2(ib+2), c));
     CHECK(ranges::lexicographical_compare(Iter1(ib), Sent1(ib+2), Iter2(ia), Sent2(ia+sa), c));
@@ -185,7 +197,7 @@ constexpr bool test_constexpr()
     STATIC_CHECK_RETURN(ranges::lexicographical_compare(ia_b, ia_e, ib_1, ib_3));
     STATIC_CHECK_RETURN(!ranges::lexicographical_compare(ib_1, ib_3, ia_b, ia_e));
 
-    typedef std::greater<int> C;
+    typedef eastl::greater<int> C;
     C c{};
     STATIC_CHECK_RETURN(!ranges::lexicographical_compare(ia_b, ia_e, ib_b, ib_2, c));
     STATIC_CHECK_RETURN(ranges::lexicographical_compare(ib_b, ib_2, ia_b, ia_e, c));

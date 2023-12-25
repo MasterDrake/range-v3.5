@@ -22,14 +22,28 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <memory>
-#include <utility>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/stable_partition.hpp>
+#include <EASTL/memory.h>
+#include <EASTL/utility.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/stable_partition.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 
 struct is_odd
 {
@@ -41,7 +55,7 @@ struct is_odd
 
 struct odd_first
 {
-    bool operator()(const std::pair<int,int>& p) const
+    bool operator()(const eastl::pair<int,int>& p) const
     {
         return p.first & 1;
     }
@@ -51,7 +65,7 @@ template<class Iter, class Sent = Iter>
 void
 test_iter()
 {
-    using P = std::pair<int, int>;
+    using P = eastl::pair<int, int>;
     {  // check mixed
         P ap[] = { {0, 1}, {0, 2}, {1, 1}, {1, 2}, {2, 1}, {2, 2}, {3, 1}, {3, 2}, {4, 1}, {4, 2} };
         std::size_t size = ranges::size(ap);
@@ -197,7 +211,7 @@ template<class Iter, class Sent = Iter>
 void
 test_range()
 {
-    using P = std::pair<int, int>;
+    using P = eastl::pair<int, int>;
     {  // check mixed
         P ap[] = { {0, 1}, {0, 2}, {1, 1}, {1, 2}, {2, 1}, {2, 2}, {3, 1}, {3, 2}, {4, 1}, {4, 2} };
         std::size_t size = ranges::size(ap);
@@ -371,29 +385,29 @@ test_move_only()
 
 struct S
 {
-    std::pair<int,int> p;
+    eastl::pair<int,int> p;
 };
 
 int main()
 {
-    test_iter<BidirectionalIterator<std::pair<int,int>*> >();
-    test_iter<RandomAccessIterator<std::pair<int,int>*> >();
-    test_iter<std::pair<int,int>*>();
-    test_iter<BidirectionalIterator<std::pair<int,int>*>, Sentinel<std::pair<int,int>*> >();
-    test_iter<RandomAccessIterator<std::pair<int,int>*>, Sentinel<std::pair<int,int>*> >();
+    test_iter<BidirectionalIterator<eastl::pair<int,int>*> >();
+    test_iter<RandomAccessIterator<eastl::pair<int,int>*> >();
+    test_iter<eastl::pair<int,int>*>();
+    test_iter<BidirectionalIterator<eastl::pair<int,int>*>, Sentinel<eastl::pair<int,int>*> >();
+    test_iter<RandomAccessIterator<eastl::pair<int,int>*>, Sentinel<eastl::pair<int,int>*> >();
 
-    test_range<BidirectionalIterator<std::pair<int,int>*> >();
-    test_range<RandomAccessIterator<std::pair<int,int>*> >();
-    test_range<std::pair<int,int>*>();
-    test_range<BidirectionalIterator<std::pair<int,int>*>, Sentinel<std::pair<int,int>*> >();
-    test_range<RandomAccessIterator<std::pair<int,int>*>, Sentinel<std::pair<int,int>*> >();
+    test_range<BidirectionalIterator<eastl::pair<int,int>*> >();
+    test_range<RandomAccessIterator<eastl::pair<int,int>*> >();
+    test_range<eastl::pair<int,int>*>();
+    test_range<BidirectionalIterator<eastl::pair<int,int>*>, Sentinel<eastl::pair<int,int>*> >();
+    test_range<RandomAccessIterator<eastl::pair<int,int>*>, Sentinel<eastl::pair<int,int>*> >();
 
     CHECK(move_only::count == 0);
     test_move_only<BidirectionalIterator<move_only*> >();
     CHECK(move_only::count == 0);
 
     // Test projections
-    using P = std::pair<int, int>;
+    using P = eastl::pair<int, int>;
     {  // check mixed
         S ap[] = { {{0, 1}}, {{0, 2}}, {{1, 1}}, {{1, 2}}, {{2, 1}}, {{2, 2}}, {{3, 1}}, {{3, 2}}, {{4, 1}}, {{4, 2}} };
         S* r = ranges::stable_partition(ap, odd_first(), &S::p);
@@ -411,7 +425,7 @@ int main()
     }
 
     // Test rvalue ranges
-    using P = std::pair<int, int>;
+    using P = eastl::pair<int, int>;
     {  // check mixed
         S ap[] = { {{0, 1}}, {{0, 2}}, {{1, 1}}, {{1, 2}}, {{2, 1}}, {{2, 2}}, {{3, 1}}, {{3, 2}}, {{4, 1}}, {{4, 2}} };
         auto r = ranges::stable_partition(ranges::views::all(ap), odd_first(), &S::p);
@@ -429,7 +443,7 @@ int main()
     }
     {  // check mixed
         S ap[] = { {{0, 1}}, {{0, 2}}, {{1, 1}}, {{1, 2}}, {{2, 1}}, {{2, 2}}, {{3, 1}}, {{3, 2}}, {{4, 1}}, {{4, 2}} };
-        auto r = ranges::stable_partition(std::move(ap), odd_first(), &S::p);
+        auto r = ranges::stable_partition(eastl::move(ap), odd_first(), &S::p);
 #ifndef RANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(r));
 #endif // RANGES_WORKAROUND_MSVC_573728
@@ -445,8 +459,8 @@ int main()
         CHECK(ap[9].p == P{4, 2});
     }
     {  // check mixed
-        std::vector<S> ap{ {{0, 1}}, {{0, 2}}, {{1, 1}}, {{1, 2}}, {{2, 1}}, {{2, 2}}, {{3, 1}}, {{3, 2}}, {{4, 1}}, {{4, 2}} };
-        auto r = ranges::stable_partition(std::move(ap), odd_first(), &S::p);
+        eastl::vector<S> ap{ {{0, 1}}, {{0, 2}}, {{1, 1}}, {{1, 2}}, {{2, 1}}, {{2, 2}}, {{3, 1}}, {{3, 2}}, {{4, 1}}, {{4, 2}} };
+        auto r = ranges::stable_partition(eastl::move(ap), odd_first(), &S::p);
         CHECK(::is_dangling(r));
         CHECK(ap[0].p == P{1, 1});
         CHECK(ap[1].p == P{1, 2});

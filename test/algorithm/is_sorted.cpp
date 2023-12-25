@@ -26,8 +26,8 @@
 // Implementation based on the code in libc++
 //   http://http://libcxx.llvm.org/
 
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/is_sorted.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/is_sorted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -42,9 +42,9 @@ struct iter_call
     template<class B, class E, class... Args>
     auto operator()(B &&b, E &&e, Args &&... args)
      -> decltype(ranges::is_sorted(begin_t{b}, sentinel_t{e},
-                                   std::forward<Args>(args)...))
+                                   eastl::forward<Args>(args)...))
     {
-        return ranges::is_sorted(begin_t{b}, sentinel_t{e}, std::forward<Args>(args)...);
+        return ranges::is_sorted(begin_t{b}, sentinel_t{e}, eastl::forward<Args>(args)...);
     }
 };
 
@@ -237,150 +237,150 @@ void test()
         int a[] = {0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
         CHECK(Fun{}(a, a));
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
 
     {
         int a[] = {0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
 
     {
         int a[] = {0, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
 
     {
         int a[] = {0, 0, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 0, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 0, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 0, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 1, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 1, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 1, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {0, 1, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 0, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 0, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 0, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 0, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 1, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 1, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(!Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(!Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 1, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
     {
         int a[] = {1, 1, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()));
     }
 }
 
@@ -401,16 +401,16 @@ int main()
     /// Projection test:
     {
         A as[] = {{0}, {1}, {2}, {3}, {4}};
-        CHECK(ranges::is_sorted(as, std::less<int>{}, &A::a));
-        CHECK(!ranges::is_sorted(as, std::greater<int>{}, &A::a));
+        CHECK(ranges::is_sorted(as, eastl::less<int>{}, &A::a));
+        CHECK(!ranges::is_sorted(as, eastl::greater<int>{}, &A::a));
     }
 
     {
         using IL = std::initializer_list<int>;
         STATIC_CHECK(ranges::is_sorted(IL{0, 1, 2, 3}));
-        STATIC_CHECK(ranges::is_sorted(IL{0, 1, 2, 3}, std::less<>{}));
+        STATIC_CHECK(ranges::is_sorted(IL{0, 1, 2, 3}, eastl::less<>{}));
         STATIC_CHECK(!ranges::is_sorted(IL{3, 2, 1, 0}));
-        STATIC_CHECK(ranges::is_sorted(IL{3, 2, 1, 0}, std::greater<>{}));
+        STATIC_CHECK(ranges::is_sorted(IL{3, 2, 1, 0}, eastl::greater<>{}));
     }
 
     return ::test_result();

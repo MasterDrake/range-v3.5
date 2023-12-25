@@ -20,20 +20,42 @@
 //===----------------------------------------------------------------------===//
 
 #include <cmath>
-#include <functional>
+#include <EASTL/functional.h>
+#include <EASTL/string.h>
 
-#include <range/v3/algorithm/fold.hpp>
-#include <range/v3/algorithm/min.hpp>
-#include <range/v3/core.hpp>
+#include <EASTL/ranges/algorithm/fold.hpp>
+#include <EASTL/ranges/algorithm/min.hpp>
+#include <EASTL/ranges/core.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
+//#include <stdio.h>
+//#include <stdarg.h>
+//#include <wchar.h>
+//#include <varargs.h>
+
+//int __cdecl EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64 n, char const * __restrict pFormat, char * arguments)
+//{
+//    return vsnprintf_s(pDestination, n, _TRUNCATE, pFormat, arguments);
+//}
+
+void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 struct Approx
 {
     double value;
-    Approx(double v)
-      : value(v)
+    Approx(double v) : value(v)
     {}
 
     friend bool operator==(Approx a, double d)
@@ -50,38 +72,35 @@ template<class Iter, class Sent = Iter>
 void test_left()
 {
     double da[] = {0.25, 0.75};
-    CHECK(ranges::fold_left(Iter(da), Sent(da), 1, std::plus<>()) == Approx{1.0});
-    CHECK(ranges::fold_left(Iter(da), Sent(da + 2), 1, std::plus<>()) == Approx{2.0});
+    CHECK(ranges::fold_left(Iter(da), Sent(da), 1, eastl::plus<>()) == Approx{1.0});
+    CHECK(ranges::fold_left(Iter(da), Sent(da + 2), 1, eastl::plus<>()) == Approx{2.0});
 
     CHECK(ranges::fold_left_first(Iter(da), Sent(da), ranges::min) == ranges::nullopt);
-    CHECK(ranges::fold_left_first(Iter(da), Sent(da + 2), ranges::min) ==
-          ranges::optional<Approx>(0.25));
+    CHECK(ranges::fold_left_first(Iter(da), Sent(da + 2), ranges::min) == ranges::optional<Approx>(0.25));
 
     using ranges::make_subrange;
-    CHECK(ranges::fold_left(make_subrange(Iter(da), Sent(da)), 1, std::plus<>()) ==
-          Approx{1.0});
-    CHECK(ranges::fold_left(make_subrange(Iter(da), Sent(da + 2)), 1, std::plus<>()) ==
-          Approx{2.0});
-    CHECK(ranges::fold_left_first(make_subrange(Iter(da), Sent(da)), ranges::min) ==
-          ranges::nullopt);
-    CHECK(ranges::fold_left_first(make_subrange(Iter(da), Sent(da + 2)), ranges::min) ==
-          ranges::optional<Approx>(0.25));
+    CHECK(ranges::fold_left(make_subrange(Iter(da), Sent(da)), 1, eastl::plus<>()) == Approx{1.0});
+    CHECK(ranges::fold_left(make_subrange(Iter(da), Sent(da + 2)), 1, eastl::plus<>()) ==Approx{2.0});
+    CHECK(ranges::fold_left_first(make_subrange(Iter(da), Sent(da)), ranges::min) == ranges::nullopt);
+    CHECK(ranges::fold_left_first(make_subrange(Iter(da), Sent(da + 2)), ranges::min) == ranges::optional<Approx>(0.25));
 }
 
 void test_right()
 {
     double da[] = {0.25, 0.75};
-    CHECK(ranges::fold_right(da, da + 2, 1, std::plus<>()) == Approx{2.0});
-    CHECK(ranges::fold_right(da, 1, std::plus<>()) == Approx{2.0});
+    CHECK(ranges::fold_right(da, da + 2, 1, eastl::plus<>()) == Approx{2.0});
+    CHECK(ranges::fold_right(da, 1, eastl::plus<>()) == Approx{2.0});
 
     // f(0.25, f(0.75, 1))
-    CHECK(ranges::fold_right(da, da + 2, 1, std::minus<>()) == Approx{0.5});
-    CHECK(ranges::fold_right(da, 1, std::minus<>()) == Approx{0.5});
+    CHECK(ranges::fold_right(da, da + 2, 1, eastl::minus<>()) == Approx{0.5});
+    CHECK(ranges::fold_right(da, 1, eastl::minus<>()) == Approx{0.5});
 
     int xs[] = {1, 2, 3};
-    auto concat = [](int i, std::string s) { return s + std::to_string(i); };
-    CHECK(ranges::fold_right(xs, xs + 2, std::string(), concat) == "21");
-    CHECK(ranges::fold_right(xs, std::string(), concat) == "321");
+    //TODO:11) Should be eastl::to_string but that requires implementing int __cdecl EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64 n, char const * __restrict pFormat, char * arguments) and i couldn't make it work.
+    //Now I'm wondering where std::string comes from :/
+    auto concat = [](int i, const eastl::string& s) { return s + std::to_string(i).c_str(); };
+    CHECK(ranges::fold_right(xs, xs + 2, eastl::string(), concat) == "21");
+    CHECK(ranges::fold_right(xs, eastl::string(), concat) == "321");
 }
 
 int main()

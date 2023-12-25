@@ -2,7 +2,8 @@
 #define _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING
 #endif
 #include <complex.h>
-#include <range/v3/all.hpp>
+#include <EASTL/ranges/all.hpp>
 
-int main() {
+int main()
+{
 }

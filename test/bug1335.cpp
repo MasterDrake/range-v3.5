@@ -1,5 +1,5 @@
-#include <vector>
-#include <range/v3/action/sort.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/action/sort.hpp>
 
 template<typename A, typename B>
 constexpr auto operator-(A a, B)
@@ -9,6 +9,6 @@ constexpr auto operator-(A a, B)
 
 int main()
 {
-    std::vector<int> data;
+    eastl::vector<int> data{};
     data |= ranges::actions::sort;
 }

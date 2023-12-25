@@ -10,17 +10,32 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/view/c_str.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/core.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/view/c_str.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/core.hpp>
 #include "../simple_test.hpp"
+
+//TODO:24) eastl has checks for exceptions, so I think we should surrounder those calls with those defines.
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     {
-        std::vector<int> vi{1,2,3,4};
+        eastl::vector<int> vi{1,2,3,4};
         CHECK(ranges::index(vi, 0) == 1);
         CHECK(ranges::index(vi, 1) == 2);
         CHECK(ranges::index(vi, 2) == 3);
@@ -38,8 +53,7 @@ int main()
         }
         catch(std::out_of_range const& e)
         {
-            CHECK(ranges::equal(ranges::views::c_str(e.what()),
-                                ranges::views::c_str("ranges::at")));
+            CHECK(ranges::equal(ranges::views::c_str(e.what()), ranges::views::c_str("ranges::at")));
         }
 
         try
@@ -49,8 +63,7 @@ int main()
         }
         catch(std::out_of_range const& e)
         {
-            CHECK(ranges::equal(ranges::views::c_str(e.what()),
-                                ranges::views::c_str("ranges::at")));
+            CHECK(ranges::equal(ranges::views::c_str(e.what()), ranges::views::c_str("ranges::at")));
         }
 
         auto viv = ranges::make_subrange(vi.begin(), vi.end());
@@ -66,8 +79,7 @@ int main()
         }
         catch(std::out_of_range const& e)
         {
-            CHECK(ranges::equal(ranges::views::c_str(e.what()),
-                                ranges::views::c_str("view_interface::at")));
+            CHECK(ranges::equal(ranges::views::c_str(e.what()), ranges::views::c_str("view_interface::at")));
         }
 
         try
@@ -77,8 +89,7 @@ int main()
         }
         catch(std::out_of_range const& e)
         {
-            CHECK(ranges::equal(ranges::views::c_str(e.what()),
-                                ranges::views::c_str("view_interface::at")));
+            CHECK(ranges::equal(ranges::views::c_str(e.what()), ranges::views::c_str("view_interface::at")));
         }
 
         const auto cviv = viv;
@@ -94,8 +105,7 @@ int main()
         }
         catch(std::out_of_range const& e)
         {
-            CHECK(ranges::equal(ranges::views::c_str(e.what()),
-                                ranges::views::c_str("view_interface::at")));
+            CHECK(ranges::equal(ranges::views::c_str(e.what()), ranges::views::c_str("view_interface::at")));
         }
 
         try
@@ -105,17 +115,14 @@ int main()
         }
         catch(std::out_of_range const& e)
         {
-            CHECK(ranges::equal(ranges::views::c_str(e.what()),
-                                ranges::views::c_str("view_interface::at")));
+            CHECK(ranges::equal(ranges::views::c_str(e.what()), ranges::views::c_str("view_interface::at")));
         }
     }
 
     {
-        auto rng = ranges::views::ints(std::int64_t{0}, std::numeric_limits<std::int64_t>::max());
-        CHECK(ranges::index(rng, std::numeric_limits<std::int64_t>::max() - 1) ==
-              std::numeric_limits<std::int64_t>::max() - 1);
-        CHECK(ranges::at(rng, std::numeric_limits<std::int64_t>::max() - 1) ==
-              std::numeric_limits<std::int64_t>::max() - 1);
+        auto rng = ranges::views::ints(std::int64_t{0}, eastl::numeric_limits<std::int64_t>::max());
+        CHECK(ranges::index(rng, eastl::numeric_limits<std::int64_t>::max() - 1) == eastl::numeric_limits<std::int64_t>::max() - 1);
+        CHECK(ranges::at(rng, eastl::numeric_limits<std::int64_t>::max() - 1) == eastl::numeric_limits<std::int64_t>::max() - 1);
     }
 
     #if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_14

@@ -10,31 +10,44 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
+#include <EASTL/vector.h>
 #include <sstream>
-#include <range/v3/core.hpp>
-#include <range/v3/range_for.hpp>
-#include <range/v3/algorithm/set_algorithm.hpp>
-#include <range/v3/algorithm/move.hpp>
-#include <range/v3/utility/common_type.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/iterator/insert_iterators.hpp>
-#include <range/v3/iterator/move_iterators.hpp>
-#include <range/v3/functional/identity.hpp>
-#include <range/v3/view/all.hpp>
-#include <range/v3/view/const.hpp>
-#include <range/v3/view/drop_while.hpp>
-#include <range/v3/view/empty.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/set_algorithm.hpp>
-#include <range/v3/view/stride.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/transform.hpp>
-#include <range/v3/view/zip.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/range_for.hpp>
+#include <EASTL/ranges/algorithm/set_algorithm.hpp>
+#include <EASTL/ranges/algorithm/move.hpp>
+#include <EASTL/ranges/utility/common_type.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/iterator/insert_iterators.hpp>
+#include <EASTL/ranges/iterator/move_iterators.hpp>
+#include <EASTL/ranges/functional/identity.hpp>
+#include <EASTL/ranges/view/all.hpp>
+#include <EASTL/ranges/view/const.hpp>
+#include <EASTL/ranges/view/drop_while.hpp>
+#include <EASTL/ranges/view/empty.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/set_algorithm.hpp>
+#include <EASTL/ranges/view/stride.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/transform.hpp>
+#include <EASTL/ranges/view/zip.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -69,7 +82,7 @@ int main()
         ::check_equal(res, {-3, 1, 2, 3, 3, 3, 4, 4, 6, 9});
 
         // check if the final result agrees with the greedy algorithm
-        std::vector<int> greedy_sd;
+        eastl::vector<int> greedy_sd;
         set_symmetric_difference(i1_finite, i2_finite, back_inserter(greedy_sd));
         ::check_equal(res, greedy_sd);
 
@@ -107,7 +120,7 @@ int main()
         ::check_equal(res | views::take(6), {1, 3, 4, 6, 12, 15});
 
         // check if the final result agrees with the greedy algorithm
-        std::vector<int> greedy_sd;
+        eastl::vector<int> greedy_sd;
         set_symmetric_difference(i1_infinite | views::take(10), i2_infinite | views::take(10), back_inserter(greedy_sd));
         ::check_equal(res | views::take(6), greedy_sd | views::take(6));
     }
@@ -212,7 +225,7 @@ int main()
     struct D: public B
     {
         D(int i): B{i} {}
-        D(B b): B{std::move(b)} {}
+        D(B b): B{eastl::move(b)} {}
     };
 
     B b_finite[] = {B{-20}, B{-10}, B{1}, B{3}, B{3}, B{6}, B{8}, B{20}};
@@ -256,20 +269,20 @@ int main()
 
     // move
     {
-        auto v0 = to<std::vector<MoveOnlyString>>({"a","b","b","c","x","x"});
-        auto v1 = to<std::vector<MoveOnlyString>>({"b","x","y","z"});
+        auto v0 = to<eastl::vector<MoveOnlyString>>({"a","b","b","c","x","x"});
+        auto v1 = to<eastl::vector<MoveOnlyString>>({"b","x","y","z"});
         auto res = views::set_symmetric_difference(v0, v1, [](const MoveOnlyString& a, const MoveOnlyString& b){return a<b;});
 
-        std::vector<MoveOnlyString> expected;
+        eastl::vector<MoveOnlyString> expected;
         move(res, back_inserter(expected));
 
         ::check_equal(expected, {"a","b","c","x","y","z"});
         ::check_equal(v1, {"b","x","",""});
         ::check_equal(v0, {"","b","","","x",""});
 
-        auto v0_greedy = to<std::vector<MoveOnlyString>>({"a","b","b","c","x","x"});
-        auto v1_greedy = to<std::vector<MoveOnlyString>>({"b","x","y","z"});
-        std::vector<MoveOnlyString> expected_greedy;
+        auto v0_greedy = to<eastl::vector<MoveOnlyString>>({"a","b","b","c","x","x"});
+        auto v1_greedy = to<eastl::vector<MoveOnlyString>>({"b","x","y","z"});
+        eastl::vector<MoveOnlyString> expected_greedy;
         set_symmetric_difference(v0_greedy, v1_greedy,
                                  move_into(back_inserter(expected_greedy)),
                                  [](const MoveOnlyString& a, const MoveOnlyString& b){return a<b;});

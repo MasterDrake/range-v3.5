@@ -17,26 +17,39 @@
 RANGES_DIAGNOSTIC_IGNORE("-Wmaybe-uninitialized")
 #endif
 
-#include <string>
+#include <EASTL/string.h>
 #include <sstream>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/istream.hpp>
-#include <range/v3/functional/reference_wrapper.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/replace_if.hpp>
-#include <range/v3/view/common.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/istream.hpp>
+#include <EASTL/ranges/functional/reference_wrapper.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/replace_if.hpp>
+#include <EASTL/ranges/view/common.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
 
-    std::string str{"1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 "};
-    std::stringstream sin{str};
+    eastl::string str{"1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 "};
+    std::stringstream sin{str.c_str()};
 
     {
         auto rng = istream<int>(sin) | views::replace_if([](int i){return i == 1; }, 42);
@@ -54,12 +67,12 @@ int main()
         CPP_assert(!sized_range<decltype(tmp)>);
         CPP_assert(input_iterator<decltype(begin(tmp))>);
         CPP_assert(!forward_iterator<decltype(begin(tmp))>);
-        std::vector<int> actual{begin(tmp), end(tmp)};
+        eastl::vector<int> actual{begin(tmp), end(tmp)};
         ::check_equal(actual, {42, 2, 3, 4, 5, 6, 7, 8, 9, 42, 2, 3, 4, 5, 6, 7, 8, 9, 42, 2, 3, 4, 5, 6, 7, 8, 9});
     }
 
     {
-        std::vector<int> vi{1,2,3,4,5,6,7,8,9};
+        eastl::vector<int> vi{1,2,3,4,5,6,7,8,9};
         auto rng2 = vi | views::replace_if([](int i){return i == 5;}, 42);
         CPP_assert(same_as<range_value_t<decltype(rng2)>, int>);
         has_type<int const &>(*begin(rng2));

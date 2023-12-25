@@ -7,28 +7,43 @@
 //  file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#include <set>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/for_each.hpp>
-#include <range/v3/view/ref.hpp>
-#include <range/v3/action/insert.hpp>
+#include <EASTL/set.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/for_each.hpp>
+#include <EASTL/ranges/view/ref.hpp>
+#include <EASTL/ranges/action/insert.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-template<typename T>
-struct vector_like : std::vector<T> {
-    using std::vector<T>::vector;
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
-    using typename std::vector<T>::size_type;
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+template<typename T>
+struct vector_like : eastl::vector<T>
+{
+    using eastl::vector<T>::vector;
+
+    using typename eastl::vector<T>::size_type;
 
     size_type last_reservation{};
     size_type reservation_count{};
 
-    void reserve(size_type n) {
-      std::vector<T>::reserve(n);
+    void reserve(size_type n)
+    {
+      eastl::vector<T>::reserve(n);
       last_reservation = n;
       ++reservation_count;
     }
@@ -39,7 +54,7 @@ int main()
     using namespace ranges;
 
     {
-        std::vector<int> v;
+        eastl::vector<int> v;
         auto i = insert(v, v.begin(), 42);
         CHECK(i == v.begin());
         ::check_equal(v, {42});
@@ -57,9 +72,8 @@ int main()
     }
 
     {
-        std::set<int> s;
-        insert(s,
-            views::ints|views::take(10)|views::for_each([](int i){return yield_if(i%2==0,i);}));
+        eastl::set<int> s;
+        insert(s, views::ints|views::take(10) | views::for_each([](int i){return yield_if(i%2==0,i);}));
         ::check_equal(s, {0,2,4,6,8});
         auto j = insert(s, 10);
         CHECK(j.first == prev(s.end()));
@@ -69,7 +83,7 @@ int main()
         insert(views::ref(s), 12);
         ::check_equal(s, {0,2,4,6,8,10,12});
     }
-
+    //TODO:1) No allocation is being made for this vector_like :/
     {
         const std::size_t N = 1024;
         vector_like<int> vl;

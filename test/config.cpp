@@ -9,7 +9,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/detail/config.hpp>
+#include <EASTL/ranges/detail/config.hpp>
 
 RANGES_DEPRECATED("compile test for \"RANGES_DEPRECATED\"") void foo() {}
 

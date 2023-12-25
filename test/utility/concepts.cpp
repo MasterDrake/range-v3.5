@@ -13,14 +13,14 @@
 //#define RANGES_USE_LEGACY_CONCEPTS 1
 
 #include <sstream>
-#include <vector>
-#include <concepts/concepts.hpp>
-#include <range/v3/iterator/concepts.hpp>
-#include <range/v3/iterator/traits.hpp>
-#include <range/v3/range/concepts.hpp>
-#include <range/v3/range/traits.hpp>
-#include <range/v3/view/istream.hpp>
-#include <range/v3/iterator/common_iterator.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/concepts/concepts.hpp>
+#include <EASTL/ranges/iterator/concepts.hpp>
+#include <EASTL/ranges/iterator/traits.hpp>
+#include <EASTL/ranges/range/concepts.hpp>
+#include <EASTL/ranges/range/traits.hpp>
+#include <EASTL/ranges/view/istream.hpp>
+#include <EASTL/ranges/iterator/common_iterator.hpp>
 #include "../simple_test.hpp"
 
 struct moveonly
@@ -224,8 +224,8 @@ static_assert(!ranges::copyable<int const>, "");
 static_assert(!ranges::copyable<moveonly>, "");
 static_assert(!ranges::copyable<nonmovable>, "");
 
-// static_assert(ranges::predicate<std::less<int>, int, int>, "");
-// static_assert(!ranges::predicate<std::less<int>, char*, int>, "");
+// static_assert(ranges::predicate<eastl::less<int>, int, int>, "");
+// static_assert(!ranges::predicate<eastl::less<int>, char*, int>, "");
 
 static_assert(ranges::input_iterator<int*>, "");
 static_assert(!ranges::input_iterator<int>, "");
@@ -246,15 +246,15 @@ static_assert(ranges::view_<ranges::istream_view<int>>, "");
 static_assert(ranges::input_iterator<ranges::iterator_t<ranges::istream_view<int>>>, "");
 static_assert(!ranges::view_<int>, "");
 
-static_assert(ranges::common_range<std::vector<int> >, "");
-static_assert(ranges::common_range<std::vector<int> &>, "");
-static_assert(!ranges::view_<std::vector<int>>, "");
-static_assert(!ranges::view_<std::vector<int> &>, "");
-static_assert(ranges::random_access_iterator<ranges::iterator_t<std::vector<int> const &>>, "");
+static_assert(ranges::common_range<eastl::vector<int> >, "");
+static_assert(ranges::common_range<eastl::vector<int> &>, "");
+static_assert(!ranges::view_<eastl::vector<int>>, "");
+static_assert(!ranges::view_<eastl::vector<int> &>, "");
+static_assert(ranges::random_access_iterator<ranges::iterator_t<eastl::vector<int> const &>>, "");
 static_assert(!ranges::common_range<ranges::istream_view<int>>, "");
 
-static_assert(ranges::predicate<std::less<int>, int, int>, "");
-static_assert(!ranges::predicate<std::less<int>, char*, int>, "");
+static_assert(ranges::predicate<eastl::less<int>, int, int>, "");
+static_assert(!ranges::predicate<eastl::less<int>, char*, int>, "");
 
 static_assert(ranges::output_iterator<int *, int>, "");
 static_assert(!ranges::output_iterator<int const *, int>, "");
@@ -297,14 +297,14 @@ static_assert(ranges::three_way_comparable_with<IntComparable, int, std::strong_
 #endif // supports spaceship
 
 static_assert(
-    std::is_same<
-        ranges::common_range_tag_of<std::vector<int>>,
+    eastl::is_same<
+        ranges::common_range_tag_of<eastl::vector<int>>,
         ranges::common_range_tag
     >::value, "");
 
 static_assert(
-    std::is_same<
-        ranges::sized_range_tag_of<std::vector<int>>,
+    eastl::is_same<
+        ranges::sized_range_tag_of<eastl::vector<int>>,
         ranges::sized_range_tag
     >::value, "");
 
@@ -312,21 +312,20 @@ static_assert(ranges::view_<ranges::istream_view<int>>, "");
 static_assert(!ranges::common_range<ranges::istream_view<int>>, "");
 static_assert(!ranges::sized_range<ranges::istream_view<int>>, "");
 
-struct myview : ranges::view_base {
+struct myview : ranges::view_base
+{
     const char *begin();
     const char *end();
 };
 CPP_assert(ranges::view_<myview>);
 
-CPP_template(class T)
-    (requires ranges::regular<T>)
+CPP_template(class T)(requires ranges::regular<T>)
 constexpr bool is_regular(T&&)
 {
     return true;
 }
 
-CPP_template(class T)
-    (requires (!ranges::regular<T>))
+CPP_template(class T)(requires (!ranges::regular<T>))
 constexpr bool is_regular(T&&)
 {
     return false;

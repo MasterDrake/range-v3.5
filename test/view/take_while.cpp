@@ -9,14 +9,27 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/generate.hpp>
-#include <range/v3/view/take_while.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/generate.hpp>
+#include <EASTL/ranges/view/take_while.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct my_data
 {
@@ -37,7 +50,7 @@ int main()
     CPP_assert(!common_range<decltype(rng0)>);
     CPP_assert(random_access_iterator<decltype(rng0.begin())>);
 
-    std::vector<int> vi{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    eastl::vector<int> vi{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     auto rng1 = vi | views::take_while([](int i) { return i != 50; });
     CPP_assert(view_<decltype(rng1)>);
     CPP_assert(random_access_range<decltype(rng1)>);
@@ -61,7 +74,8 @@ int main()
     }
 
     {
-        auto ns = views::generate([]() mutable {
+        auto ns = views::generate([]() mutable
+        {
             static int N;
             return ++N;
         });
@@ -70,20 +84,18 @@ int main()
     }
 
     {
-        auto rng = debug_input_view<int const>{rgi} | views::take_while([](int i) {
-            return i != 5;
-        });
+        auto rng = debug_input_view<int const>{rgi} | views::take_while([](int i) { return i != 5;});
         ::check_equal(rng, {0,1,2,3,4});
     }
 
     {
-        auto ns = views::generate([]() {
+        auto ns = views::generate([]()
+        {
             static int N;
             return my_data{++N};
         });
-        auto rng = ns | views::take_while([](int i) { return i < 5; },
-                                         &my_data::i);
-        ::check_equal(rng, std::vector<my_data>{{1},{2},{3},{4}});
+        auto rng = ns | views::take_while([](int i) { return i < 5; },  &my_data::i);
+        ::check_equal(rng, eastl::vector<my_data>{{1},{2},{3},{4}});
     }
 
     return test_result();

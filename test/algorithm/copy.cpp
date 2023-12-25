@@ -9,20 +9,31 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
+#include <EASTL/vector.h>
 #include <sstream>
 #include <cstring>
-#include <utility>
+#include <EASTL/utility.h>
 #include <algorithm>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/view/delimit.hpp>
-#include <range/v3/iterator/stream_iterators.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/view/delimit.hpp>
+#include <EASTL/ranges/iterator/stream_iterators.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 #if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_14 && RANGES_CONSTEXPR_INVOKE
 constexpr /*c++14*/
@@ -58,24 +69,24 @@ int main()
     using ranges::end;
     using ranges::size;
 
-    std::pair<int, int> const a[] = {{0, 0}, {0, 1}, {1, 2}, {1, 3}, {3, 4}, {3, 5}};
+    eastl::pair<int, int> const a[] = {{0, 0}, {0, 1}, {1, 2}, {1, 3}, {3, 4}, {3, 5}};
     static_assert(size(a) == 6, "");
-    std::pair<int, int> out[size(a)] = {};
+    eastl::pair<int, int> out[size(a)] = {};
 
     auto res = ranges::copy(begin(a), end(a), out);
     CHECK(res.in == end(a));
     CHECK(res.out == out + size(out));
-    CHECK(std::equal(a, a + size(a), out));
+    CHECK(eastl::equal(a, a + size(a), out));
 
-    std::fill_n(out, size(out), std::make_pair(0, 0));
-    CHECK(!std::equal(a, a + size(a), out));
+    eastl::fill_n(out, size(out), eastl::make_pair(0, 0));
+    CHECK(!eastl::equal(a, a + size(a), out));
 
     res = ranges::copy(a, out);
     CHECK(res.in == a + size(a));
     CHECK(res.out == out + size(out));
-    CHECK(std::equal(a, a + size(a), out));
+    CHECK(eastl::equal(a, a + size(a), out));
 
-    std::fill_n(out, size(out), std::make_pair(0, 0));
+    eastl::fill_n(out, size(out), eastl::make_pair(0, 0));
 
     using ranges::views::delimit;
     {
@@ -84,7 +95,7 @@ int main()
         auto str = delimit(sz, '\0');
         auto res3 = ranges::copy(str, buf);
         *res3.out = '\0';
-        CHECK(res3.in == std::next(begin(str), static_cast<std::ptrdiff_t>(std::strlen(sz))));
+        CHECK(res3.in == eastl::next(begin(str), static_cast<std::ptrdiff_t>(std::strlen(sz))));
         CHECK(res3.out == buf + std::strlen(sz));
         CHECK(std::strcmp(sz, buf) == 0);
     }
@@ -93,7 +104,7 @@ int main()
         char const *sz = "hello world";
         char buf[50];
         auto str = delimit(sz, '\0');
-        auto res3 = ranges::copy(std::move(str), buf);
+        auto res3 = ranges::copy(eastl::move(str), buf);
         *res3.out = '\0';
         CHECK(!::is_dangling(res3.in));
         CHECK(res3.out == buf + std::strlen(sz));
@@ -103,7 +114,7 @@ int main()
     {
         using namespace ranges;
         std::ostringstream sout;
-        std::vector<int> copy_vec{1,1,1,1,1};
+        eastl::vector<int> copy_vec{1,1,1,1,1};
         copy(copy_vec, ostream_iterator<>(sout, " "));
         CHECK(sout.str() == "1 1 1 1 1 ");
     }

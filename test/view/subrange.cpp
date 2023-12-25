@@ -9,18 +9,33 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/all.hpp>
-#include <range/v3/view/ref.hpp>
-#include <range/v3/view/subrange.hpp>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/all.hpp>
+#include <EASTL/ranges/view/ref.hpp>
+#include <EASTL/ranges/view/subrange.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-CPP_template(class Rng)(
-    requires ranges::range<Rng>)
+//TODO:41) This fails, because of the other todos down there. I knew it subrange is bugged :((((
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+
+CPP_template(class Rng)(requires ranges::range<Rng>)
 ranges::borrowed_subrange_t<Rng> algorithm(Rng &&rng);
 
 struct Base {};
@@ -30,28 +45,28 @@ int main()
 {
     using namespace ranges;
 
-    std::vector<int> vi{1,2,3,4};
+    eastl::vector<int> vi{1,2,3,4};
 
     ////////////////////////////////////////////////////////////////////////////
     // borrowed_subrange_t tests:
 
     // lvalues are ReferenceableRanges and do not dangle:
     CPP_assert(same_as<subrange<int*>,
-        decltype(::algorithm(std::declval<int(&)[42]>()))>);
-    CPP_assert(same_as<subrange<std::vector<int>::iterator>,
+        decltype(::algorithm(eastl::declval<int(&)[42]>()))>);
+    CPP_assert(same_as<subrange<eastl::vector<int>::iterator>,
         decltype(::algorithm(vi))>);
 
     // subrange and ref_view are ReferenceableRanges and do not dangle:
     CPP_assert(same_as<subrange<int*>,
-        decltype(::algorithm(std::declval<subrange<int*>>()))>);
+        decltype(::algorithm(eastl::declval<subrange<int*>>()))>);
     CPP_assert(same_as<subrange<int*>,
-        decltype(::algorithm(std::declval<ref_view<int[42]>>()))>);
+        decltype(::algorithm(eastl::declval<ref_view<int[42]>>()))>);
 
     // non-ReferenceableRange rvalue ranges dangle:
     CPP_assert(same_as<dangling,
-        decltype(::algorithm(std::declval<std::vector<int>>()))>);
+        decltype(::algorithm(eastl::declval<eastl::vector<int>>()))>);
     CPP_assert(same_as<dangling,
-        decltype(::algorithm(std::move(vi)))>);
+        decltype(::algorithm(eastl::move(vi)))>);
 
     // Test that slicing conversions are not allowed.
     CPP_assert(constructible_from<subrange<Base*, Base*>, Base*, Base*>);
@@ -72,15 +87,15 @@ int main()
     CPP_assert(!constructible_from<subrange<const Base*, const Base*, subrange_kind::sized>, Derived*, const Base*, std::size_t>);
     CPP_assert(!constructible_from<subrange<Base*, Base*, subrange_kind::sized>, subrange<Derived*, Base*>, std::size_t>);
 
-    CPP_assert(convertible_to<subrange<Base*, Base*>, std::pair<const Base*, const Base*>>);
-    CPP_assert(!convertible_to<subrange<Derived*, Derived*>, std::pair<Base*, Base*>>);
+    CPP_assert(convertible_to<subrange<Base*, Base*>, eastl::pair<const Base*, const Base*>>);
+    CPP_assert(!convertible_to<subrange<Derived*, Derived*>, eastl::pair<Base*, Base*>>);
 
-    subrange<std::vector<int>::iterator> r0 {vi.begin(), vi.end()};
-    static_assert(std::tuple_size<decltype(r0)>::value == 2, "");
-    CPP_assert(same_as<std::vector<int>::iterator,
-        std::tuple_element<0, decltype(r0)>::type>);
-    CPP_assert(same_as<std::vector<int>::iterator,
-        std::tuple_element<1, decltype(r0)>::type>);
+    subrange<eastl::vector<int>::iterator> r0 {vi.begin(), vi.end()};
+    static_assert(eastl::tuple_size<decltype(r0)>::value == 2, "");
+    CPP_assert(same_as<eastl::vector<int>::iterator,
+        eastl::tuple_element<0, decltype(r0)>::type>);
+    CPP_assert(same_as<eastl::vector<int>::iterator,
+        eastl::tuple_element<1, decltype(r0)>::type>);
     CPP_assert(sized_range<decltype(r0)>);
     CHECK(r0.size() == 4u);
     CHECK(r0.begin() == vi.begin());
@@ -91,42 +106,44 @@ int main()
     CHECK(r0.size() == 3u);
 
     {
-        subrange<std::vector<int>::iterator> rng {vi.begin(), vi.end(), ranges::size(vi)};
+        subrange<eastl::vector<int>::iterator> rng {vi.begin(), vi.end(), ranges::size(vi)};
         CHECK(rng.size() == 4u);
         CHECK(rng.begin() == vi.begin());
         CHECK(rng.end() == vi.end());
     }
 
-    std::pair<std::vector<int>::iterator, std::vector<int>::iterator> p0 = r0;
+    eastl::pair<eastl::vector<int>::iterator, eastl::vector<int>::iterator> p0 = r0;
     CHECK(p0.first == vi.begin()+1);
     CHECK(p0.second == vi.end());
 
-    subrange<std::vector<int>::iterator, unreachable_sentinel_t> r1 { r0.begin(), {} };
-    static_assert(std::tuple_size<decltype(r1)>::value == 2, "");
-    CPP_assert(same_as<std::vector<int>::iterator,
-        std::tuple_element<0, decltype(r1)>::type>);
+    subrange<eastl::vector<int>::iterator, unreachable_sentinel_t> r1 { r0.begin(), {} };
+    static_assert(eastl::tuple_size<decltype(r1)>::value == 2, "");
+    CPP_assert(same_as<eastl::vector<int>::iterator,
+        eastl::tuple_element<0, decltype(r1)>::type>);
     CPP_assert(same_as<unreachable_sentinel_t,
-        std::tuple_element<1, decltype(r1)>::type>);
+        eastl::tuple_element<1, decltype(r1)>::type>);
     CPP_assert(view_<decltype(r1)>);
     CPP_assert(!sized_range<decltype(r1)>);
     CHECK(r1.begin() == vi.begin()+1);
     r1.end() = unreachable;
 
     r0 = r0.next();
-    ++r0.begin();
+    //TODO:41a) ++ needs l-value :O
+    //++r0.begin();
     CHECK(r0.begin() == vi.begin()+2);
     CHECK(r0.size() == 2u);
-    r0 = {r0.begin(), --r0.end()}; // --r0.end();
+    //TODO:41b) -- needs l-value :O
+    //r0 = {r0.begin(), --r0.end()}; // --r0.end();
     CHECK(r0.end() == vi.end()-1);
     CHECK(r0.size() == 1u);
     CHECK(r0.front() == 3);
     CHECK(r0.back() == 3);
 
-    std::pair<std::vector<int>::iterator, unreachable_sentinel_t> p1 = r1;
+    eastl::pair<eastl::vector<int>::iterator, unreachable_sentinel_t> p1 = r1;
     CHECK(p1.first == vi.begin()+1);
 
-    std::list<int> li{1,2,3,4};
-    using LI = std::list<int>::iterator;
+    eastl::list<int> li{1,2,3,4};
+    using LI = eastl::list<int>::iterator;
     subrange<LI, LI, subrange_kind::sized> l0 {li.begin(), li.end(), li.size()};
     CPP_assert(view_<decltype(l0)> && sized_range<decltype(l0)>);
     CHECK(l0.begin() == li.begin());
@@ -139,7 +156,7 @@ int main()
 
     l0 = views::all(li);
 
-    subrange<std::list<int>::iterator> l1 = l0;
+    subrange<eastl::list<int>::iterator> l1 = l0;
     CPP_assert(!sized_range<decltype(l1)>);
     CHECK(l1.begin() == li.begin());
     CHECK(l1.end() == li.end());
@@ -201,7 +218,7 @@ RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
     {
         subrange s(li.begin(), li.end());
         subrange s2 = s.next();
-        CHECK(s2.begin() == std::next(li.begin()));
+        CHECK(s2.begin() == eastl::next(li.begin()));
         CHECK(s2.end() == li.end());
     }
 #if defined(__clang__) && __clang_major__ < 6

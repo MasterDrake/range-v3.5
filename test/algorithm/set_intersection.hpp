@@ -18,15 +18,28 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <algorithm>
-#include <functional>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/fill.hpp>
-#include <range/v3/algorithm/set_algorithm.hpp>
-#include <range/v3/algorithm/lexicographical_compare.hpp>
+#include <EASTL/algorithm.h>
+#include <EASTL/functional.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/fill.hpp>
+#include <EASTL/ranges/algorithm/set_algorithm.hpp>
+#include <EASTL/ranges/algorithm/lexicographical_compare.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 template<class Iter1, class Iter2, class OutIter>
 void
@@ -46,30 +59,30 @@ test()
                      Iter2(ib), Iter2(ib+sb), OutIter(ic)).check([&](OutIter ce)
         {
             CHECK((base(ce) - ic) == sr);
-            CHECK(std::lexicographical_compare(ic, base(ce), ir, ir+sr) == false);
+            CHECK(eastl::lexicographical_compare(ic, base(ce), ir, ir+sr) == false);
             ranges::fill(ic, 0);
         });
     set_intersection(Iter1(ib), Iter1(ib+sb),
                      Iter2(ia), Iter2(ia+sa), OutIter(ic)).check([&](OutIter ce)
         {
             CHECK((base(ce) - ic) == sr);
-            CHECK(std::lexicographical_compare(ic, base(ce), ir, ir+sr) == false);
+            CHECK(eastl::lexicographical_compare(ic, base(ce), ir, ir+sr) == false);
             ranges::fill(ic, 0);
         });
 
 
     set_intersection(Iter1(ia), Iter1(ia+sa),
-                     Iter2(ib), Iter2(ib+sb), OutIter(ic), std::less<int>()).check([&](OutIter ce)
+                     Iter2(ib), Iter2(ib+sb), OutIter(ic), eastl::less<int>()).check([&](OutIter ce)
         {
             CHECK((base(ce) - ic) == sr);
-            CHECK(std::lexicographical_compare(ic, base(ce), ir, ir+sr) == false);
+            CHECK(eastl::lexicographical_compare(ic, base(ce), ir, ir+sr) == false);
             ranges::fill(ic, 0);
         });
     set_intersection(Iter1(ib), Iter1(ib+sb),
-                     Iter2(ia), Iter2(ia+sa), OutIter(ic), std::less<int>()).check([&](OutIter ce)
+                     Iter2(ia), Iter2(ia+sa), OutIter(ic), eastl::less<int>()).check([&](OutIter ce)
         {
             CHECK((base(ce) - ic) == sr);
-            CHECK(std::lexicographical_compare(ic, base(ce), ir, ir+sr) == false);
+            CHECK(eastl::lexicographical_compare(ic, base(ce), ir, ir+sr) == false);
             ranges::fill(ic, 0);
         });
 }
@@ -272,9 +285,9 @@ int main()
         int ir[] = {2, 4, 4};
         static const int sr = sizeof(ir)/sizeof(ir[0]);
 
-        U * res = ranges::set_intersection(ranges::views::all(ia), ranges::views::all(ib), ic, std::less<int>(), &S::i, &T::j);
+        U * res = ranges::set_intersection(ranges::views::all(ia), ranges::views::all(ib), ic, eastl::less<int>(), &S::i, &T::j);
         CHECK((res - ic) == sr);
-        CHECK(ranges::lexicographical_compare(ic, res, ir, ir+sr, std::less<int>(), &U::k) == false);
+        CHECK(ranges::lexicographical_compare(ic, res, ir, ir+sr, eastl::less<int>(), &U::k) == false);
     }
 
     {

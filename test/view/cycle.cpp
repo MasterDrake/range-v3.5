@@ -10,22 +10,35 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <array>
-#include <vector>
-#include <memory>
-#include <forward_list>
-#include <range/v3/range_for.hpp>
-#include <range/v3/algorithm/count_if.hpp>
-#include <range/v3/view/cycle.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/take_exactly.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/slice.hpp>
-#include <range/v3/view/c_str.hpp>
+#include <EASTL/list.h>
+#include <EASTL/array.h>
+#include <EASTL/vector.h>
+#include <EASTL/memory.h>
+#include <EASTL/slist.h>
+#include <EASTL/ranges/range_for.hpp>
+#include <EASTL/ranges/algorithm/count_if.hpp>
+#include <EASTL/ranges/view/cycle.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/take_exactly.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/slice.hpp>
+#include <EASTL/ranges/view/c_str.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 using namespace ranges;
 
@@ -44,7 +57,7 @@ void test_const_forward_range(Rng const &rng)
     CHECK(distance(r | views::take_exactly(7)) == 7);
     CHECK(count_if(r | views::take_exactly(7), [](int) { return true; }) == 7);
 
-    ::check_equal(r | views::take_exactly(0), std::array<int, 0>{});
+    ::check_equal(r | views::take_exactly(0), eastl::array<int, 0>{});
     ::check_equal(r | views::take_exactly(1), {0});
     ::check_equal(r | views::take_exactly(2), {0, 1});
     ::check_equal(r | views::take_exactly(3), {0, 1, 2});
@@ -61,7 +74,7 @@ void test_const_forward_range(Rng const &rng)
     CHECK(distance(r | views::take(7)) == 7);
     CHECK(count_if(r | views::take(7), [](int) { return true; }) == 7);
 
-    ::check_equal(r | views::take(0), std::array<int, 0>{});
+    ::check_equal(r | views::take(0), eastl::array<int, 0>{});
     ::check_equal(r | views::take(1), {0});
     ::check_equal(r | views::take(2), {0, 1});
     ::check_equal(r | views::take(3), {0, 1, 2});
@@ -88,7 +101,7 @@ void test_const_forward_reversed_range(Rng const &rng)
     CHECK(distance(r | views::take_exactly(7)) == 7);
     CHECK(count_if(r | views::take_exactly(7), [](int) { return true; }) == 7);
 
-    ::check_equal(r | views::take_exactly(0), std::array<int, 0>{});
+    ::check_equal(r | views::take_exactly(0), eastl::array<int, 0>{});
     ::check_equal(r | views::take_exactly(1), {2});
     ::check_equal(r | views::take_exactly(2), {2, 1});
     ::check_equal(r | views::take_exactly(3), {2, 1, 0});
@@ -105,7 +118,7 @@ void test_const_forward_reversed_range(Rng const &rng)
     CHECK(distance(r | views::take(7)) == 7);
     CHECK(count_if(r | views::take(7), [](int) { return true; }) == 7);
 
-    ::check_equal(r | views::take(0), std::array<int, 0>{});
+    ::check_equal(r | views::take(0), eastl::array<int, 0>{});
     ::check_equal(r | views::take(1), {2});
     ::check_equal(r | views::take(2), {2, 1});
     ::check_equal(r | views::take(3), {2, 1, 0});
@@ -237,43 +250,43 @@ int main()
 
     // array
     {
-        std::array<int, 3> a = {{0, 1, 2}};
+        eastl::array<int, 3> a = {{0, 1, 2}};
         test_random_access_it(a);
         test_mutable_forward_range_reversed(a);
 
-        const std::array<int, 3> ca = {{0, 1, 2}};
+        const eastl::array<int, 3> ca = {{0, 1, 2}};
         test_random_access_it(ca);
         test_const_forward_reversed_range(ca);
     }
 
     // list
     {
-        std::list<int> l = {0, 1, 2};
+        eastl::list<int> l = {0, 1, 2};
         test_bidirectional_it(l);
         test_mutable_forward_range_reversed(l);
 
-        const std::list<int> cl = {0, 1, 2};
+        const eastl::list<int> cl = {0, 1, 2};
         test_bidirectional_it(cl);
         test_const_forward_reversed_range(cl);
     }
 
     // forward list
     {
-        std::forward_list<int> l = {0, 1, 2};
+        eastl::slist<int> l = {0, 1, 2};
         test_forward_it(l);
         test_const_forward_range(l);
 
-        const std::forward_list<int> cl = {0, 1, 2};
+        const eastl::slist<int> cl = {0, 1, 2};
         test_forward_it(cl);
         test_const_forward_range(cl);
     }
 
     // move-only types
     {
-        std::array<std::unique_ptr<int>, 3> a = {{
-            std::unique_ptr<int>(new int(0)),
-            std::unique_ptr<int>(new int(1)),
-            std::unique_ptr<int>(new int(2))
+        eastl::array<eastl::unique_ptr<int>, 3> a = {{
+            eastl::unique_ptr<int>(new int(0)),
+            eastl::unique_ptr<int>(new int(1)),
+            eastl::unique_ptr<int>(new int(2))
         }};
         auto r = a | views::cycle;
         auto b = iter_move(r.begin() + 4);
@@ -334,7 +347,7 @@ int main()
         const auto length = 512;
         const auto k = 16;
 
-        std::vector<int> input(length);
+        eastl::vector<int> input(length);
 
         auto output = ranges::views::cycle(input)
                     | ranges::views::slice(length + k, 2 * length + k);

@@ -12,20 +12,33 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <vector>
-#include <range/v3/view/cache1.hpp>
-#include <range/v3/view/transform.hpp>
-#include <range/v3/view/c_str.hpp>
-#include <range/v3/view/move.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/view/cache1.hpp>
+#include <EASTL/ranges/view/transform.hpp>
+#include <EASTL/ranges/view/c_str.hpp>
+#include <EASTL/ranges/view/move.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 using namespace ranges;
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     {
         int count = 0;
-        std::vector<int> v{1,2,3};
+        eastl::vector<int> v{1,2,3};
         auto rng = v | views::transform([&count](int i){ ++count; return i;})
             | views::cache1;
         using Rng = decltype(rng);

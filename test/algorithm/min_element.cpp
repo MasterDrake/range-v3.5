@@ -18,12 +18,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <memory>
+#include <EASTL/memory.h>
 #include <random>
-#include <numeric>
-#include <algorithm>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/min_element.hpp>
+#include <EASTL/numeric.h>
+#include <EASTL/algorithm.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/min_element.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
@@ -31,6 +31,7 @@
 #include "../test_iterators.hpp"
 
 RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+//TODO: random and std::shuffle
 
 namespace
 {
@@ -59,7 +60,7 @@ namespace
         else
             CHECK(i == last);
 
-        auto res = ranges::min_element(std::move(rng));
+        auto res = ranges::min_element(eastl::move(rng));
         CHECK(::is_dangling(res));
     }
 
@@ -67,8 +68,8 @@ namespace
     void
     test_iter(unsigned N)
     {
-        std::unique_ptr<int[]> a{new int[N]};
-        std::iota(a.get(), a.get()+N, 0);
+        eastl::unique_ptr<int[]> a{new int[N]};
+        eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);
         test_iter(Iter(a.get()), Sent(a.get()+N));
     }
@@ -89,26 +90,26 @@ namespace
     void
     test_iter_comp(Iter first, Sent last)
     {
-        Iter i = ranges::min_element(first, last, std::greater<int>());
+        Iter i = ranges::min_element(first, last, eastl::greater<int>());
         if (first != last)
         {
             for (Iter j = first; j != last; ++j)
-                CHECK(!std::greater<int>()(*j, *i));
+                CHECK(!eastl::greater<int>()(*j, *i));
         }
         else
             CHECK(i == last);
 
         auto rng = ::MakeTestRange(first, last);
-        i = ranges::min_element(rng, std::greater<int>());
+        i = ranges::min_element(rng, eastl::greater<int>());
         if (first != last)
         {
             for (Iter j = first; j != last; ++j)
-                CHECK(!std::greater<int>()(*j, *i));
+                CHECK(!eastl::greater<int>()(*j, *i));
         }
         else
             CHECK(i == last);
 
-        auto res = ranges::min_element(std::move(rng), std::greater<int>());
+        auto res = ranges::min_element(eastl::move(rng), eastl::greater<int>());
         CHECK(::is_dangling(res));
     }
 
@@ -116,8 +117,8 @@ namespace
     void
     test_iter_comp(unsigned N)
     {
-        std::unique_ptr<int[]> a{new int[N]};
-        std::iota(a.get(), a.get()+N, 0);
+        eastl::unique_ptr<int[]> a{new int[N]};
+        eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);
         test_iter_comp(Iter(a.get()), Sent(a.get()+N));
     }
@@ -160,7 +161,7 @@ int main()
 
     // Works with projections?
     S s[] = {S{1},S{2},S{3},S{4},S{-4},S{5},S{6},S{7},S{8},S{9}};
-    S const *ps = ranges::min_element(s, std::less<int>{}, &S::i);
+    S const *ps = ranges::min_element(s, eastl::less<int>{}, &S::i);
     CHECK(ps->i == -4);
 
     {

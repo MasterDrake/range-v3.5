@@ -9,26 +9,39 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct MyRange
   : ranges::view_facade<MyRange>
 {
 private:
     friend ranges::range_access;
-    std::vector<int> ints_;
+    eastl::vector<int> ints_;
     struct cursor
     {
     private:
-        std::vector<int>::const_iterator iter;
+        eastl::vector<int>::const_iterator iter;
     public:
-        using contiguous = std::true_type;
+        using contiguous = eastl::true_type;
         cursor() = default;
-        cursor(std::vector<int>::const_iterator it)
+        cursor(eastl::vector<int>::const_iterator it)
           : iter(it)
         {}
         int const & read() const

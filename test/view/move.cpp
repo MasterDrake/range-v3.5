@@ -10,21 +10,34 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <cstring>
-#include <string>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/move.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/move.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
     static const char * const data[] = {"'allo", "'allo", "???"};
-    std::vector<MoveOnlyString> vs(begin(data), end(data));
+    eastl::vector<MoveOnlyString> vs(begin(data), end(data));
     auto x = vs | views::move;
 
     {
@@ -35,17 +48,15 @@ int main()
         CPP_assert(sized_range<decltype(x)>);
         CPP_assert(random_access_iterator<decltype(x.begin())>);
         using I = decltype(x.begin());
-        CPP_assert(same_as<iterator_tag_of<I>, std::random_access_iterator_tag>);
-        CPP_assert(same_as<
-            typename std::iterator_traits<I>::iterator_category,
-            std::random_access_iterator_tag>);
+        CPP_assert(same_as<iterator_tag_of<I>, eastl::random_access_iterator_tag>);
+        CPP_assert(same_as<typename eastl::iterator_traits<I>::iterator_category, eastl::random_access_iterator_tag>);
 
         CHECK(bool(*x.begin() == "'allo"));
     }
 
     {
-        std::vector<MoveOnlyString> vs2(x.begin(), x.end());
-        static_assert(std::is_same<MoveOnlyString&&, decltype(*x.begin())>::value, "");
+        eastl::vector<MoveOnlyString> vs2(x.begin(), x.end());
+        static_assert(eastl::is_same<MoveOnlyString&&, decltype(*x.begin())>::value, "");
         ::check_equal(vs2, {"'allo", "'allo", "???"});
         ::check_equal(vs, {"", "", ""});
     }

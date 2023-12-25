@@ -7,29 +7,43 @@
 //  file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#include <array>
+#include <EASTL/array.h>
 #include <random>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/stride.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/algorithm/shuffle.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/algorithm/move.hpp>
-#include <range/v3/algorithm/is_sorted.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/action/shuffle.hpp>
-#include <range/v3/action/sort.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/stride.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/algorithm/shuffle.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/algorithm/move.hpp>
+#include <EASTL/ranges/algorithm/is_sorted.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/action/shuffle.hpp>
+#include <EASTL/ranges/action/sort.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
     std::mt19937 gen;
 
-    auto v = views::ints(0,100) | to<std::vector>();
+    auto v = views::ints(0,100) | to<eastl::vector>();
     v |= actions::shuffle(gen);
     CHECK(!is_sorted(v));
 
@@ -45,7 +59,7 @@ int main()
     v |= actions::shuffle(gen);
     CHECK(!is_sorted(v));
 
-    v = v | move | actions::sort(std::less<int>());
+    v = v | move | actions::sort(eastl::less<int>());
     CHECK(is_sorted(v));
     CHECK(equal(v, v2));
 
@@ -61,7 +75,7 @@ int main()
     r |= actions::sort;
 
     // Can pipe a view to a "container" algorithm.
-    actions::sort(v, std::greater<int>());
+    actions::sort(v, eastl::greater<int>());
     v | views::stride(2) | actions::sort;
     check_equal(views::take(v, 10), {1,98,3,96,5,94,7,92,9,90});
 

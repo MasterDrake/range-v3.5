@@ -10,37 +10,37 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 #include <sstream>
-#include <string>
-#include <vector>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/iterator/stream_iterators.hpp>
-#include <range/v3/range/conversion.hpp>
-#include <range/v3/view/for_each.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/sliding.hpp>
-#include <range/v3/view/stride.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/iterator/stream_iterators.hpp>
+#include <EASTL/ranges/range/conversion.hpp>
+#include <EASTL/ranges/view/for_each.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/sliding.hpp>
+#include <EASTL/ranges/view/stride.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
-
+//TODO:21) technically this doesn't work but eastl doesn't have streams capabilities so that's why this can be skipped or ""easily"" fixed by implementing such facilities. Just skip it or remove it.
 namespace
 {
 #if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
     template<typename>
-    std::string endian_adjust(std::string const & s)
+    eastl::string endian_adjust(eastl::string const & s)
     {
         return s;
     }
 #else
     template<typename T>
-    std::string endian_adjust(std::string const & s)
+    eastl::string endian_adjust(eastl::string const & s)
     {
         namespace rv = ranges::views;
         return rv::sliding(s, static_cast<std::ptrdiff_t>(sizeof(T))) //
                | rv::stride(static_cast<std::ptrdiff_t>(sizeof(T)))   //
                | rv::for_each([](auto x) { return x | rv::reverse; }) //
-               | ranges::to<std::string>;
+               | ranges::to<eastl::string>;
     }
 #endif // endianness
 } // namespace
@@ -51,7 +51,7 @@ int main()
         constexpr auto expected = "\x21\x22\x23\x24";
 
         {
-            auto const input = std::vector<char>{0x21, 0x22, 0x23, 0x24};
+            auto const input = eastl::vector<char>{0x21, 0x22, 0x23, 0x24};
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
@@ -59,17 +59,17 @@ int main()
             CHECK(actual == expected);
         }
         {
-            auto const input = std::vector<unsigned short>{0x2122, 0x2324};
+            auto const input = eastl::vector<unsigned short>{0x2122, 0x2324};
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
-            auto const actual = endian_adjust<unsigned short>(output.str());
+            auto const actual = endian_adjust<unsigned short>(output.str().c_str());
             CHECK(actual == expected);
         }
 #if __cplusplus > 201703L
         {
             // float computed to be *exactly* 0x21222324.
-            auto const input = std::vector<float>{0x1.4446480000000000179Dp-61f};
+            auto const input = eastl::vector<float>{0x1.4446480000000000179Dp-61f};
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
@@ -81,18 +81,18 @@ int main()
     {
         constexpr auto expected = "\x21\x22\x23\x24\x25\x26\x27\x28";
         {
-            auto const input = std::vector<unsigned int>{0x21222324, 0x25262728};
+            auto const input = eastl::vector<unsigned int>{0x21222324, 0x25262728};
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
-            auto const actual = endian_adjust<unsigned int>(output.str());
+            auto const actual = endian_adjust<unsigned int>(output.str().c_str());
             CHECK(actual == expected);
         }
 #if __cplusplus > 201703L
         {
             // floats computed to be *exactly* 0x21222324 and 0x25262728.
             auto const input =
-                std::vector<float>{0x1.4446480000000000179Dp-61f, 0x1.4C4E5p-53f};
+                eastl::vector<float>{0x1.4446480000000000179Dp-61f, 0x1.4C4E5p-53f};
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
@@ -101,7 +101,7 @@ int main()
         }
         {
             // double computed to be *exactly* 0x2122232425262728.
-            auto const input = std::vector<double>{0x1.223242526272800006F2p-493};
+            auto const input = eastl::vector<double>{0x1.223242526272800006F2p-493};
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 

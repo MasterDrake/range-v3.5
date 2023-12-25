@@ -10,8 +10,8 @@
 #ifndef RANGES_TEST_ITERATORS_HPP
 #define RANGES_TEST_ITERATORS_HPP
 
-#include <iterator>
-#include <range/v3/range/dangling.hpp>
+#include <EASTL/iterator.h>
+#include <EASTL/ranges/range/dangling.hpp>
 
 template<class It, bool Sized = false>
 class Sentinel;
@@ -117,17 +117,17 @@ class OutputIterator
 
     template<class U> friend class OutputIterator;
 public:
-    typedef          std::output_iterator_tag                  iterator_category;
+    typedef          eastl::output_iterator_tag                  iterator_category;
     typedef void                                               value_type;
-    typedef typename std::iterator_traits<It>::difference_type difference_type;
+    typedef typename eastl::iterator_traits<It>::difference_type difference_type;
     typedef It                                                 pointer;
-    typedef typename std::iterator_traits<It>::reference       reference;
+    typedef typename eastl::iterator_traits<It>::reference       reference;
 
     constexpr /*c++14*/ It base() const {return it_;}
 
     constexpr /*c++14*/ OutputIterator () {}
     constexpr /*c++14*/ explicit OutputIterator(It it) : it_(it) {}
-    template<class U, class = typename std::enable_if<std::is_convertible<U, It>{}>::type>
+    template<class U, class = typename eastl::enable_if<eastl::is_convertible<U, It>{}>::type>
     constexpr /*c++14*/
     OutputIterator(const OutputIterator<U>& u) :it_(u.it_) {}
 
@@ -145,11 +145,11 @@ class InputIterator
 
     template<class, bool> friend class InputIterator;
 public:
-    typedef          std::input_iterator_tag                   iterator_category;
-    typedef typename std::iterator_traits<It>::value_type      value_type;
-    typedef typename std::iterator_traits<It>::difference_type difference_type;
+    typedef          eastl::input_iterator_tag                   iterator_category;
+    typedef typename eastl::iterator_traits<It>::value_type      value_type;
+    typedef typename eastl::iterator_traits<It>::difference_type difference_type;
     typedef It                                                 pointer;
-    typedef typename std::iterator_traits<It>::reference       reference;
+    typedef typename eastl::iterator_traits<It>::reference       reference;
 
     constexpr /*c++14*/ It base() const {return it_;}
 
@@ -157,7 +157,7 @@ public:
     constexpr /*c++14*/ explicit InputIterator(It it) : it_(it) {}
     template<class U, bool USized>
     constexpr /*c++14*/ CPP_ctor(InputIterator)(const InputIterator<U, USized>& u)(
-        requires (std::is_convertible<U, It>::value)) :it_(u.it_) {}
+        requires (eastl::is_convertible<U, It>::value)) :it_(u.it_) {}
 
     constexpr /*c++14*/ reference operator*() const {return *it_;}
     constexpr /*c++14*/ pointer operator->() const {return it_;}
@@ -202,11 +202,11 @@ class ForwardIterator
 
     template<class, bool> friend class ForwardIterator;
 public:
-    typedef          std::forward_iterator_tag                 iterator_category;
-    typedef typename std::iterator_traits<It>::value_type      value_type;
-    typedef typename std::iterator_traits<It>::difference_type difference_type;
+    typedef          eastl::forward_iterator_tag                 iterator_category;
+    typedef typename eastl::iterator_traits<It>::value_type      value_type;
+    typedef typename eastl::iterator_traits<It>::difference_type difference_type;
     typedef It                                                 pointer;
-    typedef typename std::iterator_traits<It>::reference       reference;
+    typedef typename eastl::iterator_traits<It>::reference       reference;
 
     constexpr /*c++14*/ It base() const {return it_;}
 
@@ -214,7 +214,7 @@ public:
     constexpr /*c++14*/ explicit ForwardIterator(It it) : it_(it) {}
     template<class U, bool USized>
     constexpr /*c++14*/ CPP_ctor(ForwardIterator)(const ForwardIterator<U, USized>& u)(
-        requires (std::is_convertible<U, It>::value)) :it_(u.it_) {}
+        requires (eastl::is_convertible<U, It>::value)) :it_(u.it_) {}
 
     constexpr /*c++14*/ reference operator*() const {return *it_;}
     constexpr /*c++14*/ pointer operator->() const {return it_;}
@@ -254,11 +254,11 @@ class BidirectionalIterator
 
     template<class, bool> friend class BidirectionalIterator;
 public:
-    typedef          std::bidirectional_iterator_tag           iterator_category;
-    typedef typename std::iterator_traits<It>::value_type      value_type;
-    typedef typename std::iterator_traits<It>::difference_type difference_type;
+    typedef          eastl::bidirectional_iterator_tag           iterator_category;
+    typedef typename eastl::iterator_traits<It>::value_type      value_type;
+    typedef typename eastl::iterator_traits<It>::difference_type difference_type;
     typedef It                                                 pointer;
-    typedef typename std::iterator_traits<It>::reference       reference;
+    typedef typename eastl::iterator_traits<It>::reference       reference;
 
     constexpr /*c++14*/ It base() const {return it_;}
 
@@ -266,7 +266,7 @@ public:
     constexpr /*c++14*/ explicit BidirectionalIterator(It it) : it_(it) {}
     template<class U, bool USized>
     constexpr /*c++14*/ CPP_ctor(BidirectionalIterator)(const BidirectionalIterator<U, USized>& u)(
-        requires (std::is_convertible<U, It>::value)) :it_(u.it_) {}
+        requires (eastl::is_convertible<U, It>::value)) :it_(u.it_) {}
 
     constexpr /*c++14*/ reference operator*() const {return *it_;}
     constexpr /*c++14*/ pointer operator->() const {return it_;}
@@ -303,11 +303,11 @@ class RandomAccessIterator
 
     template<class U> friend class RandomAccessIterator;
 public:
-    typedef          std::random_access_iterator_tag           iterator_category;
-    typedef typename std::iterator_traits<It>::value_type      value_type;
-    typedef typename std::iterator_traits<It>::difference_type difference_type;
+    typedef          eastl::random_access_iterator_tag           iterator_category;
+    typedef typename eastl::iterator_traits<It>::value_type      value_type;
+    typedef typename eastl::iterator_traits<It>::difference_type difference_type;
     typedef It                                                 pointer;
-    typedef typename std::iterator_traits<It>::reference       reference;
+    typedef typename eastl::iterator_traits<It>::reference       reference;
 
     constexpr /*c++14*/ It base() const {return it_;}
 
@@ -315,7 +315,7 @@ public:
     constexpr /*c++14*/ explicit RandomAccessIterator(It it) : it_(it) {}
     template<class U>
     constexpr /*c++14*/ CPP_ctor(RandomAccessIterator)(const RandomAccessIterator<U>& u)(
-        requires (std::is_convertible<U, It>::value)) :it_(u.it_) {}
+        requires (eastl::is_convertible<U, It>::value)) :it_(u.it_) {}
 
     constexpr /*c++14*/ reference operator*() const {return *it_;}
     constexpr /*c++14*/ pointer operator->() const {return it_;}

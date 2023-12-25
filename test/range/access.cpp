@@ -10,13 +10,13 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/range/access.hpp>
-#include <range/v3/range/primitives.hpp>
-#include <range/v3/view/subrange.hpp>
-#include <range/v3/view/ref.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/algorithm/find.hpp>
-#include <vector>
+#include <EASTL/ranges/range/access.hpp>
+#include <EASTL/ranges/range/primitives.hpp>
+#include <EASTL/ranges/view/subrange.hpp>
+#include <EASTL/ranges/view/ref.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/algorithm/find.hpp>
+#include <EASTL/vector.h>
 #include "../simple_test.hpp"
 
 #if defined(__clang__)
@@ -25,7 +25,7 @@ RANGES_DIAGNOSTIC_IGNORE("-Wunused-const-variable")
 
 void test_range_access_ambiguity()
 {
-    std::vector<ranges::reverse_iterator<int*>> vri{};
+    eastl::vector<ranges::reverse_iterator<int*>> vri{};
     using namespace ranges;
     (void)begin(vri);
     (void)end(vri);
@@ -58,7 +58,7 @@ void test_initializer_list()
 }
 
 template<class Value, typename T, T... Is>
-void test_array(std::integer_sequence<T, Is...>)
+void test_array(eastl::integer_sequence<T, Is...>)
 {
     Value a[sizeof...(Is)] = { Is... };
     {
@@ -121,14 +121,14 @@ namespace begin_testing
     {
         // Valid
         CPP_assert(can_begin<int(&)[2]>);
-        CPP_assert(ranges::same_as<decltype(ranges::begin(std::declval<int(&)[2]>())), int*>);
+        CPP_assert(ranges::same_as<decltype(ranges::begin(eastl::declval<int(&)[2]>())), int*>);
         CPP_assert(can_begin<int const(&)[2]>);
-        CPP_assert(ranges::same_as<decltype(ranges::begin(std::declval<int const(&)[2]>())), int const *>);
+        CPP_assert(ranges::same_as<decltype(ranges::begin(eastl::declval<int const(&)[2]>())), int const *>);
 
         CPP_assert(can_cbegin<int(&)[2]>);
-        CPP_assert(ranges::same_as<decltype(ranges::cbegin(std::declval<int(&)[2]>())), int const *>);
+        CPP_assert(ranges::same_as<decltype(ranges::cbegin(eastl::declval<int(&)[2]>())), int const *>);
         CPP_assert(can_cbegin<int const(&)[2]>);
-        CPP_assert(ranges::same_as<decltype(ranges::cbegin(std::declval<int const(&)[2]>())), int const *>);
+        CPP_assert(ranges::same_as<decltype(ranges::cbegin(eastl::declval<int const(&)[2]>())), int const *>);
 
 #ifndef RANGES_WORKAROUND_MSVC_573728
         // Ill-formed: array rvalue
@@ -142,18 +142,18 @@ namespace begin_testing
         // Valid: only member begin
         CPP_assert(can_begin<A&>);
         CPP_assert(!can_begin<A>);
-        CPP_assert(ranges::same_as<decltype(ranges::begin(std::declval<A&>())), int*>);
+        CPP_assert(ranges::same_as<decltype(ranges::begin(eastl::declval<A&>())), int*>);
         CPP_assert(can_begin<const A&>);
         CPP_assert(!can_begin<const A>);
-        CPP_assert(ranges::same_as<decltype(ranges::begin(std::declval<const A&>())), int const *>);
+        CPP_assert(ranges::same_as<decltype(ranges::begin(eastl::declval<const A&>())), int const *>);
 
         // Valid: Both member and non-member begin, but non-member returns non-Iterator.
         CPP_assert(can_begin<B&>);
         CPP_assert(!can_begin<B>);
-        CPP_assert(ranges::same_as<decltype(ranges::begin(std::declval<B&>())), int*>);
+        CPP_assert(ranges::same_as<decltype(ranges::begin(eastl::declval<B&>())), int*>);
         CPP_assert(can_begin<const B&>);
         CPP_assert(!can_begin<const B>);
-        CPP_assert(ranges::same_as<decltype(ranges::begin(std::declval<const B&>())), int const *>);
+        CPP_assert(ranges::same_as<decltype(ranges::begin(eastl::declval<const B&>())), int const *>);
 
         // Valid: Both member and non-member begin, but non-member returns non-Iterator.
         CPP_assert(can_begin<C&>);
@@ -164,16 +164,16 @@ namespace begin_testing
         // Valid: Prefer member begin
         CPP_assert(can_begin<D&>);
         CPP_assert(!can_begin<D>);
-        CPP_assert(ranges::same_as<int*, decltype(ranges::begin(std::declval<D&>()))>);
+        CPP_assert(ranges::same_as<int*, decltype(ranges::begin(eastl::declval<D&>()))>);
         CPP_assert(can_begin<const D&>);
         CPP_assert(!can_begin<const D>);
-        CPP_assert(ranges::same_as<int const *, decltype(ranges::begin(std::declval<const D&>()))>);
+        CPP_assert(ranges::same_as<int const *, decltype(ranges::begin(eastl::declval<const D&>()))>);
 
         {
             using T = std::initializer_list<int>;
             // Valid: begin accepts lvalue initializer_list
-            CPP_assert(ranges::same_as<int const *, decltype(ranges::begin(std::declval<T&>()))>);
-            CPP_assert(ranges::same_as<int const *, decltype(ranges::begin(std::declval<const T&>()))>);
+            CPP_assert(ranges::same_as<int const *, decltype(ranges::begin(eastl::declval<T&>()))>);
+            CPP_assert(ranges::same_as<int const *, decltype(ranges::begin(eastl::declval<const T&>()))>);
             CPP_assert(!can_begin<T>);
             CPP_assert(!can_begin<T const>);
         }
@@ -243,10 +243,10 @@ void test_string_view_p0970()
 {
     // basic_string_views are non-dangling
     using I2 = ranges::iterator_t<std::string_view>;
-    CPP_assert(ranges::same_as<I2, decltype(ranges::begin(std::declval<std::string_view>()))>);
-    CPP_assert(ranges::same_as<I2, decltype(ranges::end(std::declval<std::string_view>()))>);
-    CPP_assert(ranges::same_as<I2, decltype(ranges::begin(std::declval<const std::string_view>()))>);
-    CPP_assert(ranges::same_as<I2, decltype(ranges::end(std::declval<const std::string_view>()))>);
+    CPP_assert(ranges::same_as<I2, decltype(ranges::begin(eastl::declval<std::string_view>()))>);
+    CPP_assert(ranges::same_as<I2, decltype(ranges::end(eastl::declval<std::string_view>()))>);
+    CPP_assert(ranges::same_as<I2, decltype(ranges::begin(eastl::declval<const std::string_view>()))>);
+    CPP_assert(ranges::same_as<I2, decltype(ranges::end(eastl::declval<const std::string_view>()))>);
 
     {
         const char hw[] = "Hello, World!";
@@ -304,8 +304,8 @@ int main()
         std::cout << "}\n";
 
     test_initializer_list();
-    test_array<int>(std::make_integer_sequence<int, 3>{});
-    test_array<int const>(std::make_integer_sequence<int, 3>{});
+    test_array<int>(eastl::make_integer_sequence<int, 3>{});
+    test_array<int const>(eastl::make_integer_sequence<int, 3>{});
     begin_testing::test();
 
 #if defined(__cpp_lib_string_view) && __cpp_lib_string_view >= 201603L

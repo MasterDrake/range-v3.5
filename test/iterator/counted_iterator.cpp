@@ -9,7 +9,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/iterator/counted_iterator.hpp>
+#include <EASTL/ranges/iterator/counted_iterator.hpp>
 
 #include "../simple_test.hpp"
 

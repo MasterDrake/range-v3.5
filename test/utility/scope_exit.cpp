@@ -9,7 +9,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/utility/scope_exit.hpp>
+#include <EASTL/ranges/utility/scope_exit.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

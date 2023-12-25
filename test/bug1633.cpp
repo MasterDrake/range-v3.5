@@ -8,12 +8,13 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <cstddef>
-#include <iterator>
-#include <range/v3/iterator.hpp>
+#include <EASTL/iterator.h>
+#include <EASTL/ranges/iterator.hpp>
 
 struct X { };
 
-namespace std {
+namespace eastl
+{
     template<> struct iterator_traits<X> { };
 }
 
@@ -22,9 +23,10 @@ struct Y {
     using value_type = int;
     using pointer = int*;
     using reference = int&;
-    using iterator_category = std::forward_iterator_tag;
+    using iterator_category = eastl::forward_iterator_tag;
 };
 
+//TODO:45) I don't like this is_std_iterator_traits thing and I can't seem to fix it unfortunately. This doesn't work.
 static_assert(ranges::detail::is_std_iterator_traits_specialized_v<X>, "");
 static_assert(!ranges::detail::is_std_iterator_traits_specialized_v<Y>, "");
 static_assert(!ranges::detail::is_std_iterator_traits_specialized_v<int*>, "");

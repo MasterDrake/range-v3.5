@@ -10,10 +10,10 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
-#include <algorithm>
-#include <numeric>
-#include <range/v3/iterator/common_iterator.hpp>
-#include <range/v3/iterator/unreachable_sentinel.hpp>
+#include <EASTL/algorithm.h>
+#include <EASTL/numeric.h>
+#include <EASTL/ranges/iterator/common_iterator.hpp>
+#include <EASTL/ranges/iterator/unreachable_sentinel.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
@@ -35,7 +35,7 @@ namespace {
         lvalue_iterator operator++(int) & { return *this; }
     };
     struct xvalue_iterator : lvalue_iterator {
-        int&& operator*() const { return std::move(forty_two); }
+        int&& operator*() const { return eastl::move(forty_two); }
         xvalue_iterator& operator++() & { return *this; }
         xvalue_iterator operator++(int) & { return *this; }
     };
@@ -77,8 +77,8 @@ namespace {
             using I = ranges::basic_iterator<proxy_cursor>;
             auto ci = ranges::common_iterator<I, ranges::unreachable_sentinel_t>{};
             using A = decltype(ci.operator->());
-            CPP_assert(std::is_class<A>::value);
-            CPP_assert(!std::is_same<I, A>::value);
+            CPP_assert(eastl::is_class<A>::value);
+            CPP_assert(!eastl::is_same<I, A>::value);
             CHECK(*ci.operator->().operator->() == 42);
         }
     }
@@ -97,7 +97,7 @@ int main() {
                     BidirectionalIterator<const char *>,
                     Sentinel<const char *>>>);
         CPP_assert(
-            std::is_same<
+            eastl::is_same<
                 ranges::common_reference<
                     ranges::common_iterator<
                         BidirectionalIterator<const char *>,
@@ -141,12 +141,10 @@ int main() {
     }
     {
         int rgi[] {0,1,2,3,4,5,6,7,8,9};
-        using CI = ranges::common_iterator<
-            RandomAccessIterator<int*>,
-            Sentinel<int*>>;
+        using CI = ranges::common_iterator<RandomAccessIterator<int*>, Sentinel<int*>>;
         CI first{RandomAccessIterator<int*>{rgi}};
         CI last{Sentinel<int*>{rgi+10}};
-        CHECK(std::accumulate(first, last, 0, std::plus<int>{}) == 45);
+        CHECK(eastl::accumulate(first, last, 0, eastl::plus<int>{}) == 45);
     }
 
     test_operator_arrow();

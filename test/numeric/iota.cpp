@@ -22,9 +22,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <range/v3/core.hpp>
-#include <range/v3/numeric/iota.hpp>
-#include <range/v3/algorithm/equal.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/numeric/iota.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 

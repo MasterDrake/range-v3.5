@@ -9,21 +9,35 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 #include <sstream>
 #include <iostream>
-#include <range/v3/functional/overload.hpp>
-#include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/utility/variant.hpp>
-#include <range/v3/view/concat.hpp>
-#include <range/v3/view/partial_sum.hpp>
-#include <range/v3/view/transform.hpp>
+#include <EASTL/ranges/functional/overload.hpp>
+#include <EASTL/ranges/numeric/accumulate.hpp>
+#include <EASTL/ranges/utility/variant.hpp>
+#include <EASTL/ranges/view/concat.hpp>
+#include <EASTL/ranges/view/partial_sum.hpp>
+#include <EASTL/ranges/view/transform.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 void bug_1217()
 {
-    std::vector<int> vec;
+    eastl::vector<int> vec;
 
     if(auto tx = vec | ranges::views::transform( [](int){ return 0; } ))
     {
@@ -93,9 +107,9 @@ int main()
     // variant of references
     {
         int i = 42;
-        std::string s = "hello world";
-        variant<int&, std::string&> v{emplaced_index<0>, i};
-        CPP_assert(!default_constructible<variant<int&, std::string&>>);
+        eastl::string s = "hello world";
+        variant<int&, eastl::string&> v{emplaced_index<0>, i};
+        CPP_assert(!default_constructible<variant<int&, eastl::string&>>);
         CHECK(v.index() == 0u);
         CHECK(get<0>(v) == 42);
         CHECK(&get<0>(v) == &i);
@@ -114,15 +128,15 @@ int main()
     {
         variant<int, MoveOnlyString> v{emplaced_index<1>, "hello world"};
         CHECK(get<1>(v) == "hello world");
-        MoveOnlyString s = get<1>(std::move(v));
+        MoveOnlyString s = get<1>(eastl::move(v));
         CHECK(s == "hello world");
         CHECK(get<1>(v) == "");
         v.emplace<1>("goodbye");
         CHECK(get<1>(v) == "goodbye");
-        auto v2 = std::move(v);
+        auto v2 = eastl::move(v);
         CHECK(get<1>(v2) == "goodbye");
         CHECK(get<1>(v) == "");
-        v = std::move(v2);
+        v = eastl::move(v2);
         CHECK(get<1>(v) == "goodbye");
         CHECK(get<1>(v2) == "");
     }
@@ -132,17 +146,17 @@ int main()
         MoveOnlyString s = "hello world";
         variant<MoveOnlyString&> v{emplaced_index<0>, s};
         CHECK(get<0>(v) == "hello world");
-        MoveOnlyString &s2 = get<0>(std::move(v));
+        MoveOnlyString &s2 = get<0>(eastl::move(v));
         CHECK(&s2 == &s);
     }
 
     // Apply test 1
     {
         std::stringstream sout;
-        variant<int, std::string> v{emplaced_index<1>, "hello"};
+        variant<int, eastl::string> v{emplaced_index<1>, "hello"};
         auto fun = overload(
             [&sout](int&) {sout << "int";},
-            [&sout](std::string&)->int {sout << "string"; return 42;});
+            [&sout](eastl::string&)->int {sout << "string"; return 42;});
         variant<void, int> x = v.visit(fun);
         CHECK(sout.str() == "string");
         CHECK(x.index() == 1u);
@@ -152,11 +166,11 @@ int main()
     // Apply test 2
     {
         std::stringstream sout;
-        std::string s = "hello";
-        variant<int, std::string&> const v{emplaced_index<1>, s};
+        eastl::string s = "hello";
+        variant<int, eastl::string&> const v{emplaced_index<1>, s};
         auto fun = overload(
             [&sout](int const&) {sout << "int";},
-            [&sout](std::string&)->int {sout << "string"; return 42;});
+            [&sout](eastl::string&)->int {sout << "string"; return 42;});
         variant<void, int> x = v.visit(fun);
         CHECK(sout.str() == "string");
         CHECK(x.index() == 1u);
@@ -172,11 +186,11 @@ int main()
 
     // Variant and arrays
     {
-        variant<int[5], std::vector<int>> v{emplaced_index<0>, {1,2,3,4,5}};
+        variant<int[5], eastl::vector<int>> v{emplaced_index<0>, {1,2,3,4,5}};
         int (&rgi)[5] = get<0>(v);
         check_equal(rgi, {1,2,3,4,5});
 
-        variant<int[5], std::vector<int>> v2{emplaced_index<0>, {}};
+        variant<int[5], eastl::vector<int>> v2{emplaced_index<0>, {}};
         int (&rgi2)[5] = get<0>(v2);
         check_equal(rgi2, {0,0,0,0,0});
 

@@ -9,23 +9,37 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
-#include <memory>
-#include <range/v3/view/for_each.hpp>
-#include <range/v3/view/move.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/memory.h>
+#include <EASTL/ranges/view/for_each.hpp>
+#include <EASTL/ranges/view/move.hpp>
 #include "./simple_test.hpp"
 #include "./test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 
 using namespace ranges;
 
 int main()
 {
-    std::vector<std::unique_ptr<int>> d;
-    d.emplace_back(std::unique_ptr<int>(new int(1)));
-    d.emplace_back(std::unique_ptr<int>(new int(5)));
-    d.emplace_back(std::unique_ptr<int>(new int(4)));
+    eastl::vector<eastl::unique_ptr<int>> d;
+    d.emplace_back(eastl::unique_ptr<int>(new int(1)));
+    d.emplace_back(eastl::unique_ptr<int>(new int(5)));
+    d.emplace_back(eastl::unique_ptr<int>(new int(4)));
 
-    auto rng = d | views::move | views::for_each([](std::unique_ptr<int> ptr)
+    auto rng = d | views::move | views::for_each([](eastl::unique_ptr<int> ptr)
     {
         return yield(*ptr);
     });

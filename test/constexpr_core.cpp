@@ -9,22 +9,32 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/detail/config.hpp>
+#include <EASTL/ranges/detail/config.hpp>
 
 #if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_14
 
-#include <range/v3/range/access.hpp>
-#include <range/v3/range/operations.hpp>
-#include <range/v3/range/primitives.hpp>
-#include <range/v3/utility/addressof.hpp>
+#include <EASTL/ranges/range/access.hpp>
+#include <EASTL/ranges/range/operations.hpp>
+#include <EASTL/ranges/range/primitives.hpp>
+#include <EASTL/ranges/utility/addressof.hpp>
 
 #include "array.hpp"
 #include "test_iterators.hpp"
 
+//TODO:46) Basically this is the culmination of all eastl::address vs constexpr, basically if constexpr is available then eastl::address must be constexpr as well
+/*  template<typename T>
+    constexpr T * addressof(T & value) EA_NOEXCEPT
+    {
+        if constexpr(true)
+            return __builtin_addressof(value);
+        else
+            return reinterpret_cast<T *>(&const_cast<char &>(reinterpret_cast<const volatile char &>(value)));            
+    }
+ */
+
 // Test sequence 1,2,3,4
 template<typename It>
-constexpr /*c++14*/ auto test_it_back(It, It last,
-    std::bidirectional_iterator_tag) -> bool
+constexpr /*c++14*/ auto test_it_back(It, It last, eastl::bidirectional_iterator_tag) -> bool
 {
     auto end_m1_2 = It{ranges::prev(last, 1)};
     if (*end_m1_2 != 4) { return false; }
@@ -53,7 +63,7 @@ constexpr /*c++14*/ auto test_it_(It beg, It last) -> bool
     auto end3 = beg;
     ranges::advance(end3, 4);
     if (end3 != last) { return false; }
-    if (ranges::iter_enumerate(beg, last) != std::pair<std::ptrdiff_t, It>{4, last})
+    if (ranges::iter_enumerate(beg, last) != eastl::pair<std::ptrdiff_t, It>{4, last})
     {
         return false;
     }
@@ -72,8 +82,7 @@ constexpr /*c++14*/ auto test_rit_(It beg, It last) -> bool
     if (ranges::next(beg, 4) != last) { return false; }
     auto end_m1 = It{ranges::next(beg, 3)};
     if (*end_m1 != 1) { return false; }
-    if (ranges::detail::is_convertible<ranges::iterator_tag_of<It>,
-                                       std::bidirectional_iterator_tag>{})
+    if (ranges::detail::is_convertible<ranges::iterator_tag_of<It>, eastl::bidirectional_iterator_tag>{})
     {
         auto end_m1_2 = It{ranges::prev(last, 1)};
         if (*end_m1_2 != 1) { return false; }
@@ -85,7 +94,7 @@ constexpr /*c++14*/ auto test_rit_(It beg, It last) -> bool
     ranges::advance(end3, 4);
     if (end3 != last) { return false; }
     using D = ranges::iter_difference_t<It>;
-    if (ranges::iter_enumerate(beg, last) != std::pair<D, It>{4, last})
+    if (ranges::iter_enumerate(beg, last) != eastl::pair<D, It>{4, last})
     {
         return false;
     }
@@ -280,8 +289,8 @@ void test_constexpr_addressof() {
     static ADDR_CONSTEXPR addr::Bad2 const* pb2 = ranges::detail::addressof(b2);
 
 #ifdef __cpp_lib_addressof_constexpr
-    static_assert(std::addressof(b) == pb, "");
-    static_assert(std::addressof(b2) == pb2, "");
+    static_assert(eastl::addressof(b) == pb, "");
+    static_assert(eastl::addressof(b2) == pb2, "");
 #else
     (void)pb;
     (void)pb2;

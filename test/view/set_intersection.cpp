@@ -10,27 +10,40 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
+#include <EASTL/vector.h>
 #include <sstream>
-#include <range/v3/core.hpp>
-#include <range/v3/range_for.hpp>
-#include <range/v3/algorithm/set_algorithm.hpp>
-#include <range/v3/algorithm/move.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/iterator/insert_iterators.hpp>
-#include <range/v3/functional/identity.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/view/all.hpp>
-#include <range/v3/view/const.hpp>
-#include <range/v3/view/drop_while.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/set_algorithm.hpp>
-#include <range/v3/view/stride.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/transform.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/range_for.hpp>
+#include <EASTL/ranges/algorithm/set_algorithm.hpp>
+#include <EASTL/ranges/algorithm/move.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/iterator/insert_iterators.hpp>
+#include <EASTL/ranges/functional/identity.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/view/all.hpp>
+#include <EASTL/ranges/view/const.hpp>
+#include <EASTL/ranges/view/drop_while.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/set_algorithm.hpp>
+#include <EASTL/ranges/view/stride.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/transform.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -198,11 +211,11 @@ int main()
 
     // move
     {
-        auto v0 = to<std::vector<MoveOnlyString>>({"a","b","b","c","x","x"});
-        auto v1 = to<std::vector<MoveOnlyString>>({"b","x","y","z"});
+        auto v0 = to<eastl::vector<MoveOnlyString>>({"a","b","b","c","x","x"});
+        auto v1 = to<eastl::vector<MoveOnlyString>>({"b","x","y","z"});
         auto res = views::set_intersection(v0, v1, [](const MoveOnlyString& a, const MoveOnlyString& b){return a<b;});
 
-        std::vector<MoveOnlyString> expected;
+        eastl::vector<MoveOnlyString> expected;
         move(res, back_inserter(expected));
 
         ::check_equal(expected, {"b","x"});

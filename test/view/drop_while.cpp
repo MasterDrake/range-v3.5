@@ -9,14 +9,27 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/drop_while.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/list.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/drop_while.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct my_data
 {
@@ -44,7 +57,7 @@ int main()
     CHECK(*(b+1) == 26);
     ::check_equal(rng0 | views::take(10), {25, 26, 27, 28, 29, 30, 31, 32, 33, 34});
 
-    std::list<int> vi{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    eastl::list<int> vi{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     auto rng1 = vi | views::drop_while([](int i) { return i != 50; });
     CPP_assert(range_cardinality<decltype(rng1)>::value == ranges::finite);
     CPP_assert(view_<decltype(rng1)>);
@@ -75,9 +88,9 @@ int main()
 
     {
         // with projection
-        const std::list<my_data> data_list{{1}, {2}, {3}, {1}};
+        const eastl::list<my_data> data_list{{1}, {2}, {3}, {1}};
         auto rng = data_list | views::drop_while([](int i){ return i <= 2; }, &my_data::i);
-        ::check_equal(rng, std::list<my_data>{{3}, {1}});
+        ::check_equal(rng, eastl::list<my_data>{{3}, {1}});
     }
 
     auto rng2 = rgi | views::drop_while([](int i) { return i != 50; });

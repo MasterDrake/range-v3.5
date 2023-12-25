@@ -14,14 +14,16 @@
 
 #include <cstddef>
 #include <atomic>
-#include <memory>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/utility/swap.hpp>
+#include <EASTL/memory.h>
+#include <EASTL/shared_ptr.h>
+
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/utility/swap.hpp>
 
 template<typename T, bool Sized = true>
 struct debug_input_view : ranges::view_base
 {
-    static_assert(std::is_object<T>::value, "");
+    static_assert(eastl::is_object<T>::value, "");
 
     using index_t = std::ptrdiff_t;
     using version_t = long;
@@ -39,12 +41,12 @@ struct debug_input_view : ranges::view_base
             RANGES_ENSURE(p || !n);
         }
     };
-    std::shared_ptr<data> data_{};
+    eastl::shared_ptr<data> data_{};
     version_t version_ = 0;
 
     debug_input_view() = default;
     debug_input_view(T* p, index_t size)
-      : data_(std::make_shared<data>(p, size))
+      : data_(eastl::make_shared<data>(p, size))
     {}
     template<index_t N>
     debug_input_view(T (&data)[N])
@@ -70,8 +72,8 @@ struct debug_input_view : ranges::view_base
     };
     struct iterator
     {
-        using iterator_category = std::input_iterator_tag;
-        using value_type = meta::_t<std::remove_cv<T>>;
+        using iterator_category = eastl::input_iterator_tag;
+        using value_type = meta::_t<eastl::remove_cv<T>>;
         using difference_type = index_t;
         using reference = T &;
         using pointer = T *;

@@ -18,9 +18,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/view/unbounded.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/view/unbounded.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
@@ -144,22 +144,22 @@ void test_pred()
     CHECK(equal(InputIterator<const int*>(ia),
                  Sentinel<const int*>(ia+s),
                  InputIterator<const int*>(ia),
-                 std::equal_to<int>()));
+                 eastl::equal_to<int>()));
     CHECK(equal(InputIterator<const int*>(ia),
                  Sentinel<const int*>(ia+s),
                  InputIterator<const int*>(ia),
                  Sentinel<const int*>(ia + s),
-                 std::equal_to<int>()));
+                 eastl::equal_to<int>()));
     CHECK(equal(RandomAccessIterator<const int*>(ia),
                  RandomAccessIterator<const int*>(ia+s),
                  RandomAccessIterator<const int*>(ia),
                  RandomAccessIterator<const int*>(ia+s),
-                 std::equal_to<int>()));
+                 eastl::equal_to<int>()));
     CHECK(equal(RandomAccessIterator<const int*>(ia),
                  Sentinel<const int*>(ia+s),
                  RandomAccessIterator<const int*>(ia),
                  Sentinel<const int*>(ia + s),
-                 std::equal_to<int>()));
+                 eastl::equal_to<int>()));
 
     comparison_count = 0;
     CHECK(!equal(InputIterator<const int*>(ia),
@@ -185,22 +185,22 @@ void test_pred()
     CHECK(!equal(InputIterator<const int*>(ia),
                   Sentinel<const int*>(ia+s),
                   InputIterator<const int*>(ib),
-                  std::equal_to<int>()));
+                  eastl::equal_to<int>()));
     CHECK(!equal(InputIterator<const int*>(ia),
                   Sentinel<const int*>(ia+s),
                   InputIterator<const int*>(ib),
                   Sentinel<const int*>(ib + s),
-                  std::equal_to<int>()));
+                  eastl::equal_to<int>()));
     CHECK(!equal(RandomAccessIterator<const int*>(ia),
                   RandomAccessIterator<const int*>(ia+s),
                   RandomAccessIterator<const int*>(ib),
                   RandomAccessIterator<const int*>(ib+s),
-                  std::equal_to<int>()));
+                  eastl::equal_to<int>()));
     CHECK(!equal(RandomAccessIterator<const int*>(ia),
                   Sentinel<const int*>(ia+s),
                   RandomAccessIterator<const int*>(ib),
                   Sentinel<const int*>(ib + s),
-                  std::equal_to<int>()));
+                  eastl::equal_to<int>()));
 }
 
 void test_rng_pred()
@@ -212,22 +212,22 @@ void test_rng_pred()
     CHECK(equal(make_subrange(InputIterator<const int*>(ia),
                  Sentinel<const int*>(ia+s)),
                  InputIterator<const int*>(ia),
-                 std::equal_to<int>()));
+                 eastl::equal_to<int>()));
     CHECK(equal(make_subrange(InputIterator<const int*>(ia),
                  Sentinel<const int*>(ia+s)),
                  make_subrange(InputIterator<const int*>(ia),
                  Sentinel<const int*>(ia + s)),
-                 std::equal_to<int>()));
+                 eastl::equal_to<int>()));
     CHECK(equal(make_subrange(RandomAccessIterator<const int*>(ia),
                  RandomAccessIterator<const int*>(ia+s)),
                  make_subrange(RandomAccessIterator<const int*>(ia),
                  RandomAccessIterator<const int*>(ia+s)),
-                 std::equal_to<int>()));
+                 eastl::equal_to<int>()));
     CHECK(equal(make_subrange(RandomAccessIterator<const int*>(ia),
                  Sentinel<const int*>(ia+s)),
                  make_subrange(RandomAccessIterator<const int*>(ia),
                  Sentinel<const int*>(ia + s)),
-                 std::equal_to<int>()));
+                 eastl::equal_to<int>()));
 
     comparison_count = 0;
     CHECK(!equal(make_subrange(InputIterator<const int*>(ia),
@@ -253,22 +253,22 @@ void test_rng_pred()
     CHECK(!equal(make_subrange(InputIterator<const int*>(ia),
                   Sentinel<const int*>(ia+s)),
                   InputIterator<const int*>(ib),
-                  std::equal_to<int>()));
+                  eastl::equal_to<int>()));
     CHECK(!equal(make_subrange(InputIterator<const int*>(ia),
                   Sentinel<const int*>(ia+s)),
                   make_subrange(InputIterator<const int*>(ib),
                   Sentinel<const int*>(ib + s)),
-                  std::equal_to<int>()));
+                  eastl::equal_to<int>()));
     CHECK(!equal(make_subrange(RandomAccessIterator<const int*>(ia),
                   RandomAccessIterator<const int*>(ia+s)),
                   make_subrange(RandomAccessIterator<const int*>(ib),
                   RandomAccessIterator<const int*>(ib+s)),
-                  std::equal_to<int>()));
+                  eastl::equal_to<int>()));
     CHECK(!equal(make_subrange(RandomAccessIterator<const int*>(ia),
                   Sentinel<const int*>(ia+s)),
                   make_subrange(RandomAccessIterator<const int*>(ib),
                   Sentinel<const int*>(ib + s)),
-                  std::equal_to<int>()));
+                  eastl::equal_to<int>()));
 }
 
 int main()
@@ -280,9 +280,9 @@ int main()
 
     using IL = std::initializer_list<int>;
     int *p = nullptr;
-    static_assert(std::is_same<bool, decltype(ranges::equal(IL{1, 2, 3, 4}, p))>::value, "");
-    static_assert(std::is_same<bool, decltype(ranges::equal(IL{1, 2, 3, 4}, IL{1, 2, 3, 4}))>::value, "");
-    static_assert(std::is_same<bool, decltype(ranges::equal(IL{1, 2, 3, 4}, ranges::views::unbounded(p)))>::value, "");
+    static_assert(eastl::is_same<bool, decltype(ranges::equal(IL{1, 2, 3, 4}, p))>::value, "");
+    static_assert(eastl::is_same<bool, decltype(ranges::equal(IL{1, 2, 3, 4}, IL{1, 2, 3, 4}))>::value, "");
+    static_assert(eastl::is_same<bool, decltype(ranges::equal(IL{1, 2, 3, 4}, ranges::views::unbounded(p)))>::value, "");
 
 #if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_14 && RANGES_CONSTEXPR_INVOKE
     static_assert(ranges::equal(IL{1, 2, 3, 4}, IL{1, 2, 3, 4}), "");

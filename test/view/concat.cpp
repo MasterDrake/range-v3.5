@@ -9,29 +9,44 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <array>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/concat.hpp>
-#include <range/v3/view/generate.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/remove_if.hpp>
-#include <range/v3/view/take_while.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/array.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/concat.hpp>
+#include <EASTL/ranges/view/generate.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/remove_if.hpp>
+#include <EASTL/ranges/view/take_while.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
 
-    std::vector<std::string> his_face{"this", "is", "his", "face"};
-    std::vector<std::string> another_mess{"another", "fine", "mess"};
+    eastl::vector<eastl::string> his_face{"this", "is", "his", "face"};
+    eastl::vector<eastl::string> another_mess{"another", "fine", "mess"};
     auto joined = views::concat(his_face, another_mess);
     CPP_assert(view_<decltype(joined)>);
     CPP_assert(random_access_range<decltype(joined)>);
-    static_assert(std::is_same<range_reference_t<decltype(joined)>, std::string &>::value, "");
+    static_assert(eastl::is_same<range_reference_t<decltype(joined)>, eastl::string &>::value, "");
     CHECK(joined.size() == 7u);
     CHECK((joined.end() - joined.begin()) == 7);
     ::check_equal(joined | views::reverse, {"mess", "fine", "another", "face", "his", "is", "this"});
@@ -74,8 +89,8 @@ int main()
     CHECK(*(last-=1) == "this");
 
     {
-        const std::array<int, 3> a{{0, 1, 2}};
-        const std::array<int, 2> b{{3, 4}};
+        const eastl::array<int, 3> a{{0, 1, 2}};
+        const eastl::array<int, 2> b{{3, 4}};
         check_equal(views::concat(a, b), {0, 1, 2, 3, 4});
 
         auto odd = [](int i) { return i % 2 != 0; };

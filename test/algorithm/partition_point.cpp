@@ -22,11 +22,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <memory>
-#include <utility>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/partition_point.hpp>
-#include <range/v3/view/counted.hpp>
+#include <EASTL/memory.h>
+#include <EASTL/utility.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/partition_point.hpp>
+#include <EASTL/ranges/view/counted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

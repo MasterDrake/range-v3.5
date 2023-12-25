@@ -10,19 +10,19 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <concepts/concepts.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/range/operations.hpp>
-#include <range/v3/range/primitives.hpp>
-#include <range/v3/range_fwd.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/view/addressof.hpp>
-#include <range/v3/view/drop.hpp>
-#include <range/v3/view/drop_while.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/subrange.hpp>
-#include <range/v3/view/tail.hpp>
-#include <range/v3/view/trim.hpp>
+#include <EASTL/ranges/concepts/concepts.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/range/operations.hpp>
+#include <EASTL/ranges/range/primitives.hpp>
+#include <EASTL/ranges/range_fwd.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/view/addressof.hpp>
+#include <EASTL/ranges/view/drop.hpp>
+#include <EASTL/ranges/view/drop_while.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/subrange.hpp>
+#include <EASTL/ranges/view/tail.hpp>
+#include <EASTL/ranges/view/trim.hpp>
 
 #include "../test_iterators.hpp"
 #include "../test_utils.hpp"
@@ -85,8 +85,7 @@ int main()
     CHECK(distance(rng7) == 1);
     check_equal(&front(rng7), ib + bs - 1);
 
-    auto rng8 = make_subrange(BidirectionalIterator<const int*>(ia),
-        BidirectionalIterator<const int*>(ia + distance(ia))) | views::trim(p);
+    auto rng8 = make_subrange(BidirectionalIterator<const int*>(ia), BidirectionalIterator<const int*>(ia + distance(ia))) | views::trim(p);
     static_assert(same_as<iterator_t<decltype(rng8)>, iterator_t<decltype(rng8.base())>>, "");
     CPP_assert(view_<decltype(rng8)>);
     CPP_assert(bidirectional_range<decltype(rng8)>);

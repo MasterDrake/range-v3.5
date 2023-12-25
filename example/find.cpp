@@ -21,23 +21,36 @@
 // fwd_list: *i: 4
 // deque:    *i: 6
 
-#include <array>
-#include <deque>
-#include <forward_list>
+#include <EASTL/array.h>
+#include <EASTL/deque.h>
+#include <EASTL/slist.h>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
 #include <iostream>
-#include <list>
-#include <range/v3/all.hpp>
-#include <vector>
+
+#include <EASTL/ranges/all.hpp>
 using std::cout;
 
 auto is_six = [](int i) -> bool { return i == 6; };
 
-int
-main()
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+int main()
 {
     cout << "vector:   ";
 
-    std::vector<int> v{6, 2, 6, 4, 6, 1};
+    eastl::vector<int> v{6, 2, 6, 4, 6, 1};
     {
         auto i = ranges::find(v, 6); // 1 2 3 4 5 6
         cout << "*i: " << *i << '\n';
@@ -74,7 +87,7 @@ main()
 
     cout << "\narray:    ";
 
-    std::array<int, 6> a{6, 2, 3, 4, 5, 1};
+    eastl::array<int, 6> a{6, 2, 3, 4, 5, 1};
     {
         auto i = ranges::find(a, 6);
         if(i != ranges::end(a))
@@ -84,7 +97,7 @@ main()
     }
     cout << "\nlist:     ";
 
-    std::list<int> li{6, 2, 3, 4, 5, 1};
+    eastl::list<int> li{6, 2, 3, 4, 5, 1};
     {
         auto i = ranges::find(li, 6);
         if(i != ranges::end(li))
@@ -95,7 +108,7 @@ main()
 
     cout << "\nfwd_list: ";
 
-    std::forward_list<int> fl{6, 2, 3, 4, 5, 1};
+    eastl::slist<int> fl{6, 2, 3, 4, 5, 1};
     {
         auto i = ranges::find(fl, 4);
         if(i != ranges::end(fl))
@@ -105,7 +118,7 @@ main()
     }
     cout << "\ndeque:    ";
 
-    std::deque<int> d{6, 2, 3, 4, 5, 1};
+    eastl::deque<int> d{6, 2, 3, 4, 5, 1};
     {
         auto i = ranges::find(d, 6);
         if(i != ranges::end(d))

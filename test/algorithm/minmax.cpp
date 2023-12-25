@@ -19,18 +19,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <range/v3/algorithm/minmax.hpp>
-#include <range/v3/view/subrange.hpp>
-#include <memory>
-#include <numeric>
+#include <EASTL/ranges/algorithm/minmax.hpp>
+#include <EASTL/ranges/view/subrange.hpp>
+#include <EASTL/memory.h>
+#include <EASTL/numeric.h>
 #include <random>
-#include <algorithm>
+#include <EASTL/algorithm.h>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
 RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-
+//todo: random and std::shuffle
 namespace
 {
     std::mt19937 gen;
@@ -53,8 +53,8 @@ namespace
     test_iter(unsigned N)
     {
         RANGES_ENSURE(N > 0);
-        std::unique_ptr<int[]> a{new int[N]};
-        std::iota(a.get(), a.get()+N, 0);
+        eastl::unique_ptr<int[]> a{new int[N]};
+        eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);
         test_iter(Iter(a.get()), Sent(a.get()+N));
     }
@@ -75,7 +75,7 @@ namespace
     test_iter_comp(Iter first, Sent last)
     {
         RANGES_ENSURE(first != last);
-        typedef std::greater<int> Compare;
+        typedef eastl::greater<int> Compare;
         Compare comp;
         auto rng = ranges::make_subrange(first, last);
         auto res = ranges::minmax(rng, comp);
@@ -90,8 +90,8 @@ namespace
     test_iter_comp(unsigned N)
     {
         RANGES_ENSURE(N > 0);
-        std::unique_ptr<int[]> a{new int[N]};
-        std::iota(a.get(), a.get()+N, 0);
+        eastl::unique_ptr<int[]> a{new int[N]};
+        eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);
         test_iter_comp(Iter(a.get()), Sent(a.get()+N));
     }
@@ -158,7 +158,7 @@ int main()
 
     // Works with projections?
     S s[] = {S{1,0},S{2,1},S{3,2},S{4,3},S{-4,4},S{40,5},S{-4,6},S{40,7},S{7,8},S{8,9},S{9,10}};
-    auto res = ranges::minmax(s, std::less<int>{}, &S::value);
+    auto res = ranges::minmax(s, eastl::less<int>{}, &S::value);
     CHECK(res.min.value == -4);
     CHECK(res.min.index == 4);
     CHECK(res.max.value == 40);

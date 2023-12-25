@@ -26,15 +26,28 @@
 // Implementation based on the code in libc++
 //   http://http://libcxx.llvm.org/
 
-#include <vector>
+#include <EASTL/vector.h>
 
-#include <range/v3/algorithm/is_sorted_until.hpp>
-#include <range/v3/core.hpp>
+#include <EASTL/ranges/algorithm/is_sorted_until.hpp>
+#include <EASTL/ranges/core.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 /// Calls the iterator interface of the algorithm
 template<class Iter>
@@ -46,10 +59,10 @@ struct iter_call
     template<class B, class E, class... Args>
     auto operator()(B && It, E && e, Args &&... args)
         -> decltype(ranges::is_sorted_until(begin_t{It}, sentinel_t{e},
-                                            std::forward<Args>(args)...))
+                                            eastl::forward<Args>(args)...))
     {
         return ranges::is_sorted_until(
-            begin_t{It}, sentinel_t{e}, std::forward<Args>(args)...);
+            begin_t{It}, sentinel_t{e}, eastl::forward<Args>(args)...);
     }
 };
 
@@ -64,11 +77,11 @@ struct range_call
     static auto _impl(B && It, E && e, Args &&... args)
         -> decltype(ranges::is_sorted_until(
             ::as_lvalue(ranges::make_subrange(begin_t{It}, sentinel_t{e})),
-            std::forward<Args>(args)...))
+            eastl::forward<Args>(args)...))
     {
         return ranges::is_sorted_until(
             ::as_lvalue(ranges::make_subrange(begin_t{It}, sentinel_t{e})),
-            std::forward<Args>(args)...);
+            eastl::forward<Args>(args)...);
     }
 
     template<class B, class E>
@@ -255,150 +268,150 @@ void test_basic()
     {
         int a[] = {0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a, std::greater<int>()) == It(a));
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a, eastl::greater<int>()) == It(a));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 1));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 1));
     }
     {
         int a[] = {1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
 
     {
         int a[] = {0, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {0, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 2));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 2));
     }
     {
         int a[] = {0, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 1));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 1));
     }
     {
         int a[] = {0, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 1));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 1));
     }
     {
         int a[] = {1, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {1, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 2));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 2));
     }
     {
         int a[] = {1, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {1, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
 
     {
         int a[] = {0, 0, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {0, 0, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 3));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 3));
     }
     {
         int a[] = {0, 0, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 2));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 2));
     }
     {
         int a[] = {0, 0, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 2));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 2));
     }
     {
         int a[] = {0, 1, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 1));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 1));
     }
     {
         int a[] = {0, 1, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 1));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 1));
     }
     {
         int a[] = {0, 1, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 1));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 1));
     }
     {
         int a[] = {0, 1, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 1));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 1));
     }
     {
         int a[] = {1, 0, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {1, 0, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 3));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 3));
     }
     {
         int a[] = {1, 0, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 2));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 2));
     }
     {
         int a[] = {1, 0, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 2));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 2));
     }
     {
         int a[] = {1, 1, 0, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {1, 1, 0, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + 3));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + 3));
     }
     {
         int a[] = {1, 1, 1, 0};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
     {
         int a[] = {1, 1, 1, 1};
         unsigned sa = sizeof(a) / sizeof(a[0]);
-        CHECK(Fun{}(a, a + sa, std::greater<int>()) == It(a + sa));
+        CHECK(Fun{}(a, a + sa, eastl::greater<int>()) == It(a + sa));
     }
 }
 
@@ -414,8 +427,8 @@ constexpr bool test_constexpr()
     auto b1 = ++b;
     auto end = ranges::end(a);
     STATIC_CHECK_RETURN(ranges::is_sorted_until(a) == end);
-    STATIC_CHECK_RETURN(ranges::is_sorted_until(a, std::less<>{}) == end);
-    STATIC_CHECK_RETURN(ranges::is_sorted_until(a, std::greater<>{}) == b1);
+    STATIC_CHECK_RETURN(ranges::is_sorted_until(a, eastl::less<>{}) == end);
+    STATIC_CHECK_RETURN(ranges::is_sorted_until(a, eastl::greater<>{}) == b1);
     return true;
 }
 
@@ -440,9 +453,8 @@ int main()
     /// Projection test:
     {
         A as[] = {{0}, {1}, {2}, {3}, {4}};
-        CHECK(ranges::is_sorted_until(as, std::less<int>{}, &A::a) == ranges::end(as));
-        CHECK(ranges::is_sorted_until(as, std::greater<int>{}, &A::a) ==
-              ranges::next(ranges::begin(as), 1));
+        CHECK(ranges::is_sorted_until(as, eastl::less<int>{}, &A::a) == ranges::end(as));
+        CHECK(ranges::is_sorted_until(as, eastl::greater<int>{}, &A::a) == ranges::next(ranges::begin(as), 1));
     }
 
     /// Rvalue range test:
@@ -450,15 +462,12 @@ int main()
         A as[] = {{0}, {1}, {2}, {3}, {4}};
 #ifndef RANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(
-            ranges::is_sorted_until(std::move(as), std::less<int>{}, &A::a)));
-        CHECK(::is_dangling(
-            ranges::is_sorted_until(std::move(as), std::greater<int>{}, &A::a)));
+            ranges::is_sorted_until(eastl::move(as), eastl::less<int>{}, &A::a)));
+        CHECK(::is_dangling( ranges::is_sorted_until(eastl::move(as), eastl::greater<int>{}, &A::a)));
 #endif // RANGES_WORKAROUND_MSVC_573728
-        std::vector<A> vec(ranges::begin(as), ranges::end(as));
-        CHECK(::is_dangling(
-            ranges::is_sorted_until(std::move(vec), std::less<int>{}, &A::a)));
-        CHECK(::is_dangling(
-            ranges::is_sorted_until(std::move(vec), std::greater<int>{}, &A::a)));
+        eastl::vector<A> vec(ranges::begin(as), ranges::end(as));
+        CHECK(::is_dangling(ranges::is_sorted_until(eastl::move(vec), eastl::less<int>{}, &A::a)));
+        CHECK(::is_dangling(ranges::is_sorted_until(eastl::move(vec), eastl::greater<int>{}, &A::a)));
     }
 
     {

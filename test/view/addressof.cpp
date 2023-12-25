@@ -12,22 +12,35 @@
 //
 
 #include <sstream>
-#include <vector>
+#include <EASTL/vector.h>
 
-#include <range/v3/core.hpp>
-#include <range/v3/view/addressof.hpp>
-#include <range/v3/view/facade.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/take.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/addressof.hpp>
+#include <EASTL/ranges/view/facade.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/take.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 using namespace ranges;
 
 void simple_test()
 {
-    std::vector<int> list = {1,2,3};
+    eastl::vector<int> list = {1,2,3};
 
     auto out = list | views::addressof;
 
@@ -40,16 +53,16 @@ struct test_istream_range
 private:
     friend range_access;
 
-    std::vector<int> *list;
+    eastl::vector<int> *list;
 
     struct cursor
     {
     private:
         std::size_t i = 0;
-        std::vector<int> *list = nullptr;
+        eastl::vector<int> *list = nullptr;
     public:
         cursor() = default;
-        explicit cursor(std::vector<int> &list_)
+        explicit cursor(eastl::vector<int> &list_)
           : list(&list_)
         {}
         void next()
@@ -72,7 +85,7 @@ private:
     }
 public:
     test_istream_range() = default;
-    explicit test_istream_range(std::vector<int> &list_)
+    explicit test_istream_range(eastl::vector<int> &list_)
       : list(&list_)
     {}
 };
@@ -84,7 +97,7 @@ void test_input_range()
     // It should be valid at least until next read.
     // For test purposes we use custom input range.
 
-    std::vector<int> list{1, 2, 3};
+    eastl::vector<int> list{1, 2, 3};
     auto rng = test_istream_range(list);
     CPP_assert(input_range<decltype(rng)>);
 
@@ -113,7 +126,7 @@ template<typename, typename = void>
 constexpr bool can_view = false;
 template<typename R>
 constexpr bool can_view<R,
-    meta::void_<decltype(views::addressof(std::declval<R>()))>> = true;
+    meta::void_<decltype(views::addressof(eastl::declval<R>()))>> = true;
 
 // prvalue ranges cannot be passed to views::addressof
 CPP_assert(!can_view<decltype(views::iota(0, 3))>);

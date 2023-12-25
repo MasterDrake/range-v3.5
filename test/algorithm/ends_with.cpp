@@ -10,10 +10,10 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <initializer_list>
-#include <range/v3/algorithm/ends_with.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/view/subrange.hpp>
+#include <EASTL/initializer_list.h>
+#include <EASTL/ranges/algorithm/ends_with.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/view/subrange.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 

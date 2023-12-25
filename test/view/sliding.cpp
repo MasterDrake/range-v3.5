@@ -10,22 +10,35 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <forward_list>
-#include <list>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/chunk_by.hpp>
-#include <range/v3/view/cycle.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/repeat.hpp>
-#include <range/v3/view/repeat_n.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/sliding.hpp>
-#include <range/v3/view/zip.hpp>
+#include <EASTL/slist.h>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/chunk_by.hpp>
+#include <EASTL/ranges/view/cycle.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/repeat.hpp>
+#include <EASTL/ranges/view/repeat_n.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/sliding.hpp>
+#include <EASTL/ranges/view/zip.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
 using namespace ranges;
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 namespace
 {
@@ -42,32 +55,32 @@ namespace
     CPP_assert(K < N);
 
     template<typename Adapted>
-    void test_size(Adapted& a, std::true_type)
+    void test_size(Adapted& a, eastl::true_type)
     {
         CPP_assert(sized_range<decltype(a)>);
         CHECK(size(a), unsigned(N - K + 1));
     }
     template<typename Adapted>
-    void test_size(Adapted&, std::false_type)
+    void test_size(Adapted&, eastl::false_type)
     {}
 
     template<typename Adapted>
-    void test_common(Adapted& a, std::true_type)
+    void test_common(Adapted& a, eastl::true_type)
     {
         CPP_assert(common_range<decltype(a)>);
     }
     // template<typename Adapted>
-    // void test_common(Adapted&, std::false_type)
+    // void test_common(Adapted&, eastl::false_type)
     // {}
 
     template<typename Adapted>
-    void test_prev(Adapted& a, iterator_t<Adapted> const& it, std::true_type)
+    void test_prev(Adapted& a, iterator_t<Adapted> const& it, eastl::true_type)
     {
         CPP_assert(bidirectional_range<decltype(a)>);
         ::check_equal(*ranges::prev(it, 3), views::iota(N - K - 2, N - 2));
     }
     template<typename Adapted>
-    void test_prev(Adapted&, iterator_t<Adapted> const&, std::false_type)
+    void test_prev(Adapted&, iterator_t<Adapted> const&, eastl::false_type)
     {}
 
     template<typename Rng, bool>
@@ -99,7 +112,7 @@ namespace
 
         using IterTagOfBase = 
             meta::if_c<contiguous_iterator<iterator_t<Base>>,
-                std::random_access_iterator_tag,
+                eastl::random_access_iterator_tag,
                 iterator_tag_of<iterator_t<Base>>>;
 
         CPP_assert(same_as<
@@ -126,31 +139,31 @@ namespace
 
 void bug_975()
 {
-    std::vector<double> v{2.0, 2.0, 3.0, 1.0};
-    std::vector<int> i{1, 2, 1, 2};
-    std::vector<int> t{1, 1, 2, 2};
+    eastl::vector<double> v{2.0, 2.0, 3.0, 1.0};
+    eastl::vector<int> i{1, 2, 1, 2};
+    eastl::vector<int> t{1, 1, 2, 2};
     {
         using namespace ranges;
         auto vals = views::zip(v, i, t);
-        using T = std::tuple<double, int, int>;
+        using T = eastl::tuple<double, int, int>;
         auto g = vals | views::chunk_by(
             [](T t1, T t2)
             {
-                return std::get<2>(t1) == std::get<2>(t2);
+                return eastl::get<2>(t1) == eastl::get<2>(t2);
             }
         );
 
         auto windows = views::sliding(g, 2);
-        auto it = std::begin(windows);
+        auto it = eastl::begin(windows);
         (void)it;
     }
 }
 
 int main()
 {
-    test_finite(to<std::forward_list<int>>());
-    test_finite(to<std::list<int>>());
-    test_finite(to<std::vector<int>>());
+    test_finite(to<eastl::slist<int>>());
+    test_finite(to<eastl::list<int>>());
+    test_finite(to<eastl::vector<int>>());
     test_finite(identity{});
 
     {

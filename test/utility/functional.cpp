@@ -10,12 +10,28 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <memory>
-#include <range/v3/functional/invoke.hpp>
-#include <range/v3/functional/not_fn.hpp>
-#include <range/v3/view/filter.hpp>
+#include <EASTL/memory.h>
+#include <EASTL/ranges/functional/invoke.hpp>
+#include <EASTL/ranges/functional/not_fn.hpp>
+#include <EASTL/ranges/view/filter.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+//TODO:26) the noexcept checks works, so why comment them out?
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 
 CPP_assert(ranges::constructible_from<ranges::reference_wrapper<int>, int&>);
 CPP_assert(!ranges::constructible_from<ranges::reference_wrapper<int>, int&&>);
@@ -132,12 +148,12 @@ namespace
             CHECK(ranges::invoke(&A::g, &a, 2) == 4);
         }
         {
-            std::unique_ptr<A> up(new A);
+            eastl::unique_ptr<A> up(new A);
             CHECK(ranges::invoke(&A::f, up) == 42);
             CHECK(ranges::invoke(&A::g, up, 2) == 4);
         }
         {
-            auto sp = std::make_shared<A>();
+            auto sp = eastl::make_shared<A>();
             CHECK(ranges::invoke(&A::f, sp) == 42);
             // CHECK(noexcept(ranges::invoke(&A::f, sp) == 42));
             CHECK(ranges::invoke(&A::g, sp, 2) == 4);
@@ -168,14 +184,14 @@ namespace
         }
 
         {
-            std::unique_ptr<A> up(new A);
+            eastl::unique_ptr<A> up(new A);
             CHECK(ranges::invoke(&A::i, up) == 13);
             ranges::invoke(&A::i, up) = 0;
             CHECK(up->i == 0);
         }
 
         {
-            auto sp = std::make_shared<A>();
+            auto sp = eastl::make_shared<A>();
             CHECK(ranges::invoke(&A::i, sp) == 13);
             ranges::invoke(&A::i, sp) = 0;
             CHECK(sp->i == 0);
@@ -204,8 +220,7 @@ int main()
     {
         // Check that not_fn works with callables
         Integer some_ints[] = {{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}};
-        ::check_equal(some_ints | ranges::views::filter(ranges::not_fn(&Integer::odd)),
-                      {0,2,4,6});
+        ::check_equal(some_ints | ranges::views::filter(ranges::not_fn(&Integer::odd)),{0,2,4,6});
     }
 
     // Check that not_fn forwards value category
@@ -227,7 +242,7 @@ int main()
         constexpr auto k = kind::rvalue;
         using F = fn<k>;
         auto f = ranges::not_fn(F{});
-        CHECK(std::move(f)() == true); // xvalue
+        CHECK(eastl::move(f)() == true); // xvalue
         CHECK(last_call == k);
 
         CHECK(decltype(f){}() == true); // prvalue

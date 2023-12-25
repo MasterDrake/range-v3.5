@@ -18,12 +18,27 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <utility>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/find.hpp>
+#include <EASTL/ranges/algorithm/find.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/string.h>
+#include <EASTL/utility.h>
+#include <EASTL/vector.h>
+
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct S
 {
@@ -53,43 +68,39 @@ int main()
     constexpr auto s = size(ia);
 
     {
-        InputIterator<const int*> r = find(InputIterator<const int*>(ia),
-                                            InputIterator<const int*>(ia+s), 3);
+        InputIterator<const int *> r = find(InputIterator<const int *>(ia), InputIterator<const int *>(ia + s), 3);
         CHECK(*r == 3);
-        r = find(InputIterator<const int*>(ia),
-                 InputIterator<const int*>(ia+s), 10);
-        CHECK(r == InputIterator<const int*>(ia+s));
+        r = find(InputIterator<const int *>(ia), InputIterator<const int *>(ia + s), 10);
+        CHECK(r == InputIterator<const int *>(ia + s));
 
-        r = find(InputIterator<const int*>(ia),
-                 Sentinel<const int*>(ia+s), 3);
+        r = find(InputIterator<const int *>(ia), Sentinel<const int *>(ia + s), 3);
         CHECK(*r == 3);
-        r = find(InputIterator<const int*>(ia),
-                 Sentinel<const int*>(ia+s), 10);
-        CHECK(r == InputIterator<const int*>(ia+s));
+        r = find(InputIterator<const int *>(ia), Sentinel<const int *>(ia + s), 10);
+        CHECK(r == InputIterator<const int *>(ia + s));
     }
 
     {
-        int *pi = find(ia, 3);
+        int * pi = find(ia, 3);
         CHECK(*pi == 3);
         pi = find(ia, 10);
-        CHECK(pi == ia+s);
+        CHECK(pi == ia + s);
     }
 
     {
 #ifndef RANGES_WORKAROUND_MSVC_573728
-        auto pj0 = find(std::move(ia), 3);
+        auto pj0 = find(eastl::move(ia), 3);
         CHECK(::is_dangling(pj0));
 #endif // RANGES_WORKAROUND_MSVC_573728
-        std::vector<int> vec(begin(ia), end(ia));
-        auto pj1 = find(std::move(vec), 3);
+        eastl::vector<int> vec(begin(ia), end(ia));
+        auto pj1 = find(eastl::move(vec), 3);
         CHECK(::is_dangling(pj1));
         auto pj2 = find(views::all(ia), 10);
-        CHECK(pj2 == ia+s);
+        CHECK(pj2 == ia + s);
     }
 
     {
         S sa[] = {{0}, {1}, {2}, {3}, {4}, {5}};
-        S *ps = find(sa, 3, &S::i_);
+        S * ps = find(sa, 3, &S::i_);
         CHECK(ps->i_ == 3);
         ps = find(sa, 10, &S::i_);
         CHECK(ps == end(sa));
@@ -97,7 +108,7 @@ int main()
 
     {
         // https://github.com/Microsoft/Range-V3-VS2015/issues/9
-        auto vec = std::vector<std::string>{{"a"}, {"b"}, {"c"}};
+        auto vec = eastl::vector<eastl::string>{{"a"}, {"b"}, {"c"}};
         auto it = ranges::find(vec, "b");
         CHECK(it == vec.begin() + 1);
     }

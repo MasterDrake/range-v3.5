@@ -11,19 +11,32 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <vector>
+#include <EASTL/vector.h>
 
-#include <range/v3/view/remove.hpp>
-#include <range/v3/view/remove_if.hpp>
+#include <EASTL/ranges/view/remove.hpp>
+#include <EASTL/ranges/view/remove_if.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
 using namespace ranges;
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 void test_straight()
 {
-    std::vector<int> vec = {1,2,3,4,5};
+    eastl::vector<int> vec = {1,2,3,4,5};
     auto out = vec | views::remove(2);
 
     ::check_equal(out, {1,3,4,5});
@@ -39,7 +52,7 @@ bool operator==(Int left, Int right)
 }
 void test_proj()
 {
-    const std::vector<Int> vec{ Int{1}, Int{2}, Int{3}, Int{4}, Int{5} };
+    const eastl::vector<Int> vec{ Int{1}, Int{2}, Int{3}, Int{4}, Int{5} };
     auto out = vec | views::remove(2, &Int::i);
 
     ::check_equal(out, {Int{1}, Int{3}, Int{4}, Int{5}});

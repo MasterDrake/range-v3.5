@@ -9,29 +9,42 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
 #include <sstream>
-#include <range/v3/core.hpp>
-#include <range/v3/view/istream.hpp>
-#include <range/v3/view/move.hpp>
-#include <range/v3/view/partial_sum.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/stride.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/iterator/insert_iterators.hpp>
-#include <range/v3/iterator/stream_iterators.hpp>
-#include <range/v3/numeric.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/istream.hpp>
+#include <EASTL/ranges/view/move.hpp>
+#include <EASTL/ranges/view/partial_sum.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/stride.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/iterator/insert_iterators.hpp>
+#include <EASTL/ranges/iterator/stream_iterators.hpp>
+#include <EASTL/ranges/numeric.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 // https://github.com/ericniebler/range-v3/issues/1291
 void bug_1291()
 {
-    std::vector<int> vec;
+    eastl::vector<int> vec;
 
     auto tx = vec | ranges::views::stride( 2 ) | ranges::views::partial_sum;
     ranges::accumulate( tx, 0 );
@@ -43,7 +56,7 @@ int main()
 
     auto const v = []
     {
-        std::vector<int> vec(50);
+        eastl::vector<int> vec(50);
         iota(vec, 0);
         return vec;
     }();
@@ -55,8 +68,7 @@ int main()
         CPP_assert(common_range<R>);
         CPP_assert(sized_range<R>);
         CPP_assert(range<R const>);
-        ::check_equal(rng | views::reverse,
-                    {48, 45, 42, 39, 36, 33, 30, 27, 24, 21, 18, 15, 12, 9, 6, 3, 0});
+        ::check_equal(rng | views::reverse, {48, 45, 42, 39, 36, 33, 30, 27, 24, 21, 18, 15, 12, 9, 6, 3, 0});
     }
 
     {
@@ -73,7 +85,7 @@ int main()
     }
 
     {
-        std::list<int> li;
+        eastl::list<int> li;
         copy(v, back_inserter(li));
         auto rng = li | views::stride(3);
         using R = decltype(rng);
@@ -97,7 +109,7 @@ int main()
         CHECK(ranges::distance(x2) == 17);
 
         auto it0 = x2.begin();
-        auto it1 = std::next(it0, 10);
+        auto it1 = eastl::next(it0, 10);
         CHECK((it1 - it0) == 10);
         CHECK((it0 - it1) == -10);
         CHECK((it0 - it0) == 0);
@@ -129,9 +141,9 @@ int main()
     }
 
     {
-        std::list<int> li;
+        eastl::list<int> li;
         copy(v, back_inserter(li));
-        subrange<std::list<int>::const_iterator> tmp{li.begin(), li.end()};
+        subrange<eastl::list<int>::const_iterator> tmp{li.begin(), li.end()};
         auto rng = tmp | views::stride(3);
         using R = decltype(rng);
         CPP_assert(bidirectional_range<R> && view_<R>);
@@ -146,9 +158,9 @@ int main()
     }
 
     {
-        std::list<int> li;
+        eastl::list<int> li;
         copy(v, back_inserter(li));
-        using CLI = std::list<int>::const_iterator;
+        using CLI = eastl::list<int>::const_iterator;
         subrange<CLI, CLI, subrange_kind::sized> tmp{li};
         auto rng = tmp | views::stride(3);
         using R = decltype(rng);

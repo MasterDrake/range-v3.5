@@ -19,12 +19,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <range/v3/algorithm/max.hpp>
-#include <range/v3/view/subrange.hpp>
-#include <memory>
-#include <numeric>
+#include <EASTL/ranges/algorithm/max.hpp>
+#include <EASTL/ranges/view/subrange.hpp>
+#include <EASTL/memory.h>
+#include <EASTL/numeric.h>
 #include <random>
-#include <algorithm>
+#include <EASTL/algorithm.h>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -51,8 +51,8 @@ namespace
     test_iter(unsigned N)
     {
         RANGES_ENSURE(N > 0);
-        std::unique_ptr<int[]> a{new int[N]};
-        std::iota(a.get(), a.get()+N, 0);
+        eastl::unique_ptr<int[]> a{new int[N]};
+        eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);
         test_iter(Iter(a.get()), Sent(a.get()+N));
     }
@@ -74,7 +74,7 @@ namespace
     {
         RANGES_ENSURE(first != last);
         auto rng = ranges::make_subrange(first, last);
-        auto comp = std::greater<int>();
+        auto comp = eastl::greater<int>();
         auto v = ranges::max(rng, comp);
         for (Iter i = first; i != last; ++i)
             CHECK(!comp(v, *i));
@@ -85,8 +85,8 @@ namespace
     test_iter_comp(unsigned N)
     {
         RANGES_ENSURE(N > 0);
-        std::unique_ptr<int[]> a{new int[N]};
-        std::iota(a.get(), a.get()+N, 0);
+        eastl::unique_ptr<int[]> a{new int[N]};
+        eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);
         test_iter_comp(Iter(a.get()), Sent(a.get()+N));
     }
@@ -132,7 +132,7 @@ int main()
 
     // Works with projections?
     S s[] = {S{1},S{2},S{3},S{4},S{40},S{5},S{6},S{7},S{8},S{9}};
-    S v = ranges::max(s, std::less<int>{}, &S::i);
+    S v = ranges::max(s, eastl::less<int>{}, &S::i);
     CHECK(v.i == 40);
 
     // Works with initializer_lists? (Regression test for #1004)

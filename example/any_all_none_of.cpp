@@ -18,22 +18,31 @@
 // vector all_of is_six: false
 // vector none_of is_six: false
 
-#include <range/v3/algorithm/all_of.hpp>
-#include <range/v3/algorithm/any_of.hpp>
-#include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/algorithm/none_of.hpp>
-#include <range/v3/view/all.hpp>
-
+#include <EASTL/vector.h>
 #include <iostream>
-#include <vector>
+
+#include <EASTL/ranges/algorithm/all_of.hpp>
+#include <EASTL/ranges/algorithm/any_of.hpp>
+#include <EASTL/ranges/algorithm/for_each.hpp>
+#include <EASTL/ranges/algorithm/none_of.hpp>
+#include <EASTL/ranges/view/all.hpp>
 using std::cout;
 
 auto is_six = [](int i) { return i == 6; };
 
-int
-main()
+void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
 {
-    std::vector<int> v{6, 2, 3, 4, 5, 6};
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+int main()
+{
+    eastl::vector<int> v{6, 2, 3, 4, 5, 6};
     cout << std::boolalpha;
     cout << "vector: " << ranges::views::all(v) << '\n';
 

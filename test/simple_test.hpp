@@ -11,9 +11,9 @@
 #define RANGES_SIMPLE_TEST_HPP
 
 #include <cstdlib>
-#include <utility>
+#include <EASTL/utility.h>
 #include <iostream>
-#include <range/v3/detail/config.hpp>
+#include <EASTL/ranges/detail/config.hpp>
 
 namespace test_impl
 {
@@ -42,7 +42,7 @@ namespace test_impl
         explicit streamable(T const &t) : t_(t) {}
         template<typename U = T>
         friend auto operator<<(std::ostream &sout, streamable const &s) ->
-            decltype(sout << std::declval<U const &>())
+            decltype(sout << eastl::declval<U const &>())
         {
             return sout << s.t_;
         }
@@ -81,7 +81,7 @@ namespace test_impl
         }
 
         template<typename V = T>
-        auto eval_(int) -> decltype(!std::declval<V&>())
+        auto eval_(int) -> decltype(!eastl::declval<V&>())
         {
             RANGES_DIAGNOSTIC_PUSH
             RANGES_DIAGNOSTIC_IGNORE_FLOAT_CONVERSION
@@ -95,7 +95,7 @@ namespace test_impl
     public:
         R(char const *filename, int lineno, char const *expr, T &&t)
           : filename_(filename), lineno_(lineno), expr_(expr)
-          , t_(std::forward<T>(t))
+          , t_(eastl::forward<T>(t))
         {}
         R(R const&) = delete;
         ~R()
@@ -154,7 +154,7 @@ namespace test_impl
         template<typename T>
         R<T> operator->*(T &&t)
         {
-            return {filename_, lineno_, expr_, std::forward<T>(t)};
+            return {filename_, lineno_, expr_, eastl::forward<T>(t)};
         }
     };
 

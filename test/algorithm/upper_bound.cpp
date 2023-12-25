@@ -13,12 +13,26 @@
 //  Distributed under the MIT License(see accompanying file LICENSE_1_0_0.txt
 //  or a copy at http://stlab.adobe.com/licenses.html)
 
-#include <utility>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/upper_bound.hpp>
+#include <EASTL/utility.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/upper_bound.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 
 struct my_int
 {
@@ -33,7 +47,7 @@ bool compare(my_int lhs, my_int rhs)
 void not_totally_ordered()
 {
     // This better compile!
-    std::vector<my_int> vec;
+    eastl::vector<my_int> vec;
     ranges::upper_bound(vec, my_int{10}, compare);
 }
 
@@ -44,18 +58,18 @@ int main()
     using ranges::size;
     using ranges::less;
 
-    using P = std::pair<int, int>;
+    using P = eastl::pair<int, int>;
 
     constexpr P a[] = {{0, 0}, {0, 1}, {1, 2}, {1, 3}, {3, 4}, {3, 5}};
     constexpr P const c[] = {{0, 0}, {0, 1}, {1, 2}, {1, 3}, {3, 4}, {3, 5}};
 
     CHECK(ranges::aux::upper_bound_n(begin(a), size(a), a[0]) == &a[1]);
     CHECK(ranges::aux::upper_bound_n(begin(a), size(a), a[1], less()) == &a[2]);
-    CHECK(ranges::aux::upper_bound_n(begin(a), size(a), 1, less(), &std::pair<int, int>::first) == &a[4]);
+    CHECK(ranges::aux::upper_bound_n(begin(a), size(a), 1, less(), &eastl::pair<int, int>::first) == &a[4]);
 
     CHECK(ranges::upper_bound(begin(a), end(a), a[0]) == &a[1]);
     CHECK(ranges::upper_bound(begin(a), end(a), a[1], less()) == &a[2]);
-    CHECK(ranges::upper_bound(begin(a), end(a), 1, less(), &std::pair<int, int>::first) == &a[4]);
+    CHECK(ranges::upper_bound(begin(a), end(a), 1, less(), &eastl::pair<int, int>::first) == &a[4]);
 
     CHECK(ranges::upper_bound(a, a[2]) == &a[3]);
     CHECK(ranges::upper_bound(c, c[3]) == &c[4]);
@@ -63,38 +77,38 @@ int main()
     CHECK(ranges::upper_bound(a, a[4], less()) == &a[5]);
     CHECK(ranges::upper_bound(c, c[5], less()) == &c[6]);
 
-    CHECK(ranges::upper_bound(a, 1, less(), &std::pair<int, int>::first) == &a[4]);
-    CHECK(ranges::upper_bound(c, 1, less(), &std::pair<int, int>::first) == &c[4]);
+    CHECK(ranges::upper_bound(a, 1, less(), &eastl::pair<int, int>::first) == &a[4]);
+    CHECK(ranges::upper_bound(c, 1, less(), &eastl::pair<int, int>::first) == &c[4]);
 
-    std::vector<P> vec_a(ranges::begin(a), ranges::end(a));
-    std::vector<P> const vec_c(ranges::begin(c), ranges::end(c));
+    eastl::vector<P> vec_a(ranges::begin(a), ranges::end(a));
+    eastl::vector<P> const vec_c(ranges::begin(c), ranges::end(c));
 
     CHECK(ranges::upper_bound(ranges::views::all(a), a[2]) == &a[3]);
     CHECK(ranges::upper_bound(ranges::views::all(c), c[3]) == &c[4]);
 #ifndef RANGES_WORKAROUND_MSVC_573728
-    CHECK(::is_dangling(ranges::upper_bound(std::move(a), a[2])));
-    CHECK(::is_dangling(ranges::upper_bound(std::move(c), c[3])));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(a), a[2])));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(c), c[3])));
 #endif // RANGES_WORKAROUND_MSVC_573728
-    CHECK(::is_dangling(ranges::upper_bound(std::move(vec_a), vec_a[2])));
-    CHECK(::is_dangling(ranges::upper_bound(std::move(vec_c), vec_c[3])));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_a), vec_a[2])));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_c), vec_c[3])));
 
     CHECK(ranges::upper_bound(ranges::views::all(a), a[4], less()) == &a[5]);
     CHECK(ranges::upper_bound(ranges::views::all(c), c[5], less()) == &c[6]);
 #ifndef RANGES_WORKAROUND_MSVC_573728
-    CHECK(::is_dangling(ranges::upper_bound(std::move(a), a[4], less())));
-    CHECK(::is_dangling(ranges::upper_bound(std::move(c), c[5], less())));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(a), a[4], less())));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(c), c[5], less())));
 #endif // RANGES_WORKAROUND_MSVC_573728
-    CHECK(::is_dangling(ranges::upper_bound(std::move(vec_a), vec_a[4], less())));
-    CHECK(::is_dangling(ranges::upper_bound(std::move(vec_c), vec_c[5], less())));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_a), vec_a[4], less())));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_c), vec_c[5], less())));
 
-    CHECK(ranges::upper_bound(ranges::views::all(a), 1, less(), &std::pair<int, int>::first) == &a[4]);
-    CHECK(ranges::upper_bound(ranges::views::all(c), 1, less(), &std::pair<int, int>::first) == &c[4]);
+    CHECK(ranges::upper_bound(ranges::views::all(a), 1, less(), &eastl::pair<int, int>::first) == &a[4]);
+    CHECK(ranges::upper_bound(ranges::views::all(c), 1, less(), &eastl::pair<int, int>::first) == &c[4]);
 #ifndef RANGES_WORKAROUND_MSVC_573728
-    CHECK(::is_dangling(ranges::upper_bound(std::move(a), 1, less(), &std::pair<int, int>::first)));
-    CHECK(::is_dangling(ranges::upper_bound(std::move(c), 1, less(), &std::pair<int, int>::first)));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(a), 1, less(), &eastl::pair<int, int>::first)));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(c), 1, less(), &eastl::pair<int, int>::first)));
 #endif // RANGES_WORKAROUND_MSVC_573728
-    CHECK(::is_dangling(ranges::upper_bound(std::move(vec_a), 1, less(), &std::pair<int, int>::first)));
-    CHECK(::is_dangling(ranges::upper_bound(std::move(vec_c), 1, less(), &std::pair<int, int>::first)));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_a), 1, less(), &eastl::pair<int, int>::first)));
+    CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_c), 1, less(), &eastl::pair<int, int>::first)));
 
     {
         using namespace ranges;
@@ -107,10 +121,10 @@ int main()
         STATIC_CHECK(upper_bound(a, a[2]) == &a[3]);
         STATIC_CHECK(upper_bound(a, a[3], less()) == &a[4]);
 
-        STATIC_CHECK(upper_bound(a, std::make_pair(1, 3), less()) == &a[4]);
+        STATIC_CHECK(upper_bound(a, eastl::make_pair(1, 3), less()) == &a[4]);
 #if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_17
-        // requires constexpr std::addressof
-        STATIC_CHECK(upper_bound(views::all(a), std::make_pair(1, 3), less()) == &a[4]);
+        // todo: requires constexpr eastl::addressof
+        //STATIC_CHECK(upper_bound(views::all(a), eastl::make_pair(1, 3), less()) == &a[4]);
 #endif
     }
 

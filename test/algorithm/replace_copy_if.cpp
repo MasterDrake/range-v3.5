@@ -22,12 +22,19 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <utility>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/replace_copy_if.hpp>
+#include <EASTL/utility.h>
+#include <EASTL/string.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/replace_copy_if.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 template<class InIter, class OutIter, class Sent = InIter>
 void test_iter()
@@ -53,8 +60,7 @@ void test_rng()
     const unsigned sa = sizeof(ia)/sizeof(ia[0]);
     int ib[sa] = {0};
     auto rng = ranges::make_subrange(InIter(ia), Sent(ia+sa));
-    ranges::replace_copy_if_result<InIter, OutIter> r = ranges::replace_copy_if(rng, OutIter(ib),
-        [](int i){return 2==i;}, 5);
+    ranges::replace_copy_if_result<InIter, OutIter> r = ranges::replace_copy_if(rng, OutIter(ib),[](int i){return 2==i;}, 5);
     CHECK(base(r.in) == ia + sa);
     CHECK(base(r.out) == ib + sa);
     CHECK(ib[0] == 0);
@@ -130,11 +136,11 @@ int main()
 
     // Test projection
     {
-        using P = std::pair<int, std::string>;
+        using P = eastl::pair<int, eastl::string>;
         P in[] = {{0, "0"}, {1, "1"}, {2, "2"}, {3, "3"}, {4, "4"}};
         P out[ranges::size(in)] = {};
         ranges::replace_copy_if_result<P *, P *> r = ranges::replace_copy_if(in, out,
-            [](int i){return 2==i;}, P{5, "5"}, &std::pair<int, std::string>::first);
+            [](int i){return 2==i;}, P{5, "5"}, &eastl::pair<int, eastl::string>::first);
         CHECK(r.in == ranges::end(in));
         CHECK(r.out == ranges::end(out));
         CHECK(out[0] == P{0, "0"});

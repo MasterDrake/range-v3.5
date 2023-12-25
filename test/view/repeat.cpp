@@ -9,11 +9,11 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/repeat.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/repeat.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

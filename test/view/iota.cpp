@@ -9,18 +9,32 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
+#include <EASTL/string.h>
 
-#include <range/v3/core.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/view/c_str.hpp>
-#include <range/v3/view/indices.hpp>
-#include <range/v3/view/indirect.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/drop_exactly.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/view/c_str.hpp>
+#include <EASTL/ranges/view/indices.hpp>
+#include <EASTL/ranges/view/indirect.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/drop_exactly.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct Int
 {
@@ -45,13 +59,12 @@ struct NonDefaultInt
     bool operator!=(NonDefaultInt j) const { return i != j.i; }
 };
 
-CPP_template(typename I)(
-    requires ranges::integral<I>)
+CPP_template(typename I)(requires ranges::integral<I>)
 void test_iota_distance()
 {
     using namespace ranges;
     using D = iter_difference_t<I>;
-    I max = std::numeric_limits<I>::max();
+    I max = eastl::numeric_limits<I>::max();
 
     CHECK(detail::iota_distance_(I(0), I(0)) == D(0));
     CHECK(detail::iota_distance_(I(1), I(0)) == D(-1));
@@ -78,8 +91,7 @@ int main()
 
     {
         char const *sz = "hello world";
-        ::check_equal(views::iota(ForwardIterator<char const*>(sz)) | views::take(10) | views::indirect,
-            {'h','e','l','l','o',' ','w','o','r','l'});
+        ::check_equal(views::iota(ForwardIterator<char const*>(sz)) | views::take(10) | views::indirect, {'h','e','l','l','o',' ','w','o','r','l'});
 
         ::check_equal(views::ints | views::take(10), {0,1,2,3,4,5,6,7,8,9});
         ::check_equal(views::ints(0,unreachable) | views::take(10), {0,1,2,3,4,5,6,7,8,9});
@@ -90,8 +102,7 @@ int main()
     }
 
     {
-        auto chars = views::ints(std::numeric_limits<signed char>::min(),
-                                std::numeric_limits<signed char>::max());
+        auto chars = views::ints(eastl::numeric_limits<signed char>::min(), eastl::numeric_limits<signed char>::max());
         CPP_assert(random_access_range<decltype(chars)>);
         CPP_assert(same_as<int, range_difference_t<decltype(chars)>>);
         CPP_assert(view_<decltype(chars)>);
@@ -102,8 +113,7 @@ int main()
     }
 
     {
-        auto ushorts = views::ints(std::numeric_limits<unsigned short>::min(),
-                                std::numeric_limits<unsigned short>::max());
+        auto ushorts = views::ints(eastl::numeric_limits<unsigned short>::min(), eastl::numeric_limits<unsigned short>::max());
         CPP_assert(view_<decltype(ushorts)>);
         CPP_assert(common_range<decltype(ushorts)>);
         CPP_assert(same_as<int, range_difference_t<decltype(ushorts)>>);
@@ -113,28 +123,23 @@ int main()
     }
 
     {
-        auto uints = views::closed_indices(
-            std::numeric_limits<std::uint_least32_t>::min(),
-            std::numeric_limits<std::uint_least32_t>::max() - 1);
+        auto uints = views::closed_indices(eastl::numeric_limits<std::uint_least32_t>::min(), eastl::numeric_limits<std::uint_least32_t>::max() - 1);
         CPP_assert(view_<decltype(uints)>);
         CPP_assert(common_range<decltype(uints)>);
         CPP_assert(same_as<std::int_fast64_t, range_difference_t<decltype(uints)>>);
         CPP_assert(same_as<std::uint_fast64_t, range_size_t<decltype(uints)>>);
-        CHECK(uints.size() == std::numeric_limits<std::uint32_t>::max());
+        CHECK(uints.size() == eastl::numeric_limits<std::uint32_t>::max());
     }
 
     {
-        auto is = views::closed_indices(
-            std::numeric_limits<std::int_least32_t>::min(),
-            std::numeric_limits<std::int_least32_t>::max() - 1);
+        auto is = views::closed_indices(eastl::numeric_limits<std::int_least32_t>::min(), eastl::numeric_limits<std::int_least32_t>::max() - 1);
         CPP_assert(same_as<std::int_fast64_t, range_difference_t<decltype(is)>>);
         CPP_assert(same_as<std::uint_fast64_t, range_size_t<decltype(is)>>);
-        CHECK(is.size() == std::numeric_limits<std::uint32_t>::max());
+        CHECK(is.size() == eastl::numeric_limits<std::uint32_t>::max());
     }
 
     {
-        auto sints = views::ints(std::numeric_limits<int>::min(),
-                                std::numeric_limits<int>::max());
+        auto sints = views::ints(eastl::numeric_limits<int>::min(), eastl::numeric_limits<int>::max());
         CPP_assert(random_access_range<decltype(sints)>);
         CPP_assert(same_as<std::int_fast64_t, range_difference_t<decltype(sints)>>);
         CPP_assert(view_<decltype(sints)>);
@@ -224,7 +229,7 @@ int main()
         // https://github.com/ericniebler/range-v3/issues/506
         auto cstr = views::c_str((const char*)"hello world");
         auto cstr2 = views::iota(cstr.begin(), cstr.end()) | views::indirect;
-        ::check_equal(cstr2, std::string("hello world"));
+        ::check_equal(cstr2, eastl::string("hello world"));
         auto i = cstr2.begin();
         i += 4;
         CHECK(*i == 'o');

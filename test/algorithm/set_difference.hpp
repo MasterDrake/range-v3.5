@@ -18,16 +18,30 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <algorithm>
-#include <functional>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/fill.hpp>
-#include <range/v3/algorithm/set_algorithm.hpp>
-#include <range/v3/algorithm/lexicographical_compare.hpp>
+#include <eASTL/algorithm.h>
+#include <eASTL/functional.h>
+#include <eASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/fill.hpp>
+#include <EASTL/ranges/algorithm/set_algorithm.hpp>
+#include <EASTL/ranges/algorithm/lexicographical_compare.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 template<class Iter1, class Iter2, class OutIter>
 void
@@ -48,7 +62,7 @@ test_iter()
         {
             CHECK((base(res.in1) - ia) == sa);
             CHECK((base(res.out) - ic) == sr);
-            CHECK(std::lexicographical_compare(ic, base(res.out), ir, ir+sr) == false);
+            CHECK(eastl::lexicographical_compare(ic, base(res.out), ir, ir+sr) == false);
             ranges::fill(ic, 0);
         }
     );
@@ -59,7 +73,7 @@ test_iter()
         {
             CHECK((base(res.in1) - ib) == sb);
             CHECK((base(res.out) - ic) == srr);
-            CHECK(std::lexicographical_compare(ic, base(res.out), irr, irr+srr) == false);
+            CHECK(eastl::lexicographical_compare(ic, base(res.out), irr, irr+srr) == false);
             ranges::fill(ic, 0);
         }
     );
@@ -79,23 +93,23 @@ test_comp()
 
     auto set_difference = ::make_testable_2<false, true>(ranges::set_difference);
 
-    set_difference(Iter1(ia), Iter1(ia+sa), Iter2(ib), Iter2(ib+sb), OutIter(ic), std::less<int>()).
+    set_difference(Iter1(ia), Iter1(ia+sa), Iter2(ib), Iter2(ib+sb), OutIter(ic), eastl::less<int>()).
         check([&](ranges::set_difference_result<Iter1, OutIter> res)
         {
             CHECK((base(res.in1) - ia) == sa);
             CHECK((base(res.out) - ic) == sr);
-            CHECK(std::lexicographical_compare(ic, base(res.out), ir, ir+sr) == false);
+            CHECK(eastl::lexicographical_compare(ic, base(res.out), ir, ir+sr) == false);
             ranges::fill(ic, 0);
         }
     );
     int irr[] = {6};
     static const int srr = sizeof(irr)/sizeof(irr[0]);
-    set_difference(Iter1(ib), Iter1(ib+sb), Iter2(ia), Iter2(ia+sa), OutIter(ic), std::less<int>()).
+    set_difference(Iter1(ib), Iter1(ib+sb), Iter2(ia), Iter2(ia+sa), OutIter(ic), eastl::less<int>()).
         check([&](ranges::set_difference_result<Iter1, OutIter> res)
         {
             CHECK((base(res.in1) - ib) == sb);
             CHECK((base(res.out) - ic) == srr);
-            CHECK(std::lexicographical_compare(ic, base(res.out), irr, irr+srr) == false);
+            CHECK(eastl::lexicographical_compare(ic, base(res.out), irr, irr+srr) == false);
             ranges::fill(ic, 0);
         }
     );
@@ -320,18 +334,18 @@ int main()
         int ir[] = {1, 2, 3, 3, 3, 4, 4};
         static const int sr = sizeof(ir)/sizeof(ir[0]);
 
-        ranges::set_difference_result<S *, U *> res = ranges::set_difference(ia, ib, ic, std::less<int>(), &S::i, &T::j);
+        ranges::set_difference_result<S *, U *> res = ranges::set_difference(ia, ib, ic, eastl::less<int>(), &S::i, &T::j);
         CHECK((res.in1 - ia) == sa);
         CHECK((res.out - ic) == sr);
-        CHECK(ranges::lexicographical_compare(ic, res.out, ir, ir+sr, std::less<int>(), &U::k) == false);
+        CHECK(ranges::lexicographical_compare(ic, res.out, ir, ir+sr, eastl::less<int>(), &U::k) == false);
         ranges::fill(ic, U{0});
 
         int irr[] = {6};
         static const int srr = sizeof(irr)/sizeof(irr[0]);
-        ranges::set_difference_result<T *, U *> res2 = ranges::set_difference(ib, ia, ic, std::less<int>(), &T::j, &S::i);
+        ranges::set_difference_result<T *, U *> res2 = ranges::set_difference(ib, ia, ic, eastl::less<int>(), &T::j, &S::i);
         CHECK((res2.in1 - ib) == sb);
         CHECK((res2.out - ic) == srr);
-        CHECK(ranges::lexicographical_compare(ic, res2.out, ir, irr+srr, std::less<int>(), &U::k) == false);
+        CHECK(ranges::lexicographical_compare(ic, res2.out, ir, irr+srr, eastl::less<int>(), &U::k) == false);
     }
 
     // Test rvalue ranges
@@ -343,27 +357,27 @@ int main()
         int ir[] = {1, 2, 3, 3, 3, 4, 4};
         static const int sr = sizeof(ir)/sizeof(ir[0]);
 
-        auto res = ranges::set_difference(std::move(ia), ranges::views::all(ib), ic, std::less<int>(), &S::i, &T::j);
+        auto res = ranges::set_difference(eastl::move(ia), ranges::views::all(ib), ic, eastl::less<int>(), &S::i, &T::j);
 #ifndef RANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(res.in1));
 #endif // RANGES_WORKAROUND_MSVC_573728
         CHECK((res.out - ic) == sr);
-        CHECK(ranges::lexicographical_compare(ic, res.out, ir, ir+sr, std::less<int>(), &U::k) == false);
+        CHECK(ranges::lexicographical_compare(ic, res.out, ir, ir+sr, eastl::less<int>(), &U::k) == false);
 
         ranges::fill(ic, U{0});
         int irr[] = {6};
         static const int srr = sizeof(irr)/sizeof(irr[0]);
-        auto res2 = ranges::set_difference(ranges::views::all(ib), ranges::views::all(ia), ic, std::less<int>(), &T::j, &S::i);
+        auto res2 = ranges::set_difference(ranges::views::all(ib), ranges::views::all(ia), ic, eastl::less<int>(), &T::j, &S::i);
         CHECK((res2.in1 - ib) == sb);
         CHECK((res2.out - ic) == srr);
-        CHECK(ranges::lexicographical_compare(ic, res2.out, ir, irr+srr, std::less<int>(), &U::k) == false);
+        CHECK(ranges::lexicographical_compare(ic, res2.out, ir, irr+srr, eastl::less<int>(), &U::k) == false);
 
         ranges::fill(ic, U{0});
-        std::vector<S> vec{S{1}, S{2}, S{2}, S{3}, S{3}, S{3}, S{4}, S{4}, S{4}, S{4}};
-        auto res3 = ranges::set_difference(std::move(vec), ranges::views::all(ib), ic, std::less<int>(), &S::i, &T::j);
+        eastl::vector<S> vec{S{1}, S{2}, S{2}, S{3}, S{3}, S{3}, S{4}, S{4}, S{4}, S{4}};
+        auto res3 = ranges::set_difference(eastl::move(vec), ranges::views::all(ib), ic, eastl::less<int>(), &S::i, &T::j);
         CHECK(::is_dangling(res3.in1));
         CHECK((res3.out - ic) == sr);
-        CHECK(ranges::lexicographical_compare(ic, res3.out, ir, ir+sr, std::less<int>(), &U::k) == false);
+        CHECK(ranges::lexicographical_compare(ic, res3.out, ir, ir+sr, eastl::less<int>(), &U::k) == false);
     }
 
     {

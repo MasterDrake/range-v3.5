@@ -9,25 +9,38 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/iterator/unreachable_sentinel.hpp>
-#include <range/v3/iterator_range.hpp>
-#include <range/v3/view/all.hpp>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/iterator/unreachable_sentinel.hpp>
+//TODO:34)iterator_range is deprecated so not sure what to do with this, just don't I guess.
+#include <EASTL/ranges/range/iterator_range.hpp>
+#include <EASTL/ranges/view/all.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 struct empty
 {};
 
 int main()
 {
-    std::vector<int> vi{1,2,3,4};
+    eastl::vector<int> vi{1,2,3,4};
 
     using namespace ranges;
-    iterator_range<std::vector<int>::iterator> r0 {vi.begin(), vi.end()};
+    iterator_range<eastl::vector<int>::iterator> r0 {vi.begin(), vi.end()};
     CPP_assert(view_<decltype(r0)>);
     CPP_assert(sized_range<decltype(r0)>);
     CHECK(r0.size() == 4u);
@@ -38,11 +51,11 @@ int main()
     ++r0.begin();
     CHECK(r0.size() == 3u);
 
-    std::pair<std::vector<int>::iterator, std::vector<int>::iterator> p0 = r0;
+    eastl::pair<eastl::vector<int>::iterator, eastl::vector<int>::iterator> p0 = r0;
     CHECK(p0.first == vi.begin()+1);
     CHECK(p0.second == vi.end());
 
-    iterator_range<std::vector<int>::iterator, unreachable_sentinel_t> r1 { r0.begin(), {} };
+    iterator_range<eastl::vector<int>::iterator, unreachable_sentinel_t> r1 { r0.begin(), {} };
     CPP_assert(view_<decltype(r1)>);
     CPP_assert(!sized_range<decltype(r1)>);
     CHECK(r1.begin() == vi.begin()+1);
@@ -57,14 +70,14 @@ int main()
     CHECK(r0.front() == 3);
     CHECK(r0.back() == 3);
 
-    std::pair<std::vector<int>::iterator, unreachable_sentinel_t> p1 = r1;
+    eastl::pair<eastl::vector<int>::iterator, unreachable_sentinel_t> p1 = r1;
     CHECK(p1.first == vi.begin()+1);
 
-    iterator_range<std::vector<int>::iterator, unreachable_sentinel_t> r2 { p1 };
+    iterator_range<eastl::vector<int>::iterator, unreachable_sentinel_t> r2 { p1 };
     CHECK(r1.begin() == vi.begin()+1);
 
-    std::list<int> li{1,2,3,4};
-    sized_iterator_range<std::list<int>::iterator> l0 {li.begin(), li.end(), li.size()};
+    eastl::list<int> li{1,2,3,4};
+    sized_iterator_range<eastl::list<int>::iterator> l0 {li.begin(), li.end(), li.size()};
     CPP_assert(view_<decltype(l0)>);
     CPP_assert(sized_range<decltype(l0)>);
     CHECK(l0.begin() == li.begin());

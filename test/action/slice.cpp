@@ -7,23 +7,34 @@
 //  file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#include <array>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/stride.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/algorithm/move.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/action/slice.hpp>
+#include <EASTL/array.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/stride.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/algorithm/move.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/action/slice.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
     {
-        auto v = views::ints(0, 100) | to<std::vector>();
+        auto v = views::ints(0, 100) | to<eastl::vector>();
 
         auto v2 = v | copy | actions::slice(10, 20);
         CHECK(size(v2) == 10u);
@@ -42,7 +53,7 @@ int main()
     }
 
     {
-        auto rng = views::ints(0, 100) | to<std::vector>();
+        auto rng = views::ints(0, 100) | to<eastl::vector>();
 
         rng |= actions::slice(20, end - 70);
         CHECK(size(rng) == 10u);
@@ -54,7 +65,7 @@ int main()
     }
 
     {
-        auto rng = views::ints(0, 100) | to<std::vector>();
+        auto rng = views::ints(0, 100) | to<eastl::vector>();
 
         auto &rng_copy = actions::slice(rng, 90, end);
         CHECK(&rng_copy == &rng);

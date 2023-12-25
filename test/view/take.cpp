@@ -9,16 +9,29 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/delimit.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/delimit.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -55,7 +68,7 @@ int main()
     CPP_assert(range<decltype(detail::as_const(rng1))>);
     check_equal(rng1, {5, 4, 3, 2, 1, 0});
 
-    std::vector<int> v{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    eastl::vector<int> v{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     auto rng2 = v | views::take(6) | views::reverse;
     has_type<int &>(*begin(rng2));
     CPP_assert(view_<decltype(rng2)>);
@@ -65,7 +78,7 @@ int main()
     CPP_assert(range<decltype(detail::as_const(rng2))>);
     check_equal(rng2, {5, 4, 3, 2, 1, 0});
 
-    std::list<int> l{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    eastl::list<int> l{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     auto rng3 = l | views::take(6);
     has_type<int &>(*begin(rng3));
     CPP_assert(view_<decltype(rng3)>);
@@ -121,7 +134,7 @@ int main()
     auto rng7 = c_str | views::take(20);
     check_equal(rng7, {'h','e','l','l','o',' ','w','o','r','l','d'});
 
-    subrange<std::list<int>::iterator> rl{l.begin(), l.end()};
+    subrange<eastl::list<int>::iterator> rl{l.begin(), l.end()};
     CPP_assert(view_<decltype(rl)>);
     CPP_assert(bidirectional_range<decltype(rl)>);
     CPP_assert(common_range<decltype(rl)>);

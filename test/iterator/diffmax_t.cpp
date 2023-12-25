@@ -9,12 +9,12 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/iterator/diffmax_t.hpp>
+#include <EASTL/ranges/iterator/diffmax_t.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-#include <iomanip>
-#include <functional>
+//#include <iomanip>
+#include <EASTL/functional.h>
 using ranges::detail::diffmax_t;
 
 template<template<typename> class Op>
@@ -27,16 +27,16 @@ void check_1(std::ptrdiff_t a, std::ptrdiff_t b)
     CHECK(Op<diffmax_t>{}(a, b) == Op<std::ptrdiff_t>{}(a, b));
 }
 template<>
-void check_1<std::divides>(std::ptrdiff_t a, std::ptrdiff_t b)
+void check_1<eastl::divides>(std::ptrdiff_t a, std::ptrdiff_t b)
 {
     if(b)
-        CHECK(std::divides<diffmax_t>{}(a, b) == std::divides<std::ptrdiff_t>{}(a, b));
+        CHECK(eastl::divides<diffmax_t>{}(a, b) == eastl::divides<std::ptrdiff_t>{}(a, b));
 }
 template<>
-void check_1<std::modulus>(std::ptrdiff_t a, std::ptrdiff_t b)
+void check_1<eastl::modulus>(std::ptrdiff_t a, std::ptrdiff_t b)
 {
     if(b)
-        CHECK(std::modulus<diffmax_t>{}(a, b) == std::modulus<std::ptrdiff_t>{}(a, b));
+        CHECK(eastl::modulus<diffmax_t>{}(a, b) == eastl::modulus<std::ptrdiff_t>{}(a, b));
 }
 
 template<template<typename> class Op>
@@ -59,14 +59,14 @@ void check()
 
 int main()
 {
-    check<std::plus>();
-    check<std::minus>();
-    check<std::multiplies>();
-    check<std::divides>();
-    check<std::modulus>();
-    check<std::bit_and>();
-    check<std::bit_or>();
-    check<std::bit_xor>();
+    check<eastl::plus>();
+    check<eastl::minus>();
+    check<eastl::multiplies>();
+    check<eastl::divides>();
+    check<eastl::modulus>();
+    check<eastl::logical_and>();
+    check<eastl::logical_or>();
+   //TODO: eastl needs a logical xor check<eastl::bit_xor>();
 
     return test_result();
 }

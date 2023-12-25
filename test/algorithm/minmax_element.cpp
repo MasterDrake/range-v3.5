@@ -18,12 +18,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <memory>
-#include <numeric>
+#include <EASTL/memory.h>
+#include <EASTL/numeric.h>
 #include <random>
-#include <algorithm>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/minmax_element.hpp>
+#include <EASTL/algorithm.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/minmax_element.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
@@ -31,7 +31,7 @@
 #include "../test_iterators.hpp"
 
 RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-
+//todo: random and std::shuffle
 namespace
 {
     std::mt19937 gen;
@@ -71,7 +71,7 @@ namespace
             CHECK(p.max == last);
         }
 
-        auto res = ranges::minmax_element(std::move(rng));
+        auto res = ranges::minmax_element(eastl::move(rng));
         if (first != last)
         {
             for (Iter j = first; j != last; ++j)
@@ -91,8 +91,8 @@ namespace
     void
     test_iter(unsigned N)
     {
-        std::unique_ptr<int[]> a{new int[N]};
-        std::iota(a.get(), a.get()+N, 0);
+        eastl::unique_ptr<int[]> a{new int[N]};
+        eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);
         test_iter(Iter(a.get()), Sent(a.get()+N));
     }
@@ -109,8 +109,8 @@ namespace
         test_iter<Iter, Sent>(1000);
         {
             const unsigned N = 100;
-            std::unique_ptr<int[]> a{new int[N]};
-            std::fill_n(a.get(), N, 5);
+            eastl::unique_ptr<int[]> a{new int[N]};
+            eastl::fill_n(a.get(), N, 5);
             std::shuffle(a.get(), a.get()+N, gen);
             ranges::minmax_element_result<Iter> p = ranges::minmax_element(Iter(a.get()), Sent(a.get()+N));
             CHECK(base(p.min) == a.get());
@@ -122,7 +122,7 @@ namespace
     void
     test_iter_comp(Iter first, Sent last)
     {
-        typedef std::greater<int> Compare;
+        typedef eastl::greater<int> Compare;
         Compare comp;
         ranges::minmax_element_result<Iter> p = ranges::minmax_element(first, last, comp);
         if (first != last)
@@ -155,7 +155,7 @@ namespace
             CHECK(p.max == last);
         }
 
-        auto res = ranges::minmax_element(std::move(rng), comp);
+        auto res = ranges::minmax_element(eastl::move(rng), comp);
         CHECK(is_dangling(res.min));
         CHECK(is_dangling(res.max));
     }
@@ -164,8 +164,8 @@ namespace
     void
     test_iter_comp(unsigned N)
     {
-        std::unique_ptr<int[]> a{new int[N]};
-        std::iota(a.get(), a.get()+N, 0);
+        eastl::unique_ptr<int[]> a{new int[N]};
+        eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);
         test_iter_comp(Iter(a.get()), Sent(a.get()+N));
     }
@@ -182,10 +182,10 @@ namespace
         test_iter_comp<Iter, Sent>(1000);
         {
             const unsigned N = 100;
-            std::unique_ptr<int[]> a{new int[N]};
-            std::fill_n(a.get(), N, 5);
+            eastl::unique_ptr<int[]> a{new int[N]};
+            eastl::fill_n(a.get(), N, 5);
             std::shuffle(a.get(), a.get()+N, gen);
-            typedef std::greater<int> Compare;
+            typedef eastl::greater<int> Compare;
             Compare comp;
             ranges::minmax_element_result<Iter> p = ranges::minmax_element(Iter(a.get()), Sent(a.get()+N), comp);
             CHECK(base(p.min) == a.get());
@@ -235,7 +235,7 @@ int main()
 
     // Works with projections?
     S s[] = {S{1},S{2},S{3},S{4},S{-4},S{5},S{6},S{40},S{7},S{8},S{9}};
-    ranges::minmax_element_result<S const *> ps = ranges::minmax_element(s, std::less<int>{}, &S::i);
+    ranges::minmax_element_result<S const *> ps = ranges::minmax_element(s, eastl::less<int>{}, &S::i);
     CHECK(ps.min->i == -4);
     CHECK(ps.max->i == 40);
 

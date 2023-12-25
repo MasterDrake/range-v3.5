@@ -18,10 +18,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <utility>
+#include <EASTL/utility.h>
 
-#include <range/v3/algorithm/find_if_not.hpp>
-#include <range/v3/core.hpp>
+#include <EASTL/ranges/algorithm/find_if_not.hpp>
+#include <EASTL/ranges/core.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"

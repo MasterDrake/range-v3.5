@@ -9,30 +9,43 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <vector>
-#include <iterator>
-#include <functional>
-#include <range/v3/core.hpp>
-#include <range/v3/view/adjacent_remove_if.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/counted.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/iterator/insert_iterators.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/iterator.h>
+#include <EASTL/functional.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/adjacent_remove_if.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/counted.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/iterator/insert_iterators.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
 
     int const rgi[] = {1, 1, 1, 2, 3, 4, 4};
-    std::vector<int> out;
+    eastl::vector<int> out;
 
     {
-        auto rng = rgi | views::adjacent_remove_if(std::equal_to<int>{});
+        auto rng = rgi | views::adjacent_remove_if(eastl::equal_to<int>{});
         has_type<int const &>(*begin(rng));
         CPP_assert(view_<decltype(rng)>);
         CPP_assert(common_range<decltype(rng)>);
@@ -60,7 +73,7 @@ int main()
 
     {
         auto rng3 = views::counted(ForwardIterator<int const*>(rgi), 7)
-            | views::adjacent_remove_if(std::equal_to<int>{});
+            | views::adjacent_remove_if(eastl::equal_to<int>{});
         has_type<int const &>(*begin(rng3));
         CPP_assert(view_<decltype(rng3)>);
         CPP_assert(forward_range<decltype(rng3)>);
@@ -100,8 +113,8 @@ int main()
 
     {
         // Verify that forward and backward traversal both select the same elements.
-        auto rng = views::adjacent_remove_if(rgi, std::equal_to<int>{});
-        std::vector<int const*> pointers;
+        auto rng = views::adjacent_remove_if(rgi, eastl::equal_to<int>{});
+        eastl::vector<int const*> pointers;
         for(auto& i : rng)
             pointers.push_back(&i);
         auto pos = ranges::end(rng);

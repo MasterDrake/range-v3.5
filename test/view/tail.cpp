@@ -9,30 +9,43 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
 #include <sstream>
-#include <range/v3/core.hpp>
-#include <range/v3/view/tail.hpp>
-#include <range/v3/view/empty.hpp>
-#include <range/v3/view/single.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/tail.hpp>
+#include <EASTL/ranges/view/empty.hpp>
+#include <EASTL/ranges/view/single.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
 
     {
-        std::vector<int> v{0,1,2,3};
+        eastl::vector<int> v{0,1,2,3};
         auto rng = views::tail(v);
         check_equal(rng, {1,2,3});
         CHECK(size(rng) == 3u);
     }
 
     {
-        std::vector<int> v{};
+        eastl::vector<int> v{};
         auto rng = views::tail(v);
         CHECK(empty(rng));
         CHECK(size(rng) == 0u);

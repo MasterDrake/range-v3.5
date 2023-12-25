@@ -9,30 +9,42 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/take_exactly.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/counted.hpp>
-#include <range/v3/view/delimit.hpp>
-#include <range/v3/view/filter.hpp>
-#include <range/v3/view/c_str.hpp>
-#include <range/v3/view/zip.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/algorithm/find.hpp>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/take_exactly.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/counted.hpp>
+#include <EASTL/ranges/view/delimit.hpp>
+#include <EASTL/ranges/view/filter.hpp>
+#include <EASTL/ranges/view/c_str.hpp>
+#include <EASTL/ranges/view/zip.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/algorithm/find.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 int main()
 {
     using namespace ranges;
 
     // Reverse a random-access, common, sized range
-    std::vector<int> rgv{0,1,2,3,4,5,6,7,8,9};
+    eastl::vector<int> rgv{0,1,2,3,4,5,6,7,8,9};
     auto const rng0 = rgv | views::reverse;
-    CPP_assert(view_<std::remove_const_t<decltype(rng0)>>);
+    CPP_assert(view_<eastl::remove_const_t<decltype(rng0)>>);
     CPP_assert(random_access_range<decltype(rng0)>);
     CPP_assert(common_range<decltype(rng0)>);
     CPP_assert(sized_range<decltype(rng0)>);
@@ -70,10 +82,10 @@ int main()
 #endif // use deduction guides
 
     // Reverse another random-access, non-common, sized range
-    auto cnt = counted_view<std::vector<int>::iterator>(rgv.begin(), 10);
+    auto cnt = counted_view<eastl::vector<int>::iterator>(rgv.begin(), 10);
     CPP_assert(!common_range<decltype(cnt)>);
     auto const rng1 = rgv | views::reverse;
-    CPP_assert(view_<std::remove_const_t<decltype(rng1)>>);
+    CPP_assert(view_<eastl::remove_const_t<decltype(rng1)>>);
     CPP_assert(random_access_range<decltype(rng1)>);
     CPP_assert(common_range<decltype(rng1)>);
     CPP_assert(sized_range<decltype(rng1)>);
@@ -95,9 +107,9 @@ int main()
     ::check_equal(rng2 | views::reverse, {'h','e','l','l','o'});
 
     // Reverse a bidirectional, common, sized range
-    std::list<int> rgl{0,1,2,3,4,5,6,7,8,9};
+    eastl::list<int> rgl{0,1,2,3,4,5,6,7,8,9};
     auto const rng3 = rgl | views::reverse;
-    CPP_assert(view_<std::remove_const_t<decltype(rng3)>>);
+    CPP_assert(view_<eastl::remove_const_t<decltype(rng3)>>);
     CPP_assert(bidirectional_range<decltype(rng3)>);
     CPP_assert(!random_access_range<decltype(rng3)>);
     CPP_assert(common_range<decltype(rng3)>);
@@ -149,7 +161,7 @@ int main()
     ::check_equal(rng6 | views::reverse, {0,1,2,3,4,5,6,7,8,9});
 
     {
-        std::vector<int> v = {1, 2, 3, 4, 5};
+        eastl::vector<int> v = {1, 2, 3, 4, 5};
         auto b = find(v, 2);
         auto e = find(v | views::reverse, 4).base();
         ::check_equal(make_subrange(b, e), {2, 3, 4});

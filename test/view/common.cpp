@@ -9,17 +9,30 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
 #include <sstream>
-#include <range/v3/core.hpp>
-#include <range/v3/view/common.hpp>
-#include <range/v3/view/counted.hpp>
-#include <range/v3/view/delimit.hpp>
-#include <range/v3/view/repeat_n.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/common.hpp>
+#include <EASTL/ranges/view/counted.hpp>
+#include <EASTL/ranges/view/delimit.hpp>
+#include <EASTL/ranges/view/repeat_n.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -37,13 +50,13 @@ int main()
         CPP_assert(view_<decltype(rng2)>);
         CPP_assert(common_range<decltype(rng2)>);
         CPP_assert(input_iterator<decltype(rng2.begin())>);
-        CPP_assert(same_as<typename std::iterator_traits<decltype(rng2.begin())>::iterator_category,
-                            std::input_iterator_tag>);
+        CPP_assert(same_as<typename eastl::iterator_traits<decltype(rng2.begin())>::iterator_category,
+                            eastl::input_iterator_tag>);
         CPP_assert(!forward_iterator<decltype(rng2.begin())>);
         ::check_equal(rng2, {1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4});
     }
 
-    std::vector<int> v{1,2,3,4,5,6,7,8,9,0,42,64};
+    eastl::vector<int> v{1,2,3,4,5,6,7,8,9,0,42,64};
     {
         auto rng1 = v | views::delimit(42) | views::common;
         CPP_assert(view_<decltype(rng1)>);
@@ -59,7 +72,7 @@ int main()
     }
 
     {
-        std::list<int> l{1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0};
+        eastl::list<int> l{1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0};
         auto rng3 = views::counted(l.begin(), 10) | views::common;
         CPP_assert(view_<decltype(rng3)>);
         CPP_assert(common_range<decltype(rng3)>);

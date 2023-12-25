@@ -19,40 +19,52 @@
 // fwd_list: 1 2 3 4 5 6
 // deque:    1 2 3 4 5 6
 
-#include <array>
-#include <deque>
-#include <forward_list>
+#include <EASTL/array.h>
+#include <EASTL/deque.h>
+#include <EASTL/list.h>
+#include <EASTL/queue.h>
+#include <EASTL/slist.h>
+#include <EASTL/stack.h>
+#include <EASTL/vector.h>
+#include <EASTl/ranges/algorithm/for_each.hpp> // specific includes
 #include <iostream>
-#include <list>
-#include <queue>
-#include <range/v3/algorithm/for_each.hpp> // specific includes
-#include <stack>
-#include <vector>
 using std::cout;
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 auto print = [](int i) { cout << i << ' '; };
 
-int
-main()
+int main()
 {
     cout << "vector:   ";
-    std::vector<int> v{1, 2, 3, 4, 5, 6};
+    eastl::vector<int> v{1, 2, 3, 4, 5, 6};
     ranges::for_each(v, print); // 1 2 3 4 5 6
 
     cout << "\narray:    ";
-    std::array<int, 6> a{1, 2, 3, 4, 5, 6};
+    eastl::array<int, 6> a{1, 2, 3, 4, 5, 6};
     ranges::for_each(a, print);
 
     cout << "\nlist:     ";
-    std::list<int> ll{1, 2, 3, 4, 5, 6};
+    eastl::list<int> ll{1, 2, 3, 4, 5, 6};
     ranges::for_each(ll, print);
 
     cout << "\nfwd_list: ";
-    std::forward_list<int> fl{1, 2, 3, 4, 5, 6};
+    eastl::slist<int> fl{1, 2, 3, 4, 5, 6};
     ranges::for_each(fl, print);
 
     cout << "\ndeque:    ";
-    std::deque<int> d{1, 2, 3, 4, 5, 6};
+    eastl::deque<int> d{1, 2, 3, 4, 5, 6};
     ranges::for_each(d, print);
     cout << '\n';
 }

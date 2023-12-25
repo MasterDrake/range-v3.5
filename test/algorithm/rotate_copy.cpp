@@ -22,13 +22,26 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <utility>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/rotate_copy.hpp>
+#include <EASTL/utility.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/rotate_copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 template<class InIter, class OutIter, typename Sent = InIter>
 void test_iter()
@@ -324,7 +337,7 @@ int main()
     {
         int rgi[] = {0,1,2,3,4,5};
         int rgo[6] = {0};
-        auto r = ranges::rotate_copy(std::move(rgi), rgi+2, rgo);
+        auto r = ranges::rotate_copy(eastl::move(rgi), rgi+2, rgo);
 #ifndef RANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(r.in));
 #endif // RANGES_WORKAROUND_MSVC_573728
@@ -338,9 +351,9 @@ int main()
     }
 
     {
-        std::vector<int> rgi{0,1,2,3,4,5};
+        eastl::vector<int> rgi{0,1,2,3,4,5};
         int rgo[6] = {0};
-        auto r = ranges::rotate_copy(std::move(rgi), rgi.begin()+2, rgo);
+        auto r = ranges::rotate_copy(eastl::move(rgi), rgi.begin()+2, rgo);
         CHECK(::is_dangling(r.in));
         CHECK(r.out == ranges::end(rgo));
         CHECK(rgo[0] == 2);

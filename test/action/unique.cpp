@@ -8,20 +8,34 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 #include <random>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/repeat_n.hpp>
-#include <range/v3/view/for_each.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/algorithm/shuffle.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/algorithm/is_sorted.hpp>
-#include <range/v3/action/shuffle.hpp>
-#include <range/v3/action/sort.hpp>
-#include <range/v3/action/unique.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/repeat_n.hpp>
+#include <EASTL/ranges/view/for_each.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/algorithm/shuffle.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/algorithm/is_sorted.hpp>
+#include <EASTL/ranges/action/shuffle.hpp>
+#include <EASTL/ranges/action/sort.hpp>
+#include <EASTL/ranges/action/unique.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -29,10 +43,10 @@ int main()
     std::mt19937 gen;
 
     // [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5,...]
-    auto v =
-        views::for_each(views::ints(1,100), [](int i){
+    auto v = views::for_each(views::ints(1,100), [](int i)
+        {
             return yield_from(views::repeat_n(i,i));
-        }) | to<std::vector>();
+        }) | to<eastl::vector>();
     check_equal(views::take(v, 15), {1,2,2,3,3,3,4,4,4,4,5,5,5,5,5});
     v |= actions::shuffle(gen);
     CHECK(!is_sorted(v));

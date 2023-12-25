@@ -9,10 +9,11 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/count.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/count.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
+
 
 struct S
 {
@@ -26,36 +27,24 @@ int main()
     int ia[] = {0, 1, 2, 2, 0, 1, 2, 3};
     constexpr auto cia = size(ia);
 
-    CHECK(count(InputIterator<const int*>(ia),
-                Sentinel<const int*>(ia + cia), 2) == 3);
-    CHECK(count(InputIterator<const int*>(ia),
-                Sentinel<const int*>(ia + cia), 7) == 0);
-    CHECK(count(InputIterator<const int*>(ia),
-                Sentinel<const int*>(ia), 2) == 0);
+    CHECK(count(InputIterator<const int*>(ia), Sentinel<const int*>(ia + cia), 2) == 3);
+    CHECK(count(InputIterator<const int*>(ia), Sentinel<const int*>(ia + cia), 7) == 0);
+    CHECK(count(InputIterator<const int*>(ia), Sentinel<const int*>(ia), 2) == 0);
 
-    CHECK(count(make_subrange(InputIterator<const int*>(ia),
-                      Sentinel<const int*>(ia + cia)), 2) == 3);
-    CHECK(count(make_subrange(InputIterator<const int*>(ia),
-                      Sentinel<const int*>(ia + cia)), 7) == 0);
-    CHECK(count(make_subrange(InputIterator<const int*>(ia),
-                      Sentinel<const int*>(ia)), 2) == 0);
+    CHECK(count(make_subrange(InputIterator<const int*>(ia), Sentinel<const int*>(ia + cia)), 2) == 3);
+    CHECK(count(make_subrange(InputIterator<const int*>(ia), Sentinel<const int*>(ia + cia)), 7) == 0);
+    CHECK(count(make_subrange(InputIterator<const int*>(ia), Sentinel<const int*>(ia)), 2) == 0);
 
     S sa[] = {{0}, {1}, {2}, {2}, {0}, {1}, {2}, {3}};
     constexpr auto csa = size(ia);
 
-    CHECK(count(InputIterator<const S*>(sa),
-                Sentinel<const S*>(sa + csa), 2, &S::i) == 3);
-    CHECK(count(InputIterator<const S*>(sa),
-                Sentinel<const S*>(sa + csa), 7, &S::i) == 0);
-    CHECK(count(InputIterator<const S*>(sa),
-                Sentinel<const S*>(sa), 2, &S::i) == 0);
+    CHECK(count(InputIterator<const S*>(sa), Sentinel<const S*>(sa + csa), 2, &S::i) == 3);
+    CHECK(count(InputIterator<const S*>(sa), Sentinel<const S*>(sa + csa), 7, &S::i) == 0);
+    CHECK(count(InputIterator<const S*>(sa),Sentinel<const S*>(sa), 2, &S::i) == 0);
 
-    CHECK(count(make_subrange(InputIterator<const S*>(sa),
-                      Sentinel<const S*>(sa + csa)), 2, &S::i) == 3);
-    CHECK(count(make_subrange(InputIterator<const S*>(sa),
-                      Sentinel<const S*>(sa + csa)), 7, &S::i) == 0);
-    CHECK(count(make_subrange(InputIterator<const S*>(sa),
-                      Sentinel<const S*>(sa)), 2, &S::i) == 0);
+    CHECK(count(make_subrange(InputIterator<const S*>(sa),Sentinel<const S*>(sa + csa)), 2, &S::i) == 3);
+    CHECK(count(make_subrange(InputIterator<const S*>(sa),Sentinel<const S*>(sa + csa)), 7, &S::i) == 0);
+    CHECK(count(make_subrange(InputIterator<const S*>(sa), Sentinel<const S*>(sa)), 2, &S::i) == 0);
 
     {
         using IL = std::initializer_list<int>;

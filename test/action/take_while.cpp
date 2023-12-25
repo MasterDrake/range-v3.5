@@ -7,26 +7,39 @@
 //  file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/algorithm/move.hpp>
-#include <range/v3/action/take_while.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/algorithm/move.hpp>
+#include <EASTL/ranges/action/take_while.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
     using namespace ranges;
     using namespace std::placeholders;
 
-    auto v = views::ints(1,21) | to<std::vector>();
-    auto & v2 = actions::take_while(v, std::bind(std::less<int>(), _1, 18));
+    auto v = views::ints(1,21) | to<eastl::vector>();
+    auto & v2 = actions::take_while(v, std::bind(eastl::less<int>(), _1, 18));
     CHECK(&v2 == &v);
     CHECK(v.size() == 17u);
     CHECK(v.back() == 17);
 
-    v = std::move(v) | actions::take_while([](int i){return i < 15;});
+    v = eastl::move(v) | actions::take_while([](int i){return i < 15;});
     CHECK(v.size() == 14u);
     CHECK(v.back() == 14);
 

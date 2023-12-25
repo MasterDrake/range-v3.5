@@ -22,9 +22,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <range/v3/core.hpp>
-#include <range/v3/numeric/inner_product.hpp>
-#include <range/v3/algorithm/equal.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/numeric/inner_product.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
@@ -104,7 +104,7 @@ namespace
       {
         return ranges::inner_product(ranges::make_subrange(Iter1(b1), Sent1(b1+l1)),
                                     ranges::make_subrange(Iter2(b2), Iter2(b2+l1)), i,
-                                    std::multiplies<int>(), std::plus<int>());
+                                    eastl::multiplies<int>(), eastl::plus<int>());
       };
       CHECK(bops(a, 0, b, 1) == 1);
       CHECK(bops(a, 0, b, 10) == 10);
@@ -164,7 +164,7 @@ int main()
       {
         return ranges::inner_product(ranges::make_subrange(Iter1(b1), Sent1(b1+l1)),
                                      ranges::make_subrange(Iter2(b2), Iter2(b2+l1)), i,
-                                     std::multiplies<int>(), std::plus<int>(),
+                                     eastl::multiplies<int>(), eastl::plus<int>(),
                                      &S::i, &S::i);
       };
 

@@ -10,9 +10,9 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <vector>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/view/exclusive_scan.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/view/exclusive_scan.hpp>
 #include "../test_utils.hpp"
 
 int main()
@@ -43,7 +43,7 @@ int main()
     }
 
     {// For an empty range.
-        std::vector<int> rgi;
+        eastl::vector<int> rgi;
         auto rng = rgi | views::exclusive_scan(0);
         has_type<int>(*begin(rng));
         CPP_assert(view_<decltype(rng)>);

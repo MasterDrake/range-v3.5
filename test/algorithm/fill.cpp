@@ -19,11 +19,11 @@
 //===----------------------------------------------------------------------===//
 
 #include <cstring>
-#include <string>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/fill.hpp>
-#include <range/v3/algorithm/equal.hpp>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/fill.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"

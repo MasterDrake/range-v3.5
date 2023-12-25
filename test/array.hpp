@@ -25,13 +25,13 @@
 #define RANGES_V3_TEST_ARRAY_HPP
 
 #include <stdexcept>
-#include <range/v3/range_fwd.hpp>
-#include <range/v3/iterator/operations.hpp>
-#include <range/v3/algorithm/fill_n.hpp>
-#include <range/v3/algorithm/swap_ranges.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/algorithm/lexicographical_compare.hpp>
-#include <range/v3/utility/swap.hpp>
+#include <EASTL/ranges/range_fwd.hpp>
+#include <EASTL/ranges/iterator/operations.hpp>
+#include <EASTL/ranges/algorithm/fill_n.hpp>
+#include <EASTL/ranges/algorithm/swap_ranges.hpp>
+#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EASTL/ranges/algorithm/lexicographical_compare.hpp>
+#include <EASTL/ranges/utility/swap.hpp>
 
 namespace test {
 

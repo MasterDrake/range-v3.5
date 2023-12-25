@@ -26,12 +26,26 @@
 //   http://http://libcxx.llvm.org/
 
 #include <cstring>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/unique_copy.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/unique_copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 
 struct count_equal
 {
@@ -328,17 +342,17 @@ int main()
     {
         S const ia[] = {{1,1},{2,2},{3,3},{3,4},{4,5},{5,6},{5,7},{5,8},{6,9},{7,10}};
         S ib[ranges::size(ia)];
-        auto r = ranges::unique_copy(std::move(ia), ib, ranges::equal_to(), &S::i);
+        auto r = ranges::unique_copy(eastl::move(ia), ib, ranges::equal_to(), &S::i);
         CHECK(::is_dangling(r.in));
         CHECK(r.out == ib + 7);
         check_equal(ranges::make_subrange(ib, ib+7), {S{1,1},S{2,2},S{3,3},S{4,5},S{5,6},S{6,9},S{7,10}});
     }
 #endif // RANGES_WORKAROUND_MSVC_573728
     {
-        std::vector<S> const ia{{1,1},{2,2},{3,3},{3,4},{4,5},{5,6},{5,7},{5,8},{6,9},{7,10}};
+        eastl::vector<S> const ia{{1,1},{2,2},{3,3},{3,4},{4,5},{5,6},{5,7},{5,8},{6,9},{7,10}};
         S ib[10];
         RANGES_ENSURE(ranges::size(ia) == ranges::size(ib));
-        auto r = ranges::unique_copy(std::move(ia), ib, ranges::equal_to(), &S::i);
+        auto r = ranges::unique_copy(eastl::move(ia), ib, ranges::equal_to(), &S::i);
         CHECK(::is_dangling(r.in));
         CHECK(r.out == ib + 7);
         check_equal(ranges::make_subrange(ib, ib+7), {S{1,1},S{2,2},S{3,3},S{4,5},S{5,6},S{6,9},S{7,10}});

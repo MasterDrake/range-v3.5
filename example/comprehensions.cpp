@@ -10,9 +10,22 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <chrono>
+#include <EASTL/chrono.h>
 #include <iostream>
-#include <range/v3/all.hpp>
+#include <EASTL/ranges/all.hpp>
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 using namespace ranges;
 
@@ -23,8 +36,7 @@ main()
     auto triples = views::for_each(views::iota(1), [](int z) {
         return views::for_each(views::iota(1, z + 1), [=](int x) {
             return views::for_each(views::iota(x, z + 1), [=](int y) {
-                return yield_if(x * x + y * y == z * z,
-                                std::make_tuple(x, y, z));
+                return yield_if(x * x + y * y == z * z, eastl::make_tuple(x, y, z));
             });
         });
     });
@@ -34,13 +46,13 @@ main()
     //                iota(1, z+1) >>= [=](int x) { return
     //                iota(x, z+1) >>= [=](int y) { return
     //    yield_if(x*x + y*y == z*z,
-    //        std::make_tuple(x, y, z)); };}; };
+    //        eastl::make_tuple(x, y, z)); };}; };
 
     // Display the first 100 triples
     RANGES_FOR(auto triple, triples | views::take(100))
     {
-        std::cout << '(' << std::get<0>(triple) << ',' << std::get<1>(triple)
-                  << ',' << std::get<2>(triple) << ')' << '\n';
+        std::cout << '(' << eastl::get<0>(triple) << ',' << eastl::get<1>(triple)
+                  << ',' << eastl::get<2>(triple) << ')' << '\n';
     }
 }
 
@@ -51,7 +63,7 @@ main()
 class timer
 {
 private:
-    std::chrono::high_resolution_clock::time_point start_;
+    eastl::chrono::high_resolution_clock::time_point start_;
 
 public:
     timer()
@@ -60,12 +72,12 @@ public:
     }
     void reset()
     {
-        start_ = std::chrono::high_resolution_clock::now();
+        start_ = eastl::chrono::high_resolution_clock::now();
     }
-    std::chrono::milliseconds elapsed() const
+    eastl::chrono::milliseconds elapsed() const
     {
-        return std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::high_resolution_clock::now() - start_);
+        return eastl::chrono::duration_cast<eastl::chrono::milliseconds>(
+            eastl::chrono::high_resolution_clock::now() - start_);
     }
     friend std::ostream &operator<<(std::ostream &sout, timer const &t)
     {
@@ -81,7 +93,7 @@ benchmark()
         return views::for_each(views::iota(1, z + 1), [=](int x) {
             return views::for_each(views::iota(x, z + 1), [=](int y) {
                 return yield_if(x * x + y * y == z * z,
-                                std::make_tuple(x, y, z));
+                                eastl::make_tuple(x, y, z));
             });
         });
     });
@@ -93,7 +105,7 @@ benchmark()
     RANGES_FOR(auto triple, triples | views::take(max_triples))
     {
         int i, j, k;
-        std::tie(i, j, k) = triple;
+        eastl::tie(i, j, k) = triple;
         result += (i + j + k);
     }
     std::cout << t << '\n';

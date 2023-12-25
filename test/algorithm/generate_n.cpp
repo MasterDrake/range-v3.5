@@ -18,13 +18,23 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/generate_n.hpp>
-#include <range/v3/iterator/insert_iterators.hpp>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/generate_n.hpp>
+#include <EASTL/ranges/iterator/insert_iterators.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct gen_test
 {
@@ -59,7 +69,7 @@ test()
 void test2()
 {
     // Test ranges::generate with a genuine output range
-    std::vector<int> v;
+    eastl::vector<int> v;
     ranges::generate_n(ranges::back_inserter(v), 5, gen_test(1));
     CHECK(v.size() == 5u);
     CHECK(v[0] == 1);
@@ -115,7 +125,7 @@ int main()
     test<RandomAccessIterator<int*>, Sentinel<int*> >();
 
     test2();
-
+    //Funny how here constexpr checks work for generate_n but not for generate :/
     {
         STATIC_CHECK(test_constexpr<ForwardIterator<int *>>());
         STATIC_CHECK(test_constexpr<BidirectionalIterator<int *>>());

@@ -12,15 +12,28 @@
 //
 
 ///[hello]
+#include <EASTL/string.h>
 #include <iostream>
-#include <range/v3/all.hpp> // get everything
-#include <string>
+
+#include <EASTL/ranges/all.hpp> // get everything
 using std::cout;
 
-int
-main()
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
 {
-    std::string s{"hello"};
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+int main()
+{
+    eastl::string s{"hello"};
 
     // output: h e l l o
     ranges::for_each(s, [](char c) { cout << c << ' '; });

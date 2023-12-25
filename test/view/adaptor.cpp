@@ -9,14 +9,28 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
 #include <sstream>
-#include <range/v3/core.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/view/delimit.hpp>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/view/delimit.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 
 template<typename BidiRange>
 struct my_reverse_view
@@ -136,8 +150,8 @@ struct my_delimited_range
 int main()
 {
     using namespace ranges;
-    std::vector<int> v{1, 2, 3, 4};
-    my_reverse_view<std::vector<int>&> retro{v};
+    eastl::vector<int> v{1, 2, 3, 4};
+    my_reverse_view<eastl::vector<int>&> retro{v};
     CPP_assert(common_range<decltype(retro)>);
     CPP_assert(view_<decltype(retro)>);
     CPP_assert(random_access_iterator<decltype(retro.begin())>);
@@ -148,8 +162,8 @@ int main()
     CHECK( *((retro.begin()+1).base()) == 4 );
     CHECK( (retro.begin()+1).base_plus_adaptor() == 24 );
 
-    std::list<int> l{1, 2, 3, 4};
-    my_reverse_view<std::list<int>& > retro2{l};
+    eastl::list<int> l{1, 2, 3, 4};
+    my_reverse_view<eastl::list<int>& > retro2{l};
     CPP_assert(common_range<decltype(retro2)>);
     CPP_assert(view_<decltype(retro2)>);
     CPP_assert(bidirectional_iterator<decltype(retro2.begin())>);

@@ -9,22 +9,36 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <string>
-#include <vector>
-#include <iterator>
-#include <functional>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/move.hpp>
-#include <range/v3/functional/overload.hpp>
-#include <range/v3/iterator/insert_iterators.hpp>
-#include <range/v3/utility/copy.hpp>
-#include <range/v3/view/transform.hpp>
-#include <range/v3/view/counted.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/span.hpp>
-#include <range/v3/view/zip.hpp>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
+#include <EASTL/iterator.h>
+#include <EASTL/functional.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/move.hpp>
+#include <EASTL/ranges/functional/overload.hpp>
+#include <EASTL/ranges/iterator/insert_iterators.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
+#include <EASTL/ranges/view/transform.hpp>
+#include <EASTL/ranges/view/counted.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/span.hpp>
+#include <EASTL/ranges/view/zip.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct is_odd
 {
@@ -37,7 +51,7 @@ struct is_odd
 // https://github.com/ericniebler/range-v3/issues/996
 void bug_996()
 {
-    std::vector<int> buff(12, -1);
+    eastl::vector<int> buff(12, -1);
     ::ranges::span<int> sp(buff.data(), 12);
 
     auto x = ::ranges::views::transform(sp, [](int a) { return a > 3 ? a : 42; });
@@ -51,7 +65,7 @@ int main()
     using namespace ranges;
 
     int rgi[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    std::pair<int, int> rgp[] = {{1,1}, {2,2}, {3,3}, {4,4}, {5,5}, {6,6}, {7,7}, {8,8}, {9,9}, {10,10}};
+    eastl::pair<int, int> rgp[] = {{1,1}, {2,2}, {3,3}, {4,4}, {5,5}, {6,6}, {7,7}, {8,8}, {9,9}, {10,10}};
 
     {
         auto rng = rgi | views::transform(is_odd());
@@ -64,7 +78,7 @@ int main()
     }
 
     {
-        auto rng2 = rgp | views::transform(&std::pair<int,int>::first);
+        auto rng2 = rgp | views::transform(&eastl::pair<int,int>::first);
         has_type<int &>(*begin(rng2));
         CPP_assert(same_as<range_value_t<decltype(rng2)>, int>);
         CPP_assert(same_as<decltype(iter_move(begin(rng2))), int &&>);
@@ -80,7 +94,7 @@ int main()
 
     {
 
-        auto rng3 = views::counted(rgp, 10) | views::transform(&std::pair<int,int>::first);
+        auto rng3 = views::counted(rgp, 10) | views::transform(&eastl::pair<int,int>::first);
         has_type<int &>(*begin(rng3));
         CPP_assert(view_<decltype(rng3)>);
         CPP_assert(common_range<decltype(rng3)>);
@@ -92,8 +106,8 @@ int main()
     }
 
     {
-        auto rng4 = views::counted(ForwardIterator<std::pair<int, int>*>{rgp}, 10)
-                        | views::transform(&std::pair<int,int>::first);
+        auto rng4 = views::counted(ForwardIterator<eastl::pair<int, int>*>{rgp}, 10)
+                        | views::transform(&eastl::pair<int,int>::first);
         has_type<int &>(*begin(rng4));
         CPP_assert(view_<decltype(rng4)>);
         CPP_assert(!common_range<decltype(rng4)>);
@@ -104,7 +118,7 @@ int main()
         CHECK(&*begin(rng4) == &rgp[0].first);
         CHECK(rng4.size() == 10u);
 
-        counted_iterator<ForwardIterator<std::pair<int, int>*>> i = begin(rng4).base();
+        counted_iterator<ForwardIterator<eastl::pair<int, int>*>> i = begin(rng4).base();
         (void)i;
     }
 
@@ -120,13 +134,13 @@ int main()
 
     // Test iter_transform by transforming a zip view to select one element.
     {
-        auto v0 = to<std::vector<MoveOnlyString>>({"a","b","c"});
-        auto v1 = to<std::vector<MoveOnlyString>>({"x","y","z"});
+        auto v0 = to<eastl::vector<MoveOnlyString>>({"a","b","c"});
+        auto v1 = to<eastl::vector<MoveOnlyString>>({"x","y","z"});
 
         auto rng1 = views::zip(v0, v1);
         CPP_assert(random_access_range<decltype(rng1)>);
 
-        std::vector<MoveOnlyString> res;
+        eastl::vector<MoveOnlyString> res;
         using R1 = decltype(rng1);
         using I1 = iterator_t<R1>;
         // Needlessly verbose -- a simple transform would do the same, but this
@@ -134,7 +148,7 @@ int main()
         auto proj = overload(
             [](I1 i1) -> MoveOnlyString& {return (*i1).first;},
             [](copy_tag, I1) -> MoveOnlyString {return {};},
-            [](move_tag, I1 i1) -> MoveOnlyString&& {return std::move((*i1).first);}
+            [](move_tag, I1 i1) -> MoveOnlyString&& {return eastl::move((*i1).first);}
         );
         auto rng2 = rng1 | views::iter_transform(proj);
         move(rng2, ranges::back_inserter(res));
@@ -149,38 +163,38 @@ int main()
 
     // two range transform
     {
-        auto v0 = to<std::vector<std::string>>({"a","b","c"});
-        auto v1 = to<std::vector<std::string>>({"x","y","z"});
+        auto v0 = to<eastl::vector<eastl::string>>({"a","b","c"});
+        auto v1 = to<eastl::vector<eastl::string>>({"x","y","z"});
 
-        auto rng = views::transform(v0, v1, [](std::string& s0, std::string& s1){return std::tie(s0, s1);});
+        auto rng = views::transform(v0, v1, [](eastl::string& s0, eastl::string& s1){return eastl::tie(s0, s1);});
         using R = decltype(rng);
-        CPP_assert(same_as<range_value_t<R>, std::tuple<std::string&, std::string&>>);
-        CPP_assert(same_as<range_reference_t<R>, std::tuple<std::string&, std::string&>>);
-        CPP_assert(same_as<range_rvalue_reference_t<R>, std::tuple<std::string&, std::string&>>);
+        CPP_assert(same_as<range_value_t<R>, eastl::tuple<eastl::string&, eastl::string&>>);
+        CPP_assert(same_as<range_reference_t<R>, eastl::tuple<eastl::string&, eastl::string&>>);
+        CPP_assert(same_as<range_rvalue_reference_t<R>, eastl::tuple<eastl::string&, eastl::string&>>);
 
-        using T = std::tuple<std::string, std::string>;
+        using T = eastl::tuple<eastl::string, eastl::string>;
         ::check_equal(rng, {T{"a","x"}, T{"b","y"}, T{"c","z"}});
     }
 
     // two range indirect transform
     {
-        auto v0 = to<std::vector<std::string>>({"a","b","c"});
-        auto v1 = to<std::vector<std::string>>({"x","y","z"});
-        using I = std::vector<std::string>::iterator;
+        auto v0 = to<eastl::vector<eastl::string>>({"a","b","c"});
+        auto v1 = to<eastl::vector<eastl::string>>({"x","y","z"});
+        using I = eastl::vector<eastl::string>::iterator;
 
         auto fun = overload(
-            [](I i, I j)           { return std::tie(*i, *j); },
-            [](copy_tag, I, I)     { return std::tuple<std::string, std::string>{}; },
-            [](move_tag, I i, I j) { return common_tuple<std::string&&, std::string&&>{
-                std::move(*i), std::move(*j)}; } );
+            [](I i, I j)           { return eastl::tie(*i, *j); },
+            [](copy_tag, I, I)     { return eastl::tuple<eastl::string, eastl::string>{}; },
+            [](move_tag, I i, I j) { return common_tuple<eastl::string&&, eastl::string&&>{
+                eastl::move(*i), eastl::move(*j)}; } );
 
         auto rng = views::iter_transform(v0, v1, fun);
         using R = decltype(rng);
-        CPP_assert(same_as<range_value_t<R>, std::tuple<std::string, std::string>>);
-        CPP_assert(same_as<range_reference_t<R>, std::tuple<std::string&, std::string&>>);
-        CPP_assert(same_as<range_rvalue_reference_t<R>, common_tuple<std::string&&, std::string&&>>);
+        CPP_assert(same_as<range_value_t<R>, eastl::tuple<eastl::string, eastl::string>>);
+        CPP_assert(same_as<range_reference_t<R>, eastl::tuple<eastl::string&, eastl::string&>>);
+        CPP_assert(same_as<range_rvalue_reference_t<R>, common_tuple<eastl::string&&, eastl::string&&>>);
 
-        using T = std::tuple<std::string, std::string>;
+        using T = eastl::tuple<eastl::string, eastl::string>;
         ::check_equal(rng, {T{"a","x"}, T{"b","y"}, T{"c","z"}});
     }
 
@@ -190,19 +204,19 @@ int main()
     }
 
     {
-        auto v0 = to<std::vector<std::string>>({"a","b","c"});
-        auto v1 = to<std::vector<std::string>>({"x","y","z"});
+        auto v0 = to<eastl::vector<eastl::string>>({"a","b","c"});
+        auto v1 = to<eastl::vector<eastl::string>>({"x","y","z"});
 
-        auto r0 = debug_input_view<std::string>{v0.data(), distance(v0)};
-        auto r1 = debug_input_view<std::string>{v1.data(), distance(v1)};
-        auto rng = views::transform(std::move(r0), std::move(r1),
-            [](std::string &s0, std::string &s1){ return std::tie(s0, s1); });
+        auto r0 = debug_input_view<eastl::string>{v0.data(), distance(v0)};
+        auto r1 = debug_input_view<eastl::string>{v1.data(), distance(v1)};
+        auto rng = views::transform(eastl::move(r0), eastl::move(r1),
+            [](eastl::string &s0, eastl::string &s1){ return eastl::tie(s0, s1); });
         using R = decltype(rng);
-        CPP_assert(same_as<range_value_t<R>, std::tuple<std::string &, std::string &>>);
-        CPP_assert(same_as<range_reference_t<R>, std::tuple<std::string &, std::string &>>);
-        CPP_assert(same_as<range_rvalue_reference_t<R>, std::tuple<std::string &, std::string &>>);
+        CPP_assert(same_as<range_value_t<R>, eastl::tuple<eastl::string &, eastl::string &>>);
+        CPP_assert(same_as<range_reference_t<R>, eastl::tuple<eastl::string &, eastl::string &>>);
+        CPP_assert(same_as<range_rvalue_reference_t<R>, eastl::tuple<eastl::string &, eastl::string &>>);
 
-        using T = std::tuple<std::string, std::string>;
+        using T = eastl::tuple<eastl::string, eastl::string>;
         ::check_equal(rng, {T{"a","x"}, T{"b","y"}, T{"c","z"}});
     }
 
@@ -213,7 +227,7 @@ int main()
         RANGES_DIAGNOSTIC_PUSH
         RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
 #endif
-        std::vector<int> vi = {1, 2, 3};
+        eastl::vector<int> vi = {1, 2, 3};
         ranges::transform_view times_ten{vi, [](int i) { return i * 10; }};
         ::check_equal(times_ten, {10, 20, 30});
 #if defined(__clang__) && __clang_major__ < 6

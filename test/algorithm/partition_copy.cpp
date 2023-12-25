@@ -22,14 +22,28 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <tuple>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/partition_copy.hpp>
-#include <range/v3/view/counted.hpp>
+#include <EASTL/tuple.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/partition_copy.hpp>
+#include <EASTL/ranges/view/counted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 struct is_odd
 {
@@ -47,10 +61,10 @@ test_iter()
     int r1[10] = {0};
     int r2[10] = {0};
     typedef ranges::partition_copy_result<Iter, OutputIterator<int*>,  int*> P;
-    P p = ranges::partition_copy(Iter(std::begin(ia)),
-                                 Sent(std::end(ia)),
+    P p = ranges::partition_copy(Iter(eastl::begin(ia)),
+                                 Sent(eastl::end(ia)),
                                  OutputIterator<int*>(r1), r2, is_odd());
-    CHECK(p.in == Iter(std::end(ia)));
+    CHECK(p.in == Iter(eastl::end(ia)));
     CHECK(p.out1.base() == r1 + 4);
     CHECK(r1[0] == 1);
     CHECK(r1[1] == 3);
@@ -71,10 +85,10 @@ test_range()
     int r1[10] = {0};
     int r2[10] = {0};
     typedef ranges::partition_copy_result<Iter, OutputIterator<int*>,  int*> P;
-    P p = ranges::partition_copy(::as_lvalue(ranges::make_subrange(Iter(std::begin(ia)),
-                                                           Sent(std::end(ia)))),
+    P p = ranges::partition_copy(::as_lvalue(ranges::make_subrange(Iter(eastl::begin(ia)),
+                                                           Sent(eastl::end(ia)))),
                                  OutputIterator<int*>(r1), r2, is_odd());
-    CHECK(p.in == Iter(std::end(ia)));
+    CHECK(p.in == Iter(eastl::end(ia)));
     CHECK(p.out1.base() == r1 + 4);
     CHECK(r1[0] == 1);
     CHECK(r1[1] == 3);
@@ -100,7 +114,7 @@ void test_proj()
     S r2[10] = {S{0}};
     typedef ranges::partition_copy_result<S const *, S*,  S*> P;
     P p = ranges::partition_copy(ia, r1, r2, is_odd(), &S::i);
-    CHECK(p.in == std::end(ia));
+    CHECK(p.in == eastl::end(ia));
     CHECK(p.out1 == r1 + 4);
     CHECK(r1[0].i == 1);
     CHECK(r1[1].i == 3);
@@ -119,7 +133,7 @@ void test_rvalue()
     const S ia[] = {S{1}, S{2}, S{3}, S{4}, S{6}, S{8}, S{5}, S{7}};
     S r1[10] = {};
     S r2[10] = {};
-    auto p = ranges::partition_copy(std::move(ia), r1, r2, is_odd(), &S::i);
+    auto p = ranges::partition_copy(eastl::move(ia), r1, r2, is_odd(), &S::i);
 #ifndef RANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(p.in));
 #endif
@@ -134,10 +148,10 @@ void test_rvalue()
     CHECK(r2[2].i == 6);
     CHECK(r2[3].i == 8);
 
-    std::fill(r1 + 0, r1 + 10, S{});
-    std::fill(r2 + 0, r2 + 10, S{});
-    std::vector<S> vec(ranges::begin(ia), ranges::end(ia));
-    auto q = ranges::partition_copy(std::move(vec), r1, r2, is_odd(), &S::i);
+    eastl::fill(r1 + 0, r1 + 10, S{});
+    eastl::fill(r2 + 0, r2 + 10, S{});
+    eastl::vector<S> vec(ranges::begin(ia), ranges::end(ia));
+    auto q = ranges::partition_copy(eastl::move(vec), r1, r2, is_odd(), &S::i);
 #ifndef RANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(q.in));
 #endif
@@ -160,7 +174,7 @@ constexpr bool test_constexpr()
     int r1[10] = {0};
     int r2[10] = {0};
     const auto p = partition_copy(ia, r1, r2, is_odd());
-    STATIC_CHECK_RETURN(p.in == std::end(ia));
+    STATIC_CHECK_RETURN(p.in == eastl::end(ia));
     STATIC_CHECK_RETURN(p.out1 == r1 + 4);
     STATIC_CHECK_RETURN(r1[0] == 1);
     STATIC_CHECK_RETURN(r1[1] == 3);

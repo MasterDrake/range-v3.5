@@ -18,22 +18,23 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <array>
-#include <memory>
-#include <algorithm>
-#include <range/v3/core.hpp>
-#include <range/v3/algorithm/swap_ranges.hpp>
+#include <EASTL/array.h>
+#include <EASTL/memory.h>
+#include <EASTL/algorithm.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/algorithm/swap_ranges.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
+
+//kinda weird that is uses eastl::unique_ptr but it doesn't require new operator overloads ...
 
 template<class Iter1, class Iter2>
 void test_iter_3()
 {
     int i[3] = {1, 2, 3};
     int j[3] = {4, 5, 6};
-    ranges::swap_ranges_result<Iter1, Iter2> r =
-        ranges::swap_ranges(Iter1(i), Iter1(i+3), Iter2(j));
+    ranges::swap_ranges_result<Iter1, Iter2> r = ranges::swap_ranges(Iter1(i), Iter1(i+3), Iter2(j));
     CHECK(base(r.in1) == i+3);
     CHECK(base(r.in2) == j+3);
     CHECK(i[0] == 4);
@@ -60,8 +61,7 @@ void test_iter_4()
 {
     int i[3] = {1, 2, 3};
     int j[4] = {4, 5, 6, 7};
-    ranges::swap_ranges_result<Iter1, Iter2> r =
-        ranges::swap_ranges(Iter1(i), Iter1(i+3), Iter2(j), Iter2(j+4));
+    ranges::swap_ranges_result<Iter1, Iter2> r = ranges::swap_ranges(Iter1(i), Iter1(i+3), Iter2(j), Iter2(j+4));
     CHECK(base(r.in1) == i+3);
     CHECK(base(r.in2) == j+3);
     CHECK(i[0] == 4);
@@ -91,8 +91,7 @@ void test_rng_3()
 {
     int i[3] = {1, 2, 3};
     int j[3] = {4, 5, 6};
-    ranges::swap_ranges_result<Iter1, Iter2> r =
-        ranges::swap_ranges(as_lvalue(ranges::make_subrange(Iter1(i), Iter1(i+3))), Iter2(j));
+    ranges::swap_ranges_result<Iter1, Iter2> r = ranges::swap_ranges(as_lvalue(ranges::make_subrange(Iter1(i), Iter1(i+3))), Iter2(j));
     CHECK(base(r.in1) == i+3);
     CHECK(base(r.in2) == j+3);
     CHECK(i[0] == 4);
@@ -164,14 +163,13 @@ void test_rng_4()
 template<class Iter1, class Iter2>
 void test_move_only()
 {
-    std::unique_ptr<int> i[3];
+    eastl::unique_ptr<int> i[3];
     for (int k = 0; k < 3; ++k)
         i[k].reset(new int(k+1));
-    std::unique_ptr<int> j[3];
+    eastl::unique_ptr<int> j[3];
     for (int k = 0; k < 3; ++k)
         j[k].reset(new int(k+4));
-    ranges::swap_ranges_result<Iter1, Iter2> r =
-        ranges::swap_ranges(Iter1(i), Iter1(i+3), Iter2(j));
+    ranges::swap_ranges_result<Iter1, Iter2> r = ranges::swap_ranges(Iter1(i), Iter1(i+3), Iter2(j));
     CHECK(base(r.in1) == i+3);
     CHECK(base(r.in2) == j+3);
     CHECK(*i[0] == 4);
@@ -230,25 +228,25 @@ int main()
     test<int*, RandomAccessIterator<int*> >();
     test<int*, int*>();
 
-    test_move_only<ForwardIterator<std::unique_ptr<int>*>, ForwardIterator<std::unique_ptr<int>*> >();
-    test_move_only<ForwardIterator<std::unique_ptr<int>*>, BidirectionalIterator<std::unique_ptr<int>*> >();
-    test_move_only<ForwardIterator<std::unique_ptr<int>*>, RandomAccessIterator<std::unique_ptr<int>*> >();
-    test_move_only<ForwardIterator<std::unique_ptr<int>*>, std::unique_ptr<int>*>();
+    test_move_only<ForwardIterator<eastl::unique_ptr<int>*>, ForwardIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<ForwardIterator<eastl::unique_ptr<int>*>, BidirectionalIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<ForwardIterator<eastl::unique_ptr<int>*>, RandomAccessIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<ForwardIterator<eastl::unique_ptr<int>*>, eastl::unique_ptr<int>*>();
 
-    test_move_only<BidirectionalIterator<std::unique_ptr<int>*>, ForwardIterator<std::unique_ptr<int>*> >();
-    test_move_only<BidirectionalIterator<std::unique_ptr<int>*>, BidirectionalIterator<std::unique_ptr<int>*> >();
-    test_move_only<BidirectionalIterator<std::unique_ptr<int>*>, RandomAccessIterator<std::unique_ptr<int>*> >();
-    test_move_only<BidirectionalIterator<std::unique_ptr<int>*>, std::unique_ptr<int>*>();
+    test_move_only<BidirectionalIterator<eastl::unique_ptr<int>*>, ForwardIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<BidirectionalIterator<eastl::unique_ptr<int>*>, BidirectionalIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<BidirectionalIterator<eastl::unique_ptr<int>*>, RandomAccessIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<BidirectionalIterator<eastl::unique_ptr<int>*>, eastl::unique_ptr<int>*>();
 
-    test_move_only<RandomAccessIterator<std::unique_ptr<int>*>, ForwardIterator<std::unique_ptr<int>*> >();
-    test_move_only<RandomAccessIterator<std::unique_ptr<int>*>, BidirectionalIterator<std::unique_ptr<int>*> >();
-    test_move_only<RandomAccessIterator<std::unique_ptr<int>*>, RandomAccessIterator<std::unique_ptr<int>*> >();
-    test_move_only<RandomAccessIterator<std::unique_ptr<int>*>, std::unique_ptr<int>*>();
+    test_move_only<RandomAccessIterator<eastl::unique_ptr<int>*>, ForwardIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<RandomAccessIterator<eastl::unique_ptr<int>*>, BidirectionalIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<RandomAccessIterator<eastl::unique_ptr<int>*>, RandomAccessIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<RandomAccessIterator<eastl::unique_ptr<int>*>, eastl::unique_ptr<int>*>();
 
-    test_move_only<std::unique_ptr<int>*, ForwardIterator<std::unique_ptr<int>*> >();
-    test_move_only<std::unique_ptr<int>*, BidirectionalIterator<std::unique_ptr<int>*> >();
-    test_move_only<std::unique_ptr<int>*, RandomAccessIterator<std::unique_ptr<int>*> >();
-    test_move_only<std::unique_ptr<int>*, std::unique_ptr<int>*>();
+    test_move_only<eastl::unique_ptr<int>*, ForwardIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<eastl::unique_ptr<int>*, BidirectionalIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<eastl::unique_ptr<int>*, RandomAccessIterator<eastl::unique_ptr<int>*> >();
+    test_move_only<eastl::unique_ptr<int>*, eastl::unique_ptr<int>*>();
 
     {
         int a[4] = {1, 2, 3, 4};
@@ -256,7 +254,7 @@ int main()
         ranges::swap_ranges(a, a + 4, b);
         ::check_equal(a, {5, 6, 7, 8});
         ::check_equal(b, {1, 2, 3, 4});
-        ranges::swap_ranges(std::array<int, 2>{{3,4}}, a+2);
+        ranges::swap_ranges(eastl::array<int, 2>{{3,4}}, a+2);
         ::check_equal(a, {5, 6, 3, 4});
     }
 

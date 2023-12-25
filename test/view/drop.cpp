@@ -9,19 +9,32 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <list>
-#include <vector>
-#include <range/v3/core.hpp>
-#include <range/v3/view/chunk.hpp>
-#include <range/v3/view/drop.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/join.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/transform.hpp>
-#include <range/v3/utility/copy.hpp>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
+#include <EASTL/ranges/core.hpp>
+#include <EASTL/ranges/view/chunk.hpp>
+#include <EASTL/ranges/view/drop.hpp>
+#include <EASTL/ranges/view/iota.hpp>
+#include <EASTL/ranges/view/join.hpp>
+#include <EASTL/ranges/view/reverse.hpp>
+#include <EASTL/ranges/view/take.hpp>
+#include <EASTL/ranges/view/transform.hpp>
+#include <EASTL/ranges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 int main()
 {
@@ -49,7 +62,7 @@ int main()
     }
 
     {
-        std::vector<int> v{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        eastl::vector<int> v{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         auto rng2 = v | views::drop(6) | views::reverse;
         has_type<int &>(*begin(rng2));
         CPP_assert(view_<decltype(rng2)>);
@@ -60,7 +73,7 @@ int main()
     }
 
     {
-        std::list<int> l{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        eastl::list<int> l{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         auto rng3 = l | views::drop(6);
         has_type<int &>(*begin(rng3));
         CPP_assert(view_<decltype(rng3)>);
@@ -102,14 +115,14 @@ int main()
 
     {
         // Regression test for https://github.com/ericniebler/range-v3/issues/413
-        auto skips = [](std::vector<int> xs) {
+        auto skips = [](eastl::vector<int> xs) {
             return views::ints(0, (int)xs.size())
                 | views::transform([&](int n) {
                     return xs | views::chunk(n + 1)
                               | views::transform(views::drop(n))
                               | views::join;
                 })
-                | to<std::vector<std::vector<int>>>();
+                | to<eastl::vector<eastl::vector<int>>>();
         };
         auto skipped = skips({1,2,3,4,5,6,7,8});
         CHECK(skipped.size() == 8u);

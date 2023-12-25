@@ -9,7 +9,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/utility/compressed_pair.hpp>
+#include <EASTL/ranges/utility/compressed_pair.hpp>
 #include "../simple_test.hpp"
 
 using namespace ranges;
