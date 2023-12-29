@@ -274,7 +274,7 @@ int main()
         eastl::vector<eastl::string> input{"foo","bar","bax","bat"};
         eastl::string insert{"XX"};
         auto rng = op(input, 2, insert);
-        //todo: remember the hack
+        //todo: remember the hack 36
         std::cout << rng << '\n';
         ::check_equal(rng, {"foo","bar","XX","bax","bat"});
     }

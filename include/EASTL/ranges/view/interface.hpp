@@ -121,7 +121,10 @@ namespace ranges
                 {
                     #ifdef EASTL_STRING_H
                     //HACKHACK for eastl::string, I should use some ranges facilities for getting the value_type, unfortunately it doesn't work. Also not sure how secure is using easl::basic_string hardcoding char and using that type for every string in eastl
-                    if constexpr(eastl::is_same_v<eastl::remove_reference_t<decltype(*it)>, eastl::basic_string<char, eastl::allocator>>)
+                    // BTW we can forward declare eastl::basic_string so that we don't have to add it here. I mean, if we are calling this on a string range, we already have a string header with everything defined.
+                   // if constexpr(eastl::is_same_v<eastl::remove_reference_t<decltype(*it)>, eastl::basic_string<char, eastl::allocator>>)
+                   //if constexpr(eastl::is_same_v<ranges::iter_value_t<Rng>(rng), eastl::basic_string<char, eastl::allocator>>) using range_value_t returns char...
+                    if constexpr(eastl::is_same_v<eastl::remove_cvref_t<ranges::range_value_t<Rng>>, eastl::basic_string<char, eastl::allocator>>)
                         sout << it->c_str();
                     else
                     #endif
