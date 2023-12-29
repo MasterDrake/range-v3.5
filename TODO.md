@@ -24,3 +24,4 @@
   - counted iterators (subtractable regardless of traversal category)
   - repeat_view iterators (*not* subtractable but could be random access otherwise)
   - infinite ranges (only countable with an infinite precision integer which we lack)
+  * https://en.cppreference.com/w/cpp/algorithm/ranges/clamp add ranges::clamp that clamps every element in a range.
