@@ -11,9 +11,9 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <EASTL/memory.h>
-#include <EASTL/ranges/functional/invoke.hpp>
-#include <EASTL/ranges/functional/not_fn.hpp>
-#include <EASTL/ranges/view/filter.hpp>
+#include <EARanges/functional/invoke.hpp>
+#include <EARanges/functional/not_fn.hpp>
+#include <EARanges/view/filter.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

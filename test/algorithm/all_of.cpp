@@ -10,8 +10,8 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/all_of.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/all_of.hpp>
 #include "../simple_test.hpp"
 
 

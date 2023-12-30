@@ -25,8 +25,8 @@
 #include <EASTL/memory.h>
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/stable_partition.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/stable_partition.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -444,9 +444,9 @@ int main()
     {  // check mixed
         S ap[] = { {{0, 1}}, {{0, 2}}, {{1, 1}}, {{1, 2}}, {{2, 1}}, {{2, 2}}, {{3, 1}}, {{3, 2}}, {{4, 1}}, {{4, 2}} };
         auto r = ranges::stable_partition(eastl::move(ap), odd_first(), &S::p);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(r));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         CHECK(ap[0].p == P{1, 1});
         CHECK(ap[1].p == P{1, 2});
         CHECK(ap[2].p == P{3, 1});

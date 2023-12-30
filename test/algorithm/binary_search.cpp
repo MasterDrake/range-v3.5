@@ -14,8 +14,8 @@
 //  or a copy at http://stlab.adobe.com/licenses.html)
 
 #include <EASTL/utility.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/binary_search.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/binary_search.hpp>
 #include "../simple_test.hpp"
 
 

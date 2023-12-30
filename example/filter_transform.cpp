@@ -18,8 +18,8 @@
 #include <string>
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/view/filter.hpp>
-#include <EASTL/ranges/view/transform.hpp>
+#include <EARanges/view/filter.hpp>
+#include <EARanges/view/transform.hpp>
 using std::cout;
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)

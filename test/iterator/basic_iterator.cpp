@@ -9,8 +9,8 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/iterator/basic_iterator.hpp>
-#include <EASTL/ranges/utility/common_tuple.hpp>
+#include <EARanges/iterator/basic_iterator.hpp>
+#include <EARanges/utility/common_tuple.hpp>
 #include <EASTL/tuple.h>
 #include <cstring>
 
@@ -532,7 +532,7 @@ namespace test_forward_sized
     }
 } // namespace test_forward_sized
 
-RANGES_DIAGNOSTIC_IGNORE_UNNEEDED_MEMBER
+EARANGES_DIAGNOSTIC_IGNORE_UNNEEDED_MEMBER
 
 void test_box()
 {

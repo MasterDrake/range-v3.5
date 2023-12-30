@@ -27,8 +27,8 @@
 //#include <EASTL/algorithm.h>
 #include <EASTL/heap.h>
 #include <EASTL/functional.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/heap_algorithm.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/heap_algorithm.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
@@ -36,8 +36,8 @@
 #include "../test_iterators.hpp"
 
 //TODO: random and shuffle ...
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 namespace
 {

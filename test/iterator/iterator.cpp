@@ -15,12 +15,12 @@
 #include <EASTL/list.h>
 #include <EASTL/string.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/meta/meta.hpp>
-#include <EASTL/ranges/iterator/operations.hpp>
-#include <EASTL/ranges/iterator/move_iterators.hpp>
-#include <EASTL/ranges/iterator/insert_iterators.hpp>
-#include <EASTL/ranges/iterator/stream_iterators.hpp>
-#include <EASTL/ranges/algorithm/copy.hpp>
+#include <EARanges/meta/meta.hpp>
+#include <EARanges/iterator/operations.hpp>
+#include <EARanges/iterator/move_iterators.hpp>
+#include <EARanges/iterator/insert_iterators.hpp>
+#include <EARanges/iterator/stream_iterators.hpp>
+#include <EARanges/algorithm/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -218,7 +218,7 @@ void test_1110()
 }
 
 // Test the deep integration with the STL
-#if defined(RANGES_DEEP_STL_INTEGRATION) && RANGES_DEEP_STL_INTEGRATION
+#if defined(EARANGES_DEEP_STL_INTEGRATION) && EARANGES_DEEP_STL_INTEGRATION
 
 struct X
 {

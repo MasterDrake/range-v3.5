@@ -1,5 +1,5 @@
-#include <EASTL/ranges/view/sample.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EARanges/view/sample.hpp>
+#include <EARanges/algorithm/equal.hpp>
 #include <EASTL/numeric.h>
 #include <EASTL/vector.h>
 //TODO:39) random and uniform_int_distribution shenaningans ...

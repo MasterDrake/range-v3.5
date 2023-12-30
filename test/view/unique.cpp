@@ -12,15 +12,15 @@
 #include <cctype>
 #include <EASTL/string.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/copy.hpp>
-#include <EASTL/ranges/view/delimit.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/view/unique.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/iterator/operations.hpp>
-#include <EASTL/ranges/iterator/insert_iterators.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/view/delimit.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/view/unique.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/iterator/operations.hpp>
+#include <EARanges/iterator/insert_iterators.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

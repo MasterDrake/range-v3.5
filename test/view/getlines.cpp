@@ -11,8 +11,8 @@
 
 #include <sstream>
 #include <EASTL/string.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/range/traits.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/range/traits.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

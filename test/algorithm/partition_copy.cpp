@@ -24,9 +24,9 @@
 
 #include <EASTL/tuple.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/partition_copy.hpp>
-#include <EASTL/ranges/view/counted.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/partition_copy.hpp>
+#include <EARanges/view/counted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -134,7 +134,7 @@ void test_rvalue()
     S r1[10] = {};
     S r2[10] = {};
     auto p = ranges::partition_copy(eastl::move(ia), r1, r2, is_odd(), &S::i);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(p.in));
 #endif
     CHECK(p.out1 == r1 + 4);
@@ -152,7 +152,7 @@ void test_rvalue()
     eastl::fill(r2 + 0, r2 + 10, S{});
     eastl::vector<S> vec(ranges::begin(ia), ranges::end(ia));
     auto q = ranges::partition_copy(eastl::move(vec), r1, r2, is_odd(), &S::i);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(q.in));
 #endif
     CHECK(q.out1 == r1 + 4);

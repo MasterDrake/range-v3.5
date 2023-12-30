@@ -25,15 +25,15 @@
 #include <EASTL/memory.h>
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/partition.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/partition.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
@@ -259,9 +259,9 @@ int main()
 
     // Test rvalue range
     auto r2 = ranges::partition(eastl::move(ia), is_odd(), &S::i);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(r2));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
     eastl::vector<S> vec(ranges::begin(ia), ranges::end(ia));
     auto r3 = ranges::partition(eastl::move(vec), is_odd(), &S::i);
     CHECK(::is_dangling(r3));

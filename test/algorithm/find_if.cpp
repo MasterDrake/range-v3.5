@@ -18,8 +18,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/algorithm/find_if.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/find_if.hpp>
+#include <EARanges/core.hpp>
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
 
@@ -90,14 +90,14 @@ int main()
         CHECK(pi == ia + s);
     }
 
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     {
         auto pj0 = find_if(eastl::move(ia), [](int i) { return i == 3; });
         CHECK(::is_dangling(pj0));
         auto pj1 = find_if(eastl::move(ia), [](int i) { return i == 10; });
         CHECK(::is_dangling(pj1));
     }
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
 
     {
         eastl::vector<int> const vec(begin(ia), end(ia));

@@ -23,8 +23,8 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/memory.h>
-#include <EASTL/ranges/algorithm/is_partitioned.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/is_partitioned.hpp>
+#include <EARanges/core.hpp>
 #include <EASTL/utility.h>
 
 #include "../simple_test.hpp"

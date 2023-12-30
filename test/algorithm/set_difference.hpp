@@ -18,13 +18,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <eASTL/algorithm.h>
-#include <eASTL/functional.h>
-#include <eASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/fill.hpp>
-#include <EASTL/ranges/algorithm/set_algorithm.hpp>
-#include <EASTL/ranges/algorithm/lexicographical_compare.hpp>
+#include <EASTL/algorithm.h>
+#include <EASTL/functional.h>
+#include <EASTL/vector.h>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/fill.hpp>
+#include <EARanges/algorithm/set_algorithm.hpp>
+#include <EARanges/algorithm/lexicographical_compare.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -358,9 +358,9 @@ int main()
         static const int sr = sizeof(ir)/sizeof(ir[0]);
 
         auto res = ranges::set_difference(eastl::move(ia), ranges::views::all(ib), ic, eastl::less<int>(), &S::i, &T::j);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(res.in1));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         CHECK((res.out - ic) == sr);
         CHECK(ranges::lexicographical_compare(ic, res.out, ir, ir+sr, eastl::less<int>(), &U::k) == false);
 

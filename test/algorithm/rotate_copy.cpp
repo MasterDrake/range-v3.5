@@ -24,8 +24,8 @@
 
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/rotate_copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/rotate_copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 #include "../test_utils.hpp"
@@ -338,9 +338,9 @@ int main()
         int rgi[] = {0,1,2,3,4,5};
         int rgo[6] = {0};
         auto r = ranges::rotate_copy(eastl::move(rgi), rgi+2, rgo);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(r.in));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         CHECK(r.out == ranges::end(rgo));
         CHECK(rgo[0] == 2);
         CHECK(rgo[1] == 3);

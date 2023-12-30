@@ -11,17 +11,17 @@
 
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/take_exactly.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/counted.hpp>
-#include <EASTL/ranges/view/delimit.hpp>
-#include <EASTL/ranges/view/filter.hpp>
-#include <EASTL/ranges/view/c_str.hpp>
-#include <EASTL/ranges/view/zip.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/algorithm/find.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/take_exactly.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/counted.hpp>
+#include <EARanges/view/delimit.hpp>
+#include <EARanges/view/filter.hpp>
+#include <EARanges/view/c_str.hpp>
+#include <EARanges/view/zip.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/algorithm/find.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -60,24 +60,24 @@ int main()
         CPP_assert(same_as<range_value_t<decltype(z)>, range_value_t<decltype(rz)>>);
     }
 
-#if RANGES_CXX_DEDUCTION_GUIDES >= RANGES_CXX_DEDUCTION_GUIDES_17
+#if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
 #if defined(__clang__) && __clang_major__ < 6
     // Workaround https://bugs.llvm.org/show_bug.cgi?id=33314
-    RANGES_DIAGNOSTIC_PUSH
-    RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
+    EARANGES_DIAGNOSTIC_PUSH
+    EARANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
 #endif
     {
         ranges::reverse_view dg0{rgv};
         ::check_equal(dg0, {9, 8, 7, 6, 5, 4, 3, 2, 1, 0});
         ranges::reverse_view dg1{dg0};
-#ifdef RANGES_WORKAROUND_MSVC_934330
+#ifdef EARANGES_WORKAROUND_MSVC_934330
         ::check_equal(dg1, {9, 8, 7, 6, 5, 4, 3, 2, 1, 0});
 #else // ^^^ "workaround" / no "workaround" vvv
         ::check_equal(dg1, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
-#endif // RANGES_WORKAROUND_MSVC_934330
+#endif // EARANGES_WORKAROUND_MSVC_934330
     }
 #if defined(__clang__) && __clang_major__ < 6
-    RANGES_DIAGNOSTIC_POP
+    EARANGES_DIAGNOSTIC_POP
 #endif // clang bug workaround
 #endif // use deduction guides
 

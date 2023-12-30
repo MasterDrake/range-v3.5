@@ -8,9 +8,9 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/action/drop.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/action/drop.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

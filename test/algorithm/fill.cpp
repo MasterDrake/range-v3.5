@@ -21,9 +21,9 @@
 #include <cstring>
 #include <EASTL/string.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/fill.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/fill.hpp>
+#include <EARanges/algorithm/equal.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"

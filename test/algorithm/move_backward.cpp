@@ -20,8 +20,8 @@
 
 #include <EASTL/memory.h>
 #include <EASTL/algorithm.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/move_backward.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/move_backward.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

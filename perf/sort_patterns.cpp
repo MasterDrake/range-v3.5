@@ -13,8 +13,8 @@
 
 #include <range/v3/detail/config.hpp>
 
-#if RANGES_CXX_RETURN_TYPE_DEDUCTION >= RANGES_CXX_RETURN_TYPE_DEDUCTION_14 && \
-    RANGES_CXX_GENERIC_LAMBDAS >= RANGES_CXX_GENERIC_LAMBDAS_14
+#if EARANGES_CXX_RETURN_TYPE_DEDUCTION >= EARANGES_CXX_RETURN_TYPE_DEDUCTION_14 && \
+    EARANGES_CXX_GENERIC_LAMBDAS >= EARANGES_CXX_GENERIC_LAMBDAS_14
 
 #include <iostream>
 #include <iomanip>
@@ -26,8 +26,8 @@
 #include <algorithm>
 #include <range/v3/all.hpp>
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 namespace
 {
@@ -95,7 +95,7 @@ namespace
   template<typename Seq>
   void print(Seq seq, std::size_t n) {
     std::cout << "sequence: " << seq.name() << '\n';
-    RANGES_FOR(auto i, seq(n) | ranges::views::take(n)) {
+    EARANGES_FOR(auto i, seq(n) | ranges::views::take(n)) {
       std::cout << i << '\n';
     }
   }
@@ -149,7 +149,7 @@ namespace
     benchmark(Computation &&c, Sizes &&sizes, double target_deviation = 0.25,
               std::size_t max_iters = 100, std::size_t min_iters = 5) {
 
-      RANGES_FOR(auto size, sizes) {
+      EARANGES_FOR(auto size, sizes) {
         std::vector<duration_t> durations;
         duration_t deviation;
         duration_t mean_duration;
@@ -220,7 +220,7 @@ namespace
     std::cout << '#' << setw(19) << 'N' << setw(20) << "ranges::sort" << setw(20)
               << "std::sort"
               << '\n';
-    RANGES_FOR(auto p, ranges::views::zip(ranges_sort_benchmark.results,
+    EARANGES_FOR(auto p, ranges::views::zip(ranges_sort_benchmark.results,
                                          std_sort_benchmark.results)) {
       auto rs = p.first;
       auto ss = p.second;

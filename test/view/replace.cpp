@@ -12,14 +12,14 @@
 #include <EASTL/string.h>
 #include <sstream>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/istream.hpp>
-#include <EASTL/ranges/functional/reference_wrapper.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/replace.hpp>
-#include <EASTL/ranges/view/common.hpp>
-#include <EASTL/ranges/view/take.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/istream.hpp>
+#include <EARanges/functional/reference_wrapper.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/replace.hpp>
+#include <EARanges/view/common.hpp>
+#include <EARanges/view/take.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

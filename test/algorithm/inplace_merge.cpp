@@ -21,14 +21,14 @@
 #include <EASTL/algorithm.h>
 #include <EASTL/sort.h>
 #include <random>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/inplace_merge.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/inplace_merge.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 //TODO:15) Eastl random support is barebones considering the limitations of uniform_int_distribution, lac of discrete_distribution and generators.
 namespace
 {
@@ -38,7 +38,7 @@ namespace
     void
     test_one_iter(unsigned N, unsigned M)
     {
-        RANGES_ENSURE(M <= N);
+        EARANGES_ENSURE(M <= N);
         int* ia = new int[N];
         for (unsigned i = 0; i < N; ++i)
             ia[i] = i;
@@ -60,7 +60,7 @@ namespace
     void
     test_one_rng(unsigned N, unsigned M)
     {
-        RANGES_ENSURE(M <= N);
+        EARANGES_ENSURE(M <= N);
         int* ia = new int[N];
         for (unsigned i = 0; i < N; ++i)
             ia[i] = i;

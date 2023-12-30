@@ -15,15 +15,15 @@
 #include <EASTL/vector.h>
 #include <EASTL/memory.h>
 #include <EASTL/slist.h>
-#include <EASTL/ranges/range_for.hpp>
-#include <EASTL/ranges/algorithm/count_if.hpp>
-#include <EASTL/ranges/view/cycle.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/take_exactly.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/slice.hpp>
-#include <EASTL/ranges/view/c_str.hpp>
+#include <EARanges/range_for.hpp>
+#include <EARanges/algorithm/count_if.hpp>
+#include <EARanges/view/cycle.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/take_exactly.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/slice.hpp>
+#include <EARanges/view/c_str.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -132,7 +132,7 @@ void test_mutable_forward_range_reversed(Rng &rng)
 {
     test_const_forward_reversed_range(rng);
     int count = 2;
-    RANGES_FOR(auto &&i, rng | views::cycle | views::take_exactly(6)) { i = ++count; }
+    EARANGES_FOR(auto &&i, rng | views::cycle | views::take_exactly(6)) { i = ++count; }
     ::check_equal(rng | views::take_exactly(3), {6, 7, 8});
 }
 
@@ -298,7 +298,7 @@ int main()
         int count = 0;
         auto il = {0, 1, 2};
         auto v = 10;
-        RANGES_FOR(auto&& i, il | views::cycle)
+        EARANGES_FOR(auto&& i, il | views::cycle)
         {
             if (count == 42) { break; }
             v = i;

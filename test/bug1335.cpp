@@ -1,5 +1,5 @@
 #include <EASTL/vector.h>
-#include <EASTL/ranges/action/sort.hpp>
+#include <EARanges/action/sort.hpp>
 
 template<typename A, typename B>
 constexpr auto operator-(A a, B)

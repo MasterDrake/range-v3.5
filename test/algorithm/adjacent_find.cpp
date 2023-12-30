@@ -9,8 +9,8 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/adjacent_find.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/adjacent_find.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"

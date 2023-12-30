@@ -22,15 +22,15 @@
 #include <EASTL/numeric.h>
 #include <random>
 #include <EASTL/algorithm.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/minmax_element.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/minmax_element.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 //todo: random and std::shuffle
 namespace
 {

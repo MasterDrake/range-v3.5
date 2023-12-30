@@ -12,9 +12,9 @@
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
 #include <sstream>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/view/delimit.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/view/delimit.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

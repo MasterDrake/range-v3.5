@@ -22,8 +22,8 @@
 #include <random>
 #include <EASTL/algorithm.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/partial_sort.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/partial_sort.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
@@ -31,8 +31,8 @@
 #include "../test_iterators.hpp"
 
 //todo: random and std::shuffle
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
@@ -61,8 +61,8 @@ namespace
     void
     test_larger_sorts(int N, int M)
     {
-        RANGES_ENSURE(N > 0);
-        RANGES_ENSURE(M >= 0 && M <= N);
+        EARANGES_ENSURE(N > 0);
+        EARANGES_ENSURE(M >= 0 && M <= N);
         int* array = new int[N];
         for(int i = 0; i < N; ++i)
             array[i] = i;

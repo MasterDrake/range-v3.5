@@ -14,7 +14,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //TODO: remember to use eastl::span instead in the library, not sure if that's the case or not, maybe I'm talking about string_view that isn't supported due the lack of char traits and the fact that easl::basic_string_view is all we have
-#include <EASTL/ranges/view/span.hpp>
+#include <EARanges/view/span.hpp>
 
 #include <EASTL/array.h>
 #include <iostream>
@@ -47,7 +47,7 @@ using ranges::as_bytes;
 using ranges::as_writeable_bytes;
 using ranges::detail::narrow_cast;
 
-RANGES_DIAGNOSTIC_IGNORE_MISSING_BRACES
+EARANGES_DIAGNOSTIC_IGNORE_MISSING_BRACES
 
 namespace {
     struct BaseClass {};
@@ -508,11 +508,11 @@ void test_case_copy_move_and_assignment()
 
 void test_case_class_template_argument_deduction()
 {
-#if RANGES_CXX_DEDUCTION_GUIDES >= RANGES_CXX_DEDUCTION_GUIDES_17
+#if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
 #if defined(__clang__) && __clang_major__ < 6
 // Workaround https://bugs.llvm.org/show_bug.cgi?id=33314
-RANGES_DIAGNOSTIC_PUSH
-RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
+EARANGES_DIAGNOSTIC_PUSH
+EARANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
 #endif
     {
         int arr[] = {1, 2, 3, 4, 5};
@@ -544,7 +544,7 @@ RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
         }
     }
 #if defined(__clang__) && __clang_major__ < 6
-RANGES_DIAGNOSTIC_POP
+EARANGES_DIAGNOSTIC_POP
 #endif // clang bug workaround
 #endif // use deduction guides
 }

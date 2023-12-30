@@ -21,11 +21,11 @@
 #include <EASTL/vector.h>
 #include <iostream>
 
-#include <EASTL/ranges/algorithm/all_of.hpp>
-#include <EASTL/ranges/algorithm/any_of.hpp>
-#include <EASTL/ranges/algorithm/for_each.hpp>
-#include <EASTL/ranges/algorithm/none_of.hpp>
-#include <EASTL/ranges/view/all.hpp>
+#include <EARanges/algorithm/all_of.hpp>
+#include <EARanges/algorithm/any_of.hpp>
+#include <EARanges/algorithm/for_each.hpp>
+#include <EARanges/algorithm/none_of.hpp>
+#include <EARanges/view/all.hpp>
 using std::cout;
 
 auto is_six = [](int i) { return i == 6; };

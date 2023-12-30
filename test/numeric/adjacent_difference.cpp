@@ -22,8 +22,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/numeric/adjacent_difference.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/numeric/adjacent_difference.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 

@@ -9,9 +9,9 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/algorithm/unstable_remove_if.hpp>
-#include <EASTL/ranges/view/subrange.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/algorithm/unstable_remove_if.hpp>
+#include <EARanges/view/subrange.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"

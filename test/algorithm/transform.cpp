@@ -19,15 +19,15 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/functional.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/transform.hpp>
-#include <EASTL/ranges/view/unbounded.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/transform.hpp>
+#include <EARanges/view/unbounded.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
 using namespace std::placeholders;
 
-RANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
+EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
 
 template<class InIter, class OutIter>
 void

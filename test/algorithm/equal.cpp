@@ -18,13 +18,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/view/unbounded.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/view/unbounded.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
+EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
 
 void test()
 {
@@ -284,7 +284,7 @@ int main()
     static_assert(eastl::is_same<bool, decltype(ranges::equal(IL{1, 2, 3, 4}, IL{1, 2, 3, 4}))>::value, "");
     static_assert(eastl::is_same<bool, decltype(ranges::equal(IL{1, 2, 3, 4}, ranges::views::unbounded(p)))>::value, "");
 
-#if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_14 && RANGES_CONSTEXPR_INVOKE
+#if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_14 && EARANGES_CONSTEXPR_INVOKE
     static_assert(ranges::equal(IL{1, 2, 3, 4}, IL{1, 2, 3, 4}), "");
     static_assert(!ranges::equal(IL{1, 2, 3, 4}, IL{1, 2, 3}), "");
     static_assert(!ranges::equal(IL{1, 2, 3, 4}, IL{1, 2, 4, 3}), "");

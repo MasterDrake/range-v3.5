@@ -21,7 +21,7 @@
 #include <EASTL/vector.h>
 #include <iostream>
 
-#include <EASTL/ranges/algorithm/count.hpp> // specific includes
+#include <EARanges/algorithm/count.hpp> // specific includes
 using std::cout;
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)

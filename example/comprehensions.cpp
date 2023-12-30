@@ -12,7 +12,7 @@
 
 #include <EASTL/chrono.h>
 #include <iostream>
-#include <EASTL/ranges/all.hpp>
+#include <EARanges/all.hpp>
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
@@ -49,7 +49,7 @@ main()
     //        eastl::make_tuple(x, y, z)); };}; };
 
     // Display the first 100 triples
-    RANGES_FOR(auto triple, triples | views::take(100))
+    EARANGES_FOR(auto triple, triples | views::take(100))
     {
         std::cout << '(' << eastl::get<0>(triple) << ',' << eastl::get<1>(triple)
                   << ',' << eastl::get<2>(triple) << ')' << '\n';
@@ -102,7 +102,7 @@ benchmark()
 
     timer t;
     int result = 0;
-    RANGES_FOR(auto triple, triples | views::take(max_triples))
+    EARANGES_FOR(auto triple, triples | views::take(max_triples))
     {
         int i, j, k;
         eastl::tie(i, j, k) = triple;

@@ -9,7 +9,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/iterator/diffmax_t.hpp>
+#include <EARanges/iterator/diffmax_t.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

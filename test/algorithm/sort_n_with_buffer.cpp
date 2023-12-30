@@ -10,11 +10,11 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
-#include <EASTL/ranges/algorithm/aux_/sort_n_with_buffer.hpp>
+#include <EARanges/algorithm/aux_/sort_n_with_buffer.hpp>
 #include <EASTL/functional.h>
 #include <iostream>
 #include <EASTL/utility.h>
-#include <EASTL/ranges/range/primitives.hpp>
+#include <EARanges/range/primitives.hpp>
 #include "../simple_test.hpp"
 
 // BUGBUGBUG

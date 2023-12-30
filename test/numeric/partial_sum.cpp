@@ -22,9 +22,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/numeric/partial_sum.hpp>
-#include <EASTL/ranges/view/zip.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/numeric/partial_sum.hpp>
+#include <EARanges/view/zip.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 

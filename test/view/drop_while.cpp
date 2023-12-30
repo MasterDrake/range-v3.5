@@ -10,11 +10,11 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <EASTL/list.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/drop_while.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/drop_while.hpp>
+#include <EARanges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

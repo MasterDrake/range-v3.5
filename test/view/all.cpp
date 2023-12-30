@@ -11,8 +11,8 @@
 
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/all.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/all.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

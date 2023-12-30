@@ -9,17 +9,17 @@
 
 #include <random>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/repeat_n.hpp>
-#include <EASTL/ranges/view/for_each.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/algorithm/shuffle.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/algorithm/is_sorted.hpp>
-#include <EASTL/ranges/action/shuffle.hpp>
-#include <EASTL/ranges/action/sort.hpp>
-#include <EASTL/ranges/action/unique.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/repeat_n.hpp>
+#include <EARanges/view/for_each.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/algorithm/shuffle.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/algorithm/is_sorted.hpp>
+#include <EARanges/action/shuffle.hpp>
+#include <EARanges/action/sort.hpp>
+#include <EARanges/action/unique.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

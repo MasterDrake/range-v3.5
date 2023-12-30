@@ -10,17 +10,17 @@
 #include <EASTL/array.h>
 #include <random>//TODO: Aggiungere pcg to eastl::random e aggiungere eastl::discrete_distribution
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/stride.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/algorithm/shuffle.hpp>
-#include <EASTL/ranges/algorithm/copy.hpp>
-#include <EASTL/ranges/algorithm/move.hpp>
-#include <EASTL/ranges/algorithm/is_sorted.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/action/shuffle.hpp>
-#include <EASTL/ranges/action/stable_sort.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/stride.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/algorithm/shuffle.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/algorithm/move.hpp>
+#include <EARanges/algorithm/is_sorted.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/action/shuffle.hpp>
+#include <EARanges/action/stable_sort.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

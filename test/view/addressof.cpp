@@ -14,11 +14,11 @@
 #include <sstream>
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/addressof.hpp>
-#include <EASTL/ranges/view/facade.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/take.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/addressof.hpp>
+#include <EARanges/view/facade.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/take.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

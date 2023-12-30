@@ -1,7 +1,8 @@
 range-v3
 ========
 
-Range library for C++14/17/20. This code was the basis of [a formal proposal](https://ericniebler.github.io/std/wg21/D4128.html) to add range support to the C++ standard library. That proposal evolved through a Technical Specification, and finally into [P0896R4 "The One Ranges Proposal"](https://wg21.link/p0896r4) which was merged into the C++20 working drafts in November 2018.
+Range library for EASTL.
+This code was based of [Eric Niebler's ranges-v3](https://github.com/ericniebler/range-v3) library.
 
 About:
 ------

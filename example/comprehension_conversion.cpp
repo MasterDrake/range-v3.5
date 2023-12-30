@@ -17,10 +17,10 @@
 #include <iostream>
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/range/conversion.hpp>
-#include <EASTL/ranges/view/for_each.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/repeat_n.hpp>
+#include <EARanges/range/conversion.hpp>
+#include <EARanges/view/for_each.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/repeat_n.hpp>
 using std::cout;
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,

@@ -8,12 +8,12 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 #include <EASTL/array.h>
-#include <EASTL/ranges/action/transform.hpp>
-#include <EASTL/ranges/algorithm/copy.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/algorithm/move.hpp>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
+#include <EARanges/action/transform.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/algorithm/move.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
 #include <EASTL/vector.h>
 
 #include "../simple_test.hpp"

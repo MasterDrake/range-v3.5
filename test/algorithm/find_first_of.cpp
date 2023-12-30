@@ -18,8 +18,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/algorithm/find_first_of.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/find_first_of.hpp>
+#include <EARanges/core.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"

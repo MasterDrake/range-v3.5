@@ -20,8 +20,8 @@
 
 #include <EASTL/utility.h>
 #include <EASTL/type_traits.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/find_end.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/find_end.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 

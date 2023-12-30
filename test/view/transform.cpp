@@ -13,16 +13,16 @@
 #include <EASTL/vector.h>
 #include <EASTL/iterator.h>
 #include <EASTL/functional.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/move.hpp>
-#include <EASTL/ranges/functional/overload.hpp>
-#include <EASTL/ranges/iterator/insert_iterators.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/view/counted.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/span.hpp>
-#include <EASTL/ranges/view/zip.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/move.hpp>
+#include <EARanges/functional/overload.hpp>
+#include <EARanges/iterator/insert_iterators.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/view/counted.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/span.hpp>
+#include <EARanges/view/zip.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -221,17 +221,17 @@ int main()
     }
 
     {
-#if RANGES_CXX_DEDUCTION_GUIDES >= RANGES_CXX_DEDUCTION_GUIDES_17
+#if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
 #if defined(__clang__) && __clang_major__ < 6
         // Workaround https://bugs.llvm.org/show_bug.cgi?id=33314
-        RANGES_DIAGNOSTIC_PUSH
-        RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
+        EARANGES_DIAGNOSTIC_PUSH
+        EARANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
 #endif
         eastl::vector<int> vi = {1, 2, 3};
         ranges::transform_view times_ten{vi, [](int i) { return i * 10; }};
         ::check_equal(times_ten, {10, 20, 30});
 #if defined(__clang__) && __clang_major__ < 6
-        RANGES_DIAGNOSTIC_POP
+        EARANGES_DIAGNOSTIC_POP
 #endif // clang bug workaround
 #endif // use deduction guides
     }

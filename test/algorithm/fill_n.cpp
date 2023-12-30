@@ -22,25 +22,25 @@
 #include <string>
 #include <vector>
 
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/algorithm/fill.hpp>
-#include <range/v3/core.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/algorithm/fill.hpp>
+#include <EARanges/core.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 #include "../test_utils.hpp"
 
-#ifdef RANGES_CXX_GREATER_THAN_11
+#ifdef EARANGES_CXX_GREATER_THAN_11
 
-RANGES_CXX14_CONSTEXPR auto fives()
+EARANGES_CXX14_CONSTEXPR auto fives()
 {
     array<int, 4> a{{0}};
     ranges::fill(a, 5);
     return a;
 }
 
-RANGES_CXX14_CONSTEXPR auto fives(int n)
+EARANGES_CXX14_CONSTEXPR auto fives(int n)
 {
     array<int, 4> a{{0}};
     ranges::fill_n(ranges::begin(a), n, 5);
@@ -69,7 +69,7 @@ int main()
     test_int<bidirectional_iterator<int *>, sentinel<int *>>();
     test_int<random_access_iterator<int *>, sentinel<int *>>();
 
-#ifdef RANGES_CXX_GREATER_THAN_11
+#ifdef EARANGES_CXX_GREATER_THAN_11
     {
         STATIC_CHECK(ranges::equal(fives(), {5, 5, 5, 5}));
         STATIC_CHECK(ranges::equal(fives(2), {5, 5, 0, 0}));

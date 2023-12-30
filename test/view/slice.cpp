@@ -13,12 +13,12 @@
 #include <EASTL/vector.h>
 #include <EASTL/string.h>
 #include <sstream>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/istream.hpp>
-#include <EASTL/ranges/view/slice.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/istream.hpp>
+#include <EARanges/view/slice.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

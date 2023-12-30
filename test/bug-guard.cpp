@@ -9,8 +9,8 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/iterator.hpp>
-#include <EASTL/ranges/utility.hpp>
+#include <EARanges/iterator.hpp>
+#include <EARanges/utility.hpp>
 
 int main()
 {

@@ -12,12 +12,12 @@
 //
 #include <EASTL/algorithm.h>
 #include <EASTL/numeric.h>
-#include <EASTL/ranges/iterator/common_iterator.hpp>
-#include <EASTL/ranges/iterator/unreachable_sentinel.hpp>
+#include <EARanges/iterator/common_iterator.hpp>
+#include <EARanges/iterator/unreachable_sentinel.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_UNNEEDED_MEMBER
+EARANGES_DIAGNOSTIC_IGNORE_UNNEEDED_MEMBER
 
 namespace {
     struct silly_arrow_cursor {

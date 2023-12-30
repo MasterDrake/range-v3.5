@@ -24,9 +24,9 @@
 
 #include <EASTL/memory.h>
 #include <EASTL/utility.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/partition_point.hpp>
-#include <EASTL/ranges/view/counted.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/partition_point.hpp>
+#include <EARanges/view/counted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

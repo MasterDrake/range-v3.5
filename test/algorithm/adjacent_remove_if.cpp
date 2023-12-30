@@ -23,8 +23,8 @@
 // Source Licenses. See LICENSE.TXT for details.
 //
 //===----------------------------------------------------------------------===//
-#include <EASTL/ranges/algorithm/adjacent_remove_if.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/adjacent_remove_if.hpp>
+#include <EARanges/core.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

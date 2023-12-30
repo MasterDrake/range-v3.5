@@ -17,10 +17,10 @@
 
 #include <iostream>
 
-#include <EASTL/ranges/numeric/accumulate.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/transform.hpp>
+#include <EARanges/numeric/accumulate.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/transform.hpp>
 using std::cout;
 
 int main()

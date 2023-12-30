@@ -1,7 +1,7 @@
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/view/drop.hpp>
-#include <EASTL/ranges/view/view.hpp>
+#include <EARanges/view/drop.hpp>
+#include <EARanges/view/view.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
@@ -39,12 +39,12 @@ struct my_drop_fn : my_drop_base_fn
         return make_view_closure([=](auto && rng) {return my_drop_base_fn{}(eastl::forward<decltype(rng)>(rng), n); });
     }
 };
-RANGES_INLINE_VARIABLE(my_drop_fn, my_drop)
+EARANGES_INLINE_VARIABLE(my_drop_fn, my_drop)
 
 /// #https://github.com/ericniebler/range-v3/issues/1169
 void constexpr_test_1169()
 {
-#if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_LAMBDAS
+#if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_LAMBDAS
     constexpr auto const drop1 = my_drop(1);
     constexpr auto const drop3 = drop1 | my_drop(2);
 

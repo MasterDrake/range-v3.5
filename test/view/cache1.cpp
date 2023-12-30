@@ -13,10 +13,10 @@
 //
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/view/cache1.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/view/c_str.hpp>
-#include <EASTL/ranges/view/move.hpp>
+#include <EARanges/view/cache1.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/view/c_str.hpp>
+#include <EARanges/view/move.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 using namespace ranges;
@@ -125,7 +125,7 @@ int main()
         MoveOnlyString rg[] = {"hello", "world"};
         auto rng = rg
             | views::move
-            | views::transform([&count](auto s){ ++count; RANGES_ENSURE(s != ""); return s;})
+            | views::transform([&count](auto s){ ++count; EARANGES_ENSURE(s != ""); return s;})
             | views::cache1;
         using Rng = decltype(rng);
         CPP_assert(!range<Rng const>);

@@ -11,9 +11,9 @@
 
 #include <EASTL/vector.h>
 #include <EASTL/memory.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/indirect.hpp>
-#include <EASTL/ranges/view/transform.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/indirect.hpp>
+#include <EARanges/view/transform.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -57,7 +57,7 @@ int main()
         CHECK(&*begin(rng) == some_ints + 0);
     }
 
-#if RANGES_CXX_RETURN_TYPE_DEDUCTION >= RANGES_CXX_RETURN_TYPE_DEDUCTION_14
+#if EARANGES_CXX_RETURN_TYPE_DEDUCTION >= EARANGES_CXX_RETURN_TYPE_DEDUCTION_14
     {
         // regression test for #946
         class Data;
@@ -77,7 +77,7 @@ int main()
 
         CHECK(Test{eastl::vector<Data*>(42)}.list().size() == 42u);
     }
-#endif // RANGES_CXX_RETURN_TYPE_DEDUCTION
+#endif // EARANGES_CXX_RETURN_TYPE_DEDUCTION
 
     {
         // regression test for #952

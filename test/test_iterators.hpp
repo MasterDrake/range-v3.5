@@ -7,11 +7,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef RANGES_TEST_ITERATORS_HPP
-#define RANGES_TEST_ITERATORS_HPP
+#ifndef EARANGES_TEST_ITERATORS_HPP
+#define EARANGES_TEST_ITERATORS_HPP
 
 #include <EASTL/iterator.h>
-#include <EASTL/ranges/range/dangling.hpp>
+#include <EARanges/range/dangling.hpp>
 
 template<class It, bool Sized = false>
 class Sentinel;
@@ -64,12 +64,12 @@ public:
     constexpr /*c++14*/ It base() const { return it_; }
     constexpr /*c++14*/ friend bool operator==(const Sentinel& x, const Sentinel& y)
     {
-        RANGES_ENSURE(x.it_ == y.it_);
+        EARANGES_ENSURE(x.it_ == y.it_);
         return true;
     }
     constexpr /*c++14*/ friend bool operator!=(const Sentinel& x, const Sentinel& y)
     {
-        RANGES_ENSURE(x.it_ == y.it_);
+        EARANGES_ENSURE(x.it_ == y.it_);
         return false;
     }
     template<typename I>
@@ -444,4 +444,4 @@ constexpr bool is_dangling(::ranges::dangling)
     return true;
 }
 
-#endif  // RANGES_TEST_ITERATORS_HPP
+#endif  // EARANGES_TEST_ITERATORS_HPP

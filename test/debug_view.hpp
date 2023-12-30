@@ -9,16 +9,16 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
-#ifndef RANGES_TEST_DEBUG_VIEW_HPP
-#define RANGES_TEST_DEBUG_VIEW_HPP
+#ifndef EARANGES_TEST_DEBUG_VIEW_HPP
+#define EARANGES_TEST_DEBUG_VIEW_HPP
 
 #include <cstddef>
 #include <atomic>
 #include <EASTL/memory.h>
 #include <EASTL/shared_ptr.h>
 
-#include <EASTL/ranges/iterator/operations.hpp>
-#include <EASTL/ranges/utility/swap.hpp>
+#include <EARanges/iterator/operations.hpp>
+#include <EARanges/utility/swap.hpp>
 
 template<typename T, bool Sized = true>
 struct debug_input_view : ranges::view_base
@@ -37,8 +37,8 @@ struct debug_input_view : ranges::view_base
         data(T *p, index_t n)
           : first_(p), n_(n)
         {
-            RANGES_ENSURE(n >= 0);
-            RANGES_ENSURE(p || !n);
+            EARANGES_ENSURE(n >= 0);
+            EARANGES_ENSURE(p || !n);
         }
     };
     eastl::shared_ptr<data> data_{};
@@ -90,16 +90,16 @@ struct debug_input_view : ranges::view_base
 
         void check_current() const noexcept
         {
-            RANGES_ENSURE(view_);
-            RANGES_ENSURE(view_->version_ == version_);
-            RANGES_ENSURE(view_->data_);
-            RANGES_ENSURE(view_->data_->offset_ == offset_);
+            EARANGES_ENSURE(view_);
+            EARANGES_ENSURE(view_->version_ == version_);
+            EARANGES_ENSURE(view_->data_);
+            EARANGES_ENSURE(view_->data_->offset_ == offset_);
         }
 
         void check_dereferenceable() const noexcept
         {
             check_current();
-            RANGES_ENSURE(view_->data_->offset_ < view_->data_->n_);
+            EARANGES_ENSURE(view_->data_->offset_ < view_->data_->n_);
         }
 
         reference operator*() const noexcept
@@ -110,7 +110,7 @@ struct debug_input_view : ranges::view_base
         iterator &operator++() noexcept
         {
             check_dereferenceable();
-            RANGES_ENSURE(view_->data_->offset_.compare_exchange_strong(offset_, offset_ + 1));
+            EARANGES_ENSURE(view_->data_->offset_.compare_exchange_strong(offset_, offset_ + 1));
             ++offset_;
             return *this;
         }
@@ -121,8 +121,8 @@ struct debug_input_view : ranges::view_base
 
         friend bool operator==(iterator const &i, sentinel const &s)
         {
-            RANGES_ENSURE(i.view_ == s.view_);
-            RANGES_ENSURE(i.version_ == s.version_);
+            EARANGES_ENSURE(i.view_ == s.view_);
+            EARANGES_ENSURE(i.version_ == s.version_);
             i.check_current();
             return i.offset_ == i.view_->data_->n_;
         }
@@ -143,8 +143,8 @@ struct debug_input_view : ranges::view_base
             CPP_ret(difference_type)(
                 requires Sized)
         {
-            RANGES_ENSURE(i.view_ == s.view_);
-            RANGES_ENSURE(i.version_ == s.version_);
+            EARANGES_ENSURE(i.view_ == s.view_);
+            EARANGES_ENSURE(i.version_ == s.version_);
             i.check_current();
             return i.view_->data_->n_ - i.offset_;
         }
@@ -158,22 +158,22 @@ struct debug_input_view : ranges::view_base
     };
     iterator begin() noexcept
     {
-        RANGES_ENSURE(data_);
+        EARANGES_ENSURE(data_);
         index_t tmp = -1;
-        RANGES_ENSURE(data_->offset_.compare_exchange_strong(tmp, 0));
+        EARANGES_ENSURE(data_->offset_.compare_exchange_strong(tmp, 0));
         return iterator{*this};
     }
     sentinel end() noexcept
     {
-        RANGES_ENSURE(data_);
+        EARANGES_ENSURE(data_);
         return sentinel{*this};
     }
     CPP_member
     auto size() const noexcept -> CPP_ret(std::size_t)(
         requires Sized)
     {
-        RANGES_ENSURE(data_);
-        RANGES_ENSURE(data_->offset_ == -1);
+        EARANGES_ENSURE(data_);
+        EARANGES_ENSURE(data_->offset_ == -1);
         return static_cast<std::size_t>(data_->n_);
     }
 };

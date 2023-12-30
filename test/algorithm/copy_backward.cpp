@@ -13,8 +13,8 @@
 #include <EASTL/algorithm.h>
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/copy_backward.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/copy_backward.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
@@ -59,7 +59,7 @@ int main()
         CHECK(eastl::equal(a, a + size(a), out));
     }
 
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     {
         eastl::fill_n(out, size(out), eastl::make_pair(0, 0));
         auto res = ranges::copy_backward(eastl::move(a), end(out));

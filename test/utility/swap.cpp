@@ -18,10 +18,10 @@
 #include <EASTL/memory.h>
 #include <EASTL/vector.h>
 #include <complex>
-#include <EASTL/ranges/concepts/concepts.hpp>
-#include <EASTL/ranges/utility/swap.hpp>
-#include <EASTL/ranges/view/zip.hpp>
-#include <EASTL/ranges/range/conversion.hpp>
+#include <EARanges/concepts/concepts.hpp>
+#include <EARanges/utility/swap.hpp>
+#include <EARanges/view/zip.hpp>
+#include <EARanges/range/conversion.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -45,6 +45,7 @@ struct S
     T t;
 };
 
+//using eastl::swap;
 
 int main()
 {

@@ -10,9 +10,9 @@
 #include <EASTL/array.h>
 #include <EASTL/vector.h>
 #include <EASTL/unique_ptr.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/action/concepts.hpp>
-#include <EASTL/ranges/view/ref.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/action/concepts.hpp>
+#include <EARanges/view/ref.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

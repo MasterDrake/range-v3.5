@@ -8,12 +8,12 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/repeat_n.hpp>
-#include <EASTL/ranges/view/for_each.hpp>
-#include <EASTL/ranges/action/reverse.hpp>
-#include <EASTL/ranges/action/unique.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/repeat_n.hpp>
+#include <EARanges/view/for_each.hpp>
+#include <EARanges/action/reverse.hpp>
+#include <EARanges/action/unique.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

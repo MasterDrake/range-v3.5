@@ -25,8 +25,8 @@
 #include <EASTL/utility.h>
 #include <EASTL/string.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/replace_if.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/replace_if.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -131,9 +131,9 @@ int main()
         using P = eastl::pair<int,eastl::string>;
         P ia[] = {{0,"0"}, {1,"1"}, {2,"2"}, {3,"3"}, {4,"4"}};
         auto i = ranges::replace_if(eastl::move(ia), [](int j){return j==2;}, eastl::make_pair(42,"42"), &eastl::pair<int,eastl::string>::first);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(i));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         CHECK(ia[0] == P{0,"0"});
         CHECK(ia[1] == P{1,"1"});
         CHECK(ia[2] == P{42,"42"});

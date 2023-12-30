@@ -15,7 +15,7 @@
 #include <EASTL/string.h>
 #include <iostream>
 
-#include <EASTL/ranges/all.hpp> // get everything
+#include <EARanges/all.hpp> // get everything
 using std::cout;
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,

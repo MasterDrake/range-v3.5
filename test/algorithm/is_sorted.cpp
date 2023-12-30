@@ -26,8 +26,8 @@
 // Implementation based on the code in libc++
 //   http://http://libcxx.llvm.org/
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/is_sorted.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/is_sorted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

@@ -9,8 +9,8 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/view/istream.hpp>
-#include <EASTL/ranges/view/subrange.hpp>
+#include <EARanges/view/istream.hpp>
+#include <EARanges/view/subrange.hpp>
 #include <sstream>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

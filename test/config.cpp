@@ -9,9 +9,9 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/detail/config.hpp>
+#include <EARanges/detail/config.hpp>
 
-RANGES_DEPRECATED("compile test for \"RANGES_DEPRECATED\"") void foo() {}
+EARANGES_DEPRECATED("compile test for \"EARANGES_DEPRECATED\"") void foo() {}
 
 int main()
 {

@@ -9,11 +9,11 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 #include <cmath>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/functional/arithmetic.hpp>
-#include <EASTL/ranges/view/linear_distribute.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/view/iota.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/functional/arithmetic.hpp>
+#include <EARanges/view/linear_distribute.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/view/iota.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

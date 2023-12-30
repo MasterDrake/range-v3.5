@@ -10,19 +10,19 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <EASTL/ranges/concepts/concepts.hpp>
-#include <EASTL/ranges/iterator/operations.hpp>
-#include <EASTL/ranges/range/operations.hpp>
-#include <EASTL/ranges/range/primitives.hpp>
-#include <EASTL/ranges/range_fwd.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/view/addressof.hpp>
-#include <EASTL/ranges/view/drop.hpp>
-#include <EASTL/ranges/view/drop_while.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/subrange.hpp>
-#include <EASTL/ranges/view/tail.hpp>
-#include <EASTL/ranges/view/trim.hpp>
+#include <EARanges/concepts/concepts.hpp>
+#include <EARanges/iterator/operations.hpp>
+#include <EARanges/range/operations.hpp>
+#include <EARanges/range/primitives.hpp>
+#include <EARanges/range_fwd.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/view/addressof.hpp>
+#include <EARanges/view/drop.hpp>
+#include <EARanges/view/drop_while.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/subrange.hpp>
+#include <EARanges/view/tail.hpp>
+#include <EARanges/view/trim.hpp>
 
 #include "../test_iterators.hpp"
 #include "../test_utils.hpp"

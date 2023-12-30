@@ -21,8 +21,8 @@
 #include <EASTL/array.h>
 #include <EASTL/memory.h>
 #include <EASTL/algorithm.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/swap_ranges.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/swap_ranges.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

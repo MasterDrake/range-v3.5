@@ -9,21 +9,21 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <eASTL/list.h>
-#include <eASTL/vector.h>
+#include <EASTL/list.h>
+#include <EASTL/vector.h>
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/chunk_by.hpp>
-#include <EASTL/ranges/view/counted.hpp>
-#include <EASTL/ranges/view/cycle.hpp>
-#include <EASTL/ranges/view/remove_if.hpp>
-#include <EASTL/ranges/view/take.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/chunk_by.hpp>
+#include <EARanges/view/counted.hpp>
+#include <EARanges/view/cycle.hpp>
+#include <EARanges/view/remove_if.hpp>
+#include <EARanges/view/take.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 #include "../test_utils.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)

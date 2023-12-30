@@ -14,11 +14,11 @@
 #include <cstring>
 #include <EASTL/utility.h>
 #include <algorithm>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/copy.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/view/delimit.hpp>
-#include <EASTL/ranges/iterator/stream_iterators.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/view/delimit.hpp>
+#include <EARanges/iterator/stream_iterators.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
@@ -35,7 +35,7 @@ void * __cdecl operator new[](size_t size, size_t alignement, size_t offset, con
     return new uint8_t[size];
 }
 
-#if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_14 && RANGES_CONSTEXPR_INVOKE
+#if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_14 && EARANGES_CONSTEXPR_INVOKE
 constexpr /*c++14*/
 bool test_constexpr_copy()
 {

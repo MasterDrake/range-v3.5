@@ -13,12 +13,12 @@
 #include <EASTL/string.h>
 #include <sstream>
 #include <iostream>
-#include <EASTL/ranges/functional/overload.hpp>
-#include <EASTL/ranges/numeric/accumulate.hpp>
-#include <EASTL/ranges/utility/variant.hpp>
-#include <EASTL/ranges/view/concat.hpp>
-#include <EASTL/ranges/view/partial_sum.hpp>
-#include <EASTL/ranges/view/transform.hpp>
+#include <EARanges/functional/overload.hpp>
+#include <EARanges/numeric/accumulate.hpp>
+#include <EARanges/utility/variant.hpp>
+#include <EARanges/view/concat.hpp>
+#include <EARanges/view/partial_sum.hpp>
+#include <EARanges/view/transform.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

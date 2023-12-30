@@ -20,7 +20,7 @@
 // unordered_set: 6 5 4 3 2 1
 
 #include <EASTL/map.h>
-#include <EASTL/ranges/algorithm/for_each.hpp>
+#include <EARanges/algorithm/for_each.hpp>
 #include <EASTL/set.h>
 #include <EASTL/string.h>
 #include <EASTL/unordered_map.h>

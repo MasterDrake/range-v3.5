@@ -19,9 +19,9 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/generate_n.hpp>
-#include <EASTL/ranges/iterator/insert_iterators.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/generate_n.hpp>
+#include <EARanges/iterator/insert_iterators.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

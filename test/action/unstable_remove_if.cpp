@@ -14,9 +14,9 @@
 #include <ctime>
 #include <random>
 
-#include <EASTL/ranges/action/unstable_remove_if.hpp>
-#include <EASTL/ranges/action/remove_if.hpp>
-#include <EASTL/ranges/action/sort.hpp>
+#include <EARanges/action/unstable_remove_if.hpp>
+#include <EARanges/action/remove_if.hpp>
+#include <EARanges/action/sort.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
@@ -183,7 +183,7 @@ void num_pred_calls_test()
 class fuzzy_test_fn
 {
     int size;
-#if defined(__GLIBCXX__) && defined(RANGES_WORKAROUND_VALGRIND_RDRAND)
+#if defined(__GLIBCXX__) && defined(EARANGES_WORKAROUND_VALGRIND_RDRAND)
     std::random_device rd{"/dev/urandom"};
 #else
     std::random_device rd;
@@ -224,8 +224,8 @@ public:
                 return *this;
             }
 
-            RANGES_DIAGNOSTIC_PUSH
-            RANGES_DIAGNOSTIC_IGNORE_UNNEEDED_MEMBER
+            EARANGES_DIAGNOSTIC_PUSH
+            EARANGES_DIAGNOSTIC_IGNORE_UNNEEDED_MEMBER
             bool operator==(Int const &other) const
             {
                 return value == other.value;
@@ -250,7 +250,7 @@ public:
             {
                 return value >= other.value;
             }
-            RANGES_DIAGNOSTIC_POP
+            EARANGES_DIAGNOSTIC_POP
         };
 
         using namespace ranges;

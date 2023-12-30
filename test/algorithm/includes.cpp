@@ -20,14 +20,14 @@
 
 #include <EASTL/functional.h>
 
-#include <EASTL/ranges/algorithm/set_algorithm.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/set_algorithm.hpp>
+#include <EARanges/core.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 #include "../test_utils.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 static size_t counter = 0;
 void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
                               const char * name, int flags, unsigned debugFlags,

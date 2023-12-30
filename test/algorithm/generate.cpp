@@ -19,10 +19,10 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/generate.hpp>
-#include <EASTL/ranges/iterator/insert_iterators.hpp>
-#include <EASTL/ranges/view/counted.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/generate.hpp>
+#include <EARanges/iterator/insert_iterators.hpp>
+#include <EARanges/view/counted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

@@ -9,7 +9,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/algorithm/copy_n.hpp>
+#include <EARanges/algorithm/copy_n.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"

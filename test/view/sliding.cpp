@@ -13,15 +13,15 @@
 #include <EASTL/slist.h>
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/chunk_by.hpp>
-#include <EASTL/ranges/view/cycle.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/repeat.hpp>
-#include <EASTL/ranges/view/repeat_n.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/sliding.hpp>
-#include <EASTL/ranges/view/zip.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/chunk_by.hpp>
+#include <EARanges/view/cycle.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/repeat.hpp>
+#include <EARanges/view/repeat_n.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/sliding.hpp>
+#include <EARanges/view/zip.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -179,7 +179,7 @@ int main()
             auto deref = *it;
             auto i = deref.begin();
             for (auto n = 0; n < K; ++n) {
-                RANGES_ENSURE(i != deref.end());
+                EARANGES_ENSURE(i != deref.end());
                 CHECK(*i == 5);
                 ++i;
             }
@@ -191,7 +191,7 @@ int main()
             auto deref = *it;
             auto i = deref.begin();
             for (auto n = 0; n < K; ++n) {
-                RANGES_ENSURE(i != deref.end());
+                EARANGES_ENSURE(i != deref.end());
                 CHECK(*i == 5);
                 ++i;
             }

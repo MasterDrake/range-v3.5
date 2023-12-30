@@ -11,10 +11,10 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/view/c_str.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/view/c_str.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/core.hpp>
 #include "../simple_test.hpp"
 
 //TODO:24) eastl has checks for exceptions, so I think we should surrounder those calls with those defines.
@@ -125,7 +125,7 @@ int main()
         CHECK(ranges::at(rng, eastl::numeric_limits<std::int64_t>::max() - 1) == eastl::numeric_limits<std::int64_t>::max() - 1);
     }
 
-    #if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_14
+    #if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_14
     {
         constexpr int vi[4] = {1, 2, 3, 4};
         constexpr int vi0 = ranges::index(vi, 0);

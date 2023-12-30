@@ -23,9 +23,9 @@
 #include <EASTL/functional.h>
 #include <EASTL/string.h>
 
-#include <EASTL/ranges/algorithm/fold.hpp>
-#include <EASTL/ranges/algorithm/min.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/fold.hpp>
+#include <EARanges/algorithm/min.hpp>
+#include <EARanges/core.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"

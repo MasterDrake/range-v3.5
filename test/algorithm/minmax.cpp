@@ -19,8 +19,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/algorithm/minmax.hpp>
-#include <EASTL/ranges/view/subrange.hpp>
+#include <EARanges/algorithm/minmax.hpp>
+#include <EARanges/view/subrange.hpp>
 #include <EASTL/memory.h>
 #include <EASTL/numeric.h>
 #include <random>
@@ -29,7 +29,7 @@
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 //todo: random and std::shuffle
 namespace
 {
@@ -39,7 +39,7 @@ namespace
     void
     test_iter(Iter first, Sent last)
     {
-        RANGES_ENSURE(first != last);
+        EARANGES_ENSURE(first != last);
         auto rng = ranges::make_subrange(first, last);
         auto res = ranges::minmax(rng);
         for (Iter i = first; i != last; ++i) {
@@ -52,7 +52,7 @@ namespace
     void
     test_iter(unsigned N)
     {
-        RANGES_ENSURE(N > 0);
+        EARANGES_ENSURE(N > 0);
         eastl::unique_ptr<int[]> a{new int[N]};
         eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);
@@ -74,7 +74,7 @@ namespace
     void
     test_iter_comp(Iter first, Sent last)
     {
-        RANGES_ENSURE(first != last);
+        EARANGES_ENSURE(first != last);
         typedef eastl::greater<int> Compare;
         Compare comp;
         auto rng = ranges::make_subrange(first, last);
@@ -89,7 +89,7 @@ namespace
     void
     test_iter_comp(unsigned N)
     {
-        RANGES_ENSURE(N > 0);
+        EARANGES_ENSURE(N > 0);
         eastl::unique_ptr<int[]> a{new int[N]};
         eastl::iota(a.get(), a.get()+N, 0);
         std::shuffle(a.get(), a.get()+N, gen);

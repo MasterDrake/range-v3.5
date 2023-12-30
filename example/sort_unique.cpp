@@ -16,9 +16,9 @@
 #include <iostream>
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/action/sort.hpp>
-#include <EASTL/ranges/action/unique.hpp>
-#include <EASTL/ranges/view/all.hpp>
+#include <EARanges/action/sort.hpp>
+#include <EARanges/action/unique.hpp>
+#include <EARanges/view/all.hpp>
 using std::cout;
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,

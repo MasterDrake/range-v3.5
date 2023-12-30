@@ -7,8 +7,8 @@
 //  file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef RANGES_TEST_UTILS_HPP
-#define RANGES_TEST_UTILS_HPP
+#ifndef EARANGES_TEST_UTILS_HPP
+#define EARANGES_TEST_UTILS_HPP
 
 #include <EASTL/algorithm.h>
 #include <cstring>
@@ -16,15 +16,15 @@
 #include <EASTL/initializer_list.h>
 #include <ostream>
 
-#include <EASTL/ranges/meta/meta.hpp>
+#include <EARanges/meta/meta.hpp>
 
-#include <EASTL/ranges/iterator/concepts.hpp>
-#include <EASTL/ranges/iterator/operations.hpp>
-#include <EASTL/ranges/iterator/traits.hpp>
-#include <EASTL/ranges/range/access.hpp>
-#include <EASTL/ranges/range/concepts.hpp>
-#include <EASTL/ranges/range/traits.hpp>
-#include <EASTL/ranges/view/subrange.hpp>
+#include <EARanges/iterator/concepts.hpp>
+#include <EARanges/iterator/operations.hpp>
+#include <EARanges/iterator/traits.hpp>
+#include <EARanges/range/access.hpp>
+#include <EARanges/range/concepts.hpp>
+#include <EARanges/range/traits.hpp>
+#include <EARanges/view/subrange.hpp>
 
 #include "./debug_view.hpp"
 #include "./simple_test.hpp"
@@ -35,30 +35,30 @@
 #if __has_builtin(__builtin_FILE) && \
     __has_builtin(__builtin_LINE) && \
     __has_builtin(__builtin_FUNCTION)
-#define RANGES_CXX_HAS_SLOC_BUILTINS
+#define EARANGES_CXX_HAS_SLOC_BUILTINS
 #endif
 #endif
 #else
-#define RANGES_CXX_HAS_SLOC_BUILTINS
+#define EARANGES_CXX_HAS_SLOC_BUILTINS
 #endif
 
-#if defined(RANGES_CXX_HAS_SLOC_BUILTINS) && defined(__has_include)
+#if defined(EARANGES_CXX_HAS_SLOC_BUILTINS) && defined(__has_include)
 #if __has_include(<source_location>)
 #include <source_location>
 #ifdef __cpp_lib_source_location
-#define RANGES_HAS_SLOC 1
+#define EARANGES_HAS_SLOC 1
 using source_location = std::source_location;
 #endif
 #elif __has_include(<experimental/source_location>)
 #include <experimental/source_location>
 #if __cpp_lib_experimental_source_location
-#define RANGES_HAS_SLOC 1
+#define EARANGES_HAS_SLOC 1
 using source_location = std::experimental::source_location;
 #endif
 #endif
 #endif
 
-#ifndef RANGES_HAS_SLOC
+#ifndef EARANGES_HAS_SLOC
 struct source_location
 {
     static source_location current()
@@ -76,8 +76,8 @@ struct source_location
 #define CHECK_SLOC(sloc, ...) CHECK_LINE(sloc.file_name(), (int)sloc.line(), __VA_ARGS__)
 #endif
 
-RANGES_DIAGNOSTIC_PUSH
-RANGES_DIAGNOSTIC_IGNORE_DEPRECATED_THIS_CAPTURE
+EARANGES_DIAGNOSTIC_PUSH
+EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_THIS_CAPTURE
 
 template<typename T, typename U>
 CPP_concept both_ranges = ranges::input_range<T> && ranges::input_range<U>;
@@ -112,7 +112,7 @@ struct check_equal_fn
 
 inline namespace function_objects
 {
-    RANGES_INLINE_VARIABLE(check_equal_fn, check_equal)
+    EARANGES_INLINE_VARIABLE(check_equal_fn, check_equal)
 }
 
 template<typename Expected, typename Actual>
@@ -319,6 +319,6 @@ struct MoveOnlyString
     }
 };
 
-RANGES_DIAGNOSTIC_POP
+EARANGES_DIAGNOSTIC_POP
 
 #endif

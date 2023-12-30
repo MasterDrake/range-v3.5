@@ -9,7 +9,7 @@
 
 #include <cstddef>
 #include <EASTL/iterator.h>
-#include <EASTL/ranges/iterator.hpp>
+#include <EARanges/iterator.hpp>
 
 struct X { };
 

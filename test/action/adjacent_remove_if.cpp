@@ -11,11 +11,11 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
-#include <EASTL/ranges/action/adjacent_remove_if.hpp>
+#include <EARanges/action/adjacent_remove_if.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
 #include <EASTL/vector.h>
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,

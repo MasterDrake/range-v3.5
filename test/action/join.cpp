@@ -9,11 +9,11 @@
 
 #include <EASTL/vector.h>
 #include <EASTL/string.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/action/join.hpp>
-#include <EASTL/ranges/algorithm/move.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/view/transform.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/action/join.hpp>
+#include <EARanges/algorithm/move.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/view/transform.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

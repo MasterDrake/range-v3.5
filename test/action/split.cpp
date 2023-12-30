@@ -11,12 +11,12 @@
 #include <EASTL/string.h>
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/action/split.hpp>
-#include <EASTL/ranges/action/split_when.hpp>
-#include <EASTL/ranges/algorithm/move.hpp>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/c_str.hpp>
-#include <EASTL/ranges/view/iota.hpp>
+#include <EARanges/action/split.hpp>
+#include <EARanges/action/split_when.hpp>
+#include <EARanges/algorithm/move.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/c_str.hpp>
+#include <EARanges/view/iota.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

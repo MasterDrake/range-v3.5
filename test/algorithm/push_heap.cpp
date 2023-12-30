@@ -35,16 +35,16 @@
 //#include <EASTL/algorithm.h>
 #include <EASTl/heap.h>
 #include <EASTL/functional.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/heap_algorithm.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/heap_algorithm.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
                               const char * name, int flags, unsigned debugFlags,

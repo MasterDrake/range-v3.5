@@ -9,11 +9,11 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/utility/scope_exit.hpp>
+#include <EARanges/utility/scope_exit.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_UNNEEDED_MEMBER
+EARANGES_DIAGNOSTIC_IGNORE_UNNEEDED_MEMBER
 
 namespace
 {

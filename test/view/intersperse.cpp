@@ -11,11 +11,11 @@
 
 #include <sstream>
 #include <EASTL/string.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/intersperse.hpp>
-#include <EASTL/ranges/view/delimit.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/range/conversion.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/intersperse.hpp>
+#include <EARanges/view/delimit.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/range/conversion.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -32,7 +32,7 @@ void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
     return new uint8_t[size];
 }
 
-#ifdef RANGES_WORKAROUND_MSVC_790554
+#ifdef EARANGES_WORKAROUND_MSVC_790554
 template<std::size_t N>
 auto c_str(char const (&sz)[N])
 {
@@ -44,7 +44,7 @@ ranges::subrange<char const*> c_str(char const (&sz)[N])
 {
     return {&sz[0], &sz[N-1]};
 }
-#endif // RANGES_WORKAROUND_MSVC_790554
+#endif // EARANGES_WORKAROUND_MSVC_790554
 
 ranges::delimit_view<ranges::subrange<char const *, ranges::unreachable_sentinel_t>, char>
 c_str_(char const *sz)

@@ -15,8 +15,8 @@
 
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/upper_bound.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/upper_bound.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
@@ -85,28 +85,28 @@ int main()
 
     CHECK(ranges::upper_bound(ranges::views::all(a), a[2]) == &a[3]);
     CHECK(ranges::upper_bound(ranges::views::all(c), c[3]) == &c[4]);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(a), a[2])));
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(c), c[3])));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_a), vec_a[2])));
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_c), vec_c[3])));
 
     CHECK(ranges::upper_bound(ranges::views::all(a), a[4], less()) == &a[5]);
     CHECK(ranges::upper_bound(ranges::views::all(c), c[5], less()) == &c[6]);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(a), a[4], less())));
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(c), c[5], less())));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_a), vec_a[4], less())));
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_c), vec_c[5], less())));
 
     CHECK(ranges::upper_bound(ranges::views::all(a), 1, less(), &eastl::pair<int, int>::first) == &a[4]);
     CHECK(ranges::upper_bound(ranges::views::all(c), 1, less(), &eastl::pair<int, int>::first) == &c[4]);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(a), 1, less(), &eastl::pair<int, int>::first)));
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(c), 1, less(), &eastl::pair<int, int>::first)));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_a), 1, less(), &eastl::pair<int, int>::first)));
     CHECK(::is_dangling(ranges::upper_bound(eastl::move(vec_c), 1, less(), &eastl::pair<int, int>::first)));
 
@@ -122,7 +122,7 @@ int main()
         STATIC_CHECK(upper_bound(a, a[3], less()) == &a[4]);
 
         STATIC_CHECK(upper_bound(a, eastl::make_pair(1, 3), less()) == &a[4]);
-#if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_17
+#if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_17
         // todo: requires constexpr eastl::addressof
         //STATIC_CHECK(upper_bound(views::all(a), eastl::make_pair(1, 3), less()) == &a[4]);
 #endif

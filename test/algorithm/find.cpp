@@ -18,8 +18,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/algorithm/find.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/find.hpp>
+#include <EARanges/core.hpp>
 #include <EASTL/string.h>
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
@@ -87,10 +87,10 @@ int main()
     }
 
     {
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         auto pj0 = find(eastl::move(ia), 3);
         CHECK(::is_dangling(pj0));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         eastl::vector<int> vec(begin(ia), end(ia));
         auto pj1 = find(eastl::move(vec), 3);
         CHECK(::is_dangling(pj1));

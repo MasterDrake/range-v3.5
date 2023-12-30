@@ -9,10 +9,10 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/view/enumerate.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/indices.hpp>
-#include <EASTL/ranges/view/transform.hpp>
+#include <EARanges/view/enumerate.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/indices.hpp>
+#include <EARanges/view/transform.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

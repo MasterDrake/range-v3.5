@@ -24,4 +24,21 @@
   - counted iterators (subtractable regardless of traversal category)
   - repeat_view iterators (*not* subtractable but could be random access otherwise)
   - infinite ranges (only countable with an infinite precision integer which we lack)
-  * https://en.cppreference.com/w/cpp/algorithm/ranges/clamp add ranges::clamp that clamps every element in a range.
+
+  # TODO:
+  - Fix broken views:
+      - Tokenize
+      - Split: ha senso visto che non gli piacciono le stringhe.
+
+  - Add execution policies to algorithms:
+    - seq
+    - seq_vec/sec_simd
+    - par
+    - par_vec/par_simd
+  
+  - Check if eastl::algorithms == ranges::algorithms
+  
+  - Add ranges::clamp that clamps every element in a range.
+      - https://en.cppreference.com/w/cpp/algorithm/ranges/clamp 
+  - Rimuovere il concetto di DEPRECATED, incluso iterator_range
+  - Aggiungere EARanges Extra per random e addressof :/:

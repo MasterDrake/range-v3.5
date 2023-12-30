@@ -10,17 +10,17 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/range/access.hpp>
-#include <EASTL/ranges/range/primitives.hpp>
-#include <EASTL/ranges/view/subrange.hpp>
-#include <EASTL/ranges/view/ref.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/algorithm/find.hpp>
+#include <EARanges/range/access.hpp>
+#include <EARanges/range/primitives.hpp>
+#include <EARanges/view/subrange.hpp>
+#include <EARanges/view/ref.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/algorithm/find.hpp>
 #include <EASTL/vector.h>
 #include "../simple_test.hpp"
 
 #if defined(__clang__)
-RANGES_DIAGNOSTIC_IGNORE("-Wunused-const-variable")
+EARANGES_DIAGNOSTIC_IGNORE("-Wunused-const-variable")
 #endif
 
 void test_range_access_ambiguity()
@@ -130,14 +130,14 @@ namespace begin_testing
         CPP_assert(can_cbegin<int const(&)[2]>);
         CPP_assert(ranges::same_as<decltype(ranges::cbegin(eastl::declval<int const(&)[2]>())), int const *>);
 
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         // Ill-formed: array rvalue
         CPP_assert(!can_begin<int(&&)[2]>);
         CPP_assert(!can_begin<int const(&&)[2]>);
 
         CPP_assert(!can_cbegin<int(&&)[2]>);
         CPP_assert(!can_cbegin<int const(&&)[2]>);
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
 
         // Valid: only member begin
         CPP_assert(can_begin<A&>);

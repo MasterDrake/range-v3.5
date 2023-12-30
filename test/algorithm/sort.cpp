@@ -24,23 +24,23 @@
 #include <EASTL/algorithm.h>
 #include <EASTL/utility.h>
 #include <EASTL/sort.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/sort.hpp>
-#include <EASTL/ranges/algorithm/copy.hpp>
-#include <EASTL/ranges/view/for_each.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/repeat_n.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/zip.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/range/conversion.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/sort.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/view/for_each.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/repeat_n.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/zip.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/range/conversion.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
-RANGES_DIAGNOSTIC_IGNORE_UNNEEDED_INTERNAL
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_UNNEEDED_INTERNAL
 
 //TODO:19) Serious bug, linking problem with eastl::swap???? in concepts::adl_swap_detail:: -> ranges/concepts/swap.hpp :((
 
@@ -145,8 +145,8 @@ namespace
     void
     test_larger_sorts(int N, int M)
     {
-        RANGES_ENSURE(N > 0);
-        RANGES_ENSURE(M > 0);
+        EARANGES_ENSURE(N > 0);
+        EARANGES_ENSURE(M > 0);
         // create array length N filled with M different numbers
         int* array = new int[N];
         int x = 0;

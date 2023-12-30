@@ -26,8 +26,8 @@
 //   http://http://libcxx.llvm.org/
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/heap_algorithm.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/heap_algorithm.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
@@ -1073,10 +1073,10 @@ int main()
         .check([&](S *r){ CHECK(r == i185+1); });
 
     // Test rvalue range
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     auto res0 = ranges::is_heap_until(eastl::move(i185), eastl::greater<int>(), &S::i);
     CHECK(::is_dangling(res0));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
     eastl::vector<S> vec(ranges::begin(i185), ranges::end(i185));
     auto res1 = ranges::is_heap_until(eastl::move(vec), eastl::greater<int>(), &S::i);
     CHECK(::is_dangling(res1));

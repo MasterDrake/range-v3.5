@@ -21,8 +21,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/range/access.hpp>
-#include <EASTL/ranges/view/iota.hpp>
+#include <EARanges/range/access.hpp>
+#include <EARanges/view/iota.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"

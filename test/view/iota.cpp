@@ -11,14 +11,14 @@
 //
 #include <EASTL/string.h>
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/view/c_str.hpp>
-#include <EASTL/ranges/view/indices.hpp>
-#include <EASTL/ranges/view/indirect.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/drop_exactly.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/view/c_str.hpp>
+#include <EARanges/view/indices.hpp>
+#include <EARanges/view/indirect.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/drop_exactly.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

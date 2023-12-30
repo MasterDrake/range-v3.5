@@ -27,8 +27,8 @@
 #include <EASTL/memory.h>
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/remove_if.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/remove_if.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -215,9 +215,9 @@ int main()
         S ia[] = {S{0}, S{1}, S{2}, S{3}, S{4}, S{2}, S{3}, S{4}, S{2}};
         using namespace std::placeholders;
         auto r0 = ranges::remove_if(eastl::move(ia), std::bind(eastl::equal_to<int>(), _1, 2), &S::i);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         static_assert(eastl::is_same<decltype(r0), ranges::dangling>::value, "");
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         CHECK(ia[0].i == 0);
         CHECK(ia[1].i == 1);
         CHECK(ia[2].i == 3);

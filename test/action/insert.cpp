@@ -9,12 +9,12 @@
 
 #include <EASTL/set.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/for_each.hpp>
-#include <EASTL/ranges/view/ref.hpp>
-#include <EASTL/ranges/action/insert.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/for_each.hpp>
+#include <EARanges/view/ref.hpp>
+#include <EARanges/action/insert.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

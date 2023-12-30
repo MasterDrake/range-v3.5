@@ -12,11 +12,11 @@
 #include <cstring>
 #include <EASTL/string.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/move.hpp>
-#include <EASTL/ranges/algorithm/copy.hpp>
-#include <EASTL/ranges/iterator/operations.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/move.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/iterator/operations.hpp>
+#include <EARanges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

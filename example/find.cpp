@@ -28,7 +28,7 @@
 #include <EASTL/vector.h>
 #include <iostream>
 
-#include <EASTL/ranges/all.hpp>
+#include <EARanges/all.hpp>
 using std::cout;
 
 auto is_six = [](int i) -> bool { return i == 6; };

@@ -21,10 +21,10 @@
 #include <EASTL/algorithm.h>
 #include <EASTL/functional.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/fill.hpp>
-#include <EASTL/ranges/algorithm/set_algorithm.hpp>
-#include <EASTL/ranges/algorithm/lexicographical_compare.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/fill.hpp>
+#include <EARanges/algorithm/set_algorithm.hpp>
+#include <EARanges/algorithm/lexicographical_compare.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -336,7 +336,7 @@ int main()
     }
 
     // Test rvalue ranges
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     {
         S ia[] = {S{1}, S{2}, S{2}, S{3}, S{3}, S{3}, S{4}, S{4}, S{4}, S{4}};
         T ib[] = {T{2}, T{4}, T{4}, T{6}};
@@ -359,7 +359,7 @@ int main()
         CHECK((res2.out - ic) == sr);
         CHECK(ranges::lexicographical_compare(ic, res2.out, ir, ir+sr, eastl::less<int>(), &U::k) == false);
     }
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
     {
         eastl::vector<S> ia{S{1}, S{2}, S{2}, S{3}, S{3}, S{3}, S{4}, S{4}, S{4}, S{4}};
         eastl::vector<T> ib{T{2}, T{4}, T{4}, T{6}};

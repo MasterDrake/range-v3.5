@@ -11,15 +11,15 @@
 
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/chunk.hpp>
-#include <EASTL/ranges/view/drop_exactly.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/join.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/chunk.hpp>
+#include <EARanges/view/drop_exactly.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/join.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

@@ -27,8 +27,8 @@
 
 //#include <EASTL/algorithm.h>
 #include <EASTL/heap.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/heap_algorithm.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/heap_algorithm.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

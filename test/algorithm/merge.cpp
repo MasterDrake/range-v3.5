@@ -18,15 +18,15 @@
 #include <EASTL/utility.h>
 //#include <EASTL/algorithm.h>
 #include <EASTL/sort.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/merge.hpp>
-#include <EASTL/ranges/algorithm/is_sorted.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/merge.hpp>
+#include <EARanges/algorithm/is_sorted.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 constexpr bool test_constexpr()
 {

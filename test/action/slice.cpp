@@ -9,13 +9,13 @@
 
 #include <EASTL/array.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/stride.hpp>
-#include <EASTL/ranges/algorithm/copy.hpp>
-#include <EASTL/ranges/algorithm/move.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/action/slice.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/stride.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/algorithm/move.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/action/slice.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

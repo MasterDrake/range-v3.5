@@ -511,8 +511,8 @@ jobs:
             -D "CMAKE_CXX_FLAGS:STRING=${cxx_flags}"
             -D "CMAKE_EXE_LINKER_FLAGS:STRING=${link_flags}"
             -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON
-            -D RANGE_V3_HEADER_CHECKS:BOOL=ON
-            -D RANGES_PREFER_REAL_CONCEPTS:BOOL=${cxx_concepts}
+            -D EARANGES_HEADER_CHECKS:BOOL=ON
+            -D EARANGES_PREFER_REAL_CONCEPTS:BOOL=${cxx_concepts}
             ${{ matrix.config.cmake_args }}
             ${extra_cmake_args}
           RESULT_VARIABLE result

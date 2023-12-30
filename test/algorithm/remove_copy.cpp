@@ -25,8 +25,8 @@
 #include <EASTL/memory.h>
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/remove_copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/remove_copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -189,10 +189,10 @@ int main()
         constexpr auto sa = ranges::size(ia);
         S ib[sa] = {};
         auto r0 = ranges::remove_copy(eastl::move(ia), ib, 2, &S::i);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         static_assert(eastl::is_same<decltype(r0),
             ranges::remove_copy_result<ranges::dangling, S *>>::value, "");
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         CHECK(r0.out == ib + sa-3);
         CHECK(ib[0].i == 0);
         CHECK(ib[1].i == 1);

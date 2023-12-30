@@ -16,27 +16,27 @@
 
 #include <iostream>
 #include <EASTL/string.h>
-#include <EASTL/ranges/range/access.hpp>
-#include <EASTL/ranges/range/primitives.hpp>
-#include <EASTL/ranges/range_for.hpp>
-#include <EASTL/ranges/view/span.hpp>
-#include <EASTL/ranges/utility/tuple_algorithm.hpp>
-#include <EASTL/ranges/view/cartesian_product.hpp>
-#include <EASTL/ranges/view/chunk.hpp>
-#include <EASTL/ranges/view/empty.hpp>
-#include <EASTL/ranges/view/filter.hpp>
-#include <EASTL/ranges/view/indices.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/single.hpp>
-#include <EASTL/ranges/view/take_exactly.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/view/filter.hpp>
-#include <EASTL/ranges/view/enumerate.hpp>
+#include <EARanges/range/access.hpp>
+#include <EARanges/range/primitives.hpp>
+#include <EARanges/range_for.hpp>
+#include <EARanges/view/span.hpp>
+#include <EARanges/utility/tuple_algorithm.hpp>
+#include <EARanges/view/cartesian_product.hpp>
+#include <EARanges/view/chunk.hpp>
+#include <EARanges/view/empty.hpp>
+#include <EARanges/view/filter.hpp>
+#include <EARanges/view/indices.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/single.hpp>
+#include <EARanges/view/take_exactly.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/view/filter.hpp>
+#include <EARanges/view/enumerate.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_RANGE_LOOP_ANALYSIS
+EARANGES_DIAGNOSTIC_IGNORE_RANGE_LOOP_ANALYSIS
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
@@ -192,9 +192,9 @@ void test_bug_823()
 
     {
         int i = 0;
-        RANGES_FOR(auto&& x, prod) {
+        EARANGES_FOR(auto&& x, prod) {
             (void)x;
-            RANGES_ENSURE(i++ < 3 * 3);
+            EARANGES_ENSURE(i++ < 3 * 3);
         }
         CHECK(i == 3 * 3);
     }
@@ -205,21 +205,21 @@ void test_bug_823()
 
     {
         int i = 0;
-        RANGES_FOR(auto&& row, twoD) {
+        EARANGES_FOR(auto&& row, twoD) {
             (void)row;
-            RANGES_ENSURE(i++ < 3);
+            EARANGES_ENSURE(i++ < 3);
         }
         CHECK(i == 3);
     }
 
     {
         int i = 0;
-        RANGES_FOR(auto&& row, twoD) {
-            RANGES_ENSURE(i++ < 3);
+        EARANGES_FOR(auto&& row, twoD) {
+            EARANGES_ENSURE(i++ < 3);
             int j = 0;
-            RANGES_FOR(auto&& col, row) {
+            EARANGES_FOR(auto&& col, row) {
                 (void)col;
-                RANGES_ENSURE(j++ < 3);
+                EARANGES_ENSURE(j++ < 3);
             }
             CHECK(j == 3);
         }

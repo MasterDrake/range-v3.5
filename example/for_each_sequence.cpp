@@ -26,7 +26,7 @@
 #include <EASTL/slist.h>
 #include <EASTL/stack.h>
 #include <EASTL/vector.h>
-#include <EASTl/ranges/algorithm/for_each.hpp> // specific includes
+#include <EARanges/algorithm/for_each.hpp> // specific includes
 #include <iostream>
 using std::cout;
 

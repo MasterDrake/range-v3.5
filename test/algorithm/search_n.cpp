@@ -23,9 +23,9 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/search_n.hpp>
-#include <EASTL/ranges/view/counted.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/search_n.hpp>
+#include <EARanges/view/counted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -257,12 +257,12 @@ int main()
         int ib[] = {0, 0, 1, 1, 2, 2};
         CHECK(ranges::search_n(ranges::views::all(ib), 2, 1).begin() == ib+2);
     }
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     {
         int ib[] = {0, 0, 1, 1, 2, 2};
         CHECK(::is_dangling(ranges::search_n(eastl::move(ib), 2, 1)));
     }
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
     {
         eastl::vector<int> ib{0, 0, 1, 1, 2, 2};
         CHECK(::is_dangling(ranges::search_n(eastl::move(ib), 2, 1)));

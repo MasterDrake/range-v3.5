@@ -24,8 +24,8 @@
 
 #include <EASTL/utility.h>
 #include <EASTL/string.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/replace_copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/replace_copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

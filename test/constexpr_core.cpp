@@ -9,14 +9,14 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/detail/config.hpp>
+#include <EARanges/detail/config.hpp>
 
-#if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_14
+#if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_14
 
-#include <EASTL/ranges/range/access.hpp>
-#include <EASTL/ranges/range/operations.hpp>
-#include <EASTL/ranges/range/primitives.hpp>
-#include <EASTL/ranges/utility/addressof.hpp>
+#include <EARanges/range/access.hpp>
+#include <EARanges/range/operations.hpp>
+#include <EARanges/range/primitives.hpp>
+#include <EARanges/utility/addressof.hpp>
 
 #include "array.hpp"
 #include "test_iterators.hpp"

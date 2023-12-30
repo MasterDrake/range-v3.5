@@ -11,15 +11,15 @@
 
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/chunk.hpp>
-#include <EASTL/ranges/view/drop.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/join.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/chunk.hpp>
+#include <EARanges/view/drop.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/join.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -153,7 +153,7 @@ int main()
         // regression test for #728
         auto rng1 = views::iota(1) | views::chunk(6) | views::take(3);
         int i = 2;
-        RANGES_FOR(auto o1, rng1)
+        EARANGES_FOR(auto o1, rng1)
         {
             auto rng2 = o1 | views::drop(1);
             ::check_equal(rng2, {i, i+1, i+2, i+3, i+4});

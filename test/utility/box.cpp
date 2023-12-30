@@ -9,7 +9,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/utility/compressed_pair.hpp>
+#include <EARanges/utility/compressed_pair.hpp>
 #include "../simple_test.hpp"
 
 using namespace ranges;
@@ -23,8 +23,8 @@ void test_1093()
     struct payload { void* v; };
     struct base_adaptor {};
 
-    struct RANGES_EMPTY_BASES A : base_adaptor, private box<Op, A> {};
-    struct RANGES_EMPTY_BASES B : base_adaptor, private box<Op2, B> {};
+    struct EARANGES_EMPTY_BASES A : base_adaptor, private box<Op, A> {};
+    struct EARANGES_EMPTY_BASES B : base_adaptor, private box<Op2, B> {};
 
     using P  = compressed_pair<A, payload>;
     using P2 = compressed_pair<B, P>;

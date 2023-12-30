@@ -11,12 +11,12 @@
 
 #include <EASTL/iterator.h>
 #include <EASTL/functional.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/const.hpp>
-#include <EASTL/ranges/view/counted.hpp>
-#include <EASTL/ranges/view/zip.hpp>
-#include <EASTL/ranges/view/move.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/const.hpp>
+#include <EARanges/view/counted.hpp>
+#include <EARanges/view/zip.hpp>
+#include <EARanges/view/move.hpp>
+#include <EARanges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

@@ -8,11 +8,11 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/algorithm/move.hpp>
-#include <EASTL/ranges/action/sort.hpp>
-#include <EASTL/ranges/action/remove_if.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/algorithm/move.hpp>
+#include <EARanges/action/sort.hpp>
+#include <EARanges/action/remove_if.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

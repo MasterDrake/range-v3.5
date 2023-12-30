@@ -28,8 +28,8 @@
 
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/algorithm/is_sorted_until.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/is_sorted_until.hpp>
+#include <EARanges/core.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
@@ -460,11 +460,11 @@ int main()
     /// Rvalue range test:
     {
         A as[] = {{0}, {1}, {2}, {3}, {4}};
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(
             ranges::is_sorted_until(eastl::move(as), eastl::less<int>{}, &A::a)));
         CHECK(::is_dangling( ranges::is_sorted_until(eastl::move(as), eastl::greater<int>{}, &A::a)));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         eastl::vector<A> vec(ranges::begin(as), ranges::end(as));
         CHECK(::is_dangling(ranges::is_sorted_until(eastl::move(vec), eastl::less<int>{}, &A::a)));
         CHECK(::is_dangling(ranges::is_sorted_until(eastl::move(vec), eastl::greater<int>{}, &A::a)));

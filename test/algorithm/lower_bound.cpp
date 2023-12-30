@@ -15,8 +15,8 @@
 
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/lower_bound.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/lower_bound.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 #include "../test_utils.hpp"
@@ -82,10 +82,10 @@ int main()
 
     CHECK(ranges::lower_bound(ranges::views::all(a), 1, less(), &eastl::pair<int, int>::first) == &a[2]);
     CHECK(ranges::lower_bound(ranges::views::all(c), 1, less(), &eastl::pair<int, int>::first) == &c[2]);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(ranges::lower_bound(eastl::move(a), 1, less(), &eastl::pair<int, int>::first)));
     CHECK(::is_dangling(ranges::lower_bound(eastl::move(c), 1, less(), &eastl::pair<int, int>::first)));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
     {
         eastl::vector<eastl::pair<int, int>> vec_a(ranges::begin(a), ranges::end(a));
         CHECK(::is_dangling(ranges::lower_bound(eastl::move(vec_a), 1, less(), &eastl::pair<int, int>::first)));
@@ -106,7 +106,7 @@ int main()
         STATIC_CHECK(lower_bound(a, a[2]) == &a[2]);
         STATIC_CHECK(lower_bound(a, a[4], less()) == &a[4]);
         STATIC_CHECK(lower_bound(a, eastl::make_pair(1, 2), less()) == &a[2]);
-#if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_17
+#if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_17
         //TODO:17) requires constexpr eastl::addressof, so we really found the culprit!
        // STATIC_CHECK(lower_bound(views::all(a), eastl::make_pair(1, 2), less()) == &a[2]);
 #endif

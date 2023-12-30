@@ -12,12 +12,12 @@
 #include <EASTL/map.h>
 #include <EASTL/string.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/map.hpp>
-#include <EASTL/ranges/view/zip.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/algorithm/find.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/map.hpp>
+#include <EARanges/view/zip.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/algorithm/find.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

@@ -11,11 +11,11 @@
 
 #include <EASTL/functional.h>
 #include <EASTL/iterator.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/view/counted.hpp>
-#include <EASTL/ranges/view/partial_sum.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/view/counted.hpp>
+#include <EARanges/view/partial_sum.hpp>
+#include <EARanges/view/reverse.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

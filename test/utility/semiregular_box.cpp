@@ -9,7 +9,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/utility/semiregular_box.hpp>
+#include <EARanges/utility/semiregular_box.hpp>
 #include "../simple_test.hpp"
 
 using namespace ranges;

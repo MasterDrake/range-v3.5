@@ -19,8 +19,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/numeric/accumulate.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/numeric/accumulate.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 

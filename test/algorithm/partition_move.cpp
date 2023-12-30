@@ -22,10 +22,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+//TODO: TUple da solo senza eastl?
 #include <tuple>
 
-#include <range/v3/algorithm/partition_move.hpp>
-#include <range/v3/core.hpp>
+#include <EARanges/algorithm/partition_move.hpp>
+#include <EARanges/core.hpp>
 
 #include "../simple_test.hpp"
 

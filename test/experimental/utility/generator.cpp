@@ -9,22 +9,22 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
-#include <range/v3/detail/config.hpp>
+#include <EARanges/detail/config.hpp>
 #include <iostream>
 #include <vector>
-#include <range/v3/range/access.hpp>
-#include <range/v3/range_for.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/algorithm/count.hpp>
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/experimental/utility/generator.hpp>
-#include <range/v3/functional/invoke.hpp>
-#include <range/v3/utility/swap.hpp>
-#include <range/v3/view/filter.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/move.hpp>
-#include <range/v3/view/take_exactly.hpp>
-#include <range/v3/view/transform.hpp>
+#include <EARanges/range/access.hpp>
+#include <EARanges/range_for.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/algorithm/count.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/experimental/utility/generator.hpp>
+#include <EARanges/functional/invoke.hpp>
+#include <EARanges/utility/swap.hpp>
+#include <EARanges/view/filter.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/move.hpp>
+#include <EARanges/view/take_exactly.hpp>
+#include <EARanges/view/transform.hpp>
 #include "../../simple_test.hpp"
 #include "../../test_utils.hpp"
 
@@ -32,7 +32,7 @@
 #pragma GCC diagnostic ignored "-Wunused-const-variable"
 #endif
 
-#if RANGES_CXX_COROUTINES < RANGES_CXX_COROUTINES_TS1
+#if EARANGES_CXX_COROUTINES < EARANGES_CXX_COROUTINES_TS1
 #error This test uses coroutines.
 #endif
 
@@ -61,7 +61,7 @@ private:
             (is_copy_constructible_or_ref<ranges::range_reference_t<V>>()))
     static generator_for<V> impl(V v)
     {
-        if(RANGES_CONSTEXPR_IF(ranges::sized_range<V>))
+        if(EARANGES_CONSTEXPR_IF(ranges::sized_range<V>))
             co_await static_cast<ranges::experimental::generator_size>((std::size_t)ranges::distance(v));
         auto first = ranges::begin(v);
         auto const last = ranges::end(v);
@@ -95,7 +95,7 @@ public:
 
 inline namespace function_objects
 {
-    RANGES_INLINE_VARIABLE(coro_fn, coro)
+    EARANGES_INLINE_VARIABLE(coro_fn, coro)
 }
 
 auto f(int const n)
@@ -150,7 +150,7 @@ CPP_template(class V, class F)(
 ranges::experimental::generator<ranges::range_reference_t<V>, ranges::range_value_t<V>>
 filter(V view, F f)
 {
-    RANGES_FOR(auto &&i, view)
+    EARANGES_FOR(auto &&i, view)
     {
         if (ranges::invoke(f, i))
             co_yield i;
@@ -165,9 +165,9 @@ meta::invoke<
     ranges::indirect_result_t<F &, ranges::iterator_t<V>>>
 transform(V view, F f)
 {
-    if(RANGES_CONSTEXPR_IF(ranges::sized_range<V>))
+    if(EARANGES_CONSTEXPR_IF(ranges::sized_range<V>))
         co_await static_cast<ranges::experimental::generator_size>((std::size_t) ranges::distance(view));
-    RANGES_FOR(auto &&i, view)
+    EARANGES_FOR(auto &&i, view)
         co_yield ranges::invoke(f, i);
 }
 
@@ -207,7 +207,7 @@ int main()
 
     auto even = [](int i){ return i % 2 == 0; };
 
-#ifndef RANGES_WORKAROUND_MSVC_835948
+#ifndef EARANGES_WORKAROUND_MSVC_835948
     {
         auto rng = ::iota_generator(0, 10);
         CPP_assert(sized_range<decltype(rng)>);
@@ -278,7 +278,7 @@ int main()
         auto rng = f(20) | views::filter(even);
         ::check_equal(rng, {0,2,4,6,8,10,12,14,16,18});
     }
-#endif // RANGES_WORKAROUND_MSVC_835948
+#endif // EARANGES_WORKAROUND_MSVC_835948
 
     {
         auto square = [](int i) { return i * i; };

@@ -9,8 +9,8 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/view/take_last.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/view/take_last.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

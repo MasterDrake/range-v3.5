@@ -12,15 +12,15 @@
 #include <EASTL/map.h>
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/view/any_view.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/map.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/tail.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/take_exactly.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/view/any_view.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/map.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/tail.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/take_exactly.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
@@ -120,15 +120,15 @@ int main()
             (get_categories<decltype(ints)>() & category::sized) == category::none, "");
     }
     {
-#if RANGES_CXX_DEDUCTION_GUIDES >= RANGES_CXX_DEDUCTION_GUIDES_17
+#if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
 #if defined(__clang__) && __clang_major__ < 6
         // Workaround https://bugs.llvm.org/show_bug.cgi?id=33314
-        RANGES_DIAGNOSTIC_PUSH
-        RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
+        EARANGES_DIAGNOSTIC_PUSH
+        EARANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
 #endif
         any_view ints = views::ints | views::take_exactly(5);
 #if defined(__clang__) && __clang_major__ < 6
-        RANGES_DIAGNOSTIC_POP
+        EARANGES_DIAGNOSTIC_POP
 #endif
 #else
         any_view<int, category::random_access | category::sized> ints =

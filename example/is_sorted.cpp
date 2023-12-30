@@ -20,7 +20,7 @@
 #include <EASTL/vector.h>
 #include <iostream>
 
-#include <EASTL/ranges/algorithm/is_sorted.hpp> // specific includes
+#include <EARanges/algorithm/is_sorted.hpp> // specific includes
 using std::cout;
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,

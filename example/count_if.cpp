@@ -21,7 +21,7 @@
 #include <EASTL/array.h>
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/algorithm/count_if.hpp> // specific includes
+#include <EARanges/algorithm/count_if.hpp> // specific includes
 using std::cout;
 
 auto is_six = [](int i) -> bool { return i == 6; };

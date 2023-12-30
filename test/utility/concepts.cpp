@@ -10,17 +10,17 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-//#define RANGES_USE_LEGACY_CONCEPTS 1
+//#define EARANGES_USE_LEGACY_CONCEPTS 1
 
 #include <sstream>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/concepts/concepts.hpp>
-#include <EASTL/ranges/iterator/concepts.hpp>
-#include <EASTL/ranges/iterator/traits.hpp>
-#include <EASTL/ranges/range/concepts.hpp>
-#include <EASTL/ranges/range/traits.hpp>
-#include <EASTL/ranges/view/istream.hpp>
-#include <EASTL/ranges/iterator/common_iterator.hpp>
+#include <EARanges/concepts/concepts.hpp>
+#include <EARanges/iterator/concepts.hpp>
+#include <EARanges/iterator/traits.hpp>
+#include <EARanges/range/concepts.hpp>
+#include <EARanges/range/traits.hpp>
+#include <EARanges/view/istream.hpp>
+#include <EARanges/iterator/common_iterator.hpp>
 #include "../simple_test.hpp"
 
 struct moveonly

@@ -1,5 +1,5 @@
 {
-  "name": "the-forge",
+  "name": "eastl-ranges",
   "version": "0.0.0",
 	"dependencies": [
 		"eastl"

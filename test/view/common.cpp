@@ -12,12 +12,12 @@
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
 #include <sstream>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/common.hpp>
-#include <EASTL/ranges/view/counted.hpp>
-#include <EASTL/ranges/view/delimit.hpp>
-#include <EASTL/ranges/view/repeat_n.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/common.hpp>
+#include <EARanges/view/counted.hpp>
+#include <EARanges/view/delimit.hpp>
+#include <EARanges/view/repeat_n.hpp>
+#include <EARanges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

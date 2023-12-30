@@ -11,8 +11,8 @@
 
 #include <EASTL/vector.h>
 #include <EASTL/memory.h>
-#include <EASTL/ranges/view/for_each.hpp>
-#include <EASTL/ranges/view/move.hpp>
+#include <EARanges/view/for_each.hpp>
+#include <EARanges/view/move.hpp>
 #include "./simple_test.hpp"
 #include "./test_utils.hpp"
 

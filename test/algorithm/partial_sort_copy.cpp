@@ -22,14 +22,14 @@
 #include <EASTL/memory.h>
 #include <random>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/partial_sort_copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/partial_sort_copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 //todo: random and std::shuffle
 
@@ -187,9 +187,9 @@ int main()
         std::shuffle(input, input+N, gen);
         auto r0 = ranges::partial_sort_copy(input, eastl::move(output), eastl::less<int>(), &S::i, &U::i);
         U* e = output + eastl::min(N, M);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(r0));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
 
         int i2 = 0;
         for (U* x = output; x < e; ++x, ++i2)

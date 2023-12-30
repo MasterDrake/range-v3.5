@@ -20,8 +20,8 @@
 
 #include <EASTL/utility.h>
 
-#include <EASTL/ranges/algorithm/find_if_not.hpp>
-#include <EASTL/ranges/core.hpp>
+#include <EARanges/algorithm/find_if_not.hpp>
+#include <EARanges/core.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"

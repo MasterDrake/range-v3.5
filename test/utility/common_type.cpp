@@ -11,8 +11,8 @@
 
 #include <EASTL/utility.h>
 #include <EASTL/type_traits.h>
-#include <EASTL/ranges/utility/common_type.hpp>
-#include <EASTL/ranges/utility/common_tuple.hpp>
+#include <EARanges/utility/common_type.hpp>
+#include <EARanges/utility/common_tuple.hpp>
 
 struct B {};
 struct D : B {};

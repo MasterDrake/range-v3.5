@@ -1,7 +1,7 @@
 //! [filter example]
 #include <iostream>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/view/filter.hpp>
+#include <EARanges/view/filter.hpp>
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)

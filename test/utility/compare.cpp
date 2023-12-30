@@ -18,8 +18,8 @@
     defined(__cpp_concepts) && defined(__cpp_impl_three_way_comparison)
 //TODO:25) Don't know what we should do about this, eastl is being moving towards c++20 anyway.
 #include <compare>
-#include <EASTL/ranges/compare.hpp>
-#include <EASTL/ranges/range_fwd.hpp>
+#include <EARanges/compare.hpp>
+#include <EARanges/range_fwd.hpp>
 
 using ranges::same_as;
 using ranges::common_comparison_category_t;

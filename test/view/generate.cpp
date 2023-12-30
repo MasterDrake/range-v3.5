@@ -9,10 +9,10 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/generate.hpp>
-#include <EASTL/ranges/view/drop_exactly.hpp>
-#include <EASTL/ranges/view/take_exactly.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/generate.hpp>
+#include <EARanges/view/drop_exactly.hpp>
+#include <EARanges/view/take_exactly.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

@@ -12,10 +12,10 @@
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
 #include <sstream>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/tail.hpp>
-#include <EASTL/ranges/view/empty.hpp>
-#include <EASTL/ranges/view/single.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/tail.hpp>
+#include <EARanges/view/empty.hpp>
+#include <EARanges/view/single.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

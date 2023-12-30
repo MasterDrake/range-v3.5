@@ -11,8 +11,8 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/any_of.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/any_of.hpp>
 #include "../simple_test.hpp"
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,

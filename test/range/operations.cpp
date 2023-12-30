@@ -14,9 +14,9 @@
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
 #include <EASTL/numeric_limits.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/take_while.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/take_while.hpp>
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

@@ -23,10 +23,10 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/array.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/algorithm/shuffle.hpp>
-#include <EASTL/ranges/numeric/iota.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/algorithm/shuffle.hpp>
+#include <EARanges/numeric/iota.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

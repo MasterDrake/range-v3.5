@@ -26,8 +26,8 @@
 //   http://http://libcxx.llvm.org/
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/unique.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/unique.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -187,9 +187,9 @@ int main()
     {
         int a[] = {0, 1, 1, 1, 2, 2, 2};
         auto r = ranges::unique(eastl::move(a));
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(r));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         CHECK(a[0] == 0);
         CHECK(a[1] == 1);
         CHECK(a[2] == 2);

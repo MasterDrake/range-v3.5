@@ -20,18 +20,18 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/iterator.h>
-#include <EASTL/ranges/algorithm/copy.hpp>
-#include <EASTL/ranges/algorithm/equal_range.hpp>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/functional/identity.hpp>
-#include <EASTL/ranges/functional/invoke.hpp>
-#include <EASTL/ranges/iterator/insert_iterators.hpp>
-#include <EASTL/ranges/iterator/operations.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/join.hpp>
-#include <EASTL/ranges/view/repeat_n.hpp>
-#include <EASTL/ranges/view/take.hpp>
-#include <EASTL/ranges/view/transform.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/algorithm/equal_range.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/functional/identity.hpp>
+#include <EARanges/functional/invoke.hpp>
+#include <EARanges/iterator/insert_iterators.hpp>
+#include <EARanges/iterator/operations.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/join.hpp>
+#include <EARanges/view/repeat_n.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/transform.hpp>
 #include <EASTL/vector.h>
 
 #include "../array.hpp"

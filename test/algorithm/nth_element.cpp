@@ -21,14 +21,14 @@
 #include <EASTL/memory.h>
 #include <random>
 #include <EASTL/algorithm.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/nth_element.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/nth_element.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 namespace
 {
@@ -37,8 +37,8 @@ namespace
     void
     test_one(unsigned N, unsigned M)
     {
-        RANGES_ENSURE(N != 0);
-        RANGES_ENSURE(M < N);
+        EARANGES_ENSURE(N != 0);
+        EARANGES_ENSURE(M < N);
         eastl::unique_ptr<int[]> array{new int[N]};
         for (int i = 0; (unsigned)i < N; ++i)
             array[i] = i;

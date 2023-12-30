@@ -11,8 +11,8 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/for_each_n.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/for_each_n.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"

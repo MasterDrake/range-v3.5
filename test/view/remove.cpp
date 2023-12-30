@@ -13,8 +13,8 @@
 
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/view/remove.hpp>
-#include <EASTL/ranges/view/remove_if.hpp>
+#include <EARanges/view/remove.hpp>
+#include <EARanges/view/remove_if.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

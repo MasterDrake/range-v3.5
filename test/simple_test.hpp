@@ -7,13 +7,13 @@
 //  file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef RANGES_SIMPLE_TEST_HPP
-#define RANGES_SIMPLE_TEST_HPP
+#ifndef EARANGES_SIMPLE_TEST_HPP
+#define EARANGES_SIMPLE_TEST_HPP
 
 #include <cstdlib>
 #include <EASTL/utility.h>
 #include <iostream>
-#include <EASTL/ranges/detail/config.hpp>
+#include <EARanges/detail/config.hpp>
 
 namespace test_impl
 {
@@ -83,10 +83,10 @@ namespace test_impl
         template<typename V = T>
         auto eval_(int) -> decltype(!eastl::declval<V&>())
         {
-            RANGES_DIAGNOSTIC_PUSH
-            RANGES_DIAGNOSTIC_IGNORE_FLOAT_CONVERSION
+            EARANGES_DIAGNOSTIC_PUSH
+            EARANGES_DIAGNOSTIC_IGNORE_FLOAT_CONVERSION
             return !t_;
-            RANGES_DIAGNOSTIC_POP
+            EARANGES_DIAGNOSTIC_POP
         }
         bool eval_(long)
         {

@@ -21,17 +21,17 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef RANGES_V3_TEST_ARRAY_HPP
-#define RANGES_V3_TEST_ARRAY_HPP
+#ifndef EARANGES_V3_TEST_ARRAY_HPP
+#define EARANGES_V3_TEST_ARRAY_HPP
 
 #include <stdexcept>
-#include <EASTL/ranges/range_fwd.hpp>
-#include <EASTL/ranges/iterator/operations.hpp>
-#include <EASTL/ranges/algorithm/fill_n.hpp>
-#include <EASTL/ranges/algorithm/swap_ranges.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/algorithm/lexicographical_compare.hpp>
-#include <EASTL/ranges/utility/swap.hpp>
+#include <EARanges/range_fwd.hpp>
+#include <EARanges/iterator/operations.hpp>
+#include <EARanges/algorithm/fill_n.hpp>
+#include <EARanges/algorithm/swap_ranges.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/algorithm/lexicographical_compare.hpp>
+#include <EARanges/utility/swap.hpp>
 
 namespace test {
 
@@ -277,8 +277,8 @@ namespace test {
     }
 }  // namespace test
 
-RANGES_DIAGNOSTIC_PUSH
-RANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
+EARANGES_DIAGNOSTIC_PUSH
+EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
 namespace std
 {
@@ -296,6 +296,6 @@ class tuple_element<I, test::array<T, N> >
 
 }  // namespace std
 
-RANGES_DIAGNOSTIC_POP
+EARANGES_DIAGNOSTIC_POP
 
-#endif // RANGES_V3_TEST_ARRAY_HPP
+#endif // EARANGES_V3_TEST_ARRAY_HPP

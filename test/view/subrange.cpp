@@ -11,10 +11,10 @@
 
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/all.hpp>
-#include <EASTL/ranges/view/ref.hpp>
-#include <EASTL/ranges/view/subrange.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/all.hpp>
+#include <EARanges/view/ref.hpp>
+#include <EARanges/view/subrange.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -161,11 +161,11 @@ int main()
     CHECK(l1.begin() == li.begin());
     CHECK(l1.end() == li.end());
 
-#if RANGES_CXX_DEDUCTION_GUIDES >= RANGES_CXX_DEDUCTION_GUIDES_17
+#if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
 #if defined(__clang__) && __clang_major__ < 6
 // Workaround https://bugs.llvm.org/show_bug.cgi?id=33314
-RANGES_DIAGNOSTIC_PUSH
-RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
+EARANGES_DIAGNOSTIC_PUSH
+EARANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
 #endif
     {
         subrange s0{vi.begin(), vi.end()};
@@ -222,7 +222,7 @@ RANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE
         CHECK(s2.end() == li.end());
     }
 #if defined(__clang__) && __clang_major__ < 6
-RANGES_DIAGNOSTIC_POP
+EARANGES_DIAGNOSTIC_POP
 #endif // clang bug workaround
 #endif // use deduction guides
 

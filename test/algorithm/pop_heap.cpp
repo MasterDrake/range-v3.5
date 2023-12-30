@@ -27,16 +27,16 @@
 //#include <EASTL/algorithm.h>
 #include <EASTL/heap.h>
 #include <EASTL/functional.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/heap_algorithm.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/heap_algorithm.hpp>
 
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 //TODO: HACKHACK ok that's weird, the hack to make heap tests work by changing promote_heap_impl made this uncompilable, so I had to revert it by adding () after easl::less<ValueType> :/
 namespace
 {

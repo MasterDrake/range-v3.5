@@ -10,8 +10,8 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <EASTL/list.h>
-#include <eASTL/ranges/core.hpp>
-#include <eASTL/ranges/view/counted.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/counted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"

@@ -19,10 +19,10 @@
 #include <EASTl/list.h>
 #include <EASTl/slist.h>
 
-#include <EASTL/ranges/view/drop_last.hpp>
-#include <EASTL/ranges/view/take_exactly.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/view/generate_n.hpp>
+#include <EARanges/view/drop_last.hpp>
+#include <EARanges/view/take_exactly.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/view/generate_n.hpp>
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)

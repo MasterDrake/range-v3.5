@@ -8,16 +8,16 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 // Project home: https://github.com/ericniebler/range-v3
-#include <EASTL/ranges/algorithm/starts_with.hpp>
+#include <EARanges/algorithm/starts_with.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 #include <EASTL/slist.h>
-#include <EASTL/ranges/range/conversion.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/slice.hpp>
-#include <EASTL/ranges/view/take_exactly.hpp>
-#include <EASTL/ranges/view/istream.hpp>
+#include <EARanges/range/conversion.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/slice.hpp>
+#include <EARanges/view/take_exactly.hpp>
+#include <EARanges/view/istream.hpp>
 #include <sstream>
 #include <EASTL/vector.h>
 
@@ -70,13 +70,13 @@ void test_defaults()
       }
    }
    { // checks starts_with works for random-access ranges
-#ifdef RANGES_WORKAROUND_MSVC_779708
+#ifdef EARANGES_WORKAROUND_MSVC_779708
       auto const long_range = views::iota(0, 100) | to<eastl::vector>();
       auto const short_range = views::iota(0, 10) | to<eastl::vector>();
 #else // ^^^ workaround / no workaround vvv
       auto const long_range = views::iota(0, 100) | to<eastl::vector>;
       auto const short_range = views::iota(0, 10) | to<eastl::vector>;
-#endif // RANGES_WORKAROUND_MSVC_779708
+#endif // EARANGES_WORKAROUND_MSVC_779708
 
       CHECK(starts_with(begin(long_range), end(long_range), begin(short_range), end(short_range)));
       CHECK(starts_with(long_range, short_range));

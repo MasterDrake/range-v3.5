@@ -22,13 +22,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/numeric/inner_product.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/numeric/inner_product.hpp>
+#include <EARanges/algorithm/equal.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 namespace
 {

@@ -15,23 +15,23 @@
 #include <EASTL/functional.h>
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/join.hpp>
-#include <EASTL/ranges/view/split.hpp>
-#include <EASTL/ranges/view/generate_n.hpp>
-#include <EASTL/ranges/view/repeat_n.hpp>
-#include <EASTL/ranges/view/chunk.hpp>
-#include <EASTL/ranges/view/concat.hpp>
-#include <EASTL/ranges/view/iota.hpp>
-#include <EASTL/ranges/view/single.hpp>
-#include <EASTL/ranges/view/transform.hpp>
-#include <EASTL/ranges/view/filter.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/join.hpp>
+#include <EARanges/view/split.hpp>
+#include <EARanges/view/generate_n.hpp>
+#include <EARanges/view/repeat_n.hpp>
+#include <EARanges/view/chunk.hpp>
+#include <EARanges/view/concat.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/single.hpp>
+#include <EARanges/view/transform.hpp>
+#include <EARanges/view/filter.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
@@ -77,9 +77,9 @@ namespace
     }
 
 #ifdef __clang__
-RANGES_DIAGNOSTIC_IGNORE_PRAGMAS
-RANGES_DIAGNOSTIC_IGNORE("-Wunneeded-member-function")
-RANGES_DIAGNOSTIC_IGNORE("-Wunused-member-function")
+EARANGES_DIAGNOSTIC_IGNORE_PRAGMAS
+EARANGES_DIAGNOSTIC_IGNORE("-Wunneeded-member-function")
+EARANGES_DIAGNOSTIC_IGNORE("-Wunused-member-function")
 #endif
 
     // https://github.com/ericniebler/range-v3/issues/283

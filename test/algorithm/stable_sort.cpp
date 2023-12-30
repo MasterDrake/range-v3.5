@@ -23,14 +23,14 @@
 #include <EASTL/vector.h>
 #include <EASTL/algorithm.h>
 #include <EASTL/sort.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/stable_sort.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/stable_sort.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-RANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
+EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
@@ -126,8 +126,8 @@ namespace
     void
     test_larger_sorts(int N, int M)
     {
-        RANGES_ENSURE(N > 0);
-        RANGES_ENSURE(M > 0);
+        EARANGES_ENSURE(N > 0);
+        EARANGES_ENSURE(M > 0);
         // create array length N filled with M different numbers
         int* array = new int[N];
         int x = 0;

@@ -23,13 +23,13 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/utility.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/permutation.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/permutation.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-RANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
+EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
 
 int comparison_count = 0;
 

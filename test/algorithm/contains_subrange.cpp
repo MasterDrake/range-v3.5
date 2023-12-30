@@ -14,9 +14,9 @@
 #include <EASTL/array.h>
 #include <EASTL/initializer_list.h>
 
-#include <EASTL/ranges/algorithm/contains_subrange.hpp>
-#include <EASTL/ranges/iterator/operations.hpp>
-#include <EASTL/ranges/view/subrange.hpp>
+#include <EARanges/algorithm/contains_subrange.hpp>
+#include <EARanges/iterator/operations.hpp>
+#include <EARanges/view/subrange.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
@@ -109,7 +109,7 @@ int main()
         counting_equals<int>));
     CHECK(comparison_count == 0);
     //TODO:7) Won't compile because of tuple shenaningans
-#if RANGES_CXX_CONSTEXPR >= RANGES_CXX_CONSTEXPR_14 && RANGES_CONSTEXPR_INVOKE
+#if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_14 && EARANGES_CONSTEXPR_INVOKE
     using IL = std::initializer_list<int>;
     //static_assert(contains_subrange(IL{0, 1, 2, 3, 4}, IL{3, 4}), "");
     //static_assert(!contains_subrange(IL{0, 1, 2, 3, 4}, IL{2, 8}), "");

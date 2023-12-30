@@ -24,8 +24,8 @@
 
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/rotate.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/rotate.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
@@ -305,9 +305,9 @@ int main()
     {
         int rgi[] = {0,1,2,3,4,5};
         auto r = ranges::rotate(eastl::move(rgi), rgi+2);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
         CHECK(::is_dangling(r));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
         CHECK(rgi[0] == 2);
         CHECK(rgi[1] == 3);
         CHECK(rgi[2] == 4);

@@ -10,10 +10,10 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <range/v3/detail/config.hpp>
+#include <EARanges/detail/config.hpp>
 
-#if RANGES_CXX_RETURN_TYPE_DEDUCTION >= RANGES_CXX_RETURN_TYPE_DEDUCTION_14 && \
-    RANGES_CXX_GENERIC_LAMBDAS >= RANGES_CXX_GENERIC_LAMBDAS_14
+#if EARANGES_CXX_RETURN_TYPE_DEDUCTION >= EARANGES_CXX_RETURN_TYPE_DEDUCTION_14 && \
+    EARANGES_CXX_GENERIC_LAMBDAS >= EARANGES_CXX_GENERIC_LAMBDAS_14
 
 ///[calendar]
 
@@ -66,22 +66,22 @@
 #include <cstddef>
 #include <functional>
 #include <iostream>
-#include <range/v3/action/join.hpp>
-#include <range/v3/algorithm/copy.hpp>
-#include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/algorithm/mismatch.hpp>
-#include <range/v3/core.hpp>
-#include <range/v3/iterator/stream_iterators.hpp>
-#include <range/v3/view/all.hpp>
-#include <range/v3/view/chunk.hpp>
-#include <range/v3/view/chunk_by.hpp>
-#include <range/v3/view/concat.hpp>
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/join.hpp>
-#include <range/v3/view/repeat_n.hpp>
-#include <range/v3/view/single.hpp>
-#include <range/v3/view/take.hpp>
-#include <range/v3/view/transform.hpp>
+#include <EARanges/action/join.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/algorithm/for_each.hpp>
+#include <EARanges/algorithm/mismatch.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/iterator/stream_iterators.hpp>
+#include <EARanges/view/all.hpp>
+#include <EARanges/view/chunk.hpp>
+#include <EARanges/view/chunk_by.hpp>
+#include <EARanges/view/concat.hpp>
+#include <EARanges/view/iota.hpp>
+#include <EARanges/view/join.hpp>
+#include <EARanges/view/repeat_n.hpp>
+#include <EARanges/view/single.hpp>
+#include <EARanges/view/take.hpp>
+#include <EARanges/view/transform.hpp>
 #include <stdexcept>
 #include <string>
 #include <utility>

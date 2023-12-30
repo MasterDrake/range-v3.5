@@ -24,11 +24,11 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/array.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/algorithm/sample.hpp>
-#include <EASTL/ranges/numeric/iota.hpp>
-#include <EASTL/ranges/iterator/move_iterators.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/algorithm/sample.hpp>
+#include <EARanges/numeric/iota.hpp>
+#include <EARanges/iterator/move_iterators.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -42,7 +42,7 @@ namespace
         CPP_ret(bool)(requires ranges::sentinel_for<S, I>)
     {
         for (; first != mid; ++first)
-            RANGES_ENSURE(first != last);
+            EARANGES_ENSURE(first != last);
         for (; first != last; ++first)
             ;
         return true;

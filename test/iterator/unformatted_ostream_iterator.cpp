@@ -13,13 +13,13 @@
 #include <EASTL/string.h>
 #include <EASTL/vector.h>
 
-#include <EASTL/ranges/algorithm/copy.hpp>
-#include <EASTL/ranges/iterator/stream_iterators.hpp>
-#include <EASTL/ranges/range/conversion.hpp>
-#include <EASTL/ranges/view/for_each.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/sliding.hpp>
-#include <EASTL/ranges/view/stride.hpp>
+#include <EARanges/algorithm/copy.hpp>
+#include <EARanges/iterator/stream_iterators.hpp>
+#include <EARanges/range/conversion.hpp>
+#include <EARanges/view/for_each.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/sliding.hpp>
+#include <EARanges/view/stride.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

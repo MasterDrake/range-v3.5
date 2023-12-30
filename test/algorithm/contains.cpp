@@ -10,7 +10,7 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <EASTL/ranges/algorithm/contains.hpp>
+#include <EARanges/algorithm/contains.hpp>
 
 #include "../simple_test.hpp"
 
@@ -28,7 +28,7 @@ int main()
     CHECK(!contains(first, last, 3));
     CHECK(contains(first, last, 4));
 
-#ifndef RANGES_WORKAROUND_CLANG_23135
+#ifndef EARANGES_WORKAROUND_CLANG_23135
     static_assert(!contains(rng, 1), "");
     static_assert(contains(rng, 2), "");
     static_assert(!contains(rng, 3), "");

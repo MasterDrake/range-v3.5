@@ -12,14 +12,14 @@
 #include <EASTL/array.h>
 #include <EASTL/vector.h>
 #include <EASTL/string.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/view/concat.hpp>
-#include <EASTL/ranges/view/generate.hpp>
-#include <EASTL/ranges/view/reverse.hpp>
-#include <EASTL/ranges/view/remove_if.hpp>
-#include <EASTL/ranges/view/take_while.hpp>
-#include <EASTL/ranges/algorithm/equal.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/view/concat.hpp>
+#include <EARanges/view/generate.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/remove_if.hpp>
+#include <EARanges/view/take_while.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/utility/copy.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

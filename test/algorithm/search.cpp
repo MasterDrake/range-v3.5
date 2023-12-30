@@ -23,9 +23,9 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/search.hpp>
-#include <EASTL/ranges/view/counted.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/search.hpp>
+#include <EARanges/view/counted.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -248,7 +248,7 @@ int main()
         int ie[] = {1, 2, 3};
         CHECK(ranges::search(ranges::views::all(ib), ie).begin() == ib+4);
     }
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     {
         int ib[] = {0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 4};
         int ie[] = {1, 2, 3};

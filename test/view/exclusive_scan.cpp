@@ -11,8 +11,8 @@
 //
 
 #include <EASTL/vector.h>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/view/exclusive_scan.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/view/exclusive_scan.hpp>
 #include "../test_utils.hpp"
 
 int main()

@@ -11,7 +11,7 @@
 
 #include <EASTL/vector.h>
 #include <EASTL/string.h>
-#include <EASTL/ranges/action/remove.hpp>
+#include <EARanges/action/remove.hpp>
 
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

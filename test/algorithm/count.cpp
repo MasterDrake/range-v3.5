@@ -9,8 +9,8 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/count.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/count.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 

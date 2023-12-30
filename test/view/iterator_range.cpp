@@ -11,12 +11,12 @@
 
 #include <EASTL/list.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/utility/copy.hpp>
-#include <EASTL/ranges/iterator/unreachable_sentinel.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/utility/copy.hpp>
+#include <EARanges/iterator/unreachable_sentinel.hpp>
 //TODO:34)iterator_range is deprecated so not sure what to do with this, just don't I guess.
-#include <EASTL/ranges/range/iterator_range.hpp>
-#include <EASTL/ranges/view/all.hpp>
+//#include <EARanges/iterator_range.hpp>
+#include <EARanges/view/all.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

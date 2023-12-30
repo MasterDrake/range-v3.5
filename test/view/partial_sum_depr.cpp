@@ -9,9 +9,9 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 
-#include <range/v3/core.hpp>
-RANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
-#include <range/v3/view/partial_sum.hpp>
+#include <EARanges/core.hpp>
+EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
+#include <EARanges/view/partial_sum.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 

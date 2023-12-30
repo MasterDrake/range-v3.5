@@ -18,8 +18,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/lexicographical_compare.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/lexicographical_compare.hpp>
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"

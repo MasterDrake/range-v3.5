@@ -25,8 +25,8 @@
 #include <EASTL/memory.h>
 #include <EASTL/utility.h>
 #include <EASTL/vector.h>
-#include <EASTL/ranges/core.hpp>
-#include <EASTL/ranges/algorithm/remove.hpp>
+#include <EARanges/core.hpp>
+#include <EARanges/algorithm/remove.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
@@ -177,9 +177,9 @@ int main()
     // Check rvalue ranges
     S ia2[] = {S{0}, S{1}, S{2}, S{3}, S{4}, S{2}, S{3}, S{4}, S{2}};
     auto r2 = ranges::remove(std::move(ia2), 2, &S::i);
-#ifndef RANGES_WORKAROUND_MSVC_573728
+#ifndef EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(r2));
-#endif // RANGES_WORKAROUND_MSVC_573728
+#endif // EARANGES_WORKAROUND_MSVC_573728
     CHECK(ia2[0].i == 0);
     CHECK(ia2[1].i == 1);
     CHECK(ia2[2].i == 3);
