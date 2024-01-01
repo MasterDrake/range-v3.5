@@ -14,6 +14,8 @@
 #ifndef EARANGES_DETAIL_CONFIG_HPP
 #define EARANGES_DETAIL_CONFIG_HPP
 
+#include <EASTL/internal/config.h>
+
 // Grab some version information.
 #ifndef __has_include
 #include <iosfwd>
