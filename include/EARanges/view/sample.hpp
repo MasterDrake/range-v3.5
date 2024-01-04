@@ -106,7 +106,6 @@ namespace ranges
             {
                 if(parent_->size_ > 0)
                 {
-                    //TODO: eastl::uniform_int_distribution
                     using Dist = eastl::uniform_int_distribution<D>;
                     Dist dist{};
                     URNG & engine = *parent_->engine_;

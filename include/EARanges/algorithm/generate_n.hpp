@@ -13,9 +13,8 @@
 #ifndef EARANGES_ALGORITHM_GENERATE_N_HPP
 #define EARANGES_ALGORITHM_GENERATE_N_HPP
 
-//TODO: what's for????
-//#include <tuple>
-//#include <utility>
+#include <EASTL/tuple.h>
+#include <EASTL/utility.h>
 
 #include <EARanges/range_fwd.hpp>
 

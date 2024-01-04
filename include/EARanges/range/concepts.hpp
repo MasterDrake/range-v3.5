@@ -20,17 +20,10 @@
 #include <EASTL/utility.h>
 #include <EASTL/initializer_list.h>
 
-#ifdef __has_include
-#if __has_include(<span>) && !defined(EARANGES_WORKAROUND_MSVC_UNUSABLE_SPAN)
-//#include <span>
+
 #include <EASTL/span.h>
-#endif
-#if __has_include(<string_view>)
-#include <string_view>
-//TODO:Capire cosa serve traits for string_view. Tra l'altro eastl ha eastl::string_view<CharTraits> definito come eastl::basic_string_view<char>
-// #include <EASTL/string_view.h>
-#endif
-#endif
+
+#include <EASTL/string_view.h>
 
 #include <EARanges/meta/meta.hpp>
 
@@ -198,20 +191,12 @@ namespace ranges
     template<typename T>
     EARANGES_INLINE_VAR constexpr bool enable_view = ext::enable_view<T>::value;
 
-#if defined(__cpp_lib_string_view) && __cpp_lib_string_view >= 201603L
-    template<typename Char, typename Traits>
+    template<typename Char>
    //TODO:: Oh merda, che fare con sto trait and enable view? EARANGES_INLINE_VAR constexpr bool enable_view<std::basic_string_view<Char, Traits>> = true;
-   EARANGES_INLINE_VAR constexpr bool enable_view<std::basic_string_view<Char, Traits>> = true;
-    //EARANGES_INLINE_VAR constexpr bool enable_view<eastl::basic_string_view<Char>> = true;
-#endif
+   EARANGES_INLINE_VAR constexpr bool enable_view<eastl::basic_string_view<Char>> = true;
 
-// libstdc++'s <span> header only defines std::span when concepts
-// are also enabled. https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97869
-#if defined(__cpp_lib_span) && __cpp_lib_span >= 202002L && \
-    (!defined(__GLIBCXX__) || defined(__cpp_lib_concepts))
     template<typename T, std::size_t N>
     EARANGES_INLINE_VAR constexpr bool enable_view<eastl::span<T, N>> = true;
-#endif
 
     //
     // View concepts below

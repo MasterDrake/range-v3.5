@@ -17,6 +17,7 @@
 #include <EARanges/view/iota.hpp>
 #include <EARanges/algorithm/find.hpp>
 #include <EASTL/vector.h>
+#include <EASTL/string_view.h>
 #include "../simple_test.hpp"
 
 #if defined(__clang__)
@@ -198,16 +199,15 @@ namespace begin_testing
         CPP_assert(can_cbegin<ranges::ref_view<int[5]>>);
         CPP_assert(can_cbegin<const ranges::ref_view<int[5]>>);
 
-        // TODO
-        // CPP_assert(can_begin<ranges::iota_view<int, int>&>);
-        // CPP_assert(can_begin<const ranges::iota_view<int, int>&>);
-        // CPP_assert(can_begin<ranges::iota_view<int, int>>);
-        // CPP_assert(can_begin<const ranges::iota_view<int, int>>);
+         CPP_assert(can_begin<ranges::iota_view<int, int>&>);
+         CPP_assert(can_begin<const ranges::iota_view<int, int>&>);
+         CPP_assert(can_begin<ranges::iota_view<int, int>>);
+         CPP_assert(can_begin<const ranges::iota_view<int, int>>);
 
-        // CPP_assert(can_cbegin<ranges::iota_view<int, int>&>);
-        // CPP_assert(can_cbegin<const ranges::iota_view<int, int>&>);
-        // CPP_assert(can_cbegin<ranges::iota_view<int, int>>);
-        // CPP_assert(can_cbegin<const ranges::iota_view<int, int>>);
+         CPP_assert(can_cbegin<ranges::iota_view<int, int>&>);
+         CPP_assert(can_cbegin<const ranges::iota_view<int, int>&>);
+         CPP_assert(can_cbegin<ranges::iota_view<int, int>>);
+         CPP_assert(can_cbegin<const ranges::iota_view<int, int>>);
     }
 } // namespace begin_testing
 
@@ -242,17 +242,17 @@ CPP_assert(ranges::input_or_output_iterator<CI>);
 void test_string_view_p0970()
 {
     // basic_string_views are non-dangling
-    using I2 = ranges::iterator_t<std::string_view>;
-    CPP_assert(ranges::same_as<I2, decltype(ranges::begin(eastl::declval<std::string_view>()))>);
-    CPP_assert(ranges::same_as<I2, decltype(ranges::end(eastl::declval<std::string_view>()))>);
-    CPP_assert(ranges::same_as<I2, decltype(ranges::begin(eastl::declval<const std::string_view>()))>);
-    CPP_assert(ranges::same_as<I2, decltype(ranges::end(eastl::declval<const std::string_view>()))>);
+    using I2 = ranges::iterator_t<eastl::string_view>;
+    CPP_assert(ranges::same_as<I2, decltype(ranges::begin(eastl::declval<eastl::string_view>()))>);
+    CPP_assert(ranges::same_as<I2, decltype(ranges::end(eastl::declval<eastl::string_view>()))>);
+    CPP_assert(ranges::same_as<I2, decltype(ranges::begin(eastl::declval<const eastl::string_view>()))>);
+    CPP_assert(ranges::same_as<I2, decltype(ranges::end(eastl::declval<const eastl::string_view>()))>);
 
     {
         const char hw[] = "Hello, World!";
-        auto result = ranges::find(std::string_view{hw}, 'W');
+        auto result = ranges::find(eastl::string_view{hw}, 'W');
         CPP_assert(ranges::same_as<I2, decltype(result)>);
-        CHECK(result == std::string_view{hw}.begin() + 7);
+        CHECK(result == eastl::string_view{hw}.begin() + 7);
     }
 }
 #endif
@@ -308,9 +308,7 @@ int main()
     test_array<int const>(eastl::make_integer_sequence<int, 3>{});
     begin_testing::test();
 
-#if defined(__cpp_lib_string_view) && __cpp_lib_string_view >= 201603L
     test_string_view_p0970();
-#endif
 
     return ::test_result();
 }

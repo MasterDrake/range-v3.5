@@ -120,11 +120,11 @@ namespace ranges
         struct trim_bind_fn
         {
             template<typename Pred>
-            constexpr auto operator()(Pred pred) const // TODO: underconstrained
+            constexpr auto operator()(Pred pred) const // TODO: underconstrained - Eric Niebler
             {
                 return make_view_closure(bind_back(trim_base_fn{}, eastl::move(pred)));
             }
-            template(typename Pred, typename Proj)(requires (!range<Pred>)) // TODO: underconstrained
+            template(typename Pred, typename Proj)(requires (!range<Pred>)) // TODO: underconstrained - Eric Niebler
             constexpr auto operator()(Pred && pred, Proj proj) const
             {
                 return make_view_closure(bind_back(trim_base_fn{}, static_cast<Pred &&>(pred), eastl::move(proj)));

@@ -17,9 +17,6 @@
 #include <EASTL/functional.h>
 #include <EASTL/utility.h>
 
-////TODO: Dov'è esattamente eastl::reference_wrapper????
-//#include <EASTL/function.h>
-
 #include <EARanges/meta/meta.hpp>
 
 #include <EARanges/concepts/concepts.hpp>

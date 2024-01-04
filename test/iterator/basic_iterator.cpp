@@ -421,8 +421,7 @@ namespace test_move_only
         }
     };
 
-    CPP_assert(ranges::detail::output_cursor<zip1_cursor<MoveOnly *>,
-                                             eastl::tuple<MoveOnly> &&>);
+    CPP_assert(ranges::detail::output_cursor<zip1_cursor<MoveOnly *>, eastl::tuple<MoveOnly> &&>);
     CPP_assert(ranges::detail::forward_cursor<zip1_cursor<MoveOnly *>>);
 
     template<class I>

@@ -202,10 +202,10 @@ int main()
         CHECK(a[1] == 1);
         CHECK(a[2] == 2);
     }
-
-    {//todo: eastl::addressof vs constexpr
-        //STATIC_CHECK(test_constexpr());
+#if EASTL_ADDRESSOF_CONSTEXPR
+    {
+        STATIC_CHECK(test_constexpr());
     }
-    
+#endif    
     return ::test_result();
 }

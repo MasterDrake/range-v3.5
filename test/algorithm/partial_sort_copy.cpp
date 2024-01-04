@@ -20,7 +20,7 @@
 
 #include <EASTL/algorithm.h>
 #include <EASTL/memory.h>
-#include <random>
+#include <EASTL/random.h>
 #include <EASTL/vector.h>
 #include <EARanges/core.hpp>
 #include <EARanges/algorithm/partial_sort_copy.hpp>
@@ -31,7 +31,6 @@
 EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
-//todo: random and std::shuffle
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
@@ -48,7 +47,7 @@ void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
 
 namespace
 {
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     template<class Iter>
     void
@@ -204,10 +203,10 @@ int main()
         for (U* x = vec.data(); x < e; ++x, ++i2)
             CHECK(x->i == i2);
     }
-    //todo: constexpr vs eastl::addressof
+#if EASTL_ADDRESSOF_CONSTEXPR
     {
-        //STATIC_CHECK(test_constexpr());
+        STATIC_CHECK(test_constexpr());
     }
-
+#endif
     return ::test_result();
 }

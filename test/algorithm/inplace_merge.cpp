@@ -20,7 +20,7 @@
 
 #include <EASTL/algorithm.h>
 #include <EASTL/sort.h>
-#include <random>
+#include <EASTL/random.h>
 #include <EARanges/core.hpp>
 #include <EARanges/algorithm/inplace_merge.hpp>
 #include "../simple_test.hpp"
@@ -29,10 +29,10 @@
 
 EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
-//TODO:15) Eastl random support is barebones considering the limitations of uniform_int_distribution, lac of discrete_distribution and generators.
+
 namespace
 {
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     template<class Iter, typename Sent = Iter>
     void
@@ -134,7 +134,7 @@ namespace
 
 int main()
 {
-    // test<ForwardIterator<int*> >();
+    //test<ForwardIterator<int*> >();
     test<BidirectionalIterator<int*> >();
     test<RandomAccessIterator<int*> >();
     test<int*>();

@@ -28,7 +28,6 @@
 #ifndef EARANGES_ALGORITHM_AUX_SORT_N_WITH_BUFFER_HPP
 #define EARANGES_ALGORITHM_AUX_SORT_N_WITH_BUFFER_HPP
 
-//TODO: WHY???
 #include <EASTL/tuple.h>
 
 #include <EARanges/range_fwd.hpp>

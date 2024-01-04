@@ -414,21 +414,12 @@ namespace ranges
     } // namespace _counted_iterator_
 } // namespace ranges
 
-//TODO: This should be uneeded.
-//namespace std
-//{
-//    template<typename I>
-//    struct iterator_traits<::ranges::counted_iterator<I>>
-//      : ::ranges::_counted_iterator_::iterator_traits_<I>
-//    {};
-//} // namespace std
-
 namespace eastl
 {
     template<typename I>
     struct iterator_traits<::ranges::counted_iterator<I>> : ::ranges::_counted_iterator_::iterator_traits_<I>
     {};
-} // namespace std
+} // namespace eastl
 /// \endcond
 
 #include <EARanges/detail/epilogue.hpp>

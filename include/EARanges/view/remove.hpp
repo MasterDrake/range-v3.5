@@ -68,11 +68,11 @@ namespace ranges
         struct remove_bind_fn
         {
             template<typename Value>
-            constexpr auto operator()(Value value) const // TODO: underconstrained
+            constexpr auto operator()(Value value) const // TODO: underconstrained - Eric Niebler
             {
                 return make_view_closure(bind_back(remove_base_fn{}, eastl::move(value)));
             }
-            template(typename Value, typename Proj)(requires (!range<Value>)) // TODO: underconstrained
+            template(typename Value, typename Proj)(requires (!range<Value>)) // TODO: underconstrained - Eric Niebler
             constexpr auto operator()(Value && value, Proj proj) const
             {
                 return make_view_closure(bind_back(remove_base_fn{}, static_cast<Value &&>(value), eastl::move(proj)));

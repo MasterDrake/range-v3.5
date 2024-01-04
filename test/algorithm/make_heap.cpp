@@ -23,7 +23,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/memory.h>
-#include <random>
+#include <EASTL/random.h>
 //#include <EASTL/algorithm.h>
 #include <EASTL/heap.h>
 #include <EASTL/functional.h>
@@ -35,13 +35,12 @@
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-//TODO: random and shuffle ...
 EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 namespace
 {
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     void test_1(int N)
     {
@@ -223,10 +222,12 @@ int main()
     test_all(1000);
     test_9(1000);
     test_10(1000);
-    //TODO:17) eastl::addressof vs constexpr
-    //{
-    //    STATIC_CHECK(test_constexpr());
-    //}
+
+#if EASTL_ADDRESSOF_CONSTEXPR
+    {
+        STATIC_CHECK(test_constexpr());
+    }
+#endif
 
     return test_result();
 }

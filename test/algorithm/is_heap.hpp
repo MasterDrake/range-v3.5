@@ -38,6 +38,7 @@
 //- talking about eastl::less, EASTL/heap.h needs to include <EASTL/functional.h>
 //- The IS_HEAP_X doesn't work :/
 //- Do we really need <EASTL/algorithm.h> here then?
+//TODO: Create a issue for eastl
 
 void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
                               const char * name, int flags, unsigned debugFlags,

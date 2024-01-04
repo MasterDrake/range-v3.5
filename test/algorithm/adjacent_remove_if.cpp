@@ -198,10 +198,7 @@ int main()
         S ia[] = {S{0}, S{1}, S{1}, S{2}, S{3}, S{5}, S{8}, S{13}, S{21}};
         constexpr auto sa = ranges::size(ia);
         using namespace std::placeholders;
-        auto r = ranges::adjacent_remove_if(
-            ranges::views::all(ia),
-            [](int x, int y) noexcept { return (x + y) % 2 == 0; },
-            &S::i);
+        auto r = ranges::adjacent_remove_if(ranges::views::all(ia), [](int x, int y) noexcept { return (x + y) % 2 == 0; }, &S::i);
         CHECK(r == ia + sa-3);
         CHECK(ia[0].i == 0);
         CHECK(ia[1].i == 1);
@@ -211,14 +208,12 @@ int main()
         CHECK(ia[5].i == 21);
     }
 
-    //TODO:4) Constexpr checks fail :
-    //STATIC_CHECK(test_constexpr<ForwardIterator<int *>>());
-    //STATIC_CHECK(test_constexpr<BidirectionalIterator<int *>>());
-    //STATIC_CHECK(test_constexpr<RandomAccessIterator<int *>>());
-    //STATIC_CHECK(test_constexpr<int *>());
-    //STATIC_CHECK(test_constexpr<ForwardIterator<int *>, Sentinel<int *>>());
-    //STATIC_CHECK(test_constexpr<BidirectionalIterator<int *>, Sentinel<int *>>());
-    //STATIC_CHECK(test_constexpr<RandomAccessIterator<int *>, Sentinel<int *>>());
-
+    STATIC_CHECK(test_constexpr<ForwardIterator<int *>>());
+    STATIC_CHECK(test_constexpr<BidirectionalIterator<int *>>());
+    STATIC_CHECK(test_constexpr<RandomAccessIterator<int *>>());
+    STATIC_CHECK(test_constexpr<int *>());
+    STATIC_CHECK(test_constexpr<ForwardIterator<int *>, Sentinel<int *>>());
+    STATIC_CHECK(test_constexpr<BidirectionalIterator<int *>, Sentinel<int *>>());
+    STATIC_CHECK(test_constexpr<RandomAccessIterator<int *>, Sentinel<int *>>());
     return ::test_result();
 }

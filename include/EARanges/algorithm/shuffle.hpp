@@ -14,8 +14,8 @@
 #define EARANGES_ALGORITHM_SHUFFLE_HPP
 
 #include <cstdint>
-//TODO: aggiornare eastl con random e togliere questo
-#include <random>
+
+#include <EASTL/random.h>
 #include <EASTL/utility.h>
 #include <EASTL/random.h>
 
@@ -49,8 +49,7 @@ namespace ranges
                 return mid;
             using D1 = iter_difference_t<I>;
             using D2 = meta::conditional_t<eastl::is_integral<D1>::value, D1, std::ptrdiff_t>;
-            //TODO:Upgrade eastl std::unirofm_int_distribution because right now it doesn't support long I guess
-            std::uniform_int_distribution<D2> uid{};
+            eastl::uniform_int_distribution<D2> uid{};
             using param_t = typename decltype(uid)::param_type;
             while(++mid != last)
             {

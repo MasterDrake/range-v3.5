@@ -23,8 +23,8 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/memory.h>
-#include <random>
-//#include <EASTL/algorithm.h>
+#include <EASTL/random.h>
+#include <EASTL/algorithm.h>
 #include <EASTL/heap.h>
 #include <EASTL/functional.h>
 #include <EARanges/core.hpp>
@@ -40,14 +40,14 @@ EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 //TODO: HACKHACK ok that's weird, the hack to make heap tests work by changing promote_heap_impl made this uncompilable, so I had to revert it by adding () after easl::less<ValueType> :/
 namespace
 {
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     void test_1(int N)
     {
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         for (int i = N; i > 0; --i)
         {
@@ -63,7 +63,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         for (int i = N; i > 0; --i)
         {
@@ -79,14 +79,14 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         for (int i = N; i > 0; --i)
         {
             CHECK(ranges::pop_heap(::as_lvalue(ranges::make_subrange(ia, ia+i))) == ia+i);
             CHECK(eastl::is_heap(ia, ia+i-1));
         }
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         for (int i = N; i > 0; --i)
         {
@@ -102,14 +102,14 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         for (int i = N; i > 0; --i)
         {
             CHECK(ranges::pop_heap(::as_lvalue(ranges::make_subrange(ia, Sentinel<int*>(ia+i)))) == ia+i);
             CHECK(eastl::is_heap(ia, ia+i-1));
         }
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         for (int i = N; i > 0; --i)
         {
@@ -125,7 +125,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         for (int i = N; i > 0; --i)
         {
@@ -141,7 +141,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         for (int i = N; i > 0; --i)
         {
@@ -157,14 +157,14 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         for (int i = N; i > 0; --i)
         {
             CHECK(ranges::pop_heap(::as_lvalue(ranges::make_subrange(ia, ia+i)), eastl::greater<int>()) == ia+i);
             CHECK(eastl::is_heap(ia, ia+i-1, eastl::greater<int>()));
         }
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         for (int i = N; i > 0; --i)
         {
@@ -180,14 +180,14 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         for (int i = N; i > 0; --i)
         {
             CHECK(ranges::pop_heap(::as_lvalue(ranges::make_subrange(ia, Sentinel<int*>(ia+i))), eastl::greater<int>()) == ia+i);
             CHECK(eastl::is_heap(ia, ia+i-1, eastl::greater<int>()));
         }
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         for (int i = N; i > 0; --i)
         {
@@ -210,7 +210,7 @@ namespace
         eastl::unique_ptr<int>* ia = new eastl::unique_ptr<int>[N];
         for (int i = 0; i < N; ++i)
             ia[i].reset(new int(i));
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, indirect_less());
         for (int i = N; i > 0; --i)
         {
@@ -241,7 +241,7 @@ namespace
         S* ib = new S[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         eastl::transform(ia, ia+N, ib, construct<S>());
         for (int i = N; i > 0; --i)
@@ -286,8 +286,8 @@ int main()
     test_9(1000);
     test_10(1000);
 
-    {//todo: eastl::addressof vs constexpr
-        //STATIC_CHECK(test_constexpr());
+    {
+        STATIC_CHECK(test_constexpr());
     }
 
     return test_result();

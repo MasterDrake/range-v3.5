@@ -14,8 +14,7 @@
 #ifndef EARANGES_ACTION_ERASE_HPP
 #define EARANGES_ACTION_ERASE_HPP
 
-//TODO: what's for??
-//#include <utility>
+#include <EASTL/utility.h>
 
 #include <EARanges/range_fwd.hpp>
 

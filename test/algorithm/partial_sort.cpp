@@ -19,7 +19,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/memory.h>
-#include <random>
+#include <EASTL/random.h>
 #include <EASTL/algorithm.h>
 #include <EASTL/vector.h>
 #include <EARanges/core.hpp>
@@ -30,7 +30,6 @@
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-//todo: random and std::shuffle
 EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
@@ -49,7 +48,7 @@ void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
 
 namespace
 {
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     struct indirect_less
     {
@@ -209,10 +208,10 @@ int main()
             CHECK((std::size_t)v[j].j == v.size() - j - 1);
         }
     }
-    //TODO: constexpr vs eastl::addressof
+#if EASTL_ADDRESSOF_CONSTEXPR
     {
-        //STATIC_CHECK(test_constexpr());
+        STATIC_CHECK(test_constexpr());
     }
-
+#endif
     return ::test_result();
 }

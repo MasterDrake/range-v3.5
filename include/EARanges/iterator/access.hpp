@@ -211,8 +211,7 @@ namespace ranges
         {
             // *If* a user-defined iter_swap is found via ADL, call that:
             template<typename T, typename U>
-            constexpr detail::enable_if_t<is_adl_indirectly_swappable_v<T, U>> operator()(
-                T && t, U && u) const noexcept(noexcept(iter_swap((T &&) t, (U &&) u)))
+            constexpr detail::enable_if_t<is_adl_indirectly_swappable_v<T, U>> operator()(T && t, U && u) const noexcept(noexcept(iter_swap((T &&) t, (U &&) u)))
             {
                 (void)iter_swap((T &&) t, (U &&) u);
             }
@@ -220,9 +219,7 @@ namespace ranges
             // *Otherwise*, for readable types with swappable reference
             // types, call ranges::swap(*a, *b)
             template<typename I0, typename I1>
-            constexpr detail::enable_if_t<
-                !is_adl_indirectly_swappable_v<I0, I1> &&
-                is_swappable_with<iter_reference_t<I0>, iter_reference_t<I1>>::value>
+            constexpr detail::enable_if_t<!is_adl_indirectly_swappable_v<I0, I1> && is_swappable_with<iter_reference_t<I0>, iter_reference_t<I1>>::value>
             operator()(I0 && a, I1 && b) const noexcept(noexcept(ranges::swap(*a, *b)))
             {
                 ranges::swap(*a, *b);

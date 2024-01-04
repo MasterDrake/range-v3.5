@@ -189,20 +189,20 @@ struct T
     int i;
 };
 
-//constexpr bool test_constexpr()
-//{
-//    using namespace ranges;
-//    int ia[] = {0, 1, 2, 3, 4};
-//    int ib[] = {2, 3};
-//    int ic[] = {2, 4};
-//    constexpr auto sa = size(ia);
-//    auto r = search(ia, ib, equal_to{});
-//    STATIC_CHECK_RETURN(r.begin() == ia + 2);
-//    auto r2 = search(ia, ic, equal_to{});
-//    STATIC_CHECK_RETURN(r2.begin() == ia + sa);
-//
-//    return true;
-//}
+constexpr bool test_constexpr()
+{
+    using namespace ranges;
+    int ia[] = {0, 1, 2, 3, 4};
+    int ib[] = {2, 3};
+    int ic[] = {2, 4};
+    constexpr auto sa = size(ia);
+    auto r = search(ia, ib, equal_to{});
+    STATIC_CHECK_RETURN(r.begin() == ia + 2);
+    auto r2 = search(ia, ic, equal_to{});
+    STATIC_CHECK_RETURN(r2.begin() == ia + sa);
+
+    return true;
+}
 
 int main()
 {
@@ -261,8 +261,8 @@ int main()
         CHECK(::is_dangling(ranges::search(eastl::move(ib), ie)));
     }
 
-    {//todo: constexpr vs subrange
-       // STATIC_CHECK(test_constexpr());
+    {
+        STATIC_CHECK(test_constexpr());
     }
 
     return ::test_result();

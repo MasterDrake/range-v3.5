@@ -62,7 +62,7 @@ int main()
 {
     { // test array
         int const es[] = { 9,8,7,6,5,4,3,2,1,0 };
-      //  test_enumerate_with(es);
+        test_enumerate_with(es);
     }
 
     { // test with vector of complex value type

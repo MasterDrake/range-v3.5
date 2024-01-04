@@ -23,7 +23,7 @@
 #include <EARanges/functional/identity.hpp>
 #include <EARanges/iterator/concepts.hpp>
 #include <EARanges/range/access.hpp>
-#include <EARange/range/concepts.hpp>
+#include <EARanges/range/concepts.hpp>
 
 #include <EARanges/detail/prologue.hpp>
 

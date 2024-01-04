@@ -6,7 +6,6 @@
 #ifndef EARANGES_UTILITY_POLYMORPHIC_CAST_HPP
 #define EARANGES_UTILITY_POLYMORPHIC_CAST_HPP
 
-//TODO: A cosa serve? Solo per addresof? #include <memory>
 #include <EASTL/type_traits.h>
 #include <EASTL/memory.h>
 

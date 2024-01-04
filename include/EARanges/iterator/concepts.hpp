@@ -185,7 +185,7 @@ namespace ranges
         /// \brief The \c integer_like_ concept
         template<typename D>
         CPP_concept integer_like_ = _is_integer_like_<D>;
-            // TODO additional syntactic and semantic requirements
+            // TODO additional syntactic and semantic requirements - Eric Niebler
 
 #ifdef EARANGES_WORKAROUND_MSVC_792338
         template<typename D, bool Signed = (D(-1) < D(0))>

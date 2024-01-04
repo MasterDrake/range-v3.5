@@ -16,25 +16,16 @@
 
 #include <EARanges/detail/config.hpp>
 
-//TODO:Capire se va bene o meno :/
-//#include <functional> // for reference_wrapper (whose use with begin/end is deprecated)
-
 #include <EASTL/iterator.h>
 #include <EASTL/utility.h>
 #include <EASTL/functional.h>
 #include <EASTL/initializer_list.h>
 #include <EASTL/numeric_limits.h>
 
-#ifdef __has_include
-#if __has_include(<span>) && !defined(EARANGES_WORKAROUND_MSVC_UNUSABLE_SPAN)
-//#include <span>
 #include <EASTL/span.h>
-#endif
-#if __has_include(<string_view>)
-//TODO:EASTL string_view and std::
-#include <string_view>
-#endif
-#endif
+
+#include <EASTL/string_view.h>
+
 
 #include <EARanges/range_fwd.hpp>
 
@@ -47,25 +38,17 @@
 
 namespace ranges
 {
-#if defined(__cpp_lib_string_view) && __cpp_lib_string_view >= 201603L
-    template<class CharT, class Traits>
-    EARANGES_INLINE_VAR constexpr bool
-        enable_borrowed_range<std::basic_string_view<CharT, Traits>> = true;
-#endif
+    //TODO: Capire qua se ranges vuole che io usi i CharTraits o se usando eastl::string che non ne fa uso, devo solo avere class CharT come template parameter?
+    template<class CharT>
+    EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<eastl::basic_string_view<CharT>> = true;
 
-// libstdc++'s <span> header only defines std::span when concepts
-// are also enabled. https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97869
-#if defined(__cpp_lib_span) && __cpp_lib_span >= 202002L && \
-    (!defined(__GLIBCXX__) || defined(__cpp_lib_concepts))
     template<class T, std::size_t N>
     EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<eastl::span<T, N>> = true;
-#endif
 
     namespace detail
     {
         template<typename T>
-        EARANGES_INLINE_VAR constexpr bool _borrowed_range =
-            enable_borrowed_range<uncvref_t<T>>;
+        EARANGES_INLINE_VAR constexpr bool _borrowed_range = enable_borrowed_range<uncvref_t<T>>;
 
         template<typename T>
         EARANGES_INLINE_VAR constexpr bool _borrowed_range<T &> = true;

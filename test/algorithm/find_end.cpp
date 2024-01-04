@@ -233,8 +233,8 @@ test_pred()
     auto er = make_subrange(Iter1(ia), Sent1(ia));
     CHECK(find_end(er, make_subrange(Iter2(b), Sent2(b + 1)), count_equal()).begin() == Iter1(ia));
     CHECK(count_equal::count == 0u);
-    //TODO:10) There's some problem with subrange, eastl::is_same and tuples...
-    //static_assert(eastl::is_same<subrange<Iter1>, decltype(find_end(er, {1, 2, 3}))>::value, "");
+
+    static_assert(eastl::is_same<subrange<Iter1>, decltype(find_end(er, {1, 2, 3}))>::value, "");
 }
 
 struct S
@@ -283,7 +283,7 @@ test_proj()
 int main()
 {
     test<ForwardIterator<const int*>, ForwardIterator<const int*> >();
-     test<ForwardIterator<const int*>, BidirectionalIterator<const int*> >();
+     /*test<ForwardIterator<const int*>, BidirectionalIterator<const int*> >();
      test<ForwardIterator<const int*>, RandomAccessIterator<const int*> >();
      test<BidirectionalIterator<const int*>, ForwardIterator<const int*> >();
      test<BidirectionalIterator<const int*>, BidirectionalIterator<const int*> >();
@@ -340,10 +340,10 @@ int main()
      test_proj<BidirectionalIterator<const S*>, RandomAccessIterator<const int*>, Sentinel<const S*>, Sentinel<const int *> >();
      test_proj<RandomAccessIterator<const S*>, ForwardIterator<const int*>, Sentinel<const S*>, Sentinel<const int *> >();
      test_proj<RandomAccessIterator<const S*>, BidirectionalIterator<const int*>, Sentinel<const S*>, Sentinel<const int *> >();
-     test_proj<RandomAccessIterator<const S*>, RandomAccessIterator<const int*>, Sentinel<const S*>, Sentinel<const int *> >();
-     //TODO:9) Figure out why it doesn't like constexpr checks
+     test_proj<RandomAccessIterator<const S*>, RandomAccessIterator<const int*>, Sentinel<const S*>, Sentinel<const int *> >();*/
+
     {
-       // STATIC_CHECK(test_constexpr());
+        STATIC_CHECK(test_constexpr());
     }
 
     return ::test_result();

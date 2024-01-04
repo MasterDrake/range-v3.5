@@ -352,7 +352,7 @@ namespace ranges
     };
 
     // Join a range of ranges, inserting a range of values between them.
-    // TODO: Support const iteration when range_reference_t<Rng> is a true reference.
+    // TODO: Support const iteration when range_reference_t<Rng> is a true reference. - Eric Niebler
     template<typename Rng, typename ValRng>
     struct join_with_view
       : view_facade<join_with_view<Rng, ValRng>, detail::join_cardinality<Rng, ValRng>()>
@@ -592,7 +592,7 @@ namespace ranges
         struct join_bind_fn
         {
             template(typename T)(
-                requires (!joinable_range<T>)) // TODO: underconstrained
+                requires (!joinable_range<T>)) // TODO: underconstrained - Eric Niebler
             constexpr auto operator()(T && t)const
             {
                 return make_view_closure(bind_back(join_base_fn{}, static_cast<T &&>(t)));

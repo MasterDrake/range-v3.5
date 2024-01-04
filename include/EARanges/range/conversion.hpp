@@ -372,8 +372,7 @@ namespace ranges
 
         /// \overload
         template(template<typename...> class ContT, typename Rng, typename C = meta::invoke<detail::from_range<ContT>, Rng>)(
-            requires range<Rng> AND
-                detail::convertible_to_cont<Rng, C>)
+            requires range<Rng> AND detail::convertible_to_cont<Rng, C>)
         auto to(Rng && rng) -> C
         {
             return detail::to_container_fn<detail::from_range<ContT>>{}(static_cast<Rng &&>(rng));

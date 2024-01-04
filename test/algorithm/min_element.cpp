@@ -19,7 +19,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/memory.h>
-#include <random>
+#include <EASTL/random.h>
 #include <EASTL/numeric.h>
 #include <EASTL/algorithm.h>
 #include <EARanges/core.hpp>
@@ -31,11 +31,10 @@
 #include "../test_iterators.hpp"
 
 EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-//TODO: random and std::shuffle
 
 namespace
 {
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     template<class Iter, class Sent = Iter>
     void

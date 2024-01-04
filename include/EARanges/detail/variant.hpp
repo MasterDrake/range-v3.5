@@ -720,24 +720,22 @@ namespace ranges
         {}
         variant & operator=(variant && that)
         {
-            // TODO do a simple move assign when index()==that.index()
+            // TODO do a simple move assign when index()==that.index() - Eric Niebler
             this->clear_();
             this->assign_(detail::move(that));
             return *this;
         }
         variant & operator=(variant const & that)
         {
-            // TODO do a simple copy assign when index()==that.index()
+            // TODO do a simple copy assign when index()==that.index() - Eric Niebler
             this->clear_();
             this->assign_(that);
             return *this;
         }
-        template(typename... Args)(
-            requires (!same_as<variant<Args...>, variant>) AND
-            (all_convertible_to<Args...>(0)))
+        template(typename... Args)(requires (!same_as<variant<Args...>, variant>) AND (all_convertible_to<Args...>(0)))
         variant & operator=(variant<Args...> that)
         {
-            // TODO do a simple copy assign when index()==that.index() //
+            // TODO do a simple copy assign when index()==that.index() // - Eric Niebler
             this->clear_();
             this->assign_(that);
             return *this;

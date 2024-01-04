@@ -8,7 +8,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 #include <EASTL/array.h>
-#include <random>//TODO: Aggiungere pcg to eastl::random e aggiungere eastl::discrete_distribution
+#include <EASTL/random.h>
 #include <EASTL/vector.h>
 #include <EARanges/core.hpp>
 #include <EARanges/view/iota.hpp>
@@ -52,7 +52,7 @@ void test_bug632()
 int main()
 {
     using namespace ranges;
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     auto v = views::ints(0,100) | to<eastl::vector>();
     v |= actions::shuffle(gen);

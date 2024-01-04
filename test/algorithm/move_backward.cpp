@@ -192,18 +192,17 @@ int main()
     test1<eastl::unique_ptr<int>*, RandomAccessIterator<eastl::unique_ptr<int>*> >();
     test1<eastl::unique_ptr<int>*, eastl::unique_ptr<int>*>();
 
-    //TODO:20) tuple vs constexpr
-    //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, BidirectionalIterator<int *>>());
-    //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, RandomAccessIterator<int *>>());
-    //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, int *>());
-    //
-    //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, BidirectionalIterator<int *>>());
-    //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, RandomAccessIterator<int *>>());
-    //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, int *>());
-    //
-    //STATIC_CHECK(test_constexpr<const int *, BidirectionalIterator<int *>>());
-    //STATIC_CHECK(test_constexpr<const int *, RandomAccessIterator<int *>>());
-    //STATIC_CHECK(test_constexpr<const int *, int *>());
+    STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, BidirectionalIterator<int *>>());
+    STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, RandomAccessIterator<int *>>());
+    STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, int *>());
+    
+    STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, BidirectionalIterator<int *>>());
+    STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, RandomAccessIterator<int *>>());
+    STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, int *>());
+    
+    STATIC_CHECK(test_constexpr<const int *, BidirectionalIterator<int *>>());
+    STATIC_CHECK(test_constexpr<const int *, RandomAccessIterator<int *>>());
+    STATIC_CHECK(test_constexpr<const int *, int *>());
 
     return test_result();
 }

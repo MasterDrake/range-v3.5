@@ -61,7 +61,6 @@
 #include <EARanges/algorithm/none_of.hpp>
 #include <EARanges/algorithm/nth_element.hpp>
 #include <EARanges/algorithm/partial_sort.hpp>
-//TODO:Capire che cazzo hanno che non va i partial copy
 #include <EARanges/algorithm/partial_sort_copy.hpp>
 #include <EARanges/algorithm/partition.hpp>
 #include <EARanges/algorithm/partition_copy.hpp>

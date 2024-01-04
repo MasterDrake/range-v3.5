@@ -250,7 +250,7 @@ namespace ranges
     /// @{
     EARANGES_FUNC_BEGIN(inplace_merge)
 
-        // TODO reimplement to only need forward iterators
+        // TODO reimplement to only need forward iterators -Eric Niebler
 
         /// \brief function template \c inplace_merge
         template(typename I, typename S, typename C = less, typename P = identity)(

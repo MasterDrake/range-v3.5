@@ -10,7 +10,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
-//TODO: Change std:: array and see what random can eastl offer, besides pcg
+//TODO: Change std:: array and see what random can eastl offer, besides pcg. EAstl doesn't have a random_device.
 /*
  * Random-Number Utilities (randutil)
  *     Addresses common issues with C++11 random number generation.
@@ -48,8 +48,7 @@
 #include <EASTL/initializer_list.h>
 #include <new>
 #include <EASTL/random.h>
-#include <random>
-
+//#inclu
 #include <EARanges/meta/meta.hpp>
 
 #include <EARanges/concepts/concepts.hpp>
@@ -62,12 +61,12 @@
 #include <EARanges/functional/reference_wrapper.hpp>
 #include <EARanges/iterator/concepts.hpp>
 
-//TODO: Figure it out, or not using the real mutex, instead of the std one
-//#define EARANGES_CXX_TRHEAD_LOCAL 1
+//TODO: Figure it out, or not using the real mutex, instead of the std one. No mutex in eastl :_/ Infatti usano quello di default :/
+#define EARANGES_CXX_TRHEAD_LOCAL 1
 
-//#if !EARANGES_CXX_THREAD_LOCAL
-//#include <mutex>
-//#endif
+#if !EARANGES_CXX_THREAD_LOCAL
+#include <mutex> //https://github.com/electronicarts/EASTL/blob/05f4b4aef33f2f3ded08f19fa97f5a27ff35ff9f/include/EASTL/internal/thread_support.h#L22
+#endif
 
 #include <EARanges/detail/prologue.hpp>
 
@@ -119,7 +118,8 @@ namespace ranges
 #if defined(__GLIBCXX__) && defined(EARANGES_WORKAROUND_VALGRIND_RDRAND)
                 std::random_device rd{"/dev/urandom"};
 #else
-                std::random_device rd;
+                //std::random_device rd;
+                uint32_t rd{14051997};
 #endif
                 eastl::uniform_int_distribution<std::uint32_t> dist{};
                 ranges::generate(seeds, [&] { return dist(rd); });
@@ -226,9 +226,7 @@ namespace ranges
 
                 eastl::array<IntRep, count> mixer_;
 
-                template(typename I, typename S)(
-                    requires input_iterator<I> AND sentinel_for<S, I> AND
-                        convertible_to<iter_reference_t<I>, IntRep>)
+                template(typename I, typename S)(requires input_iterator<I> AND sentinel_for<S, I> AND convertible_to<iter_reference_t<I>, IntRep>)
                 void mix_entropy(I first, S last)
                 {
                     auto hash_const = INIT_A;
@@ -268,24 +266,20 @@ namespace ranges
                 seed_seq_fe(const seed_seq_fe &) = delete;
                 void operator=(const seed_seq_fe &) = delete;
 
-                template(typename T)(
-                    requires convertible_to<T const &, IntRep>)
+                template(typename T)(requires convertible_to<T const &, IntRep>)
                 seed_seq_fe(std::initializer_list<T> init)
                 {
                     seed(init.begin(), init.end());
                 }
 
-                template(typename I, typename S)(
-                    requires input_iterator<I> AND sentinel_for<S, I> AND
-                        convertible_to<iter_reference_t<I>, IntRep>)
+                template(typename I, typename S)(requires input_iterator<I> AND sentinel_for<S, I> AND convertible_to<iter_reference_t<I>, IntRep>)
                 seed_seq_fe(I first, S last)
                 {
                     seed(first, last);
                 }
 
                 // generating functions
-                template(typename I, typename S)(
-                    requires random_access_iterator<I> AND sentinel_for<S, I>)
+                template(typename I, typename S)(requires random_access_iterator<I> AND sentinel_for<S, I>)
                 EARANGES_INTENDED_MODULAR_ARITHMETIC //
                 void generate(I first, S const last) const
                 {
@@ -311,27 +305,20 @@ namespace ranges
                     return count;
                 }
 
-                template(typename O)(
-                    requires weakly_incrementable<O> AND
-                        indirectly_copyable<decltype(mixer_.begin()), O>)
+                template(typename O)( requires weakly_incrementable<O> AND  indirectly_copyable<decltype(mixer_.begin()), O>)
                 EARANGES_INTENDED_MODULAR_ARITHMETIC void param(O dest) const
                 {
                     constexpr IntRep INV_A = randutils::fast_exp(MULT_A, IntRep(-1));
-                    constexpr IntRep MIX_INV_L =
-                        randutils::fast_exp(MIX_MULT_L, IntRep(-1));
+                    constexpr IntRep MIX_INV_L = randutils::fast_exp(MIX_MULT_L, IntRep(-1));
 
                     auto mixer_copy = mixer_;
                     for(std::size_t round = 0; round < mix_rounds; ++round)
                     {
                         // Advance to the final value.  We'll backtrack from that.
-                        auto hash_const =
-                            INIT_A * randutils::fast_exp(MULT_A, IntRep(count * count));
+                        auto hash_const = INIT_A * randutils::fast_exp(MULT_A, IntRep(count * count));
 
-                        for(auto src = mixer_copy.rbegin(); src != mixer_copy.rend();
-                            ++src)
-                            for(auto rdest = mixer_copy.rbegin();
-                                rdest != mixer_copy.rend();
-                                ++rdest)
+                        for(auto src = mixer_copy.rbegin(); src != mixer_copy.rend(); ++src)
+                            for(auto rdest = mixer_copy.rbegin(); rdest != mixer_copy.rend(); ++rdest)
                                 if(src != rdest)
                                 {
                                     IntRep revhashed = *src;
@@ -360,9 +347,7 @@ namespace ranges
                     ranges::copy(mixer_copy, dest);
                 }
 
-                template(typename I, typename S)(
-                    requires input_iterator<I> AND sentinel_for<S, I> AND
-                        convertible_to<iter_reference_t<I>, IntRep>)
+                template(typename I, typename S)(requires input_iterator<I> AND sentinel_for<S, I> AND convertible_to<iter_reference_t<I>, IntRep>)
                 void seed(I first, S last)
                 {
                     mix_entropy(first, last);
@@ -432,56 +417,55 @@ namespace ranges
             using auto_seed_128 = auto_seeded<seed_seq_fe128>;
             using auto_seed_256 = auto_seeded<seed_seq_fe256>;
         } // namespace randutils
-        //TODO: Use the pcg-one
-        using default_URNG = meta::if_c<(sizeof(void *) >= sizeof(long long)), std::mt19937_64, std::mt19937>;
+        //TODO: Use the pcg-one. Fatto ma non funzia because of auto seed che non ho capito che cazzo sia
+        using default_URNG = meta::if_c<(sizeof(void *) >= sizeof(long long)), eastl::RNG_64, eastl::RNG>;
 
-//#if !EARANGES_CXX_THREAD_LOCAL
-//        template<typename URNG>
-//        class sync_URNG : private URNG
-//        {
-//            mutable std::mutex mtx_;
-//
-//        public:
-//            using URNG::URNG;
-//            sync_URNG() = default;
-//            using typename URNG::result_type;
-//            result_type operator()()
-//            {
-//                std::lock_guard<std::mutex> guard{mtx_};
-//                return static_cast<URNG &>(*this)();
-//            }
-//            using URNG::max;
-//            using URNG::min;
-//        };
-//        using default_random_engine = sync_URNG<default_URNG>;
-//#else
+#if !EARANGES_CXX_THREAD_LOCAL
+        template<typename URNG>
+        class sync_URNG : private URNG
+        {
+            mutable std::mutex mtx_;
+
+        public:
+            using URNG::URNG;
+            sync_URNG() = default;
+            using typename URNG::result_type;
+            result_type operator()()
+            {
+                std::lock_guard<std::mutex> guard{mtx_};
+                return static_cast<URNG &>(*this)();
+            }
+            using URNG::max;
+            using URNG::min;
+        };
+        using default_random_engine = sync_URNG<default_URNG>;
+#else
         using default_random_engine = default_URNG;
-//#endif
+#endif
 
         template<typename T = void>
         default_random_engine & get_random_engine()
         {
             using Seeder = meta::if_c<(sizeof(default_URNG) > 16), randutils::auto_seed_256, randutils::auto_seed_128>;
 //TODO:Fix this macro demmerda
-//#if EARANGES_CXX_THREAD_LOCAL >= EARANGES_CXX_THREAD_LOCAL_11
-//            static thread_local default_random_engine engine{Seeder{}.base()};
-//
-//#elif EARANGES_CXX_THREAD_LOCAL
-//            static __thread bool initialized = false;
-//            static __thread meta::_t<std::aligned_storage<sizeof(default_random_engine),
-//                                                          alignof(default_random_engine)>>
-//                storage;
-//
-//            if(!initialized)
-//            {
-//                ::new(static_cast<void *>(&storage))
-//                    default_random_engine{Seeder{}.base()};
-//                initialized = true;
-//            }
-//            auto & engine = reinterpret_cast<default_random_engine &>(storage);
-//#else
-            static default_random_engine engine{Seeder{}.base()};
-//#endif // EARANGES_CXX_THREAD_LOCAL
+#if EARANGES_CXX_THREAD_LOCAL >= EARANGES_CXX_THREAD_LOCAL_11
+            static thread_local default_random_engine engine{Seeder{}.base()};
+
+#elif EARANGES_CXX_THREAD_LOCAL
+            static __thread bool initialized = false;
+            static __thread meta::_t<std::aligned_storage<sizeof(default_random_engine), alignof(default_random_engine)>>
+                storage;
+
+            if(!initialized)
+            {
+                ::new(static_cast<void *>(&storage))
+                    default_random_engine{Seeder{}.base()};
+                initialized = true;
+            }
+            auto & engine = reinterpret_cast<default_random_engine &>(storage);
+#else
+          static default_random_engine engine{Seeder{}.base()};
+#endif // EARANGES_CXX_THREAD_LOCAL
 
             return engine;
         }

@@ -102,9 +102,9 @@ void issue_420_regression()
     
     //TODO:21) One of those unsolvable cases where I don't even know where to begin because it's not even dependant on eastl, it's just primitives :(.
     CPP_assert(sized_sentinel_for<RI<int*>, RI<int*>>);
-  //  CPP_assert(!sized_sentinel_for<RI<int*>, RI<float*>>);
+    CPP_assert(!sized_sentinel_for<RI<int*>, RI<float*>>);
     using BI = BidirectionalIterator<int*>;
-   // CPP_assert(!sized_sentinel_for<RI<BI>, RI<BI>>);
+    //CPP_assert(!sized_sentinel_for<RI<BI>, RI<BI>>);
 }
 
 struct value_type_tester_thingy {};

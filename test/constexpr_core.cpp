@@ -21,17 +21,6 @@
 #include "array.hpp"
 #include "test_iterators.hpp"
 
-//TODO:46) Basically this is the culmination of all eastl::address vs constexpr, basically if constexpr is available then eastl::address must be constexpr as well
-/*  template<typename T>
-    constexpr T * addressof(T & value) EA_NOEXCEPT
-    {
-        if constexpr(true)
-            return __builtin_addressof(value);
-        else
-            return reinterpret_cast<T *>(&const_cast<char &>(reinterpret_cast<const volatile char &>(value)));            
-    }
- */
-
 // Test sequence 1,2,3,4
 template<typename It>
 constexpr /*c++14*/ auto test_it_back(It, It last, eastl::bidirectional_iterator_tag) -> bool
@@ -261,7 +250,7 @@ constexpr /*c++14*/ auto test_init_list() -> bool
     return true;
 }
 
-#ifdef __cpp_lib_addressof_constexpr
+#if EASTL_ADDRESSOF_CONSTEXPR
 #define ADDR_CONSTEXPR constexpr
 #else
 #define ADDR_CONSTEXPR
@@ -288,7 +277,7 @@ void test_constexpr_addressof() {
     static constexpr addr::Bad2 b2 = {};
     static ADDR_CONSTEXPR addr::Bad2 const* pb2 = ranges::detail::addressof(b2);
 
-#ifdef __cpp_lib_addressof_constexpr
+#if EASTL_ADDRESSOF_CONSTEXPR
     static_assert(eastl::addressof(b) == pb, "");
     static_assert(eastl::addressof(b2) == pb2, "");
 #else

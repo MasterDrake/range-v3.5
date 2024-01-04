@@ -26,7 +26,6 @@
 #include <EARanges/range/concepts.hpp>
 #include <EARanges/range/dangling.hpp>
 #include <EARanges/range/traits.hpp>
-//TODO: Use eastl::uniform_int_distribution in random instead of std::, check this header
 #include <EARanges/utility/random.hpp>
 #include <EARanges/utility/static_const.hpp>
 
@@ -197,8 +196,7 @@ namespace ranges
             }
             else
             {
-                return (*this)(
-                    begin(rng), end(rng), eastl::move(out), n, static_cast<Gen &&>(gen));
+                return (*this)(begin(rng), end(rng), eastl::move(out), n, static_cast<Gen &&>(gen));
             }
         }
 

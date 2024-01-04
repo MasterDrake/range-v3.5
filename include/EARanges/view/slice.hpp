@@ -213,8 +213,7 @@ namespace ranges
                 return slice_base_fn::impl_(static_cast<Rng &&>(rng), from, to - from, range_tag_of<Rng>{});
             }
             // slice(rng, 4, end-2)
-            //  TODO Support Forward, non-Sized ranges by returning a range that
-            //       doesn't know it's size?
+            //  TODO Support Forward, non-Sized ranges by returning a range that doesn't know it's size? - Eric Niebler
             template(typename Rng)(requires viewable_range<Rng> AND input_range<Rng> AND sized_range<Rng>)
             auto operator()(Rng && rng,
                             range_difference_t<Rng> from,

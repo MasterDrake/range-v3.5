@@ -187,7 +187,7 @@ namespace ranges
 
     // Introsort: Quicksort to a certain depth, then Heapsort. Insertion
     // sort below a certain threshold.
-    // TODO Forward iterators, like EoP?
+    // TODO Forward iterators, like EoP? -Eric Niebler
 
     EARANGES_FUNC_BEGIN(sort)
 

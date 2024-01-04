@@ -289,106 +289,105 @@ int main()
     test1<RandomAccessIterator<eastl::unique_ptr<int>*>, BidirectionalIterator<eastl::unique_ptr<int>*>, Sentinel<eastl::unique_ptr<int>*> >();
     test1<RandomAccessIterator<eastl::unique_ptr<int>*>, RandomAccessIterator<eastl::unique_ptr<int>*>, Sentinel<eastl::unique_ptr<int>*> >();
     
-    //TODO:19) tuple vs constexpr I guess
     {
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>, OutputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>, InputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>, ForwardIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>, BidirectionalIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>, RandomAccessIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>, int *>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>, OutputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>, InputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>, ForwardIterator<int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>, BidirectionalIterator<int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>, RandomAccessIterator<int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>, int *>());
 
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, OutputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, InputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, ForwardIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, BidirectionalIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, RandomAccessIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, int *>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, OutputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, InputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, ForwardIterator<int *>>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, BidirectionalIterator<int *>>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, RandomAccessIterator<int *>>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, int *>());
 
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, OutputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, InputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, ForwardIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, BidirectionalIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, RandomAccessIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, int *>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, OutputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, InputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, ForwardIterator<int *>>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, BidirectionalIterator<int *>>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, RandomAccessIterator<int *>>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, int *>());
 
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, OutputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, InputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, ForwardIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, BidirectionalIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, RandomAccessIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, int *>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, OutputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, InputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, ForwardIterator<int *>>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, BidirectionalIterator<int *>>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, RandomAccessIterator<int *>>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, int *>());
 
-        //STATIC_CHECK(test_constexpr<const int *, OutputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<const int *, InputIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<const int *, ForwardIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<const int *, BidirectionalIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<const int *, RandomAccessIterator<int *>>());
-        //STATIC_CHECK(test_constexpr<const int *, int *>());
+        STATIC_CHECK(test_constexpr<const int *, OutputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<const int *, InputIterator<int *>>());
+        STATIC_CHECK(test_constexpr<const int *, ForwardIterator<int *>>());
+        STATIC_CHECK(test_constexpr<const int *, BidirectionalIterator<int *>>());
+        STATIC_CHECK(test_constexpr<const int *, RandomAccessIterator<int *>>());
+        STATIC_CHECK(test_constexpr<const int *, int *>());
         
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>,
-        //                            OutputIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>,
-        //                            InputIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>,
-        //                            ForwardIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>,
-        //                            BidirectionalIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<InputIterator<const int *>,
-        //                            RandomAccessIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
-        //                            OutputIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
-        //                            InputIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
-        //                            ForwardIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
-        //                            BidirectionalIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
-        //                            RandomAccessIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
-        //                            OutputIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
-        //                            InputIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
-        //                            ForwardIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
-        //                            BidirectionalIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
-        //                            RandomAccessIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
-        //                            OutputIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
-        //                            InputIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
-        //                            ForwardIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
-        //                            BidirectionalIterator<int *>,
-        //                            Sentinel<const int *>>());
-        //STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
-        //                            RandomAccessIterator<int *>,
-        //                            Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>,
+                                    OutputIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>,
+                                    InputIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>,
+                                    ForwardIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>,
+                                    BidirectionalIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<InputIterator<const int *>,
+                                    RandomAccessIterator<int *>,
+                                    Sentinel<const int *>>());
+        
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
+                                    OutputIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
+                                    InputIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
+                                    ForwardIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
+                                    BidirectionalIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<ForwardIterator<const int *>,
+                                    RandomAccessIterator<int *>,
+                                    Sentinel<const int *>>());
+        
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
+                                    OutputIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
+                                    InputIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
+                                    ForwardIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
+                                    BidirectionalIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
+                                    RandomAccessIterator<int *>,
+                                    Sentinel<const int *>>());
+        
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
+                                    OutputIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
+                                    InputIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
+                                    ForwardIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
+                                    BidirectionalIterator<int *>,
+                                    Sentinel<const int *>>());
+        STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>,
+                                    RandomAccessIterator<int *>,
+                                    Sentinel<const int *>>());
     }
 
     return test_result();

@@ -28,7 +28,6 @@
 #ifndef EARANGES_ALGORITHM_AUX_MERGE_N_WITH_BUFFER_HPP
 #define EARANGES_ALGORITHM_AUX_MERGE_N_WITH_BUFFER_HPP
 
-//TODO: ?_?
 #include <EASTL/tuple.h>
 
 #include <EARanges/range_fwd.hpp>

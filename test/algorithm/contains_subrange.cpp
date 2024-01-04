@@ -108,11 +108,11 @@ int main()
                       Sentinel<const int *>(valid_subrange.end())),
         counting_equals<int>));
     CHECK(comparison_count == 0);
-    //TODO:7) Won't compile because of tuple shenaningans
+
 #if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_14 && EARANGES_CONSTEXPR_INVOKE
     using IL = std::initializer_list<int>;
-    //static_assert(contains_subrange(IL{0, 1, 2, 3, 4}, IL{3, 4}), "");
-    //static_assert(!contains_subrange(IL{0, 1, 2, 3, 4}, IL{2, 8}), "");
+    static_assert(contains_subrange(IL{0, 1, 2, 3, 4}, IL{3, 4}), "");
+    static_assert(!contains_subrange(IL{0, 1, 2, 3, 4}, IL{2, 8}), "");
     static_assert(contains_subrange(IL{}, IL{}), "");
 #endif
 

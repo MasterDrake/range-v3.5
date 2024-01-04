@@ -34,7 +34,7 @@ namespace ranges
     private:
         friend range_access;
         std::istream * sin_;
-        std::string str_;//TODO: Fix this string to eastl string and see if it's worth it, maybe yes because we're porting the ranges library and an iterator line this would be cool
+        std::string str_;//TODO: Fix this string to eastl string and see if it's worth it, maybe yes because we're porting the ranges library and an iterator line this would be cool. Reimplement it using the msvc code.
         char delim_;
         struct cursor
         {

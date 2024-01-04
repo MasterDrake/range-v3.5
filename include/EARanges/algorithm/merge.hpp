@@ -29,7 +29,6 @@
 #ifndef EARANGES_ALGORITHM_MERGE_HPP
 #define EARANGES_ALGORITHM_MERGE_HPP
 
-//TODO: what's for????
 #include "EASTL/tuple.h"
 
 #include <EARanges/range_fwd.hpp>

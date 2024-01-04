@@ -2,8 +2,7 @@
 #include <EARanges/algorithm/equal.hpp>
 #include <EASTL/numeric.h>
 #include <EASTL/vector.h>
-//TODO:39) random and uniform_int_distribution shenaningans ...
-#include <random>
+#include <EASTL/random.h>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
@@ -24,7 +23,7 @@ void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
 
 int main ()
 {
-    std::mt19937 engine;
+    eastl::default_random_engine engine;
 
     eastl::vector<int> pop(100);
     eastl::iota(eastl::begin(pop), eastl::end(pop), 0);

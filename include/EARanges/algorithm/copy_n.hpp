@@ -13,10 +13,9 @@
 #ifndef EARANGES_ALGORITHM_COPY_N_HPP
 #define EARANGES_ALGORITHM_COPY_N_HPP
 
-//TODO: what's these incldues for??????
-//#include <functional>
-//#include <tuple>
-//#include <utility>
+#include <EASTL/functional.h>
+#include <EASTL/tuple.h>
+#include <EASTL/utility.h>
 
 #include <EARanges/range_fwd.hpp>
 

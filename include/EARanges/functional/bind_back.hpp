@@ -14,7 +14,6 @@
 #ifndef EARANGES_DETAIL_BIND_BACK_HPP
 #define EARANGES_DETAIL_BIND_BACK_HPP
 
-//#include <EASTL/tuple.h>
 #include <EASTL/tuple.h>
 
 #include <EARanges/meta/meta.hpp>
@@ -26,7 +25,6 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-//TODO: change from eastl::tuple to eastl::tuple se va tutto bene ......
 namespace ranges
 {
     // bind_back like std::bind_front has no special treatment for nested

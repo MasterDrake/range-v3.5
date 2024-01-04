@@ -17,7 +17,7 @@
 #include <exception>
 #include <EASTL/initializer_list.h>
 #include <EASTL/memory.h>
-//TODO: A cosa serve?? addressof? #include <mnemory>
+//TODO: A cosa serve?? addressof? #include <memory>
 #include <new>
 
 #include <EARanges/concepts/concepts.hpp>

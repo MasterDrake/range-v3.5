@@ -65,12 +65,12 @@ int main()
     sum = 0;
     CHECK(::is_dangling(ranges::for_each(::MakeTestRange(v1.begin(), v1.end()), fun).in));
     CHECK(sum == 12);
-
-    //TODO:12) eastl::addressof has problems with constexpr here, that's why I can't make a constexpr reference_wrapper and considering it had problems with && references, something's fishy about eastl implementation. 
- /*   {
+    
+#if EASTL_ADDRESSOF_CONSTEXPR
+    {
         constexpr auto rng = test::array<int, 4>{{0, 2, 4, 6}};
         STATIC_CHECK(ranges::for_each(rng, void_f).in == ranges::end(rng));
-    }*/
-
+    }
+#endif
     return ::test_result();
 }

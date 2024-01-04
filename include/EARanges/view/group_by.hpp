@@ -44,7 +44,7 @@ namespace ranges
 {
     // TODO group_by could support Input ranges by keeping mutable state in
     // the range itself. The group_by view would then be mutable-only and
-    // Input.
+    // Input. - Eric Niebler
 
     /// \addtogroup group-views
     /// @{

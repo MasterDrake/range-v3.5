@@ -264,20 +264,20 @@ void test()
     CHECK(ig[5] == 2);
 }
 
-//constexpr bool test_constexpr()
-//{
-//    int rgi[] = {0, 1, 2, 3, 4, 5};
-//    auto r = ranges::rotate(rgi, rgi + 2);
-//    STATIC_CHECK_RETURN(r.begin() == rgi + 4);
-//    STATIC_CHECK_RETURN(r.end() == ranges::end(rgi));
-//    STATIC_CHECK_RETURN(rgi[0] == 2);
-//    STATIC_CHECK_RETURN(rgi[1] == 3);
-//    STATIC_CHECK_RETURN(rgi[2] == 4);
-//    STATIC_CHECK_RETURN(rgi[3] == 5);
-//    STATIC_CHECK_RETURN(rgi[4] == 0);
-//    STATIC_CHECK_RETURN(rgi[5] == 1);
-//    return true;
-//}
+constexpr bool test_constexpr()
+{
+    int rgi[] = {0, 1, 2, 3, 4, 5};
+    auto r = ranges::rotate(rgi, rgi + 2);
+    STATIC_CHECK_RETURN(r.begin() == rgi + 4);
+    STATIC_CHECK_RETURN(r.end() == ranges::end(rgi));
+    STATIC_CHECK_RETURN(rgi[0] == 2);
+    STATIC_CHECK_RETURN(rgi[1] == 3);
+    STATIC_CHECK_RETURN(rgi[2] == 4);
+    STATIC_CHECK_RETURN(rgi[3] == 5);
+    STATIC_CHECK_RETURN(rgi[4] == 0);
+    STATIC_CHECK_RETURN(rgi[5] == 1);
+    return true;
+}
 
 int main()
 {
@@ -327,8 +327,8 @@ int main()
         CHECK(rgi[5] == 1);
     }
 
-    {//todo: tuple vs constexpr
-        //STATIC_CHECK(test_constexpr());
+    {
+        STATIC_CHECK(test_constexpr());
     }
 
     return ::test_result();

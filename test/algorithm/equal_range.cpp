@@ -208,18 +208,16 @@ int main()
         foo some_foos[] = {{1}, {2}, {4}};
         test_it(some_foos, some_foos + 3, 2, &foo::i);
     }
-    // TODO:8) Doesn't like constexpr for some reason :/
+
     {
-        // STATIC_CHECK(test_constexpr_some());
-        // STATIC_CHECK(test_constexpr<ForwardIterator<const int *>>());
-        // STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>>());
-        // STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>>());
-        // STATIC_CHECK(test_constexpr<const int *>());
-        // STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, Sentinel<const int
-        // *>>()); STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>,
-        // Sentinel<const int *>>());
-        // STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, Sentinel<const
-        // int *>>());
+         STATIC_CHECK(test_constexpr_some());
+         STATIC_CHECK(test_constexpr<ForwardIterator<const int *>>());
+         STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>>());
+         STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>>());
+         STATIC_CHECK(test_constexpr<const int *>());
+         STATIC_CHECK(test_constexpr<ForwardIterator<const int *>, Sentinel<const int*>>()); 
+         STATIC_CHECK(test_constexpr<BidirectionalIterator<const int *>, Sentinel<const int *>>());
+         STATIC_CHECK(test_constexpr<RandomAccessIterator<const int *>, Sentinel<const int *>>());
     }
 
     return ::test_result();

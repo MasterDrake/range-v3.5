@@ -13,8 +13,7 @@
 #ifndef EARANGES_ALGORITHM_PARTITION_COPY_HPP
 #define EARANGES_ALGORITHM_PARTITION_COPY_HPP
 
-//TODO: what's fORRRRRRRRRR?
-//#include <tuple>
+#include <EASTL/tuple.h>
 
 #include <EARanges/meta/meta.hpp>
 

@@ -19,7 +19,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/memory.h>
-#include <random>
+#include <EASTL/random.h>
 #include <EASTL/vector.h>
 #include <EASTL/algorithm.h>
 #include <EASTL/utility.h>
@@ -69,7 +69,7 @@ namespace std
 
 namespace
 {
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     struct indirect_less
     {
@@ -161,7 +161,7 @@ namespace
         CHECK(ranges::sort(array, array+N) == array+N);
         CHECK(eastl::is_sorted(array, array+N));
         // test random pattern
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         CHECK(ranges::sort(array, array+N) == array+N);
         CHECK(eastl::is_sorted(array, array+N));
         // test sorted pattern

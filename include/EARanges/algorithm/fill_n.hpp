@@ -13,8 +13,7 @@
 #ifndef EARANGES_ALGORITHM_FILL_N_HPP
 #define EARANGES_ALGORITHM_FILL_N_HPP
 
-//TODO: What's for?
-//#include <utility>
+#include <EASTL/utility.h>
 
 #include <EARanges/range_fwd.hpp>
 

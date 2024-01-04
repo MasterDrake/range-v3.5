@@ -204,15 +204,15 @@ struct S
     int i;
 };
 
-//constexpr bool test_constexpr()
-//{
-//    using namespace ranges;
-//    int ia[] = {0, 1, 2, 2, 4, 5};
-//    auto r = search_n(ia, 2, 2, equal_to{});
-//    STATIC_CHECK_RETURN(r.begin() == ia + 2);
-//
-//    return true;
-//}
+constexpr bool test_constexpr()
+{
+    using namespace ranges;
+    int ia[] = {0, 1, 2, 2, 4, 5};
+    auto r = search_n(ia, 2, 2, equal_to{});
+    STATIC_CHECK_RETURN(r.begin() == ia + 2);
+
+    return true;
+}
 
 int main()
 {
@@ -268,8 +268,8 @@ int main()
         CHECK(::is_dangling(ranges::search_n(eastl::move(ib), 2, 1)));
     }
 
-    {//todo: subrange vs constexpr
-      //  STATIC_CHECK(test_constexpr());
+    {
+       STATIC_CHECK(test_constexpr());
     }
 
     return ::test_result();

@@ -266,8 +266,8 @@ int main()
     auto r3 = ranges::partition(eastl::move(vec), is_odd(), &S::i);
     CHECK(::is_dangling(r3));
 
-    {//todo: subrange vs constexpr
-        //STATIC_CHECK(test_constexpr());
+    {
+        STATIC_CHECK(test_constexpr());
     }
 
     return ::test_result();

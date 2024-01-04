@@ -33,13 +33,12 @@
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-//TODO: random vs eastl
+//TODO: random vs eastl: use default_random_engine instead of std::...
 
 namespace
 {
     template<typename I, typename S>
-    auto in_sequence(I first, I mid, S last) ->
-        CPP_ret(bool)(requires ranges::sentinel_for<S, I>)
+    auto in_sequence(I first, I mid, S last) -> CPP_ret(bool)(requires ranges::sentinel_for<S, I>)
     {
         for (; first != mid; ++first)
             EARANGES_ENSURE(first != last);
@@ -126,8 +125,7 @@ int main()
         eastl::array<int, K> a{}, b{}, c{};
 
         {
-            auto result = ranges::sample(RandomAccessIterator<int*>(i.data()),
-                Sentinel<int*>(i.data() + N), a.begin(), K);
+            auto result = ranges::sample(RandomAccessIterator<int*>(i.data()), Sentinel<int*>(i.data() + N), a.begin(), K);
             CHECK(in_sequence(i.data(), result.in.base(), i.data() + N));
             CHECK(result.out == a.end());
             CHECK(!ranges::equal(a, b));

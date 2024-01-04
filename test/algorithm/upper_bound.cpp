@@ -123,8 +123,9 @@ int main()
 
         STATIC_CHECK(upper_bound(a, eastl::make_pair(1, 3), less()) == &a[4]);
 #if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_17
-        // todo: requires constexpr eastl::addressof
-        //STATIC_CHECK(upper_bound(views::all(a), eastl::make_pair(1, 3), less()) == &a[4]);
+#if EASTL_ADDRESSOF_CONSTEXPR
+        STATIC_CHECK(upper_bound(views::all(a), eastl::make_pair(1, 3), less()) == &a[4]);
+#endif
 #endif
     }
 

@@ -13,7 +13,6 @@
 #ifndef CPP_TYPE_TRAITS_HPP
 #define CPP_TYPE_TRAITS_HPP
 
-//TODO: Something fishy here with these tuple and utility
 #include <EASTL/tuple.h>
 #include <EASTL/type_traits.h>
 #include <EASTL/utility.h>

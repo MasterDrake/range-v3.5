@@ -29,9 +29,9 @@
 #endif
 
 #ifndef CPP_CXX_INLINE_VARIABLES
-#ifdef __cpp_inline_variables // TODO: fix this if SD-6 picks another name
+#ifdef __cpp_inline_variables // TODO: fix this if SD-6 picks another name - Eric Niebler
 #define CPP_CXX_INLINE_VARIABLES __cpp_inline_variables
-// TODO: remove once clang defines __cpp_inline_variables (or equivalent)
+// TODO: remove once clang defines __cpp_inline_variables (or equivalent) - Eric Niebler
 #elif defined(__clang__) && \
     (__clang_major__ > 3 || __clang_major__ == 3 && __clang_minor__ == 9) && \
     __cplusplus > 201402L
@@ -194,7 +194,7 @@ namespace concepts
             meta::if_c<is_adl_swappable_v<T, U>>
             operator()(T &&t, U &&u) const
             noexcept(noexcept(swap((T &&) t, (U &&) u)))
-            {
+            {        
                 swap((T &&) t, (U &&) u);
             }
 

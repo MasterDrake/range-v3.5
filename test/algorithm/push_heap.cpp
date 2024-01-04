@@ -31,8 +31,8 @@
 //   push_heap(Iter first, Iter last);
 
 #include <EASTL/memory.h>
-#include <random>
-//#include <EASTL/algorithm.h>
+#include <EASTL/random.h>
+#include <EASTL/algorithm.h>
 #include <EASTl/heap.h>
 #include <EASTL/functional.h>
 #include <EARanges/core.hpp>
@@ -54,7 +54,7 @@ void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
 }
 namespace
 {
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     void test_basic(int N)
     {
@@ -175,8 +175,8 @@ int main()
         delete[] ib;
     }
 
-    {//todo: subrange vs constexpr 
-       // STATIC_CHECK(test_constexpr());
+    {
+        STATIC_CHECK(test_constexpr());
     }
 
     return test_result();

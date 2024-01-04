@@ -24,9 +24,9 @@
 #include <EASTL/type_traits.h>
 #include <EASTL/utility.h>
 #include <EASTL/initializer_list.h>
-//TODO: They should be relative to this local relative position, so no problem, right?
-#include "swap.hpp"
-#include "type_traits.hpp"
+
+#include <EARanges/concepts/swap.hpp>
+#include <EARanges/concepts/type_traits.hpp>
 
 // Disable buggy clang compatibility warning about "requires" and "concept" being
 // C++20 keywords.

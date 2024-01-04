@@ -85,19 +85,19 @@ int main()
     }
     //TODO:1) No allocation is being made for this vector_like :/
     {
-        const std::size_t N = 1024;
-        vector_like<int> vl;
-        insert(vl, vl.end(), views::iota(0, int{N}));
-        CHECK(vl.reservation_count == 1u);
-        CHECK(vl.last_reservation == N);
-        auto r = views::iota(0, int{2 * N});
-        insert(vl, vl.begin() + 42, begin(r), end(r));
-        CHECK(vl.reservation_count == 2u);
-        CHECK(vl.last_reservation == 3 * N);
-        int i = 42;
-        insert(vl, vl.end(), &i, &i + 1);
-        CHECK(vl.reservation_count == 3u);
-        CHECK(vl.last_reservation > 3 * N + 1);
+       const std::size_t N = 1024;
+       vector_like<int> vl;
+       insert(vl, vl.end(), views::iota(0, int{N}));
+       CHECK(vl.reservation_count == 1u);
+       CHECK(vl.last_reservation == N);
+       auto r = views::iota(0, int{2 * N});
+       insert(vl, vl.begin() + 42, begin(r), end(r));
+       CHECK(vl.reservation_count == 2u);
+       CHECK(vl.last_reservation == 3 * N);
+       int i = 42;
+       insert(vl, vl.end(), &i, &i + 1);
+       CHECK(vl.reservation_count == 3u);
+       CHECK(vl.last_reservation > 3 * N + 1);
     }
 
     return ::test_result();

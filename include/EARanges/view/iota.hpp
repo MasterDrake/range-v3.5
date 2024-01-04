@@ -132,14 +132,14 @@ namespace ranges
         template(typename I)(requires (!unsigned_integral<I>)) //
         void iota_advance_(I & i, iota_difference_t<I> n)
         {
-            // TODO: bounds-check this
+            // TODO: bounds-check this - Eric Niebler
             i += n;
         }
 
         template(typename Int)(requires unsigned_integral<Int>)
         void iota_advance_(Int & i, iota_difference_t<Int> n)
         {
-            // TODO: bounds-check this
+            // TODO: bounds-check this - Eric Niebler
             if(n >= 0)
                 i += static_cast<Int>(n);
             else
@@ -155,14 +155,14 @@ namespace ranges
         template(typename Int)(requires signed_integral<Int>)
         iota_difference_t<Int> iota_distance_(Int i0, Int i1)
         {
-            // TODO: bounds-check this
+            // TODO: bounds-check this - Eric Niebler
             return static_cast<iota_difference_t<Int>>(static_cast<iota_difference_t<Int>>(i1) - static_cast<iota_difference_t<Int>>(i0));
         }
 
         template(typename Int)(requires unsigned_integral<Int>)
         iota_difference_t<Int> iota_distance_(Int i0, Int i1)
         {
-            // TODO: bounds-check this
+            // TODO: bounds-check this - Eric Niebler
             return (i0 > i1) ? static_cast<iota_difference_t<Int>>(
                                    -static_cast<iota_difference_t<Int>>(i0 - i1))
                              : static_cast<iota_difference_t<Int>>(i1 - i0);

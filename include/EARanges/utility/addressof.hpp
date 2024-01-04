@@ -14,7 +14,7 @@
 
 #include <EASTL/memory.h>
 
-//TODO:Teoricamente non dovrebbe servire#include <type_traits>
+#include <EASTL/type_traits.h>
 
 #include <EARanges/concepts/concepts.hpp>
 
@@ -29,7 +29,7 @@ namespace ranges
     /// \cond
     namespace detail
     {
-#ifdef __cpp_lib_addressof_constexpr 
+#if EASTL_ADDRESSOF_CONSTEXPR
         using eastl::addressof;
         //TODO:#error Teoricamente il compiler ha implementato addressof come constexpr ma eastl no, quindi potremmo usare questo switch per vedere se funzionano i constexpr tests
 #else
@@ -49,20 +49,16 @@ namespace ranges
         template<typename T>
         constexpr bool has_bad_addressof()
         {
-            return !eastl::is_scalar<T>::value &&
-                   !EARANGES_IS_SAME(decltype(check_addressof::addressof(*(T *)nullptr)),
-                                   ignore_t);
+            return !eastl::is_scalar<T>::value && !EARANGES_IS_SAME(decltype(check_addressof::addressof(*(T *)nullptr)),ignore_t);
         }
 
-        template(typename T)(
-            requires(has_bad_addressof<T>()))
+        template(typename T)(requires(has_bad_addressof<T>()))
         T * addressof(T & arg) noexcept
         {
-            return std::addressof(arg);
+            return eastl::addressof(arg);
         }
 
-        template(typename T)(
-            requires (!has_bad_addressof<T>()))
+        template(typename T)(requires (!has_bad_addressof<T>()))
         constexpr T * addressof(T & arg) noexcept
         {
             return &arg;

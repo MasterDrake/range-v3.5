@@ -91,7 +91,7 @@ public:
         //TODO:23) Since eastl::vector doesn't have a max_size() member function, I just used the cpp reference one:https://en.cppreference.com/w/cpp/container/vector/max_size
         //It's not perfect or correct but at least it works so be wary!
 
-        /*This value typically reflects the theoretical limit on the size of the container, at most std::numeric_limits<difference_type>::max(). 
+        /*This value typically reflects the theoretical limit on the size of the container, at most eastl::numeric_limits<difference_type>::max(). 
         At runtime, the size of the container may be limited to a value smaller than max_size() by the amount of RAM available.*/
         return eastl::numeric_limits<size_type>::max();
     }
