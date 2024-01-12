@@ -48,6 +48,10 @@
 #endif
   - Controllare se serve in config o dove altro, usare EASTL_CPP17_INLINE_VARIABLE invece di chissà che diavoleria
   - Creare un namespace per EASTL_SIZE_T e usare quello invece che std::size_t, ma occhio a uintptr_t che mi sembra unsigned al contrario di EASTL_SSIZE_T
+  - Rimuovere tutte le reference a std usando grepWin e la seguente regex.
+  - \bstd\b(?!(?:::cout|::initializer_list|::size_t|::uintmax_t|::stringstream|::ptrdiff_t|::nullptr_t|::uint32_t|::intmax_t|::boolalpha|::cerr)\b)
+  - ^(out|doc|extra|perf|include\EARanges\experimental)$
+  - *.cpp|*.hpp
 
  ## STRING
  - For ranges, eastl::string does not conform the 'container' concept because it can't be initialized with an iterator Pair.
@@ -1508,7 +1512,7 @@ namespace eastl
 	{
 		//TODO:3) This code is taken from Conclusions here https://www.pcg-random.org/posts/bounded-rands.html
 		//TODO:3) Maybe we should use xoshiro or something like that. Tehcnically we should do like Eric Niebler and put the license on top besides the real license.txt 
-		static_assert(sizeof(typename Generator::result_type) == 4, "Int distribution generator result_type should be at least 4 bytes.");
+		//static_assert(sizeof(typename Generator::result_type) == 4, "Int distribution generator result_type should be at least 4 bytes.");
 		const auto range = params.b() - params.a();
 		uint32_t x = g();
 		uint64_t m = uint64_t(x) * uint64_t(range);

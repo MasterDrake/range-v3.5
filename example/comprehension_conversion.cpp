@@ -11,8 +11,7 @@
 //
 
 ///[comprehension_conversion]
-// Use a range comprehension (views::for_each) to construct a custom range, and
-// then convert it to a std::vector.
+// Use a range comprehension (views::for_each) to construct a custom range, and then convert it to a eastl::vector.
 
 #include <iostream>
 #include <EASTL/vector.h>

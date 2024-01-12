@@ -16,7 +16,6 @@
 #include <EASTL/memory.h>
 #include <EASTL/unique_ptr.h>
 #include <EASTL/utility.h>
-//#include <EASTL/algorithm.h>
 #include <EASTL/sort.h>
 #include <EARanges/core.hpp>
 #include <EARanges/algorithm/merge.hpp>
@@ -110,8 +109,7 @@ int main()
         CHECK(ic[2 * N - 1] == 2 * N - 1);
         CHECK(eastl::is_sorted(ic.get(), ic.get() + 2 * N));
 
-        static_assert(eastl::is_same<decltype(r),
-            ranges::merge_result<ranges::dangling, ranges::dangling, int *>>::value, "");
+        static_assert(eastl::is_same<decltype(r), ranges::merge_result<ranges::dangling, ranges::dangling, int *>>::value, "");
     }
 
     {

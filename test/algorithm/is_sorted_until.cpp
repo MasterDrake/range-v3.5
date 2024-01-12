@@ -461,8 +461,7 @@ int main()
     {
         A as[] = {{0}, {1}, {2}, {3}, {4}};
 #ifndef EARANGES_WORKAROUND_MSVC_573728
-        CHECK(::is_dangling(
-            ranges::is_sorted_until(eastl::move(as), eastl::less<int>{}, &A::a)));
+        CHECK(::is_dangling( ranges::is_sorted_until(eastl::move(as), eastl::less<int>{}, &A::a)));
         CHECK(::is_dangling( ranges::is_sorted_until(eastl::move(as), eastl::greater<int>{}, &A::a)));
 #endif // EARANGES_WORKAROUND_MSVC_573728
         eastl::vector<A> vec(ranges::begin(as), ranges::end(as));

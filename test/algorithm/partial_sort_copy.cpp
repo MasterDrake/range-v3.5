@@ -68,9 +68,9 @@ namespace
                 CHECK(*x == i);
             std::shuffle(input, input+N, gen);
         });
-        partial_sort_copy(Iter(input), Iter(input+N), output, output+M, std::greater<int>()).check([&](int* r)
+        partial_sort_copy(Iter(input), Iter(input+N), output, output+M, eastl::greater<int>()).check([&](int* r)
         {
-            int* e = output + std::min(N, M);
+            int* e = output + eastl::min(N, M);
             CHECK(r == e);
             int i = N-1;
             for (int* x = output; x < e; ++x, --i)

@@ -31,6 +31,19 @@
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 template<class Iter, class Sent = Iter>
 void
 test_iter()
@@ -68,14 +81,14 @@ void
 test_iter_rvalue()
 {
     constexpr unsigned sa = 9;
-    std::unique_ptr<int> ia[sa];
+    eastl::unique_ptr<int> ia[sa];
     ia[0].reset(new int(0));
     ia[1].reset(new int(1));
     ia[3].reset(new int(3));
     ia[4].reset(new int(4));
     ia[6].reset(new int(3));
     ia[7].reset(new int(4));
-    Iter r = ranges::remove(Iter(ia), Sent(ia+sa), std::unique_ptr<int>());
+    Iter r = ranges::remove(Iter(ia), Sent(ia+sa), eastl::unique_ptr<int>());
     CHECK(base(r) == ia + sa-3);
     CHECK(*ia[0] == 0);
     CHECK(*ia[1] == 1);
@@ -90,14 +103,14 @@ void
 test_range_rvalue()
 {
     constexpr unsigned sa = 9;
-    std::unique_ptr<int> ia[sa];
+    eastl::unique_ptr<int> ia[sa];
     ia[0].reset(new int(0));
     ia[1].reset(new int(1));
     ia[3].reset(new int(3));
     ia[4].reset(new int(4));
     ia[6].reset(new int(3));
     ia[7].reset(new int(4));
-    Iter r = ranges::remove(ranges::make_subrange(Iter(ia), Sent(ia+sa)), std::unique_ptr<int>());
+    Iter r = ranges::remove(ranges::make_subrange(Iter(ia), Sent(ia+sa)), eastl::unique_ptr<int>());
     CHECK(base(r) == ia + sa-3);
     CHECK(*ia[0] == 0);
     CHECK(*ia[1] == 1);
@@ -146,21 +159,21 @@ int main()
     test_range<BidirectionalIterator<int*>, Sentinel<int*>>();
     test_range<RandomAccessIterator<int*>, Sentinel<int*>>();
 
-    test_iter_rvalue<ForwardIterator<std::unique_ptr<int>*> >();
-    test_iter_rvalue<BidirectionalIterator<std::unique_ptr<int>*> >();
-    test_iter_rvalue<RandomAccessIterator<std::unique_ptr<int>*> >();
-    test_iter_rvalue<std::unique_ptr<int>*>();
-    test_iter_rvalue<ForwardIterator<std::unique_ptr<int>*>, Sentinel<std::unique_ptr<int>*>>();
-    test_iter_rvalue<BidirectionalIterator<std::unique_ptr<int>*>, Sentinel<std::unique_ptr<int>*>>();
-    test_iter_rvalue<RandomAccessIterator<std::unique_ptr<int>*>, Sentinel<std::unique_ptr<int>*>>();
+    test_iter_rvalue<ForwardIterator<eastl::unique_ptr<int>*> >();
+    test_iter_rvalue<BidirectionalIterator<eastl::unique_ptr<int>*> >();
+    test_iter_rvalue<RandomAccessIterator<eastl::unique_ptr<int>*> >();
+    test_iter_rvalue<eastl::unique_ptr<int>*>();
+    test_iter_rvalue<ForwardIterator<eastl::unique_ptr<int>*>, Sentinel<eastl::unique_ptr<int>*>>();
+    test_iter_rvalue<BidirectionalIterator<eastl::unique_ptr<int>*>, Sentinel<eastl::unique_ptr<int>*>>();
+    test_iter_rvalue<RandomAccessIterator<eastl::unique_ptr<int>*>, Sentinel<eastl::unique_ptr<int>*>>();
 
-    test_range_rvalue<ForwardIterator<std::unique_ptr<int>*> >();
-    test_range_rvalue<BidirectionalIterator<std::unique_ptr<int>*> >();
-    test_range_rvalue<RandomAccessIterator<std::unique_ptr<int>*> >();
-    test_range_rvalue<std::unique_ptr<int>*>();
-    test_range_rvalue<ForwardIterator<std::unique_ptr<int>*>, Sentinel<std::unique_ptr<int>*>>();
-    test_range_rvalue<BidirectionalIterator<std::unique_ptr<int>*>, Sentinel<std::unique_ptr<int>*>>();
-    test_range_rvalue<RandomAccessIterator<std::unique_ptr<int>*>, Sentinel<std::unique_ptr<int>*>>();
+    test_range_rvalue<ForwardIterator<eastl::unique_ptr<int>*> >();
+    test_range_rvalue<BidirectionalIterator<eastl::unique_ptr<int>*> >();
+    test_range_rvalue<RandomAccessIterator<eastl::unique_ptr<int>*> >();
+    test_range_rvalue<eastl::unique_ptr<int>*>();
+    test_range_rvalue<ForwardIterator<eastl::unique_ptr<int>*>, Sentinel<eastl::unique_ptr<int>*>>();
+    test_range_rvalue<BidirectionalIterator<eastl::unique_ptr<int>*>, Sentinel<eastl::unique_ptr<int>*>>();
+    test_range_rvalue<RandomAccessIterator<eastl::unique_ptr<int>*>, Sentinel<eastl::unique_ptr<int>*>>();
 
     // Check projection
     S ia[] = {S{0}, S{1}, S{2}, S{3}, S{4}, S{2}, S{3}, S{4}, S{2}};
@@ -176,7 +189,7 @@ int main()
 
     // Check rvalue ranges
     S ia2[] = {S{0}, S{1}, S{2}, S{3}, S{4}, S{2}, S{3}, S{4}, S{2}};
-    auto r2 = ranges::remove(std::move(ia2), 2, &S::i);
+    auto r2 = ranges::remove(eastl::move(ia2), 2, &S::i);
 #ifndef EARANGES_WORKAROUND_MSVC_573728
     CHECK(::is_dangling(r2));
 #endif // EARANGES_WORKAROUND_MSVC_573728
@@ -187,8 +200,8 @@ int main()
     CHECK(ia2[4].i == 3);
     CHECK(ia2[5].i == 4);
 
-    std::vector<S> vec{S{0}, S{1}, S{2}, S{3}, S{4}, S{2}, S{3}, S{4}, S{2}};
-    auto r3 = ranges::remove(std::move(vec), 2, &S::i);
+    eastl::vector<S> vec{S{0}, S{1}, S{2}, S{3}, S{4}, S{2}, S{3}, S{4}, S{2}};
+    auto r3 = ranges::remove(eastl::move(vec), 2, &S::i);
     CHECK(::is_dangling(r3));
     CHECK(vec[0].i == 0);
     CHECK(vec[1].i == 1);

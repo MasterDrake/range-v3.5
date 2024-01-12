@@ -134,7 +134,7 @@ namespace
 
 int main()
 {
-    //test<ForwardIterator<int*> >();
+    //test<ForwardIterator<int*> >(); - commented out by Eric Niebler
     test<BidirectionalIterator<int*> >();
     test<RandomAccessIterator<int*> >();
     test<int*>();

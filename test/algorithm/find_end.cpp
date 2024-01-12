@@ -283,6 +283,7 @@ test_proj()
 int main()
 {
     test<ForwardIterator<const int*>, ForwardIterator<const int*> >();
+    //Those are commented out by Eric Niebler and they won't work on range-v3 either, iirc.
      /*test<ForwardIterator<const int*>, BidirectionalIterator<const int*> >();
      test<ForwardIterator<const int*>, RandomAccessIterator<const int*> >();
      test<BidirectionalIterator<const int*>, ForwardIterator<const int*> >();

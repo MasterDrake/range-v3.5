@@ -74,20 +74,20 @@ int main()
     using namespace ranges;
 
     eastl::vector<int> vi{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    eastl::vector<std::string> const vs{"hello", "goodbye", "hello", "goodbye"};
+    eastl::vector<eastl::string> const vs{"hello", "goodbye", "hello", "goodbye"};
 
     // All common ranges, but one single-pass
     {
         std::stringstream str{"john paul george ringo"};
-        using V = eastl::tuple<int, std::string, std::string>;
-        auto rng = views::zip(vi, vs, istream<std::string>(str) | views::common);
+        using V = eastl::tuple<int, eastl::string, eastl::string>;
+        auto rng = views::zip(vi, vs, istream<eastl::string>(str) | views::common);
         using Rng = decltype(rng);
         CPP_assert(view_<decltype(rng)>);
         CPP_assert(!common_range<decltype(rng)>);
         CPP_assert(!sized_range<decltype(rng)>);
-        CPP_assert(same_as<range_value_t<Rng>, eastl::tuple<int, std::string, std::string>>);
-        CPP_assert(same_as<range_reference_t<Rng>, common_tuple<int &, std::string const &, std::string &>>);
-        CPP_assert(same_as<range_rvalue_reference_t<Rng>, common_tuple<int &&, std::string const &&, std::string &&>>);
+        CPP_assert(same_as<range_value_t<Rng>, eastl::tuple<int, eastl::string, eastl::string>>);
+        CPP_assert(same_as<range_reference_t<Rng>, common_tuple<int &, eastl::string const &, eastl::string &>>);
+        CPP_assert(same_as<range_rvalue_reference_t<Rng>, common_tuple<int &&, eastl::string const &&, eastl::string &&>>);
         CPP_assert(convertible_to<range_value_t<Rng> &&, range_rvalue_reference_t<Rng>>);
         CPP_assert(input_iterator<decltype(begin(rng))>);
         CPP_assert(!forward_iterator<decltype(begin(rng))>);
@@ -102,8 +102,8 @@ int main()
     // Mixed ranges and common ranges
     {
         std::stringstream str{"john paul george ringo"};
-        using V = eastl::tuple<int, std::string, std::string>;
-        auto rng = views::zip(vi, vs, istream<std::string>(str));
+        using V = eastl::tuple<int, eastl::string, eastl::string>;
+        auto rng = views::zip(vi, vs, istream<eastl::string>(str));
         CPP_assert(view_<decltype(rng)>);
         CPP_assert(!sized_range<decltype(rng)>);
         CPP_assert(!common_range<decltype(rng)>);
@@ -120,7 +120,7 @@ int main()
 
     auto rnd_rng = views::zip(vi, vs);
     using Ref = range_reference_t<decltype(rnd_rng)>;
-    static_assert(eastl::is_same<Ref, common_pair<int &,std::string const &>>::value, "");
+    static_assert(eastl::is_same<Ref, common_pair<int &,eastl::string const &>>::value, "");
     CPP_assert(view_<decltype(rnd_rng)>);
     CPP_assert(common_range<decltype(rnd_rng)>);
     CPP_assert(sized_range<decltype(rnd_rng)>);
@@ -136,11 +136,11 @@ int main()
 
     // zip_with
     {
-        eastl::vector<std::string> v0{"a","b","c"};
-        eastl::vector<std::string> v1{"x","y","z"};
+        eastl::vector<eastl::string> v0{"a","b","c"};
+        eastl::vector<eastl::string> v1{"x","y","z"};
 
-        auto rng = views::zip_with(eastl::plus<std::string>{}, v0, v1);
-        eastl::vector<std::string> expected;
+        auto rng = views::zip_with(eastl::plus<eastl::string>{}, v0, v1);
+        eastl::vector<eastl::string> expected;
         copy(rng, ranges::back_inserter(expected));
         ::check_equal(expected, {"ax","by","cz"});
 
@@ -307,7 +307,7 @@ int main()
     {
         // test unknown cardinality
         std::stringstream str{};
-        auto rng = views::zip(istream<std::string>(str));
+        auto rng = views::zip(istream<eastl::string>(str));
 
         has_cardinality<cardinality::unknown>(rng);
     }
