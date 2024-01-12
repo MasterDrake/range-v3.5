@@ -188,7 +188,6 @@ namespace ranges
     EARANGES_INLINE_VAR constexpr bool enable_view = ext::enable_view<T>::value;
 
     template<typename Char>
-   //TODO:: Oh merda, che fare con sto trait and enable view? EARANGES_INLINE_VAR constexpr bool enable_view<std::basic_string_view<Char, Traits>> = true;
    EARANGES_INLINE_VAR constexpr bool enable_view<eastl::basic_string_view<Char>> = true;
 
     template<typename T, std::size_t N>

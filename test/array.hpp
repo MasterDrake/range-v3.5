@@ -293,7 +293,7 @@ class tuple_element<I, test::array<T, N> >
     using type = T;
 };
 
-}  // namespace std
+}  // namespace eastl
 
 EARANGES_DIAGNOSTIC_POP
 

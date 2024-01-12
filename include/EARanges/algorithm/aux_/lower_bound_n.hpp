@@ -63,10 +63,10 @@ namespace ranges
                                    C pred = C{},
                                    P proj = P{}) const
             {
-                return partition_point_n(std::move(first),
+                return partition_point_n(eastl::move(first),
                                          d,
                                          detail::make_lower_bound_predicate(pred, val),
-                                         std::move(proj));
+                                         eastl::move(proj));
             }
         };
 

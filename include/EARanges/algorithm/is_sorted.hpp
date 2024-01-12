@@ -35,7 +35,7 @@ namespace ranges
     EARANGES_FUNC_BEGIN(is_sorted)
         /// \brief template function \c is_sorted
         ///
-        /// range-based version of the \c is_sorted std algorithm
+        /// range-based version of the \c is_sorted eastl algorithm
         ///
         /// Works on forward_ranges
         ///

@@ -40,7 +40,7 @@ namespace ranges
 
         /// \brief template function \c unique
         ///
-        /// range-based version of the \c unique std algorithm
+        /// range-based version of the \c unique eastl algorithm
         ///
         /// \pre `Rng` is a model of the `forward_range` concept
         /// \pre `I` is a model of the `forward_iterator` concept

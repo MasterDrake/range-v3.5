@@ -657,7 +657,7 @@ namespace ranges
 
 } // namespace ranges
 
-#include "../detail/satisfy_boost_range.hpp"
+#include <EARanges/detail/satisfy_boost_range.hpp>
 EARANGES_SATISFY_BOOST_RANGE(::ranges::any_view)
 
 EARANGES_DIAGNOSTIC_POP

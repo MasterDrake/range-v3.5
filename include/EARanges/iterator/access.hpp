@@ -168,9 +168,9 @@ namespace ranges
         struct nope
         {};
 
-        // Q: Should std::reference_wrapper be considered a proxy wrt swapping rvalues?
+        // Q: Should eastl::reference_wrapper be considered a proxy wrt swapping rvalues?
         // A: No. Its operator= is currently defined to reseat the references, so
-        //    std::swap(ra, rb) already means something when ra and rb are (lvalue)
+        //    eastl::swap(ra, rb) already means something when ra and rb are (lvalue)
         //    reference_wrappers. That reseats the reference wrappers but leaves the
         //    referents unmodified. Treating rvalue reference_wrappers differently would
         //    be confusing.
@@ -181,10 +181,10 @@ namespace ranges
         //    reseat the references, assignment happens *through* the references.
 
         // Q: But I have an iterator whose operator* returns an rvalue
-        //    std::reference_wrapper<T>. How do I make it model indirectly_swappable?
+        //    eastl::reference_wrapper<T>. How do I make it model indirectly_swappable?
         // A: With an overload of iter_swap.
 
-        // Intentionally create an ambiguity with std::iter_swap, which is
+        // Intentionally create an ambiguity with eastl::iter_swap, which is
         // unconstrained.
         template<typename T, typename U>
         nope iter_swap(T, U) = delete;
@@ -202,7 +202,7 @@ namespace ranges
         // Test whether an overload of iter_swap for a T and a U can be found
         // via ADL with the iter_swap overload above participating in the
         // overload set. This depends on user-defined iter_swap overloads
-        // being a better match than the overload in namespace std.
+        // being a better match than the overload in namespace eastl.
         template<typename T, typename U>
         EARANGES_INLINE_VAR constexpr bool is_adl_indirectly_swappable_v =
             !EARANGES_IS_SAME(nope, decltype(_iter_swap_::try_adl_iter_swap_<T, U>(42)));
@@ -229,7 +229,7 @@ namespace ranges
             // indirectly_movable_storable, implement as:
             //      iter_value_t<T0> tmp = iter_move(a);
             //      *a = iter_move(b);
-            //      *b = std::move(tmp);
+            //      *b = eastl::move(tmp);
             template<typename I0, typename I1>
             constexpr detail::enable_if_t<
                 !is_adl_indirectly_swappable_v<I0, I1> &&

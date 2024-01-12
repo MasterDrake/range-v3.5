@@ -34,7 +34,7 @@ namespace ranges
     EARANGES_FUNC_BEGIN(adjacent_find)
         /// \brief function template \c adjacent_find
         ///
-        /// range-based version of the \c adjacent_find std algorithm
+        /// range-based version of the \c adjacent_find eastl algorithm
         ///
         /// \pre `Rng` is a model of the `range` concept
         /// \pre `C` is a model of the `BinaryPredicate` concept

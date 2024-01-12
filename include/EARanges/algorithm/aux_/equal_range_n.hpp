@@ -56,7 +56,7 @@ namespace ranges
                         auto && pv = invoke(proj, (decltype(v) &&)v);
                         if(invoke(pred, pv, val))
                         {
-                            first = std::move(++middle);
+                            first = eastl::move(++middle);
                             dist -= half + 1;
                         }
                         else if(invoke(pred, val, pv))
@@ -65,7 +65,7 @@ namespace ranges
                         }
                         else
                         {
-                            return {lower_bound_n(std::move(first),
+                            return {lower_bound_n(eastl::move(first),
                                                   half,
                                                   val,
                                                   ranges::ref(pred),

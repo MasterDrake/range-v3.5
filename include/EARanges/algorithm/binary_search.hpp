@@ -39,7 +39,7 @@ namespace ranges
     EARANGES_FUNC_BEGIN(binary_search)
         /// \brief function template \c binary_search
         ///
-        /// range-based version of the \c binary_search std algorithm
+        /// range-based version of the \c binary_search eastl algorithm
         ///
         /// \pre `Rng` is a model of the `range` concept
         template(typename I,

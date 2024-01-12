@@ -886,8 +886,7 @@ namespace ranges
 {
     template<typename S, typename I>
     /*inline*/ constexpr bool
-        disable_sized_sentinel<std::reverse_iterator<S>, std::reverse_iterator<I>> =
-            !static_cast<bool>(sized_sentinel_for<I, S>);
+        disable_sized_sentinel<eastl::reverse_iterator<S>, eastl::reverse_iterator<I>> = !static_cast<bool>(sized_sentinel_for<I, S>);
 } // namespace ranges
 
 #endif // defined(__GLIBCXX__) || (defined(_LIBCPP_VERSION) && _LIBCPP_VERSION <= 3900)

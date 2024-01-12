@@ -443,14 +443,6 @@ namespace ranges
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-//namespace std
-//{
-//    template<typename I, typename S>
-//    struct iterator_traits<::ranges::common_iterator<I, S>>
-//      : ::ranges::detail::common_iterator_std_traits<I>
-//    {};
-//} // namespace std
-
 namespace eastl
 {
     template<typename I, typename S>

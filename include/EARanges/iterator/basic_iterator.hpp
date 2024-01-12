@@ -1018,21 +1018,12 @@ namespace ranges
     /// \endcond
 } // namespace ranges
 
-//TODO: Capire se serve o meno :/
-//namespace std
-//{
-//    template<typename Cur>
-//    struct iterator_traits<::ranges::basic_iterator<Cur>>
-//      : ::ranges::detail::std_iterator_traits<Cur>
-//    {};
-//} // namespace std
-
 namespace eastl
 {
     template<typename Cur>
     struct iterator_traits<::ranges::basic_iterator<Cur>> : ::ranges::detail::std_iterator_traits<Cur>
     {};
-} // namespace std
+} // namespace eastl
 /// \endcond
 
 EARANGES_DIAGNOSTIC_POP

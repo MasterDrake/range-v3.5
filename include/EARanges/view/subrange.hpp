@@ -434,23 +434,6 @@ namespace ranges
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-//namespace std
-//{
-//    template<typename I, typename S, ::ranges::subrange_kind K>
-//    struct tuple_size<::ranges::subrange<I, S, K>> : eastl::integral_constant<size_t, 2>
-//    {};
-//    template<typename I, typename S, ::ranges::subrange_kind K>
-//    struct tuple_element<0, ::ranges::subrange<I, S, K>>
-//    {
-//        using type = I;
-//    };
-//    template<typename I, typename S, ::ranges::subrange_kind K>
-//    struct tuple_element<1, ::ranges::subrange<I, S, K>>
-//    {
-//        using type = S;
-//    };
-//} // namespace std
-
 namespace eastl
 {
     template<typename I, typename S, ::ranges::subrange_kind K>

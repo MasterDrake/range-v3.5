@@ -347,8 +347,8 @@ namespace ranges
     {
         template<typename R>
         void rbegin(R &&) = delete;
-        // Non-standard, to keep unqualified rbegin(r) from finding std::rbegin
-        // and returning a std::reverse_iterator.
+        // Non-standard, to keep unqualified rbegin(r) from finding eastl::rbegin
+        // and returning a eastl::reverse_iterator.
         template<typename T>
         void rbegin(std::initializer_list<T>) = delete;
         template<typename T, std::size_t N>
@@ -491,8 +491,8 @@ namespace ranges
     {
         template<typename R>
         void rend(R &&) = delete;
-        // Non-standard, to keep unqualified rend(r) from finding std::rend
-        // and returning a std::reverse_iterator.
+        // Non-standard, to keep unqualified rend(r) from finding eastl::rend
+        // and returning a eastl::reverse_iterator.
         template<typename T>
         void rend(std::initializer_list<T>) = delete;
         template<typename T, std::size_t N>

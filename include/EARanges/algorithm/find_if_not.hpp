@@ -36,7 +36,7 @@ namespace ranges
     EARANGES_FUNC_BEGIN(find_if_not)
         /// \brief template function \c find_if_not
         ///
-        /// range-based version of the \c find_if_not std algorithm
+        /// range-based version of the \c find_if_not eastl algorithm
         ///
         /// \pre `Rng` is a model of the `range` concept
         /// \pre `I` is a model of the `input_iterator` concept

@@ -117,7 +117,7 @@ namespace eastl
     {
         using type = Second;
     };
-} // namespace std
+} // namespace eastl
 EARANGES_DIAGNOSTIC_POP
 
 #include <EARanges/detail/epilogue.hpp>

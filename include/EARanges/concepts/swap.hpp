@@ -164,7 +164,7 @@ namespace concepts
         struct nope
         {};
 
-        // Intentionally create an ambiguity with std::swap, which is
+        // Intentionally create an ambiguity with eastl::swap, which is
         // (possibly) unconstrained.
         template<typename T>
         nope swap(T &, T &) = delete;
@@ -228,7 +228,7 @@ namespace concepts
 
             // For rvalue pairs and tuples of swappable types, swap the
             // members. This permits code like:
-            //   ranges::swap(std::tie(a,b,c), std::tie(d,e,f));
+            //   ranges::swap(eastl::tie(a,b,c), eastl::tie(d,e,f));
             template<typename F0, typename S0, typename F1, typename S1>
             CPP_CXX14_CONSTEXPR
             meta::if_c<is_swappable_with<F0, F1>::value && is_swappable_with<S0, S1>::value>
@@ -289,9 +289,9 @@ namespace concepts
                         noexcept(swap_fn()(eastl::declval<U>(), eastl::declval<T>()))>
         {};
 
-        // Q: Should std::reference_wrapper be considered a proxy wrt swapping rvalues?
+        // Q: Should eastl::reference_wrapper be considered a proxy wrt swapping rvalues?
         // A: No. Its operator= is currently defined to reseat the references, so
-        //    std::swap(ra, rb) already means something when ra and rb are (lvalue)
+        //    eastl::swap(ra, rb) already means something when ra and rb are (lvalue)
         //    reference_wrappers. That reseats the reference wrappers but leaves the
         //    referents unmodified. Treating rvalue reference_wrappers differently would
         //    be confusing.
@@ -302,7 +302,7 @@ namespace concepts
         //    references, assignment happens *through* the references.
 
         // Q: But I have an iterator whose operator* returns an rvalue
-        //    std::reference_wrapper<T>. How do I make it model indirectly_swappable?
+        //    eastl::reference_wrapper<T>. How do I make it model indirectly_swappable?
         // A: With an overload of iter_swap.
     }
     /// \endcond

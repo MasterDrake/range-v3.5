@@ -36,7 +36,7 @@ namespace ranges
     EARANGES_FUNC_BEGIN(find)
         /// \brief template function \c find
         ///
-        /// range-based version of the \c find std algorithm
+        /// range-based version of the \c find eastl algorithm
         ///
         /// \pre `Rng` is a model of the `range` concept
         /// \pre `I` is a model of the `input_iterator` concept

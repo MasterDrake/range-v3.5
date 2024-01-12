@@ -43,7 +43,7 @@ namespace ranges
             shared_view() = default;
 
             // construct from a range rvalue
-            explicit shared_view(Rng rng) : rng_ptr_{eastl::make_shared<Rng>(std::move(rng))}
+            explicit shared_view(Rng rng) : rng_ptr_{eastl::make_shared<Rng>(eastl::move(rng))}
             {}
 
             // use the stored range's begin and end

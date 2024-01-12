@@ -49,8 +49,7 @@
   - Controllare se serve in config o dove altro, usare EASTL_CPP17_INLINE_VARIABLE invece di chissà che diavoleria
   - Creare un namespace per EASTL_SIZE_T e usare quello invece che std::size_t, ma occhio a uintptr_t che mi sembra unsigned al contrario di EASTL_SSIZE_T
   - Rimuovere tutte le reference a std usando grepWin e la seguente regex.
-  - \bstd\b(?!(?:::cout|::initializer_list|::size_t|::uintmax_t|::stringstream|::ptrdiff_t|::nullptr_t|::uint32_t|::intmax_t|::boolalpha|::cerr)\b)
-  - ^(out|doc|extra|perf|include\EARanges\experimental)$
+\bstd\b(?!(?:::cout|::initializer_list|::size_t|::uintmax_t|::stringstream|::ptrdiff_t|::nullptr_t|::uint32_t|::intmax_t|::boolalpha|::cerr|::regex_constants|::istream|::ostream|::regex_token_iterator|::basic_ostream|::basic_istream|::ios_base|::out_of_range|::source_location|::atomic|::logic_error|::memory_order_relaxed)\b)  - ^(out|doc|extra|perf|include\EARanges\experimental)$
   - *.cpp|*.hpp
 
  ## STRING

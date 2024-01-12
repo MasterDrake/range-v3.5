@@ -44,7 +44,7 @@ using maybe_sized_generator = meta::if_c<Condition,
 template<typename T>
 constexpr bool is_copy_constructible_or_ref() noexcept
 {
-    return std::is_reference<T>::value ||(bool) ranges::copy_constructible<T>;
+    return eastl::is_reference<T>::value ||(bool) ranges::copy_constructible<T>;
 }
 
 struct coro_fn
@@ -231,13 +231,13 @@ int main()
         auto const control = {1, 2, 3};
         MoveInt a[] = {{1}, {2}, {3}};
         MoveInt b[3];
-        CHECK(equal(a, control, std::equal_to<int>{}, &MoveInt::i_));
+        CHECK(equal(a, control, eastl::equal_to<int>{}, &MoveInt::i_));
         CHECK(count(b, 42, &MoveInt::i_) == 3);
         auto rng = ::coro(views::move(a));
         CPP_assert(sized_range<decltype(rng)>);
         CHECK(size(rng) == 3u);
         copy(rng, b);
-        CHECK(equal(b, control, std::equal_to<int>{}, &MoveInt::i_));
+        CHECK(equal(b, control, eastl::equal_to<int>{}, &MoveInt::i_));
         CHECK(count(a, 0, &MoveInt::i_) == 3);
     }
     {
@@ -259,7 +259,7 @@ int main()
         CHECK(i == e);
     }
     {
-        std::vector<bool> vec(3, false);
+        eastl::vector<bool> vec(3, false);
         auto rng = ::coro(vec);
         CPP_assert(sized_range<decltype(rng)>);
         CHECK(size(rng) == 3u);

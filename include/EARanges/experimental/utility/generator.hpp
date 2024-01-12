@@ -163,7 +163,7 @@ namespace ranges
                 copied_.store(that.copied_.load(std::memory_order_relaxed),
                               std::memory_order_relaxed);
                 that.copied_.store(tmp, std::memory_order_relaxed);
-                std::swap(base(), that.base());
+                eastl::swap(base(), that.base());
             }
             base_t handle() const noexcept
             {
@@ -188,7 +188,7 @@ namespace ranges
         {
             std::exception_ptr except_ = nullptr;
 
-            CPP_assert(std::is_reference<Reference>::value ||
+            CPP_assert(eastl::is_reference<Reference>::value ||
                        copy_constructible<Reference>);
 
             generator_promise * get_return_object() noexcept
@@ -212,11 +212,11 @@ namespace ranges
             }
             template(typename Arg)(
                 requires convertible_to<Arg, Reference> AND
-                        std::is_assignable<semiregular_box_t<Reference> &, Arg>::value) //
+                        eastl::is_assignable<semiregular_box_t<Reference> &, Arg>::value) //
             EARANGES_COROUTINES_NS::suspend_always yield_value(Arg && arg) noexcept(
-                std::is_nothrow_assignable<semiregular_box_t<Reference> &, Arg>::value)
+                eastl::is_nothrow_assignable<semiregular_box_t<Reference> &, Arg>::value)
             {
-                ref_ = std::forward<Arg>(arg);
+                ref_ = eastl::forward<Arg>(arg);
                 return {};
             }
             EARANGES_COROUTINES_NS::suspend_never await_transform(
@@ -226,7 +226,7 @@ namespace ranges
                                   "Invalid size request for a non-sized generator");
                 return {};
             }
-            meta::if_<std::is_reference<Reference>, Reference, Reference const &> read()
+            meta::if_<eastl::is_reference<Reference>, Reference, Reference const &> read()
                 const noexcept
             {
                 return ref_;
@@ -306,7 +306,7 @@ namespace ranges
                     {
                         auto & e = coro_.promise().except_;
                         if(e)
-                            std::rethrow_exception(std::move(e));
+                            std::rethrow_exception(eastl::move(e));
                         return true;
                     }
                     return false;

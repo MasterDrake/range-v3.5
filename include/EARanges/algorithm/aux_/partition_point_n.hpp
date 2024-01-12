@@ -43,7 +43,7 @@ namespace ranges
                         auto middle = next(uncounted(first), half);
                         if(invoke(pred, invoke(proj, *middle)))
                         {
-                            first = recounted(first, std::move(++middle), half + 1);
+                            first = recounted(first, eastl::move(++middle), half + 1);
                             d -= half + 1;
                         }
                         else

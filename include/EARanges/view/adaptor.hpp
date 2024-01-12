@@ -400,7 +400,7 @@ namespace ranges
             return ranges::iter_move(this->data_.first());
         }
         // If the adaptor does not have an iter_move function but overrides the read
-        // member function, apply std::move to the result of calling read.
+        // member function, apply eastl::move to the result of calling read.
         template<typename A = Adapt,
                  typename R = decltype(
                      eastl::declval<A const &>().read(eastl::declval<BaseIter const &>())),

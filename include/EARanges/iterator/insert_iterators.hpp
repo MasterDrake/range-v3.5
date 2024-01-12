@@ -181,24 +181,6 @@ namespace ranges
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-//namespace std
-//{
-//    template<typename Container>
-//    struct iterator_traits<::ranges::back_insert_iterator<Container>>
-//      : ::ranges::detail::std_output_iterator_traits<>
-//    {};
-//
-//    template<typename Container>
-//    struct iterator_traits<::ranges::front_insert_iterator<Container>>
-//      : ::ranges::detail::std_output_iterator_traits<>
-//    {};
-//
-//    template<typename Container>
-//    struct iterator_traits<::ranges::insert_iterator<Container>>
-//      : ::ranges::detail::std_output_iterator_traits<>
-//    {};
-//} // namespace std
-
 namespace eastl
 {
     template<typename Container>
@@ -215,7 +197,7 @@ namespace eastl
     struct iterator_traits<::ranges::insert_iterator<Container>>
       : ::ranges::detail::std_output_iterator_traits<>
     {};
-} // namespace std
+} // namespace eastl
 
 EARANGES_DIAGNOSTIC_POP
 /// \endcond

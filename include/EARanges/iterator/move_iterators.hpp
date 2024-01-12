@@ -431,19 +431,6 @@ namespace ranges
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-//namespace std
-//{
-//    template<typename I>
-//    struct iterator_traits<::ranges::move_iterator<I>>
-//    {
-//        using iterator_category = std::input_iterator_tag;
-//        using difference_type = typename ::ranges::move_iterator<I>::difference_type;
-//        using value_type = typename ::ranges::move_iterator<I>::value_type;
-//        using reference = typename ::ranges::move_iterator<I>::reference;
-//        using pointer = meta::_t<std::add_pointer<reference>>;
-//    };
-//} // namespace std
-
 namespace eastl
 {
     template<typename I>

@@ -628,13 +628,13 @@ namespace meta
     META_INLINE_VAR constexpr bool is_callable_v = detail::is_callable_<T>;
 #endif // Concepts vs. variable templates
 
-    /// An alias for `std::true_type` if `T::type` exists and names a type; otherwise,
-    /// it's an alias for `std::false_type`. \ingroup trait
+    /// An alias for `eastl::true_type` if `T::type` exists and names a type; otherwise,
+    /// it's an alias for `eastl::false_type`. \ingroup trait
     template<typename T>
     using is_trait = bool_<is_trait_v<T>>;
 
-    /// An alias for `std::true_type` if `T::invoke` exists and names a class template;
-    /// otherwise, it's an alias for `std::false_type`.
+    /// An alias for `eastl::true_type` if `T::invoke` exists and names a class template;
+    /// otherwise, it's an alias for `eastl::false_type`.
     /// \ingroup trait
     template<typename T>
     using is_callable = bool_<is_callable_v<T>>;
@@ -3177,7 +3177,7 @@ namespace meta
     /// \code
     /// using L0 = list<char[5], char[3], char[2], char[6], char[1], char[5], char[10]>;
     /// using L1 = meta::sort<L0, lambda<_a, _b, lazy::less<lazy::sizeof_<_a>, lazy::sizeof_<_b>>>>;
-    /// static_assert(std::is_same_v<L1, list<char[1], char[2], char[3], char[5], char[5], char[6], char[10]>>, "");
+    /// static_assert(eastl::is_same_v<L1, list<char[1], char[2], char[3], char[5], char[5], char[6], char[10]>>, "");
     /// \endcode
     /// \ingroup transformation
     // clang-format on

@@ -58,7 +58,7 @@ namespace ranges
         {
             /// \brief template function upper_bound
             ///
-            /// range-based version of the `upper_bound` std algorithm
+            /// range-based version of the `upper_bound` eastl algorithm
             ///
             /// \pre `Rng` is a model of the `range` concept
             template(typename I, typename V, typename C = less, typename P = identity)(requires forward_iterator<I> AND indirect_strict_weak_order<C, V const *, projected<I, P>>)
@@ -68,10 +68,10 @@ namespace ranges
                                    C pred = C{},
                                    P proj = P{}) const
             {
-                return partition_point_n(std::move(first),
+                return partition_point_n(eastl::move(first),
                                          d,
                                          detail::make_upper_bound_predicate(pred, val),
-                                         std::move(proj));
+                                         eastl::move(proj));
             }
         };
 

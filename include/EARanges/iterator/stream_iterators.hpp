@@ -238,19 +238,6 @@ namespace ranges
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-//namespace std
-//{
-//    template<typename T, typename Char, typename Traits>
-//    struct iterator_traits<::ranges::ostream_iterator<T, Char, Traits>>
-//      : ::ranges::detail::std_output_iterator_traits<>
-//    {};
-//
-//    template<typename Char, typename Traits>
-//    struct iterator_traits<::ranges::ostreambuf_iterator<Char, Traits>>
-//      : ::ranges::detail::std_output_iterator_traits<>
-//    {};
-//} // namespace std
-
 namespace eastl
 {
     template<typename T, typename Char, typename Traits>

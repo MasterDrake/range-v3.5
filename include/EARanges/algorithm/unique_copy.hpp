@@ -130,7 +130,7 @@ namespace ranges
 
         /// \brief template function unique_copy
         ///
-        /// range-based version of the `unique_copy` std algorithm
+        /// range-based version of the `unique_copy` eastl algorithm
         ///
         /// \pre `Rng` is a model of the `input_range` concept
         /// \pre `O` is a model of the `weakly_incrementable` concept

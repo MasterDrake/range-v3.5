@@ -166,7 +166,7 @@ namespace ranges
     /// to:
     ///   * `+extent_v<T>` if `T` is an array type.
     ///   * Otherwise, `+E.size()` if it is a valid expression and its type `I` models
-    ///     `integral` and `disable_sized_range<std::remove_cvref_t<T>>` is false.
+    ///     `integral` and `disable_sized_range<eastl::remove_cvref_t<T>>` is false.
     ///   * Otherwise, `+size(E)` if it is a valid expression and its type `I` models
     ///     `integral` with overload resolution performed in a context that includes the
     ///     declaration:
@@ -174,9 +174,9 @@ namespace ranges
     ///     template<class T> void size(T&&) = delete;
     ///     \endcode
     ///     and does not include a declaration of `ranges::size`, and
-    ///     `disable_sized_range<std::remove_cvref_t<T>>` is false.
+    ///     `disable_sized_range<eastl::remove_cvref_t<T>>` is false.
     ///   * Otherwise, `static_cast<U>(ranges::end(E) - ranges::begin(E))` where `U` is
-    ///     `std::make_unsigned_t<iter_difference_t<iterator_t<T>>>` if
+    ///     `eastl::make_unsigned_t<iter_difference_t<iterator_t<T>>>` if
     ///     `iter_difference_t<iterator_t<T>>` satisfies `integral` and
     ///     `iter_difference_t<iterator_t<T>>` otherwise; except that `E` is
     ///     evaluated once, if it is a valid expression and the types `I` and `S` of
@@ -277,9 +277,8 @@ namespace ranges
             }
 
 #if EARANGES_CXX_STD <= EARANGES_CXX_STD_14
-            template<typename charT, typename Traits, typename Alloc>
-            constexpr charT * operator()(
-                std::basic_string<charT, Traits, Alloc> & s) const noexcept
+            template<typename charT, typename Alloc>
+            constexpr charT * operator()(eastl::basic_string<charT, Alloc> & s) const noexcept
             {
                 // string doesn't have non-const data before C++17
                 return const_cast<charT *>(detail::as_const(s).data());
