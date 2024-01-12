@@ -500,37 +500,6 @@ namespace ranges
 #endif
 #endif
 
-#if !defined(EARANGES_DEPRECATED) && !defined(EARANGES_DISABLE_DEPRECATED_WARNINGS)
-#if defined(__GNUC__) && !defined(__clang__)
-// GCC's support for [[deprecated("message")]] is unusably buggy.
-#define EARANGES_DEPRECATED(MSG) __attribute__((deprecated(MSG)))
-#elif EARANGES_CXX_ATTRIBUTE_DEPRECATED && \
-    !((defined(__clang__) || defined(__GNUC__)) && EARANGES_CXX_STD < EARANGES_CXX_STD_14)
-#define EARANGES_DEPRECATED(MSG) [[deprecated(MSG)]]
-#elif defined(__clang__) || defined(__GNUC__)
-#define EARANGES_DEPRECATED(MSG) __attribute__((deprecated(MSG)))
-#endif
-#endif
-#ifndef EARANGES_DEPRECATED
-#define EARANGES_DEPRECATED(MSG)
-#endif
-
-#if !defined(EARANGES_DEPRECATED_HEADER) && !defined(EARANGES_DISABLE_DEPRECATED_WARNINGS)
-#ifdef __GNUC__
-#define EARANGES_DEPRECATED_HEADER(MSG) EARANGES_PRAGMA(GCC warning MSG)
-#elif defined(_MSC_VER)
-#define EARANGES_STRINGIZE_(MSG) #MSG
-#define EARANGES_STRINGIZE(MSG) EARANGES_STRINGIZE_(MSG)
-#define EARANGES_DEPRECATED_HEADER(MSG) \
-    __pragma(message(__FILE__ "(" EARANGES_STRINGIZE(__LINE__) ") : Warning: " MSG))
-#endif
-#else
-#define EARANGES_DEPRECATED_HEADER(MSG) /**/
-#endif
-// #ifndef EARANGES_DEPRECATED_HEADER
-// #define EARANGES_DEPRECATED_HEADER(MSG)
-// #endif
-
 #ifndef EARANGES_CXX_COROUTINES
 #if defined(__cpp_coroutines) && defined(__has_include)
 #if __has_include(<coroutine>)

@@ -10,11 +10,27 @@
 // Project home: https://github.com/ericniebler/range-v3
 
 #include <sstream>
+#include <fstream>
 #include <EASTL/string.h>
 #include <EARanges/core.hpp>
 #include <EARanges/range/traits.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
+
+#include "Windows.h"
+
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 using namespace ranges;
 
@@ -34,8 +50,19 @@ good men
     using Rng = decltype(rng);
     CPP_assert(input_range<Rng> && view_<Rng>);
     CPP_assert(!(forward_range<Rng> && view_<Rng>));
-    //todo: obviously getlines and std::stringstream are not compatible with eastl::string :)
-    //CPP_assert(same_as<range_rvalue_reference_t<Rng>, eastl::string &&>);
+    CPP_assert(same_as<range_rvalue_reference_t<Rng>, eastl::string &&>);
+
+    std::ifstream danteFile("dante.txt");
+    if (danteFile.is_open())
+    {
+
+        auto danteRng = getlines(danteFile);
+        SetConsoleOutputCP(CP_UTF8);
+        for(const auto & line : danteRng)
+            std::cout << line.c_str() << "\n";
+    }
+    else
+        std::cerr << "Failed to load " << "dante.txt"<< std::endl;
 
     return ::test_result();
 }

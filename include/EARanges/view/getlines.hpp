@@ -15,7 +15,7 @@
 #define EARANGES_VIEW_GETLINES_HPP
 
 #include <istream>
-#include <string>
+#include <EASTL/string.h>
 
 #include <EARanges/range_fwd.hpp>
 
@@ -34,7 +34,7 @@ namespace ranges
     private:
         friend range_access;
         std::istream * sin_;
-        std::string str_;//TODO: Fix this string to eastl string and see if it's worth it, maybe yes because we're porting the ranges library and an iterator line this would be cool. Reimplement it using the msvc code.
+        eastl::string str_;
         char delim_;
         struct cursor
         {
@@ -45,14 +45,13 @@ namespace ranges
 
         public:
             cursor() = default;
-            explicit cursor(getlines_view * rng)
-              : rng_(rng)
+            explicit cursor(getlines_view * rng) : rng_(rng)
             {}
             void next()
             {
                 rng_->next();
             }
-            std::string & read() const noexcept
+            eastl::string & read() const noexcept
             {
                 return rng_->str_;
             }
@@ -67,12 +66,41 @@ namespace ranges
         };
         void next()
         {
-            if(!std::getline(*sin_, str_, delim_))
+            if(!getline(*sin_, str_, delim_))
                 sin_ = nullptr;
         }
         cursor begin_cursor()
         {
             return cursor{this};
+        }
+
+        //implementation according to https://en.cppreference.com/w/cpp/string/basic_string/getline
+        std::istream& getline(std::istream& sin, eastl::string& str, const char del)
+        {
+            eastl::string::value_type c;
+
+            str.erase();//1) Calls str.erase().
+
+            while (sin.get(c)) //2) Extracts characters from input and appends them to str until one of the following occurs (checked in the order listed)
+            {
+                if (sin.eof()) //2a) end-of-file condition on input, in which case, getline sets eofbit.
+                {
+                    sin.setstate(std::ios_base::eofbit);
+                    break;
+                }
+                if (c == del) //b)The next available input character is delim, as tested by Traits::eq(c, delim), in which case the delimiter character is extracted from input, but is not appended to str.
+                {
+                    break;
+                }
+                if (str.size() >= str.max_size())//2c) str.max_size() characters have been stored, in which case getline sets failbit and returns.
+                {
+                    sin.setstate(std::ios_base::failbit);
+                    break;
+                }
+                else
+                    str += c;
+            }
+            return sin;
         }
 
     public:
@@ -84,16 +112,11 @@ namespace ranges
         {
             this->next(); // prime the pump
         }
-        std::string & cached() noexcept
+        eastl::string& cached() noexcept
         {
             return str_;
         }
     };
-
-    /// \cond
-    using getlines_range EARANGES_DEPRECATED(
-        "getlines_range has been renamed getlines_view") = getlines_view;
-    /// \endcond
 
     struct getlines_fn
     {

@@ -20,11 +20,11 @@
 // unordered_set: 6 5 4 3 2 1
 
 #include <EASTL/map.h>
-#include <EARanges/algorithm/for_each.hpp>
 #include <EASTL/set.h>
 #include <EASTL/string.h>
 #include <EASTL/unordered_map.h>
 #include <EASTL/unordered_set.h>
+#include <EARanges/algorithm/for_each.hpp>
 #include <iostream>
 using eastl::string;
 using std::cout;
@@ -42,8 +42,9 @@ void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
 }
 auto print = [](int i) { cout << i << ' '; };
 // must take a pair for map types
-auto printm = [](eastl::pair<string, int> p) {
-    cout << p.first.data() << ":" << p.second << ' ';
+auto printm = [](eastl::pair<string, int> p)
+{
+    cout << p.first.c_str() << ":" << p.second << ' ';
 };
 
 int main()

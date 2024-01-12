@@ -522,24 +522,12 @@ namespace ranges
         {
             ints_fn() = default;
 
-            template(typename Val)(
-                requires integral<Val>)
-            EARANGES_DEPRECATED(
-                "This potentially confusing API is deprecated. Prefer to "
-                "explicitly specify the upper bound as with ranges::unreachable, as in "
-                "views::ints( n, unreachable )")
-            constexpr iota_view<Val> operator()(Val value) const //
-            {
-                return iota_view<Val>{value};
-            }
-            template(typename Val)(
-                requires integral<Val>)
+            template(typename Val)(requires integral<Val>)
             constexpr iota_view<Val> operator()(Val value, unreachable_sentinel_t) const
             {
                 return iota_view<Val>{value};
             }
-            template(typename Val)(
-                requires integral<Val>)
+            template(typename Val)(requires integral<Val>)
             constexpr iota_view<Val, Val> operator()(Val from, Val to) const
             {
                 return {from, to};
@@ -553,7 +541,7 @@ namespace ranges
     /// @}
 } // namespace ranges
 
-#include "../detail/satisfy_boost_range.hpp"
+#include <EARanges/detail/satisfy_boost_range.hpp>
 EARANGES_SATISFY_BOOST_RANGE(::ranges::closed_iota_view)
 EARANGES_SATISFY_BOOST_RANGE(::ranges::iota_view)
 

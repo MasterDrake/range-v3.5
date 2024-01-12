@@ -17,8 +17,6 @@
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-//TODO:26) the noexcept checks works, so why comment them out?
-
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
 {
@@ -196,7 +194,7 @@ namespace
             ranges::invoke(&A::i, sp) = 0;
             CHECK(sp->i == 0);
         }
-
+        //Disabled by Eric Niebler
         // {
         //     struct B { int i = 42; constexpr int f() const { return i; } };
         //     constexpr B b;

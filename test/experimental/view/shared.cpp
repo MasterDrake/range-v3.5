@@ -70,8 +70,8 @@ void check_shared_contents()
     check_values(view2);
     //TODO:5)Apparently shared_view needs a l-value here for the operator++()... Do we care?
     // check that changes are shared
-   // *(++begin(view1)) = 7;
-  //  CHECK(*(++begin(view2)) == 7);
+    *(++begin(view1)) = 7;
+    CHECK(*(++begin(view2)) == 7);
     *begin(view2) = 3;
     CHECK(*begin(view1) == 3);
 }

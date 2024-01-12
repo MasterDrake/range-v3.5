@@ -203,10 +203,8 @@ int main()
         for (U* x = vec.data(); x < e; ++x, ++i2)
             CHECK(x->i == i2);
     }
-#if EASTL_ADDRESSOF_CONSTEXPR
     {
         STATIC_CHECK(test_constexpr());
     }
-#endif
     return ::test_result();
 }

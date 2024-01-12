@@ -107,9 +107,7 @@ int main()
         STATIC_CHECK(lower_bound(a, a[4], less()) == &a[4]);
         STATIC_CHECK(lower_bound(a, eastl::make_pair(1, 2), less()) == &a[2]);
 #if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_17
-#if EASTL_ADDRESSOF_CONSTEXPR
         STATIC_CHECK(lower_bound(views::all(a), eastl::make_pair(1, 2), less()) == &a[2]);
-#endif
 #endif
     }
 

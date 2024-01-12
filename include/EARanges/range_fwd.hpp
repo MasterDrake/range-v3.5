@@ -84,27 +84,6 @@ namespace ranges
 
     namespace view = views;
     namespace action = actions;
-#else
-    inline namespace EARANGES_DEPRECATED(
-        "The name ranges::v3 namespace is deprecated. "
-        "Please discontinue using it.") v3
-    {
-        using namespace ranges;
-    }
-
-    namespace EARANGES_DEPRECATED(
-        "The ranges::view namespace has been renamed to ranges::views. "
-        "(Sorry!)") view
-    {
-        using namespace views;
-    }
-
-    namespace EARANGES_DEPRECATED(
-        "The ranges::action namespace has been renamed to ranges::actions. "
-        "(Sorry!)") action
-    {
-        using namespace actions;
-    }
 #endif
 
     namespace _end_
@@ -117,14 +96,6 @@ namespace ranges
     {
         struct fn;
     }
-
-    template<typename>
-    struct result_of;
-
-    template<typename Sig>
-    using result_of_t EARANGES_DEPRECATED(
-        "ranges::result_of_t is deprecated. "
-        "Please use ranges::invoke_result_t") = meta::_t<result_of<Sig>>;
     /// \endcond
 
     template<typename...>
@@ -172,36 +143,12 @@ namespace ranges
     struct indirectly_readable_traits;
 
     template<typename T>
-    using readable_traits EARANGES_DEPRECATED("Please use ranges::indirectly_readable_traits")
-     = indirectly_readable_traits<T>;
-
-    template<typename T>
     struct incrementable_traits;
 
     struct view_base
     {};
 
     /// \cond
-    namespace detail
-    {
-        template<typename T>
-        struct difference_type_;
-
-        template<typename T>
-        struct value_type_;
-    } // namespace detail
-
-    template<typename T>
-    using difference_type EARANGES_DEPRECATED(
-        "ranges::difference_type<T>::type is deprecated. Use "
-        "ranges::incrementable_traits<T>::difference_type instead.") =
-        detail::difference_type_<T>;
-
-    template<typename T>
-    using value_type EARANGES_DEPRECATED(
-        "ranges::value_type<T>::type is deprecated. Use "
-        "ranges::indirectly_readable_traits<T>::value_type instead.") = detail::value_type_<T>;
-
     template<typename T>
     struct size_type;
     /// \endcond
@@ -528,15 +475,6 @@ namespace ranges
 
     template<typename R>
     EARANGES_INLINE_VAR constexpr bool enable_borrowed_range = false;
-
-    namespace detail
-    {
-        template<typename R>
-        EARANGES_DEPRECATED("Please use ranges::enable_borrowed_range instead.")
-        EARANGES_INLINE_VAR constexpr bool enable_safe_range = enable_borrowed_range<R>;
-    } // namespace detail
-
-    using detail::enable_safe_range;
 
     template<typename Cur>
     struct basic_mixin;

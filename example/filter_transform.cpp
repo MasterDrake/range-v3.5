@@ -11,15 +11,19 @@
 //
 
 ///[filter_transform]
-// This example demonstrates filtering and transforming a range on the
-// fly with view adaptors.
+// This example demonstrates filtering and transforming a range on the fly with view adaptors.
 
 #include <iostream>
-#include <string>
+#include <EASTL/string.h>
 #include <EASTL/vector.h>
 
 #include <EARanges/view/filter.hpp>
 #include <EARanges/view/transform.hpp>
+#include <EARanges/range/conversion.hpp>
+#include <EARanges/view/all.hpp>
+
+#include <cstdio>
+
 using std::cout;
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
@@ -33,12 +37,18 @@ void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
 {
     return new uint8_t[size];
 }
+
+EASTL_EASTDC_API int __cdecl EA::StdC::Vsnprintf(char*  EA_RESTRICT pDestination, size_t n, const char*  EA_RESTRICT pFormat, va_list arguments)
+{
+    return vsnprintf(pDestination, n, pFormat, arguments);
+}
+
 int main()
 {
     eastl::vector<int> const vi{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     using namespace ranges;
-    auto rng = vi | views::filter([](int i) { return i % 2 == 0; }) | views::transform([](int i) { return std::to_string(i); });
+    auto rng = vi | views::filter([](int i) { return i % 2 == 0; }) | views::transform([](int i) { return eastl::to_string(i); }) | to_vector;
     // prints: [2,4,6,8,10]
-    cout << rng << '\n';
+    std::cout << views::all(rng);
 }
 ///[filter_transform]

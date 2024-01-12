@@ -24,8 +24,7 @@
 #include <EARanges/iterator/traits.hpp>
 #include <EARanges/range/primitives.hpp>
 #include <EARanges/range/traits.hpp>
-//#include "../utility/compressed_pair.hpp"
-#include <EASTL/bonus/compressed_pair.h>
+#include <EARanges/utility/compressed_pair.hpp>
 #include <EASTL/type_traits.h>
 
 #include <EARanges/view/all.hpp>
@@ -74,13 +73,13 @@ namespace ranges
         template<typename BaseIter, typename Adapt, int = detail::which_adaptor_value_<BaseIter, Adapt>(priority_tag<2>{})>
         struct adaptor_value_type_
         {
-            eastl::compressed_pair<BaseIter, Adapt> data_;
+            compressed_pair<BaseIter, Adapt> data_;
         };
         template<typename BaseIter, typename Adapt>
         struct adaptor_value_type_<BaseIter, Adapt, 1>
         {
             using value_type = iter_value_t<BaseIter>;
-            eastl::compressed_pair<BaseIter, Adapt> data_;
+            compressed_pair<BaseIter, Adapt> data_;
         };
         template<typename BaseIter, typename Adapt>
         struct adaptor_value_type_<BaseIter, Adapt, 2>
@@ -90,7 +89,7 @@ namespace ranges
 #else  // ^^^ workaround ^^^ / vvv no workaround vvv
             using value_type = typename Adapt::value_type;
 #endif // EARANGES_WORKAROUND_MSVC_688606
-            eastl::compressed_pair<BaseIter, Adapt> data_;
+            compressed_pair<BaseIter, Adapt> data_;
         };
     } // namespace detail
     /// \endcond
@@ -171,7 +170,7 @@ namespace ranges
     private:
         template<typename, typename>
         friend struct adaptor_cursor;
-        EARANGES_NO_UNIQUE_ADDRESS eastl::compressed_pair<BaseSent, Adapt> data_;
+        EARANGES_NO_UNIQUE_ADDRESS compressed_pair<BaseSent, Adapt> data_;
 
     public:
         base_adaptor_sentinel() = default;

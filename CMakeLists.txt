@@ -110,7 +110,11 @@ if(EARANGES_HEADER_CHECKS)
       endif()
     endforeach()
   endif()
-
+  
+  foreach(deprecated_header ${EARANGES_DEPRECATED_PUBLIC_HEADERS})
+	message(STATUS "Deprecated header ${deprecated_header}")
+  endforeach()
+	
   if(NOT EARANGES_COROUTINE_FLAGS)
       # Can't test this header if we can't even compile it
       list(APPEND EARANGES_DEPRECATED_PUBLIC_HEADERS experimental/utility/generator.hpp)

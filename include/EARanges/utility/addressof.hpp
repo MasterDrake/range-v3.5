@@ -29,44 +29,7 @@ namespace ranges
     /// \cond
     namespace detail
     {
-#if EASTL_ADDRESSOF_CONSTEXPR
         using eastl::addressof;
-        //TODO:#error Teoricamente il compiler ha implementato addressof come constexpr ma eastl no, quindi potremmo usare questo switch per vedere se funzionano i constexpr tests
-#else
-        namespace check_addressof
-        {
-            inline ignore_t operator&(ignore_t)
-            {
-                return {};
-            }
-            template<typename T>
-            auto addressof(T & t)
-            {
-                return &t;
-            }
-        } // namespace check_addressof
-
-        template<typename T>
-        constexpr bool has_bad_addressof()
-        {
-            return !eastl::is_scalar<T>::value && !EARANGES_IS_SAME(decltype(check_addressof::addressof(*(T *)nullptr)),ignore_t);
-        }
-
-        template(typename T)(requires(has_bad_addressof<T>()))
-        T * addressof(T & arg) noexcept
-        {
-            return eastl::addressof(arg);
-        }
-
-        template(typename T)(requires (!has_bad_addressof<T>()))
-        constexpr T * addressof(T & arg) noexcept
-        {
-            return &arg;
-        }
-
-        template<typename T>
-        T const * addressof(T const &&) = delete;
-#endif
     } // namespace detail
     /// \endcond
 } // namespace ranges

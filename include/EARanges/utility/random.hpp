@@ -10,7 +10,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
-//TODO: Change std:: array and see what random can eastl offer, besides pcg. EAstl doesn't have a random_device.
+//TODO:EASTL doesn't have a random_device.
 /*
  * Random-Number Utilities (randutil)
  *     Addresses common issues with C++11 random number generation.
@@ -48,7 +48,7 @@
 #include <EASTL/initializer_list.h>
 #include <new>
 #include <EASTL/random.h>
-//#inclu
+#include <random> //todo for random_device
 #include <EARanges/meta/meta.hpp>
 
 #include <EARanges/concepts/concepts.hpp>
@@ -61,11 +61,10 @@
 #include <EARanges/functional/reference_wrapper.hpp>
 #include <EARanges/iterator/concepts.hpp>
 
-//TODO: Figure it out, or not using the real mutex, instead of the std one. No mutex in eastl :_/ Infatti usano quello di default :/
 #define EARANGES_CXX_TRHEAD_LOCAL 1
 
 #if !EARANGES_CXX_THREAD_LOCAL
-#include <mutex> //https://github.com/electronicarts/EASTL/blob/05f4b4aef33f2f3ded08f19fa97f5a27ff35ff9f/include/EASTL/internal/thread_support.h#L22
+#include <mutex>
 #endif
 
 #include <EARanges/detail/prologue.hpp>
@@ -118,8 +117,7 @@ namespace ranges
 #if defined(__GLIBCXX__) && defined(EARANGES_WORKAROUND_VALGRIND_RDRAND)
                 std::random_device rd{"/dev/urandom"};
 #else
-                //std::random_device rd;
-                uint32_t rd{14051997};
+                std::random_device rd;
 #endif
                 eastl::uniform_int_distribution<std::uint32_t> dist{};
                 ranges::generate(seeds, [&] { return dist(rd); });
@@ -417,8 +415,7 @@ namespace ranges
             using auto_seed_128 = auto_seeded<seed_seq_fe128>;
             using auto_seed_256 = auto_seeded<seed_seq_fe256>;
         } // namespace randutils
-        //TODO: Use the pcg-one. Fatto ma non funzia because of auto seed che non ho capito che cazzo sia
-        using default_URNG = meta::if_c<(sizeof(void *) >= sizeof(long long)), eastl::RNG_64, eastl::RNG>;
+        using default_URNG = meta::if_c<(sizeof(void *) >= sizeof(long long)), eastl::RNG64, eastl::RNG32>;
 
 #if !EARANGES_CXX_THREAD_LOCAL
         template<typename URNG>

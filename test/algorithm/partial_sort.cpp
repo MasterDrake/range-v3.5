@@ -208,10 +208,8 @@ int main()
             CHECK((std::size_t)v[j].j == v.size() - j - 1);
         }
     }
-#if EASTL_ADDRESSOF_CONSTEXPR
     {
         STATIC_CHECK(test_constexpr());
     }
-#endif
     return ::test_result();
 }

@@ -14,7 +14,6 @@
 #ifndef EARANGES_UTILITY_HPP
 #define EARANGES_UTILITY_HPP
 
-#include <EARanges/utility/any.hpp>
 #include <EARanges/utility/box.hpp>
 #include <EARanges/utility/common_tuple.hpp>
 #include <EARanges/utility/common_type.hpp>

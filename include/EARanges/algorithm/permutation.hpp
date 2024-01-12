@@ -112,66 +112,7 @@ namespace ranges
 
     EARANGES_FUNC_BEGIN(is_permutation)
 
-        /// \brief function template \c is_permutation
-        template(typename I1,
-                 typename S1,
-                 typename I2,
-                 typename C = equal_to,
-                 typename P1 = identity,
-                 typename P2 = identity)(
-            requires forward_iterator<I1> AND sentinel_for<S1, I1> AND
-                forward_iterator<I2> AND indirectly_comparable<I1, I2, C, P1, P2>)
-        EARANGES_DEPRECATED(
-            "Use the variant of ranges::is_permutation that takes an upper bound "
-            "for both sequences")
-        bool EARANGES_FUNC(is_permutation)(I1 begin1,
-                                         S1 end1,
-                                         I2 begin2,
-                                         C pred = C{},
-                                         P1 proj1 = P1{},
-                                         P2 proj2 = P2{}) //
-        {
-            // shorten sequences as much as possible by lopping off any equal parts
-            for(; begin1 != end1; ++begin1, ++begin2)
-                if(!invoke(pred, invoke(proj1, *begin1), invoke(proj2, *begin2)))
-                    goto not_done;
-            return true;
-        not_done:
-            // begin1 != end1 && *begin1 != *begin2
-            auto l1 = distance(begin1, end1);
-            if(l1 == 1)
-                return false;
-            I2 end2 = next(begin2, l1);
-            // For each element in [f1, l1) see if there are the same number of
-            //    equal elements in [f2, l2)
-            for(I1 i = begin1; i != end1; ++i)
-            {
-                // Have we already counted the number of *i in [f1, l1)?
-                for(I1 j = begin1; j != i; ++j)
-                    if(invoke(pred, invoke(proj1, *j), invoke(proj1, *i)))
-                        goto next_iter;
-                {
-                    // Count number of *i in [f2, l2)
-                    iter_difference_t<I2> c2 = 0;
-                    for(I2 j = begin2; j != end2; ++j)
-                        if(invoke(pred, invoke(proj1, *i), invoke(proj2, *j)))
-                            ++c2;
-                    if(c2 == 0)
-                        return false;
-                    // Count number of *i in [i, l1) (we can start with 1)
-                    iter_difference_t<I1> c1 = 1;
-                    for(I1 j = next(i); j != end1; ++j)
-                        if(invoke(pred, invoke(proj1, *i), invoke(proj1, *j)))
-                            ++c1;
-                    if(c1 != c2)
-                        return false;
-                }
-            next_iter:;
-            }
-            return true;
-        }
-
-        /// \overload
+        /// \brief function template \c is_permutation     
         template(typename I1,
                  typename S1,
                  typename I2,
@@ -211,34 +152,6 @@ namespace ranges
                                                eastl::move(pred),
                                                eastl::move(proj1),
                                                eastl::move(proj2));
-        }
-
-        /// \overload
-        template(typename Rng1,
-                     typename I2Ref,
-                     typename C = equal_to,
-                     typename P1 = identity,
-                     typename P2 = identity)(
-            requires forward_range<Rng1> AND forward_iterator<uncvref_t<I2Ref>> AND
-                indirectly_comparable<iterator_t<Rng1>, uncvref_t<I2Ref>, C, P1, P2>)
-        EARANGES_DEPRECATED(
-            "Use the variant of ranges::is_permutation that takes an upper bound "
-            "for both sequences")
-        bool EARANGES_FUNC(is_permutation)(Rng1 && rng1,
-                                         I2Ref && begin2,
-                                         C pred = C{},
-                                         P1 proj1 = P1{},
-                                         P2 proj2 = P2{}) //
-        {
-            EARANGES_DIAGNOSTIC_PUSH
-            EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
-            return (*this)(begin(rng1),
-                           end(rng1),
-                           (I2Ref &&) begin2,
-                           eastl::move(pred),
-                           eastl::move(proj1),
-                           eastl::move(proj2));
-            EARANGES_DIAGNOSTIC_POP
         }
 
         /// \overload

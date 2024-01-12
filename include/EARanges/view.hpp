@@ -44,7 +44,6 @@
 #include <EARanges/view/generate.hpp>
 #include <EARanges/view/generate_n.hpp>
 #include <EARanges/view/getlines.hpp>
-#include <EARanges/view/group_by.hpp>
 #include <EARanges/view/indices.hpp>
 #include <EARanges/view/indirect.hpp>
 #include <EARanges/view/intersperse.hpp>

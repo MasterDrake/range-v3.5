@@ -16,7 +16,6 @@
 #include <iostream>
 
 #include <EARanges/all.hpp> // get everything
-using std::cout;
 
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
@@ -37,6 +36,6 @@ int main()
 
     // output: h e l l o
     ranges::for_each(s, [](char c) { cout << c << ' '; });
-    cout << '\n';
+    std::cout << '\n';
 }
 ///[hello]

@@ -85,9 +85,7 @@ int main()
     CHECK(ranges::for_each_n(v2, 4, fun, &S::i_) == v2.begin() + 4);
     CHECK(sum == 13 * 2);
 
-#if EASTL_ADDRESSOF_CONSTEXPR
     STATIC_CHECK(test_constexpr());
-#endif
 
     return ::test_result();
 }

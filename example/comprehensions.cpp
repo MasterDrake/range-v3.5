@@ -76,10 +76,9 @@ public:
     }
     eastl::chrono::milliseconds elapsed() const
     {
-        return eastl::chrono::duration_cast<eastl::chrono::milliseconds>(
-            eastl::chrono::high_resolution_clock::now() - start_);
+        return eastl::chrono::duration_cast<eastl::chrono::milliseconds>(eastl::chrono::high_resolution_clock::now() - start_);
     }
-    friend std::ostream &operator<<(std::ostream &sout, timer const &t)
+    friend std::ostream& operator<<(std::ostream &sout, timer const &t)
     {
         return sout << t.elapsed().count() << "ms";
     }
@@ -92,8 +91,7 @@ benchmark()
     auto triples = views::for_each(views::iota(1), [](int z) {
         return views::for_each(views::iota(1, z + 1), [=](int x) {
             return views::for_each(views::iota(x, z + 1), [=](int y) {
-                return yield_if(x * x + y * y == z * z,
-                                eastl::make_tuple(x, y, z));
+                return yield_if(x * x + y * y == z * z, eastl::make_tuple(x, y, z));
             });
         });
     });

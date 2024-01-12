@@ -43,33 +43,7 @@ namespace ranges
 
     EARANGES_FUNC_BEGIN(mismatch)
 
-        /// \brief function template \c mismatch
-        template(typename I1,
-                     typename S1,
-                     typename I2,
-                     typename C = equal_to,
-                     typename P1 = identity,
-                     typename P2 = identity)(
-            requires input_iterator<I1> AND sentinel_for<S1, I1> AND
-                input_iterator<I2> AND
-                indirect_relation<C, projected<I1, P1>, projected<I2, P2>>)
-        EARANGES_DEPRECATED(
-            "Use the variant of ranges::mismatch that takes an upper bound for "
-            "both sequences")
-        mismatch_result<I1, I2> EARANGES_FUNC(mismatch)(I1 begin1,
-                                                      S1 end1,
-                                                      I2 begin2,
-                                                      C pred = C{},
-                                                      P1 proj1 = P1{},
-                                                      P2 proj2 = P2{}) //
-        {
-            for(; begin1 != end1; ++begin1, ++begin2)
-                if(!invoke(pred, invoke(proj1, *begin1), invoke(proj2, *begin2)))
-                    break;
-            return {begin1, begin2};
-        }
-
-        /// \overload
+        /// \brief function template \c mismatch   
         template(typename I1,
                      typename S1,
                      typename I2,
@@ -94,38 +68,7 @@ namespace ranges
             return {begin1, begin2};
         }
 
-        /// \overload
-        template(typename Rng1,
-                     typename I2Ref,
-                     typename C = equal_to,
-                     typename P1 = identity,
-                     typename P2 = identity)( //s
-            requires input_range<Rng1> AND input_iterator<uncvref_t<I2Ref>> AND
-                indirect_relation<C,
-                                  projected<iterator_t<Rng1>, P1>,
-                                  projected<uncvref_t<I2Ref>, P2>>)
-        EARANGES_DEPRECATED(
-            "Use the variant of ranges::mismatch that takes an upper bound for "
-            "both sequences")
-        mismatch_result<borrowed_iterator_t<Rng1>, uncvref_t<I2Ref>>
-        EARANGES_FUNC(mismatch)(Rng1 && rng1,
-                              I2Ref && begin2,
-                              C pred = C{}, // see below [*]
-                              P1 proj1 = P1{},
-                              P2 proj2 = P2{}) //
-        {
-            EARANGES_DIAGNOSTIC_PUSH
-            EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
-            return (*this)(begin(rng1),
-                           end(rng1),
-                           static_cast<uncvref_t<I2Ref> &&>(begin2),
-                           eastl::move(pred),
-                           eastl::move(proj1),
-                           eastl::move(proj2));
-            EARANGES_DIAGNOSTIC_POP
-        }
-
-        /// \overload
+        /// \overload      
         template(typename Rng1,
                      typename Rng2,
                      typename C = equal_to,

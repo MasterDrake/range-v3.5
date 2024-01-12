@@ -39,8 +39,7 @@ void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
 int main()
 {
     using namespace ranges;
-    auto vi = views::for_each(views::ints(1, 6),
-                              [](int i) { return yield_from(views::repeat_n(i, i)); }) |
+    auto vi = views::for_each(views::ints(1, 6), [](int i) { return yield_from(views::repeat_n(i, i)); }) |
               to<eastl::vector>();
     // prints: [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5]
     cout << views::all(vi) << '\n';

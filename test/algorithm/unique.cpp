@@ -202,10 +202,8 @@ int main()
         CHECK(a[1] == 1);
         CHECK(a[2] == 2);
     }
-#if EASTL_ADDRESSOF_CONSTEXPR
     {
         STATIC_CHECK(test_constexpr());
     }
-#endif    
     return ::test_result();
 }

@@ -25,8 +25,7 @@
 
 #include <EARanges/functional/bind_back.hpp>
 #include <EARanges/functional/invoke.hpp>
-#include <EARanges/utility/compressed_pair.hpp>//TODO: ERRORE?
-//#include "../../../../../../../../Common_3/Utilities/ThirdParty/OpenSource/EASTL/bonus/compressed_pair.h"
+#include <EARanges/utility/compressed_pair.hpp>
 #include <EARanges/utility/semiregular_box.hpp>
 #include <EARanges/utility/static_const.hpp>
 #include <EARanges/view/all.hpp>
@@ -41,10 +40,10 @@ namespace ranges
     namespace detail
     {
         template<typename Pred, typename Val>
-        struct replacer_if_fn : eastl::compressed_pair<semiregular_box_t<Pred>, Val>
+        struct replacer_if_fn : compressed_pair<semiregular_box_t<Pred>, Val>
         {
         private:
-            using base_t = eastl::compressed_pair<semiregular_box_t<Pred>, Val>;
+            using base_t = compressed_pair<semiregular_box_t<Pred>, Val>;
             using base_t::first;
             using base_t::second;
 

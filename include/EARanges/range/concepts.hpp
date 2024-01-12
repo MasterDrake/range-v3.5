@@ -69,10 +69,6 @@ namespace ranges
     template<typename T>
     CPP_concept borrowed_range = range<T> && detail::_borrowed_range<T>;
 
-    template <typename R>
-    EARANGES_DEPRECATED("Please use ranges::borrowed_range instead.")
-    EARANGES_INLINE_VAR constexpr bool safe_range = borrowed_range<R>;
-
     /// \concept output_range_
     /// \brief The \c output_range_ concept
     template(typename T, typename V)(

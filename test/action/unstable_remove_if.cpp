@@ -12,6 +12,7 @@
 #include <EASTL/vector.h>
 #include <cstdlib>
 #include <ctime>
+#include <EASTL/random.h>
 #include <random>
 
 #include <EARanges/action/unstable_remove_if.hpp>
@@ -188,8 +189,8 @@ class fuzzy_test_fn
 #else
     std::random_device rd;
 #endif
-    std::mt19937 eng{rd()};
-    std::uniform_int_distribution<int> distr;
+    eastl::RNG<> eng{rd()};
+    eastl::uniform_int_distribution<int> distr;
 
 public:
     explicit fuzzy_test_fn(int sz)

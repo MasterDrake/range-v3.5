@@ -24,26 +24,16 @@ namespace eastl
 	///
 	/// From the C++11 Standard, section 20.6.12.1
 	/// Returns the actual address of the object or function referenced by r, even in the presence of an overloaded operator&.
-	///
-#if !EASTL_ADDRESSOFF_CONSTEXPR
-
+	/// 
 	template<typename T>
-	T* addressof(T& value) EA_NOEXCEPT
+    constexpr T * addressof(T & value) EA_NOEXCEPT
 	{
-		return reinterpret_cast<T*>(&const_cast<char&>(reinterpret_cast<const volatile char&>(value)));
+        if constexpr(true)
+            return __builtin_addressof(value);
+		else
+			return reinterpret_cast<T*>(&const_cast<char&>(reinterpret_cast<const volatile char&>(value)));
 	}
-
-#else
-
-	template<typename T>
-	constexpr T* addressof(T& value) EA_NOEXCEPT
-	{
-		return __builtin_addressof(value);
-	}
-
-#endif
 
 } // namespace eastl
 
 #endif // EASTL_INTERNAL_MEMORY_BASE_H
-

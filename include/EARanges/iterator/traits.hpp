@@ -28,23 +28,10 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-
-//TODO: un sacco di lavoro da rimuovere qua!!
 namespace ranges
 {
     /// \addtogroup group-iterator
     /// @{
-
-    /// \cond
-    using input_iterator_tag EARANGES_DEPRECATED(
-        "Please switch to the standard iterator tags") = eastl::input_iterator_tag;
-    using forward_iterator_tag EARANGES_DEPRECATED(        
-        "Please switch to the standard iterator tags") = eastl::forward_iterator_tag;
-    using bidirectional_iterator_tag EARANGES_DEPRECATED(  
-        "Please switch to the standard iterator tags") = eastl::bidirectional_iterator_tag;
-    using random_access_iterator_tag EARANGES_DEPRECATED(  
-        "Please switch to the standard iterator tags") = eastl::random_access_iterator_tag;
-    /// \endcond
 
     struct contiguous_iterator_tag : eastl::random_access_iterator_tag
     {};
@@ -122,52 +109,8 @@ namespace ranges
         {};
     } // namespace detail
 
-    template<typename T>
-    using difference_type_t EARANGES_DEPRECATED(
-        "ranges::difference_type_t is deprecated. Please use "
-        "ranges::iter_difference_t instead.") = iter_difference_t<T>;
-
-    template<typename T>
-    using value_type_t EARANGES_DEPRECATED(
-        "ranges::value_type_t is deprecated. Please use "
-        "ranges::iter_value_t instead.") = iter_value_t<T>;
-
-    template<typename R>
-    using reference_t EARANGES_DEPRECATED(
-        "ranges::reference_t is deprecated. Use ranges::iter_reference_t "
-        "instead.") = iter_reference_t<R>;
-
-    template<typename I>
-    using rvalue_reference_t EARANGES_DEPRECATED(
-        "rvalue_reference_t is deprecated; "
-        "use iter_rvalue_reference_t instead") = iter_rvalue_reference_t<I>;
-
-    template<typename T>
-    struct EARANGES_DEPRECATED(
-        "ranges::size_type is deprecated. Iterators do not have an associated "
-        "size_type.") size_type : detail::size_type_<T>
-    {};
-
-    template<typename I>
-    using size_type_t EARANGES_DEPRECATED("size_type_t is deprecated.") = detail::iter_size_t<I>;
     /// \endcond
 
-    //namespace cpp20
-    //{
-    //    using ranges::iter_common_reference_t;
-    //    using ranges::iter_difference_t;
-    //    using ranges::iter_reference_t;
-    //    using ranges::iter_rvalue_reference_t;
-    //    using ranges::iter_value_t;
-
-    //    // Specialize these in the ranges:: namespace
-    //    using ranges::disable_sized_sentinel;
-    //    template<typename T>
-    //    using incrementable_traits = ranges::incrementable_traits<T>;
-    //    template<typename T>
-    //    using indirectly_readable_traits = ranges::indirectly_readable_traits<T>;
-    //} // namespace cpp20
-    /// @}
 } // namespace ranges
 
 #include <EARanges/detail/epilogue.hpp>

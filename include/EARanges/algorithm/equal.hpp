@@ -54,31 +54,6 @@ namespace ranges
 
         /// \brief function template \c equal
         template(typename I0,
-                     typename S0,
-                     typename I1,
-                     typename C = equal_to,
-                     typename P0 = identity,
-                     typename P1 = identity)(
-            requires input_iterator<I0> AND sentinel_for<S0, I0> AND
-                input_iterator<I1> AND indirectly_comparable<I0, I1, C, P0, P1>)
-        EARANGES_DEPRECATED(
-            "Use the variant of ranges::equal that takes an upper bound for "
-            "both sequences")
-        constexpr bool EARANGES_FUNC(equal)(I0 begin0,
-                                          S0 end0,
-                                          I1 begin1,
-                                          C pred = C{},
-                                          P0 proj0 = P0{},
-                                          P1 proj1 = P1{}) //
-        {
-            for(; begin0 != end0; ++begin0, ++begin1)
-                if(!invoke(pred, invoke(proj0, *begin0), invoke(proj1, *begin1)))
-                    return false;
-            return true;
-        }
-
-        /// \overload
-        template(typename I0,
                  typename S0,
                  typename I1,
                  typename S1,
@@ -107,34 +82,6 @@ namespace ranges
                                          eastl::move(pred),
                                          eastl::move(proj0),
                                          eastl::move(proj1));
-        }
-
-        /// \overload
-        template(typename Rng0,
-                     typename I1Ref,
-                     typename C = equal_to,
-                     typename P0 = identity,
-                     typename P1 = identity)(
-            requires input_range<Rng0> AND input_iterator<uncvref_t<I1Ref>> AND
-                indirectly_comparable<iterator_t<Rng0>, uncvref_t<I1Ref>, C, P0, P1>)
-        EARANGES_DEPRECATED(
-            "Use the variant of ranges::equal that takes an upper bound for "
-            "both sequences")
-        constexpr bool EARANGES_FUNC(equal)(Rng0 && rng0,
-                                          I1Ref && begin1,
-                                          C pred = C{},
-                                          P0 proj0 = P0{},
-                                          P1 proj1 = P1{}) //
-        {
-            EARANGES_DIAGNOSTIC_PUSH
-            EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
-            return (*this)(begin(rng0),
-                           end(rng0),
-                           (I1Ref &&) begin1,
-                           eastl::move(pred),
-                           eastl::move(proj0),
-                           eastl::move(proj1));
-            EARANGES_DIAGNOSTIC_POP
         }
 
         /// \overload

@@ -37,13 +37,16 @@ struct vector_like : eastl::vector<T>
     using eastl::vector<T>::vector;
 
     using typename eastl::vector<T>::size_type;
+    using typename eastl::vector<T>::value_type;
+    using typename eastl::vector<T>::base_type::DoAllocate;
+    using typename eastl::vector<T>::DoAllocate;
 
     size_type last_reservation{};
     size_type reservation_count{};
 
-    void reserve(size_type n)
+    inline T* DoAllocate(size_type n)
     {
-      eastl::vector<T>::reserve(n);
+      eastl::vector<T>::DoAllocate(n);
       last_reservation = n;
       ++reservation_count;
     }
@@ -83,7 +86,8 @@ int main()
         insert(views::ref(s), 12);
         ::check_equal(s, {0,2,4,6,8,10,12});
     }
-    //TODO:1) No allocation is being made for this vector_like :/
+    //TODO:1) No allocation is being made for this vector_like :/1162vector<T, Allocator>::insert(const_iterator position, InputIterator first, InputIterator last)
+
     {
        const std::size_t N = 1024;
        vector_like<int> vl;

@@ -128,11 +128,6 @@ namespace ranges
     CPP_concept indirectly_readable = //
         CPP_concept_ref(ranges::readable_, uncvref_t<I>);
 
-    template<typename I>
-    EARANGES_DEPRECATED("Please use ranges::indirectly_readable instead")
-    EARANGES_INLINE_VAR constexpr bool readable = //
-        indirectly_readable<I>;
-
     /// \concept writable_
     /// \brief The \c writable_ concept
     template<typename O, typename T>
@@ -150,10 +145,6 @@ namespace ranges
     CPP_concept indirectly_writable = //
         CPP_requires_ref(ranges::writable_, O, T);
 
-    template<typename O, typename T>
-    EARANGES_DEPRECATED("Please use ranges::indirectly_writable instead")
-    EARANGES_INLINE_VAR constexpr bool writable = //
-        indirectly_writable<O, T>;
     // clang-format on
 
     /// \cond
@@ -862,40 +853,7 @@ namespace ranges
                 sized_sentinel_tag,       //
                 sentinel_tag>>;
 
-    //TODO: Deprecated things:
-    /// \cond
-    template<typename I>
-    using iterator_category EARANGES_DEPRECATED(
-        "iterator_category is deprecated. Use the iterator concepts instead") =
-        detail::iterator_category<I>;
-
-    template<typename I>
-    using iterator_category_t EARANGES_DEPRECATED(
-        "iterator_category_t is deprecated. Use the iterator concepts instead") =
-        meta::_t<detail::iterator_category<I>>;
-
-    template<typename Fun, typename... Is>
-    using indirect_invoke_result_t EARANGES_DEPRECATED(
-        "Please switch to indirect_result_t") = indirect_result_t<Fun, Is...>;
-
-    template<typename Fun, typename... Is>
-    struct EARANGES_DEPRECATED("Please switch to indirect_result_t") indirect_invoke_result
-      : meta::defer<indirect_result_t, Fun, Is...>
-    {};
-
-    template<typename Sig>
-    struct indirect_result_of
-    {};
-
-    template<typename Fun, typename... Is>
-    struct EARANGES_DEPRECATED("Please switch to indirect_result_t")
-        indirect_result_of<Fun(Is...)> : meta::defer<indirect_result_t, Fun, Is...>
-    {};
-
-    template<typename Sig>
-    using indirect_result_of_t EARANGES_DEPRECATED("Please switch to indirect_result_t") =
-        meta::_t<indirect_result_of<Sig>>;
-    /// \endcond
+    
     /// 
     /// @}
 } // namespace ranges

@@ -120,18 +120,18 @@ int main()
     CHECK(h == 4);
 #endif
 
-    //int aa=24,bb=82;
-    //ranges::iter_swap(&aa, &bb);
-    //CHECK(aa == 82);
-    //CHECK(bb == 24);
-    //
-    //eastl::unique_ptr<int> u0{new int{1}};
-    //eastl::unique_ptr<int> u1{new int{2}};
-    //int *p0 = u0.get();
-    //int *p1 = u1.get();
-    //ranges::iter_swap(&u0, &u1);
-    //CHECK(u0.get() == p1);
-    //CHECK(u1.get() == p0);
+    int aa=24,bb=82;
+    ranges::iter_swap(&aa, &bb);
+    CHECK(aa == 82);
+    CHECK(bb == 24);
+    
+    eastl::unique_ptr<int> u0{new int{1}};
+    eastl::unique_ptr<int> u1{new int{2}};
+    int *p0 = u0.get();
+    int *p1 = u1.get();
+    ranges::iter_swap(&u0, &u1);
+    CHECK(u0.get() == p1);
+    CHECK(u1.get() == p0);
 
     {
         using namespace ranges;

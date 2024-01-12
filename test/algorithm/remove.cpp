@@ -197,11 +197,9 @@ int main()
     CHECK(vec[4].i == 3);
     CHECK(vec[5].i == 4);
 
-#if EASTL_ADDRESSOF_CONSTEXPR
     {
         STATIC_CHECK(test_constexpr());
     }
-#endif
 
     return ::test_result();
 }

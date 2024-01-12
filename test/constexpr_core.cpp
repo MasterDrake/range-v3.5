@@ -250,19 +250,17 @@ constexpr /*c++14*/ auto test_init_list() -> bool
     return true;
 }
 
-#if EASTL_ADDRESSOF_CONSTEXPR
 #define ADDR_CONSTEXPR constexpr
-#else
-#define ADDR_CONSTEXPR
-#endif
 
-namespace addr {
+namespace addr
+{
     struct Good { };
     struct Bad { void operator&() const; };
     struct Bad2 { friend void operator&(Bad2); };
 }
 
-void test_constexpr_addressof() {
+void test_constexpr_addressof()
+{
     static constexpr int i = 0;
     static constexpr int const* pi = ranges::detail::addressof(i);
     static_assert(&i == pi, "");
@@ -277,13 +275,9 @@ void test_constexpr_addressof() {
     static constexpr addr::Bad2 b2 = {};
     static ADDR_CONSTEXPR addr::Bad2 const* pb2 = ranges::detail::addressof(b2);
 
-#if EASTL_ADDRESSOF_CONSTEXPR
+
     static_assert(eastl::addressof(b) == pb, "");
     static_assert(eastl::addressof(b2) == pb2, "");
-#else
-    (void)pb;
-    (void)pb2;
-#endif
 }
 
 int main()

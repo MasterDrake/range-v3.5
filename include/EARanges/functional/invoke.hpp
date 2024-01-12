@@ -79,17 +79,10 @@ namespace ranges
     /// \endcond
 
     template<typename T>
-    EARANGES_INLINE_VAR constexpr bool is_reference_wrapper_v =
-        detail::is_reference_wrapper_v<detail::decay_t<T>>;
+    EARANGES_INLINE_VAR constexpr bool is_reference_wrapper_v = detail::is_reference_wrapper_v<detail::decay_t<T>>;
 
     template<typename T>
     using is_reference_wrapper = meta::bool_<is_reference_wrapper_v<T>>;
-
-    /// \cond
-    template<typename T>
-    using is_reference_wrapper_t EARANGES_DEPRECATED(
-        "is_reference_wrapper_t is deprecated.") = meta::_t<is_reference_wrapper<T>>;
-    /// \endcond
 
     struct invoke_fn
     {

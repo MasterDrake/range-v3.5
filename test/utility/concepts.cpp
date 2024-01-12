@@ -12,7 +12,7 @@
 
 //#define EARANGES_USE_LEGACY_CONCEPTS 1
 
-#include <sstream>
+//#include <sstream>
 #include <EASTL/vector.h>
 #include <EARanges/concepts/concepts.hpp>
 #include <EARanges/iterator/concepts.hpp>
@@ -224,8 +224,8 @@ static_assert(!ranges::copyable<int const>, "");
 static_assert(!ranges::copyable<moveonly>, "");
 static_assert(!ranges::copyable<nonmovable>, "");
 
-// static_assert(ranges::predicate<eastl::less<int>, int, int>, "");
-// static_assert(!ranges::predicate<eastl::less<int>, char*, int>, "");
+static_assert(ranges::predicate<eastl::less<int>, int, int>, "");
+static_assert(!ranges::predicate<eastl::less<int>, char*, int>, "");
 
 static_assert(ranges::input_iterator<int*>, "");
 static_assert(!ranges::input_iterator<int>, "");

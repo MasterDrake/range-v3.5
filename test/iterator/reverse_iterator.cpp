@@ -514,7 +514,7 @@ int main()
         CHECK ( ri == ranges::rend(l));
     }
     {
-        const char* s = "1234567890";
+        const char* s = "12343567890";
         test25(RandomAccessIterator<const char*>(s+5), 5, RandomAccessIterator<const char*>(s));
         test25(s+5, 5, s);
     }

@@ -22,7 +22,8 @@ int main()
 
     auto even = numbers
         // Keep only the even numbers
-        | ranges::views::filter([](const int& num) {
+        | ranges::views::filter([](const int& num) 
+        {
           return num % 2 == 0;
         });
 

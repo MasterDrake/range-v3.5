@@ -104,7 +104,7 @@ void issue_420_regression()
     CPP_assert(sized_sentinel_for<RI<int*>, RI<int*>>);
     CPP_assert(!sized_sentinel_for<RI<int*>, RI<float*>>);
     using BI = BidirectionalIterator<int*>;
-    //CPP_assert(!sized_sentinel_for<RI<BI>, RI<BI>>);
+    CPP_assert(!sized_sentinel_for<RI<BI>, RI<BI>>);
 }
 
 struct value_type_tester_thingy {};

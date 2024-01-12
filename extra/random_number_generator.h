@@ -2,182 +2,152 @@
 
 #include <EASTL/internal/random/pcg_random.hpp>
 
-//TODO: Utilizzare template per creare più versioni a seconda se si vuole 64 o 32 bit come return value, fast or unique e blah blah blah
-class RNG
+namespace eastl
 {
-public:
-	using seed_type   =	pcg32_oneseq::state_type;
-	using result_type = pcg32_oneseq::result_type;
 
-	RNG() = default;
+    struct RNG32Tag
+    {};
+    struct RNG64Tag
+    {};
 
-	explicit RNG(seed_type seed) : rng(seed){}
+    template<typename T>
+    struct RNGTraits;
 
-	RNG(const RNG& o) :rng(o.rng) {}
+    template<>
+    struct RNGTraits<RNG32Tag>
+    {
+        using engine = pcg32_oneseq;
+    };
 
-	inline void seed()
-	{
-		rng.seed();
-	}
+    template<>
+    struct RNGTraits<RNG64Tag>
+    {
+        using engine = pcg64_oneseq;
+    };
 
-	inline void seed(seed_type seed)
-	{
-		rng.seed(seed);
-	}
-	
-	inline result_type operator()()
-	{
-		return rng();
-	}
-	//It generates a random number n such that 0 <= n < upper_bound
-	inline result_type operator()(result_type upper_bound)
-	{
-		return rng(upper_bound);
-	}
+    template<class Tag = RNG32Tag>
+    class RNG
+    {
+    public:
+        using engine = typename RNGTraits<Tag>::engine;
+        using seed_type = typename engine::state_type;
+        using result_type = typename engine::result_type;
 
-	//It generates a random number n such that lower_bound <= n < upper_bound
-	inline result_type operator()(result_type lower_bound, result_type upper_bound)
-	{
-		return rng(upper_bound - lower_bound + 1) + lower_bound;
-	}
+        RNG() = default;
 
-	inline void discard(seed_type n)
-	{
-		rng.discard(n);
-	}
+        explicit RNG(seed_type seed)
+          : rng(seed)
+        {}
 
-	static constexpr result_type min()
-	{
-		return result_type(0UL);
-	}
+        RNG(const RNG & o)
+          : rng(o.rng)
+        {}
 
-	static constexpr result_type max()
-	{
-		return result_type(~result_type(0UL));
-	}
+        RNG(RNG && o) noexcept
+          : rng(std::move(o.rng))
+        {}
 
-	inline bool operator==( const RNG& r) const
-	{
-		return rng == r.rng;
-	}
-	//bool operator!=(const RNG& r) const
-	//{
-	//	return !(*this == r);
-	//}
-	inline std::ostream& operator<<(std::ostream& out) const
-	{
-		out << rng;
-		return out;
-	}
-	inline std::istream& operator>>(std::istream& in)
-	{
-		in >> rng;
-		return in;
-	}
-	//Advances the generator forward delta steps, but does so in logarithmic time.
-	inline void advance(seed_type delta)
-	{
-		rng.advance(delta);
-	}
-	//Move the generator backwards delta steps, but does so in logarithmic time.
-	inline void backstep(seed_type delta)
-	{
-		rng.backstep(delta);
-	}
-	inline seed_type operator-(const RNG& o) const
-	{
-		return rng - o.rng;
-	}
-private:
-	pcg32_oneseq rng{};
-};
+        RNG & operator=(const RNG & other)
+        {
+            return *this = RNG(other);
+        }
 
+        RNG & operator=(RNG && other) noexcept
+        {
+            eastl::swap(rng, other.rng);
+            return *this;
+        }
+        // TODO: if removecvref is used, everything falls apart :( But shhh
+        template<typename SeedSeq, typename = eastl::enable_if_t<!eastl::is_same_v<
+                                       eastl::remove_reference_t<SeedSeq>, RNG>>>
+        RNG(SeedSeq && seedSeq)
+          : rng(seedSeq)
+        {}
 
-class RNG_64
-{
-public:
-	using seed_type   = pcg64_oneseq::state_type;
-	using result_type = pcg64_oneseq::result_type;
+        inline void seed()
+        {
+            rng.seed();
+        }
 
-	RNG_64() = default;
+        inline void seed(seed_type seed)
+        {
+            rng.seed(seed);
+        }
 
-	explicit RNG_64(seed_type seed) : rng(seed) {}
+        inline result_type operator()()
+        {
+            return rng();
+        }
+        // It generates a random number n such that 0 <= n < upper_bound
+        inline result_type operator()(result_type upper_bound)
+        {
+            return rng(upper_bound);
+        }
 
-	RNG_64(const RNG_64& o) :rng(o.rng) {}
+        // It generates a random number n such that lower_bound <= n < upper_bound
+        inline result_type operator()(result_type lower_bound, result_type upper_bound)
+        {
+            return rng(upper_bound - lower_bound + 1) + lower_bound;
+        }
 
-	inline void seed()
-	{
-		rng.seed();
-	}
+        inline void discard(seed_type n)
+        {
+            rng.discard(n);
+        }
 
-	inline void seed(seed_type seed)
-	{
-		rng.seed(seed);
-	}
+        static constexpr result_type min()
+        {
+            return result_type(0UL);
+        }
 
-	inline result_type operator()()
-	{
-		return rng();
-	}
-	//It generates a random number n such that 0 <= n < upper_bound
-	inline result_type operator()(result_type upper_bound)
-	{
-		return rng(upper_bound);
-	}
+        static constexpr result_type max()
+        {
+            return result_type(~result_type(0UL));
+        }
 
-	//It generates a random number n such that lower_bound <= n < upper_bound
-	inline result_type operator()(result_type lower_bound, result_type upper_bound)
-	{
-		return rng(upper_bound - lower_bound + 1) + lower_bound;
-	}
+        inline bool operator==(const RNG & r) const
+        {
+            return rng == r.rng;
+        }
 
-	inline void discard(seed_type n)
-	{
-		rng.discard(n);
-	}
+        inline bool operator!=(const RNG & r) const
+        {
+            return !(*this == r);
+        }
 
-	static constexpr result_type min()
-	{
-		return result_type(0UL);
-	}
+        // inline std::ostream& operator<<(std::ostream& out) const
+        //{
+        //	out << rng;
+        //	return out;
+        // }
+        // inline std::istream& operator>>(std::istream& in)
+        //{
+        //	in >> rng;
+        //	return in;
+        // }
 
-	static constexpr result_type max()
-	{
-		return result_type(~result_type(0UL));
-	}
+        // Advances the generator forward delta steps, but does so in logarithmic time.
+        inline void advance(seed_type delta)
+        {
+            rng.advance(delta);
+        }
 
-	inline bool operator==(const RNG_64& r) const
-	{
-		return rng == r.rng;
-	}
-	//bool operator!=(const RNG& r) const
-	//{
-	//	return !(*this == r);
-	//}
-	inline std::ostream& operator<<(std::ostream& out) const
-	{
-		out << rng;
-		return out;
-	}
-	inline std::istream& operator>>(std::istream& in)
-	{
-		in >> rng;
-		return in;
-	}
-	//Advances the generator forward delta steps, but does so in logarithmic time.
-	inline void advance(seed_type delta)
-	{
-		rng.advance(delta);
-	}
-	//Move the generator backwards delta steps, but does so in logarithmic time.
-	inline void backstep(seed_type delta)
-	{
-		rng.backstep(delta);
-	}
-	inline seed_type operator-(const RNG_64& o) const
-	{
-		return rng - o.rng;
-	}
-private:
-	pcg64_oneseq rng{};
-};
+        // Move the generator backwards delta steps, but does so in logarithmic time.
+        inline void backstep(seed_type delta)
+        {
+            rng.backstep(delta);
+        }
+
+        inline seed_type operator-(const RNG & o) const
+        {
+            return rng - o.rng;
+        }
+
+    private:
+        engine rng{};
+    };
+
+    using RNG32 = RNG<RNG32Tag>;
+    using RNG64 = RNG<RNG64Tag>;
+
+} // namespace eastl

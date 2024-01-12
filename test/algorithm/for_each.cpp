@@ -66,11 +66,9 @@ int main()
     CHECK(::is_dangling(ranges::for_each(::MakeTestRange(v1.begin(), v1.end()), fun).in));
     CHECK(sum == 12);
     
-#if EASTL_ADDRESSOF_CONSTEXPR
     {
         constexpr auto rng = test::array<int, 4>{{0, 2, 4, 6}};
         STATIC_CHECK(ranges::for_each(rng, void_f).in == ranges::end(rng));
     }
-#endif
     return ::test_result();
 }

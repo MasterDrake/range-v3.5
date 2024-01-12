@@ -200,21 +200,10 @@ namespace ranges
         {
             using partial_sum_base_fn::operator();
 
-            template(typename Fun)(
-                requires (!range<Fun>))
+            template(typename Fun)(requires (!range<Fun>))
             constexpr auto operator()(Fun && fun) const
             {
-                return make_view_closure(
-                    bind_back(partial_sum_base_fn{}, static_cast<Fun &&>(fun)));
-            }
-            template<typename Fun = plus>
-            EARANGES_DEPRECATED(
-                "Use \"ranges::views::partial_sum\" instead of "
-                "\"ranges::views::partial_sum()\".")
-            constexpr auto
-            operator()() const
-            {
-                return make_view_closure(bind_back(partial_sum_base_fn{}, Fun{}));
+                return make_view_closure(bind_back(partial_sum_base_fn{}, static_cast<Fun &&>(fun)));
             }
         };
 
@@ -227,7 +216,7 @@ namespace ranges
 
 #include <EARanges/detail/epilogue.hpp>
 
-#include "../detail/satisfy_boost_range.hpp"
+#include <EARanges/detail/satisfy_boost_range.hpp>
 EARANGES_SATISFY_BOOST_RANGE(::ranges::partial_sum_view)
 
 #endif

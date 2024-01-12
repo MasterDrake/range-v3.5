@@ -223,11 +223,9 @@ int main()
     test_9(1000);
     test_10(1000);
 
-#if EASTL_ADDRESSOF_CONSTEXPR
     {
         STATIC_CHECK(test_constexpr());
     }
-#endif
 
     return test_result();
 }

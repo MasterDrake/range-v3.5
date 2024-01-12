@@ -40,64 +40,6 @@ namespace ranges
     ///
 
     /// \cond
-    template<typename T>
-    struct EARANGES_DEPRECATED("The ranges::mutable_ class template is deprecated") mutable_
-    {
-        mutable T value;
-
-        CPP_member
-        constexpr CPP_ctor(mutable_)()(
-            requires eastl::is_default_constructible<T>::value)
-          : value{}
-        {}
-        constexpr explicit mutable_(T const & t)
-          : value(t)
-        {}
-        constexpr explicit mutable_(T && t)
-          : value(detail::move(t))
-        {}
-        mutable_ const & operator=(T const & t) const
-        {
-            value = t;
-            return *this;
-        }
-        mutable_ const & operator=(T && t) const
-        {
-            value = detail::move(t);
-            return *this;
-        }
-        constexpr operator T &() const &
-        {
-            return value;
-        }
-    };
-
-    template<typename T, T v>
-    struct EARANGES_DEPRECATED("The ranges::constant class template is deprecated") constant
-    {
-        constant() = default;
-        constexpr explicit constant(T const &)
-        {}
-        constant & operator=(T const &)
-        {
-            return *this;
-        }
-        constant const & operator=(T const &) const
-        {
-            return *this;
-        }
-        constexpr operator T() const
-        {
-            return v;
-        }
-        constexpr T exchange(T const &) const
-        {
-            return v;
-        }
-    };
-    /// \endcond
-
-    /// \cond
     namespace detail
     {
         // "box" has three different implementations that store a T differently:
