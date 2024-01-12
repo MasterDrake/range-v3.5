@@ -27,7 +27,7 @@
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-//kinda weird that is uses eastl::unique_ptr but it doesn't require new operator overloads ...
+//TODO:kinda weird that is uses eastl::unique_ptr but it doesn't require new operator overloads ...
 
 template<class Iter1, class Iter2>
 void test_iter_3()
