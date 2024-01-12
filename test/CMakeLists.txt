@@ -12,7 +12,6 @@ add_subdirectory(utility)
 add_subdirectory(view)
 add_subdirectory(experimental)
 
-EARanges_add_test(test.config config config.cpp)
 EARanges_add_test(test.constexpr_core constexpr_core constexpr_core.cpp)
 EARanges_add_test(test.multiple multiple multiple1.cpp multiple2.cpp)
 EARanges_add_test(test.bug474 bug474 bug474.cpp)

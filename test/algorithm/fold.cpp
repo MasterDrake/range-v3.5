@@ -30,15 +30,12 @@
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
 
-//#include <stdio.h>
-//#include <stdarg.h>
-//#include <wchar.h>
-//#include <varargs.h>
+#include <cstdio>
 
-//int __cdecl EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64 n, char const * __restrict pFormat, char * arguments)
-//{
-//    return vsnprintf_s(pDestination, n, _TRUNCATE, pFormat, arguments);
-//}
+int __cdecl EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64 n, char const * __restrict pFormat, char * arguments)
+{
+    return vsnprintf(pDestination, n, pFormat, arguments);
+}
 
 void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
 {
@@ -96,9 +93,7 @@ void test_right()
     CHECK(ranges::fold_right(da, 1, eastl::minus<>()) == Approx{0.5});
 
     int xs[] = {1, 2, 3};
-    //TODO:11) Should be eastl::to_string but that requires implementing int __cdecl EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64 n, char const * __restrict pFormat, char * arguments) and i couldn't make it work.
-    //Now I'm wondering where std::string comes from :/
-    auto concat = [](int i, const eastl::string& s) { return s + std::to_string(i).c_str(); };
+    auto concat = [](int i, const eastl::string& s) { return s + eastl::to_string(i); };
     CHECK(ranges::fold_right(xs, xs + 2, eastl::string(), concat) == "21");
     CHECK(ranges::fold_right(xs, eastl::string(), concat) == "321");
 }

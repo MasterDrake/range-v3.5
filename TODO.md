@@ -105,6 +105,17 @@ namespace eastl
 #endif // EASTL_INTERNAL_MEMORY_BASE_H
 ```
 
+# to_string()
+- To use to_string, you need to implement vsprintf or use EA::StdC::Vsprintf
+- or define it yourself like this:
+```c++
+int __cdecl EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64 n, char const * __restrict pFormat, char * arguments)
+{
+    return vsnprintf(pDestination, n, pFormat, arguments);
+}
+```
+- needs #include cstdio and apparently it's not very portable.
+
 # TUPLE CONSTEXPR
 - Apparently the other side of the problem is that tuple and everything about it must be constexpr as well.
 - Yes, that's the case. Infact now stuff works.
