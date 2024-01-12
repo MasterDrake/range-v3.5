@@ -36,7 +36,7 @@
 namespace test {
 
     /// \addtogroup group-utility
-    /// A std::array with constexpr support
+    /// A eastl::array with constexpr support
     template<typename T, std::size_t N>
     struct array
     {
@@ -238,7 +238,7 @@ namespace test {
     constexpr /*c++14*/
     auto swap(array<T, N>& x, array<T, N>& y)
     noexcept(ranges::is_nothrow_swappable<T>::value)
-    -> typename std::enable_if<ranges::is_swappable<T>::value, void>::type
+    -> typename eastl::enable_if<ranges::is_swappable<T>::value, void>::type
     {
         x.swap(y);
     }
@@ -264,15 +264,15 @@ namespace test {
     T && get(array<T, N>&& a) noexcept
     {
         static_assert(I < N, "Index out of bounds in ranges::get<> (ranges::array &&)");
-        return std::move(a.elems_[I]);
+        return eastl::move(a.elems_[I]);
     }
 
     template<class T, std::size_t N>
     constexpr /*c++14*/ void swap(array<T, N>& a, array<T, N>& b) {
         for(std::size_t i = 0; i != N; ++i) {
-            auto tmp = std::move(a[i]);
-            a[i] = std::move(b[i]);
-            b[i] = std::move(tmp);
+            auto tmp = eastl::move(a[i]);
+            a[i] = eastl::move(b[i]);
+            b[i] = eastl::move(tmp);
         }
     }
 }  // namespace test
@@ -280,12 +280,11 @@ namespace test {
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-namespace std
+namespace eastl
 {
 
 template<class T, size_t N>
-class tuple_size<test::array<T, N>>
-    : public integral_constant<size_t, N> {};
+class tuple_size<test::array<T, N>> : public integral_constant<size_t, N> {};
 
 template<size_t I, class T, size_t N>
 class tuple_element<I, test::array<T, N> >
