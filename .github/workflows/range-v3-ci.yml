@@ -6,7 +6,7 @@ on: [push, pull_request]
 env:
   CMAKE_VERSION: 3.16.2
   NINJA_VERSION: 1.9.0
-  VCPKG_ROOT: '${{ runner.workspace }}/vcpkg'
+  VCPKG_ROOT: '${{ github.workspace }}/vcpkg'
 
 
 jobs:
