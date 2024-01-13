@@ -1,4 +1,4 @@
-name: range-v3 CI
+name: EARanges CI
 
 # Trigger on pushes to all branches and for all pull-requests
 on: [push, pull_request]
@@ -454,6 +454,16 @@ jobs:
         CXX: ${{ matrix.config.cxx }}
       run: |
         $GITHUB_WORKSPACE/install_libcxx.sh
+
+    - name: Setup anew (or from cache) vcpkg (and does not build any package)
+        uses: lukka/run-vcpkg@v11 # Always specify the specific _version_ of the
+                                  # action you need, `v10` in this case to stay up
+                                  # to date with fixes on the v11 branch.
+
+    - name: Setup VCPKG_ROOT env var
+        id: setup_vcpkg_root_env_var
+        env: 
+        VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     - name: Configure
       shell: cmake -P {0}
