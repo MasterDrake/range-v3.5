@@ -59,24 +59,10 @@ target_link_libraries(EARanges INTERFACE EARanges::concepts EARanges::meta)
 
 target_link_libraries(EARanges INTERFACE EASTL)
 
-# Add a custom target to move the "extra" folder to vcpkg output include folder
-add_custom_target(move_extra_eastl_folder
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_CURRENT_SOURCE_DIR}/extra
-            ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include/EASTL
-    COMMENT "Moving 'extra' folder to vcpkg output include folder"
-    VERBATIM
-)
-
 function(EARanges_add_test TESTNAME EXENAME FIRSTSOURCE)
   add_executable(EARanges.${EXENAME} ${FIRSTSOURCE} ${ARGN})
   target_link_libraries(EARanges.${EXENAME} EARanges)
   add_test(EARanges.${TESTNAME} EARanges.${EXENAME})
-  # Add the custom target as a dependency for your main target
-add_custom_target(EARanges.${TESTNAME} ALL
-    DEPENDS move_extra_eastl_contents
-    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/extra
-)
 endfunction(EARanges_add_test)
 
 if(EARANGES_DOCS)
@@ -219,3 +205,6 @@ if (EARANGES_INSTALL)
 
   export(EXPORT EARanges-targets FILE EARanges-config.cmake)
 endif()
+
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/extra DESTINATION ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include/EASTL)

@@ -35,9 +35,5 @@ if(!EARANGES_BUILD_CALENDAR_EXAMPLE)
         message(STATUS "boost: ${Boost_LIBRARY_DIRS}")
         target_compile_definitions(EARanges.calendar PRIVATE BOOST_NO_AUTO_PTR)
         target_compile_options(EARanges.calendar PRIVATE -std=gnu++14)
-       add_custom_target(EARanges.calendar ALL
-    DEPENDS move_extra_contents
-    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/extra
-)
     endif()
 endif()
