@@ -15,8 +15,8 @@ else()
 endif()
 
 set(VCPKG_LIBRARY_LINKAGE static)
-#include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-include("vcpkg/scripts/buildsystems/vcpkg.cmake")
+include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+#include("vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 project(EARanges CXX)
 
@@ -207,4 +207,4 @@ if (EARANGES_INSTALL)
 endif()
 
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/extra DESTINATION ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include/EASTL)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/extra/ DESTINATION ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include/EASTL)
