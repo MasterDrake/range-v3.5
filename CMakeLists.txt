@@ -15,7 +15,8 @@ else()
 endif()
 
 set(VCPKG_LIBRARY_LINKAGE static)
-include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+#include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+include("${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 
 project(EARanges CXX)
 
