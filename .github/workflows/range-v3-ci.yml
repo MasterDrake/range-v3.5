@@ -461,7 +461,7 @@ jobs:
                                   # action you need, `v10` in this case to stay up
                                   # to date with fixes on the v11 branch.
       with:
-           vcpkgGitCommitId: '53bef89'
+           vcpkgGitCommitId: '53bef8994c541b6561884a8395ea35715ece75db'
 
 
     - name: Configure
