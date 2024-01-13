@@ -26,7 +26,7 @@ if(EARANGES_BUILD_CALENDAR_EXAMPLE)
     set(Boost_USE_STATIC_LIBS        ON)
     set(Boost_USE_MULTITHREADED     OFF)
     set(Boost_USE_STATIC_RUNTIME    OFF)
-    find_package(Boost 1.59.0 COMPONENTS date_time program_options)
+    find_package(Boost COMPONENTS date_time program_options)
 
     if (Boost_FOUND)
         add_executable(EARanges.calendar calendar.cpp)

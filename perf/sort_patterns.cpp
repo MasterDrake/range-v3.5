@@ -11,31 +11,44 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <range/v3/detail/config.hpp>
+#include <EARanges/detail/config.hpp>
 
 #if EARANGES_CXX_RETURN_TYPE_DEDUCTION >= EARANGES_CXX_RETURN_TYPE_DEDUCTION_14 && \
     EARANGES_CXX_GENERIC_LAMBDAS >= EARANGES_CXX_GENERIC_LAMBDAS_14
 
 #include <iostream>
 #include <iomanip>
-#include <vector>
+#include <EASTL/vector.h>
 #include <random>
-#include <functional>
+#include <EASTL/functional.h>
 #include <climits>
-#include <chrono>
-#include <algorithm>
-#include <range/v3/all.hpp>
+#include <EASTL/chrono.h>
+//#include <EASTL/algorithm.h>
+#include <EASTL/sort.h>
+#include <EARanges/all.hpp>
 
 EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
+
+void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
 
 namespace
 {
   /// Creates an geometric infinite sequence starting at 1 where the
   /// successor is multiplied by \p V
-  auto geometric_sequence(std::size_t V) {
+  auto geometric_sequence(std::size_t V)
+  {
     std::size_t N = 1;
-    return ranges::views::generate([N, V]() mutable {
+    return ranges::views::generate([N, V]() mutable
+    {
       auto old = N;
       N *= V;
       return old;
@@ -44,48 +57,56 @@ namespace
 
   /// Creates an geometric infinite sequence starting at 1 where the
   /// successor is multiplied by \p V
-  auto geometric_sequence_n(std::size_t V, std::size_t limit) {
-    return geometric_sequence(V) |
-      ranges::views::take_while([limit](std::size_t n) { return n <= limit; });
+  auto geometric_sequence_n(std::size_t V, std::size_t limit)
+  {
+    return geometric_sequence(V) | ranges::views::take_while([limit](std::size_t n) { return n <= limit; });
   }
 
   /// Random uniform integer sequence
-  struct random_uniform_integer_sequence {
+  struct random_uniform_integer_sequence
+  {
     std::default_random_engine gen;
     std::uniform_int_distribution<> dist;
-    auto operator()(std::size_t) {
+    auto operator()(std::size_t)
+    {
       return ranges::views::generate([&]{ return dist(gen); });
     }
-    static std::string name() { return "random_uniform_integer_sequence"; }
+    static eastl::string name() { return "random_uniform_integer_sequence"; }
   };
 
-  struct ascending_integer_sequence {
+  struct ascending_integer_sequence
+  {
     auto operator()(std::size_t) { return ranges::views::iota(1); }
-    static std::string name() { return "ascending_integer_sequence"; }
+    static eastl::string name() { return "ascending_integer_sequence"; }
   };
 
-  struct descending_integer_sequence {
-    auto operator()(std::size_t) {
-      return ranges::views::iota(0ll, std::numeric_limits<long long>::max()) |
-            ranges::views::reverse;
+  struct descending_integer_sequence
+  {
+    auto operator()(std::size_t)
+    {
+      return ranges::views::iota(0ll, eastl::numeric_limits<long long>::max()) | ranges::views::reverse;
     }
-    static std::string name() { return "descending_integer_sequence"; }
+    static eastl::string name() { return "descending_integer_sequence"; }
   };
 
   auto even = [](auto i) { return i % 2 == 0; };
   auto odd = [](auto i) { return !even(i); };
 
-  struct even_odd_integer_sequence {
-    static std::string name() { return "even_odd_integer_sequence"; }
-    auto operator()(std::size_t n) {
+  struct even_odd_integer_sequence
+  {
+    static eastl::string name() { return "even_odd_integer_sequence"; }
+    auto operator()(std::size_t n)
+    {
       return ranges::views::concat(ranges::views::ints(std::size_t{0}, n) | ranges::views::filter(even),
                                   ranges::views::ints(std::size_t{0}, n) | ranges::views::filter(odd));
     }
   };
 
-  struct organ_pipe_integer_sequence {
-    static std::string name() { return "organ_pipe_integer_sequence"; }
-    auto operator()(std::size_t n) {
+  struct organ_pipe_integer_sequence
+  {
+    static eastl::string name() { return "organ_pipe_integer_sequence"; }
+    auto operator()(std::size_t n) 
+    {
       return ranges::views::concat(ranges::views::ints(std::size_t{0}, n/2),
                                   ranges::views::ints(std::size_t{0}, n/2 + 1)
                                   | ranges::views::reverse);
@@ -93,19 +114,20 @@ namespace
   };
 
   template<typename Seq>
-  void print(Seq seq, std::size_t n) {
-    std::cout << "sequence: " << seq.name() << '\n';
-    EARANGES_FOR(auto i, seq(n) | ranges::views::take(n)) {
+  void print(Seq seq, std::size_t n)
+  {
+    std::cout << "sequence: " << seq.name().c_str() << '\n';
+    for(auto i : seq(n) | ranges::views::take(n))
       std::cout << i << '\n';
-    }
   }
 
   /// Returns the duration of a computation
-  using clock_t = std::chrono::high_resolution_clock;
+  using clock_t = eastl::chrono::high_resolution_clock;
   using duration_t = clock_t::duration;
 
   template<typename Computation>
-  auto duration(Computation &&c) {
+  auto duration(Computation &&c)
+  {
     auto time = []{ return clock_t::now(); };
     const auto start = time();
     c();
@@ -113,64 +135,70 @@ namespace
   }
 
   template<typename Duration>
-  auto to_millis(Duration d) {
-    return std::chrono::duration_cast<std::chrono::milliseconds>(d).count();
+  auto to_millis(Duration d)
+  {
+    return eastl::chrono::duration_cast<eastl::chrono::milliseconds>(d).count();
   }
 
-  template<typename Durations> auto compute_mean(Durations &&durations) {
+  template<typename Durations> auto compute_mean(Durations &&durations)
+  {
     using D = ranges::range_value_t<Durations>;
     D total = ranges::accumulate(durations, D{}, ranges::plus{}, ranges::convert_to<D>{});
     return total / ranges::size(durations);
   }
 
-  template<typename Durations> auto compute_stddev(Durations &&durations) {
+  template<typename Durations> auto compute_stddev(Durations &&durations)
+  {
     using D = ranges::range_value_t<Durations>;
     using Rep = typename D::rep;
     const auto mean = compute_mean(durations);
     const auto stddev = ranges::accumulate(
-      durations | ranges::views::transform([=](auto i) {
+      durations | ranges::views::transform([=](auto i)
+      {
         auto const delta = (i - mean).count();
         return delta * delta;
       }), Rep{}, ranges::plus{}, ranges::convert_to<Rep>{});
     return D{static_cast<typename D::rep>(std::sqrt(stddev / ranges::size(durations)))};
   }
 
-  struct benchmark {
-    struct result_t {
+  struct benchmark
+  {
+    struct result_t
+    {
       duration_t mean_t;
       duration_t max_t;
       duration_t min_t;
       std::size_t size;
       duration_t deviation;
     };
-    std::vector<result_t> results;
+    eastl::vector<result_t> results;
 
     template<typename Computation, typename Sizes>
-    benchmark(Computation &&c, Sizes &&sizes, double target_deviation = 0.25,
-              std::size_t max_iters = 100, std::size_t min_iters = 5) {
-
-      EARANGES_FOR(auto size, sizes) {
-        std::vector<duration_t> durations;
+    benchmark(Computation &&c, Sizes &&sizes, double target_deviation = 0.25, std::size_t max_iters = 100, std::size_t min_iters = 5)
+    {
+      for(auto size : sizes)
+      {
+        eastl::vector<duration_t> durations;
         duration_t deviation;
         duration_t mean_duration;
         std::size_t iter;
 
-        for (iter = 0; iter < max_iters; ++iter) {
+        for (iter = 0; iter < max_iters; ++iter)
+        {
           c.init(size);
           durations.emplace_back(duration(c));
           mean_duration = compute_mean(durations);
-          if (++iter == max_iters) {
+          if (++iter == max_iters)
             break;
-          }
-          if (iter >= min_iters) {
+          if (iter >= min_iters)
+          {
             deviation = compute_stddev(durations);
             if (deviation < target_deviation * mean_duration)
               break;
           }
         }
         auto minmax = ranges::minmax(durations);
-        results.emplace_back(
-            result_t{mean_duration, minmax.max, minmax.min, size, deviation});
+        results.emplace_back(result_t{mean_duration, minmax.max, minmax.min, size, deviation});
         std::cerr << "size: " << size << " iter: " << iter
                   << " dev: " << to_millis(deviation)
                   << " mean: " << to_millis(mean_duration)
@@ -181,15 +209,17 @@ namespace
   };
 
   template<typename Seq, typename Comp>
-  struct computation_on_sequence {
+  struct computation_on_sequence
+  {
     Seq seq;
     Comp comp;
-    std::vector<ranges::range_value_t<decltype(seq(std::size_t{}))>> data;
-    computation_on_sequence(Seq s, Comp c, std::size_t max_size)
-        : seq(std::move(s)), comp(std::move(c)) {
+    eastl::vector<ranges::range_value_t<decltype(seq(std::size_t{}))>> data;
+    computation_on_sequence(Seq s, Comp c, std::size_t max_size) : seq(eastl::move(s)), comp(eastl::move(c))
+    {
       data.reserve(max_size);
     }
-    void init(std::size_t size) {
+    void init(std::size_t size)
+    {
       data.resize(size);
       ranges::copy(seq(size) | ranges::views::take(size), ranges::begin(data));
     }
@@ -197,36 +227,34 @@ namespace
   };
 
   template<typename Seq, typename Comp>
-  auto make_computation_on_sequence(Seq s, Comp c, std::size_t max_size) {
-    return computation_on_sequence<Seq, Comp>(std::move(s), std::move(c),
-                                              max_size);
+  auto make_computation_on_sequence(Seq s, Comp c, std::size_t max_size)
+  {
+    return computation_on_sequence<Seq, Comp>(eastl::move(s), eastl::move(c), max_size);
   }
 
-  template<typename Seq> void benchmark_sort(Seq &&seq, std::size_t max_size) {
-    auto ranges_sort_comp =
-        make_computation_on_sequence(seq, ranges::sort, max_size);
+  template<typename Seq> void benchmark_sort(Seq &&seq, std::size_t max_size)
+  {
+    auto ranges_sort_comp = make_computation_on_sequence(seq, ranges::sort, max_size);
 
-    auto std_sort_comp = make_computation_on_sequence(
-        seq, [](auto &&v) { std::sort(std::begin(v), std::end(v)); }, max_size);
+    auto eastl_sort_comp = make_computation_on_sequence(seq, [](auto &&v) { eastl::sort(eastl::begin(v), eastl::end(v)); }, max_size);
 
-    auto ranges_sort_benchmark =
-        benchmark(ranges_sort_comp, geometric_sequence_n(2, max_size));
+    auto ranges_sort_benchmark = benchmark(ranges_sort_comp, geometric_sequence_n(2, max_size));
 
-    auto std_sort_benchmark =
-        benchmark(std_sort_comp, geometric_sequence_n(2, max_size));
+    auto eastl_sort_benchmark = benchmark(eastl_sort_comp, geometric_sequence_n(2, max_size));
+
     using std::setw;
     std::cout << '#'
-              << "pattern: " << seq.name() << '\n';
+              << "pattern: " << seq.name().c_str() << '\n';
     std::cout << '#' << setw(19) << 'N' << setw(20) << "ranges::sort" << setw(20)
-              << "std::sort"
+              << "eastl::sort"
               << '\n';
-    EARANGES_FOR(auto p, ranges::views::zip(ranges_sort_benchmark.results,
-                                         std_sort_benchmark.results)) {
+
+    for(auto p : ranges::views::zip(ranges_sort_benchmark.results, eastl_sort_benchmark.results))
+    {
       auto rs = p.first;
       auto ss = p.second;
 
-      std::cout << setw(20) << rs.size << setw(20) << to_millis(rs.mean_t)
-                << setw(20) << to_millis(ss.mean_t) << '\n';
+      std::cout << setw(20) << rs.size << setw(20) << to_millis(rs.mean_t) << setw(20) << to_millis(ss.mean_t) << '\n';
     }
   }
 } // unnamed namespace

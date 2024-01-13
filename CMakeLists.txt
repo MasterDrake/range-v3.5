@@ -78,6 +78,7 @@ if(EARANGES_EXAMPLES)
 endif()
 
 if(EARANGES_PERF)
+  message(STATUS "Building perfs!")
   include(gtest)
   include(gbenchmark)
   add_subdirectory(perf)

@@ -10,17 +10,17 @@
 // Project home: https://github.com/ericniebler/range-v3
 //
 
-#include <chrono>
+#include <EASTL/chrono.h>
 #include <iostream>
 #include <random>
-#include <range/v3/all.hpp>
+#include <EARanges/all.hpp>
 
 EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 class timer
 {
 public:
-    using clock_t = std::chrono::high_resolution_clock;
+    using clock_t = eastl::chrono::high_resolution_clock;
     using duration_t = clock_t::time_point::duration;
 
     timer()
@@ -44,8 +44,9 @@ private:
 };
 
 template<typename D>
-std::chrono::milliseconds::rep to_millis(D d) {
-  return std::chrono::duration_cast<std::chrono::milliseconds>(d).count();
+eastl::chrono::milliseconds::rep to_millis(D d)
+{
+  return eastl::chrono::duration_cast<eastl::chrono::milliseconds>(d).count();
 }
 
 template<typename It>
@@ -53,14 +54,14 @@ struct forward_iterator
 {
     It it_;
 public:
-    typedef          std::forward_iterator_tag                 iterator_category;
-    typedef typename std::iterator_traits<It>::value_type      value_type;
-    typedef typename std::iterator_traits<It>::difference_type difference_type;
+    typedef          eastl::forward_iterator_tag                 iterator_category;
+    typedef typename eastl::iterator_traits<It>::value_type      value_type;
+    typedef typename eastl::iterator_traits<It>::difference_type difference_type;
     typedef It                                                 pointer;
-    typedef typename std::iterator_traits<It>::reference       reference;
+    typedef typename eastl::iterator_traits<It>::reference       reference;
 
     forward_iterator() = default;
-    explicit forward_iterator(It it) : it_(std::move(it)) {}
+    explicit forward_iterator(It it) : it_(eastl::move(it)) {}
 
     reference operator*() const {return *it_;}
     pointer operator->() const {return it_;}
@@ -76,12 +77,12 @@ public:
 };
 
 template<typename I, typename V2>
-I upper_bound_n(I first, typename std::iterator_traits<I>::difference_type d, V2 const &val)
+I upper_bound_n(I first, typename eastl::iterator_traits<I>::difference_type d, V2 const &val)
 {
     while(0 != d)
     {
         auto half = d / 2;
-        auto middle = std::next(first, half);
+        auto middle = eastl::next(first, half);
         if(val < *middle)
             d = half;
         else
@@ -94,13 +95,13 @@ I upper_bound_n(I first, typename std::iterator_traits<I>::difference_type d, V2
 }
 
 template<typename I>
-void insertion_sort_n(I first, typename std::iterator_traits<I>::difference_type n)
+void insertion_sort_n(I first, typename eastl::iterator_traits<I>::difference_type n)
 {
     auto m = 0;
     for(auto it = first; m != n; ++it, ++m)
     {
         auto insertion = upper_bound_n(first, m, *it);
-        ranges::rotate(insertion, it, std::next(it));
+        ranges::rotate(insertion, it, eastl::next(it));
     }
 }
 
@@ -110,19 +111,19 @@ void insertion_sort(I first, S last)
     for(auto it = first; it != last; ++it)
     {
         auto insertion = ranges::upper_bound(first, it, *it);
-        ranges::rotate(insertion, it, std::next(it));
+        ranges::rotate(insertion, it, eastl::next(it));
     }
 }
 
 template<typename Rng>
 void insertion_sort(Rng && rng)
 {
-    ::insertion_sort(std::begin(rng), std::end(rng));
+    ::insertion_sort(eastl::begin(rng), eastl::end(rng));
 }
 
-std::unique_ptr<int> data(int i)
+eastl::unique_ptr<int> data(int i)
 {
-    std::unique_ptr<int> a(new int[i]);
+    eastl::unique_ptr<int> a(new int[i]);
     auto rng = ranges::views::counted(a.get(), i);
     ranges::iota(rng, 0);
     return a;
@@ -132,7 +133,7 @@ template<typename Gen>
 void shuffle(int *a, int i, Gen && rand)
 {
     auto rng = ranges::views::counted(a, i);
-    rng |= ranges::actions::shuffle(std::forward<Gen>(rand));
+    rng |= ranges::actions::shuffle(eastl::forward<Gen>(rand));
 }
 
 constexpr int cloops = 3;

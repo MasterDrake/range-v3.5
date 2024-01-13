@@ -14,8 +14,7 @@
 
 using namespace ranges;
 
-// A range that iterates over all the characters in a
-// null-terminated string.
+// A range that iterates over all the characters in a null-terminated string.
 class c_string_range : public view_facade<c_string_range>
 {
     friend range_access;

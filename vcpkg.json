@@ -2,6 +2,10 @@
   "name": "eastl-ranges",
   "version": "0.0.0",
 	"dependencies": [
-		"eastl"
+		"eastl",
+		"boost-program-options",
+		"boost-date-time",
+		"boost-format",
+		"benchmark"
 	]
 }

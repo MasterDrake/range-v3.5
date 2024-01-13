@@ -62,9 +62,9 @@
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/program_options.hpp>
-#include <algorithm>
+#include <EASTL/algorithm.h>
 #include <cstddef>
-#include <functional>
+#include <EASTL/functional.h>
 #include <iostream>
 #include <EARanges/action/join.hpp>
 #include <EARanges/algorithm/copy.hpp>
@@ -83,9 +83,13 @@
 #include <EARanges/view/take.hpp>
 #include <EARanges/view/transform.hpp>
 #include <stdexcept>
-#include <string>
-#include <utility>
-#include <vector>
+#include <EASTL/string.h>
+#include <EASTL/utility.h>
+#include <EASTL/vector.h>
+
+#if _WIN32
+#include "Windows.h"
+#endif
 
 namespace po = boost::program_options;
 namespace greg = boost::gregorian;
@@ -93,11 +97,54 @@ using date = greg::date;
 using day = greg::date_duration;
 using namespace ranges;
 
+void * __cdecl operator new[](size_t size, const char * name, int flags,
+                              unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
+                              const char * name, int flags, unsigned debugFlags,
+                              const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+namespace std
+{
+    std::ostream & operator<<(std::ostream & os, eastl::string const & str)
+    {
+        return os << str.c_str();
+    }
+
+    std::istream& operator>>(std::istream & is, eastl::string & str)
+    {
+        str.clear();
+
+        char ch;
+        while(is.get(ch) && !std::isspace(ch))
+            str.push_back(ch);
+
+        if(is)
+            is.unget();
+
+        return is;
+    }
+
+    template<typename T>
+    std::ostream & operator<<(std::ostream & os, eastl::vector<T> const & vec)
+    {
+        for(const auto & elem : vec)
+            os << elem;
+        return os;
+    }
+} // namespace std
+
 namespace boost
 {
     namespace gregorian
     {
-        date &operator++(date &d)
+        date& operator++(date &d)
         {
             return d = d + day(1);
         }
@@ -117,27 +164,22 @@ namespace ranges
 }
 CPP_assert(incrementable<date>);
 
-auto
-dates(unsigned short start, unsigned short stop)
+auto dates(unsigned short start, unsigned short stop)
 {
     return views::iota(date{start, greg::Jan, 1}, date{stop, greg::Jan, 1});
 }
 
-auto
-dates_from(unsigned short year)
+auto dates_from(unsigned short year)
 {
     return views::iota(date{year, greg::Jan, 1});
 }
 
-auto
-by_month()
+auto by_month()
 {
-    return views::chunk_by(
-        [](date a, date b) { return a.month() == b.month(); });
+    return views::chunk_by([](date a, date b) { return a.month() == b.month(); });
 }
 
-auto
-by_week()
+auto by_week()
 {
     return views::chunk_by([](date a, date b) {
         // ++a because week_number is Mon-Sun and we want Sun-Sat
@@ -145,44 +187,41 @@ by_week()
     });
 }
 
-std::string
-format_day(date d)
+eastl::string format_day(date d)
 {
-    return boost::str(boost::format("%|3|") % d.day());
+    return boost::str(boost::format("%|3|") % d.day()).c_str();
 }
 
 // In:  range<range<date>>: month grouped by weeks.
-// Out: range<std::string>: month with formatted weeks.
-auto
-format_weeks()
+// Out: range<eastl::string>: month with formatted weeks.
+auto format_weeks()
 {
-    return views::transform([](/*range<date>*/ auto week) {
+    return views::transform([](/*range<date>*/ auto week)
+    {
         return boost::str(boost::format("%1%%2%%|22t|") %
-                          std::string(front(week).day_of_week() * 3u, ' ') %
-                          (week | views::transform(format_day) | actions::join));
+                          eastl::string(front(week).day_of_week() * 3u, ' ') %
+                          (week | views::transform(format_day) | actions::join)).c_str();
     });
 }
 
 // Return a formatted string with the title of the month
 // corresponding to a date.
-std::string
-month_title(date d)
+eastl::string month_title(date d)
 {
-    return boost::str(boost::format("%|=22|") % d.month().as_long_string());
+    return boost::str(boost::format("%|=22|") % d.month().as_long_string()).c_str();
 }
 
 // In:  range<range<date>>: year of months of days
-// Out: range<range<std::string>>: year of months of formatted wks
-auto
-layout_months()
+// Out: range<range<eastl::string>>: year of months of formatted wks
+auto layout_months()
 {
-    return views::transform([](/*range<date>*/ auto month) {
-        auto week_count =
-            static_cast<std::ptrdiff_t>(distance(month | by_week()));
+    return views::transform([](/*range<date>*/ auto month)
+    {
+        const auto week_count = static_cast<std::ptrdiff_t>(distance(month | by_week()));
         return views::concat(
             views::single(month_title(front(month))),
             month | by_week() | format_weeks(),
-            views::repeat_n(std::string(22, ' '), 6 - week_count));
+            views::repeat_n(eastl::string(22, ' '), 6 - week_count));
     });
 }
 
@@ -192,17 +231,16 @@ template<class Rngs>
 class interleave_view : public view_facade<interleave_view<Rngs>>
 {
     friend range_access;
-    std::vector<range_value_t<Rngs>> rngs_;
+    eastl::vector<range_value_t<Rngs>> rngs_;
     struct cursor;
     cursor begin_cursor()
     {
-        return {0, &rngs_, views::transform(rngs_, ranges::begin) | to<std::vector>};
+        return {0, &rngs_, views::transform(rngs_, ranges::begin) | to<eastl::vector>};
     }
 
 public:
     interleave_view() = default;
-    explicit interleave_view(Rngs rngs)
-      : rngs_(std::move(rngs) | to<std::vector>)
+    explicit interleave_view(Rngs rngs) : rngs_(eastl::move(rngs) | to<eastl::vector>)
     {}
 };
 
@@ -210,55 +248,55 @@ template<class Rngs>
 struct interleave_view<Rngs>::cursor
 {
     std::size_t n_;
-    std::vector<range_value_t<Rngs>> *rngs_;
-    std::vector<iterator_t<range_value_t<Rngs>>> its_;
+    eastl::vector<range_value_t<Rngs>> *rngs_;
+    eastl::vector<iterator_t<range_value_t<Rngs>>> its_;
+
     decltype(auto) read() const
     {
         return *its_[n_];
     }
+
     void next()
     {
         if(0 == ((++n_) %= its_.size()))
             for_each(its_, [](auto &it) { ++it; });
     }
+
     bool equal(default_sentinel_t) const
     {
         if(n_ != 0)
             return false;
         auto ends = *rngs_ | views::transform(ranges::end);
-        return its_.end() != std::mismatch(
-            its_.begin(), its_.end(), ends.begin(), std::not_equal_to<>{}).first;
+        return its_.end() != eastl::mismatch(its_.begin(), its_.end(), ends.begin(), eastl::not_equal_to<>{}).first;
     }
+
     CPP_member
-    auto equal(cursor const& that) const -> CPP_ret(bool)(
-        requires forward_range<range_value_t<Rngs>>)
+    auto equal(cursor const& that) const -> CPP_ret(bool)(requires forward_range<range_value_t<Rngs>>)
     {
         return n_ == that.n_ && its_ == that.its_;
     }
 };
 
 // In:  range<range<T>>
-// Out: range<T>, flattened by walking the ranges
-//                round-robin fashion.
-auto
-interleave()
+// Out: range<T>, flattened by walking the ranges round-robin fashion.
+auto interleave()
 {
-    return make_view_closure([](auto &&rngs) {
+    return make_view_closure([](auto &&rngs)
+    {
         using Rngs = decltype(rngs);
-        return interleave_view<views::all_t<Rngs>>(
-            views::all(std::forward<Rngs>(rngs)));
+        return interleave_view<views::all_t<Rngs>>(views::all(eastl::forward<Rngs>(rngs)));
     });
 }
 
 // In:  range<range<T>>
 // Out: range<range<T>>, transposing the rows and columns.
-auto
-transpose()
+auto transpose()
 {
-    return make_view_closure([](auto &&rngs) {
+    return make_view_closure([](auto &&rngs)
+    {
         using Rngs = decltype(rngs);
         CPP_assert(forward_range<Rngs>);
-        return std::forward<Rngs>(rngs)
+        return eastl::forward<Rngs>(rngs)
             | interleave()
             | views::chunk(static_cast<std::size_t>(distance(rngs)));
     });
@@ -266,26 +304,21 @@ transpose()
 
 // In:  range<range<range<string>>>
 // Out: range<range<range<string>>>, transposing months.
-auto
-transpose_months()
+auto transpose_months()
 {
-    return views::transform(
-        [](/*range<range<string>>*/ auto rng) { return rng | transpose(); });
+    return views::transform([](/*range<range<string>>*/ auto rng) { return rng | transpose(); });
 }
 
 // In:  range<range<string>>
 // Out: range<string>, joining the strings of the inner ranges
-auto
-join_months()
+auto join_months()
 {
-    return views::transform(
-        [](/*range<string>*/ auto rng) { return actions::join(rng); });
+    return views::transform([](/*range<string>*/ auto rng) { return actions::join(rng); });
 }
 
 // In:  range<date>
 // Out: range<string>, lines of formatted output
-auto
-format_calendar(std::size_t months_per_line)
+auto format_calendar(std::size_t months_per_line)
 {
     return
         // Group the dates by month:
@@ -302,14 +335,16 @@ format_calendar(std::size_t months_per_line)
       | join_months();
 }
 
-int
-main(int argc, char *argv[]) try
+int main(int argc, char *argv[]) try
 {
+#if _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+#endif
     // Declare the supported options.
     po::options_description desc("Allowed options");
     desc.add_options()("help", "produce help message")(
         "start", po::value<unsigned short>(), "Year to start")(
-        "stop", po::value<std::string>(), "Year to stop")(
+        "stop", po::value<eastl::string>(), "Year to stop")(
         "per-line",
         po::value<std::size_t>()->default_value(3u),
         "Nbr of months per line");
@@ -332,29 +367,21 @@ main(int argc, char *argv[]) try
     auto const start = vm["start"].as<unsigned short>();
     auto const stop = 0 == vm.count("stop")
                           ? (unsigned short)(start + 1)
-                          : vm["stop"].as<std::string>() == "never"
+                          : vm["stop"].as<eastl::string>() == "never"
                                 ? (unsigned short)-1
-                                : boost::lexical_cast<unsigned short>(
-                                      vm["stop"].as<std::string>());
+                                : boost::lexical_cast<unsigned short>(vm["stop"].as<eastl::string>());
     auto const months_per_line = vm["per-line"].as<std::size_t>();
 
     if(stop != (unsigned short)-1 && stop <= start)
     {
-        std::cerr << "ERROR: The stop year must be larger than the start"
-                  << '\n';
+        std::cerr << "ERROR: The stop year must be larger than the start" << '\n';
         return 1;
     }
 
     if((unsigned short)-1 != stop)
-    {
-        copy(dates(start, stop) | format_calendar(months_per_line),
-             ostream_iterator<>(std::cout, "\n"));
-    }
+        copy(dates(start, stop) | format_calendar(months_per_line), ostream_iterator<>(std::cout, "\n"));
     else
-    {
-        copy(dates_from(start) | format_calendar(months_per_line),
-             ostream_iterator<>(std::cout, "\n"));
-    }
+        copy(dates_from(start) | format_calendar(months_per_line), ostream_iterator<>(std::cout, "\n"));
 }
 catch(std::exception &e)
 {

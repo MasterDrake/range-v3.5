@@ -13,55 +13,69 @@
 
 // Benchmark for https://github.com/ericniebler/range-v3/issues/1337
 
-#include <string>
-#include <vector>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 
 #include <benchmark/benchmark.h>
 
-#include <range/v3/algorithm/equal.hpp>
-#include <range/v3/range/conversion.hpp>
-#include <range/v3/range/primitives.hpp>
-#include <range/v3/view/common.hpp>
-#include <range/v3/view/reverse.hpp>
-#include <range/v3/view/transform.hpp>
+#include <EARanges/algorithm/equal.hpp>
+#include <EARanges/range/conversion.hpp>
+#include <EARanges/range/primitives.hpp>
+#include <EARanges/view/common.hpp>
+#include <EARanges/view/reverse.hpp>
+#include <EARanges/view/transform.hpp>
 
 using namespace ranges;
 
+void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
+void * __cdecl operator new[](size_t size, size_t alignement, size_t offset, const char * name, int flags, unsigned debugFlags, const char * file, int line)
+{
+    return new uint8_t[size];
+}
+
 namespace
 {
-    auto palindrome_range_common(std::vector<std::string> const & words)
+    auto palindrome_range_common(eastl::vector<eastl::string> const & words)
     {
-        auto is_palindrome = [](auto const & word) {
+        auto is_palindrome = [](auto const & word)
+        {
             return !ranges::empty(word) && ranges::equal(word, word | views::reverse);
         };
 
-        auto palindrome_excalim = [&is_palindrome](auto const & word) {
+        auto palindrome_excalim = [&is_palindrome](auto const & word)
+        {
             return is_palindrome(word) ? word + '!' : word;
         };
 
         auto result = words | views::transform(palindrome_excalim) | views::common;
 
-        return std::vector<std::string>{ranges::begin(result), ranges::end(result)};
+        return eastl::vector<eastl::string>{ranges::begin(result), ranges::end(result)};
     }
 
-    auto palindrome_range_to(std::vector<std::string> const & words)
+    auto palindrome_range_to(eastl::vector<eastl::string> const & words)
     {
-        auto is_palindrome = [](auto const & word) {
+        auto is_palindrome = [](auto const & word)
+        {
             return !ranges::empty(word) && ranges::equal(word, word | views::reverse);
         };
 
-        auto palindrome_excalim = [&is_palindrome](auto const & word) {
+        auto palindrome_excalim = [&is_palindrome](auto const & word)
+        {
             return is_palindrome(word) ? word + '!' : word;
         };
 
-        return words | views::transform(palindrome_excalim) | ranges::to<std::vector>;
+        return words | views::transform(palindrome_excalim) | ranges::to<eastl::vector>;
     }
 } // namespace
 
 class Words : public ::benchmark::Fixture
 {
 protected:
-    std::vector<std::string> words_;
+    eastl::vector<eastl::string> words_;
 
 public:
     void SetUp(const ::benchmark::State &)

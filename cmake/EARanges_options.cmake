@@ -53,10 +53,10 @@ CMAKE_DEPENDENT_OPTION(EARANGES_EXAMPLES
 
 option(EARANGES_PERF
   "Build the EARanges performance benchmarks"
-  OFF)
+  ON)
 
 CMAKE_DEPENDENT_OPTION(EARANGES_DOCS
   "Build the EARanges documentation"
   ON "${is_standalone}" OFF)
 
-mark_as_advanced(EARANGES_PERF)
+#mark_as_advanced(EARANGES_PERF)
