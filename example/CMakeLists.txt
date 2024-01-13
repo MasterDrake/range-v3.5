@@ -1,6 +1,6 @@
 set(CMAKE_FOLDER "example")
 
-#add_subdirectory(view)
+add_subdirectory(view)
 
 # examples use a less draconian set of compiler warnings
 EARanges_append_flag(EARANGES_HAS_WNO_MISSING_BRACES -Wno-missing-braces)
