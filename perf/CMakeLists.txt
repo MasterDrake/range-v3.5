@@ -1,10 +1,13 @@
 set(CMAKE_FOLDER "perf")
 
-add_executable(range_v3_counted_insertion_sort counted_insertion_sort.cpp)
-target_link_libraries(range_v3_counted_insertion_sort EARanges::EARanges)
+add_executable(EARanges_counted_insertion_sort counted_insertion_sort.cpp)
+target_link_libraries(EARanges_counted_insertion_sort EARanges::EARanges)
+add_dependencies(EARanges_counted_insertion_sort move_extra_folder)
 
-add_executable(range_v3_range_conversion range_conversion.cpp)
-target_link_libraries(range_v3_range_conversion EARanges::EARanges benchmark_main)
+add_executable(EARanges_range_conversion range_conversion.cpp)
+target_link_libraries(EARanges_range_conversion EARanges::EARanges benchmark_main)
+add_dependencies(EARanges_range_conversion move_extra_folder)
 
-add_executable(range_v3_sort_patterns sort_patterns.cpp)
-target_link_libraries(range_v3_sort_patterns EARanges::EARanges)
+add_executable(EARanges_sort_patterns sort_patterns.cpp)
+target_link_libraries(EARanges_sort_patterns EARanges::EARanges)
+add_dependencies(EARanges_sort_patterns move_extra_folder)

@@ -1,6 +1,6 @@
 set(CMAKE_FOLDER "example")
 
-add_subdirectory(view)
+#add_subdirectory(view)
 
 # examples use a less draconian set of compiler warnings
 EARanges_append_flag(EARANGES_HAS_WNO_MISSING_BRACES -Wno-missing-braces)
@@ -22,7 +22,7 @@ EARanges_add_test(example.comprehension_conversion comprehension_conversion comp
 EARanges_add_test(example.sort_unique sort_unique sort_unique.cpp)
 
 # Guarded with a variable because the calendar example causes gcc to puke.
-if(EARANGES_BUILD_CALENDAR_EXAMPLE)
+if(!EARANGES_BUILD_CALENDAR_EXAMPLE)
     set(Boost_USE_STATIC_LIBS        ON)
     set(Boost_USE_MULTITHREADED     OFF)
     set(Boost_USE_STATIC_RUNTIME    OFF)
@@ -35,5 +35,9 @@ if(EARANGES_BUILD_CALENDAR_EXAMPLE)
         message(STATUS "boost: ${Boost_LIBRARY_DIRS}")
         target_compile_definitions(EARanges.calendar PRIVATE BOOST_NO_AUTO_PTR)
         target_compile_options(EARanges.calendar PRIVATE -std=gnu++14)
+       add_custom_target(EARanges.calendar ALL
+    DEPENDS move_extra_contents
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/extra
+)
     endif()
 endif()
