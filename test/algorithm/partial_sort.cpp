@@ -69,61 +69,61 @@ namespace
         using I = RandomAccessIterator<int*>;
         using S = Sentinel<int*>;
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         int *res = ranges::partial_sort(array, array+M, array+N);
         CHECK(res == array+N);
         for(int i = 0; i < M; ++i)
             CHECK(array[i] == i);
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         I res2 = ranges::partial_sort(I{array}, I{array+M}, S{array+N});
         CHECK(res2.base() == array+N);
         for(int i = 0; i < M; ++i)
             CHECK(array[i] == i);
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         res = ranges::partial_sort(ranges::make_subrange(array, array+N), array+M);
         CHECK(res == array+N);
         for(int i = 0; i < M; ++i)
             CHECK(array[i] == i);
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         res2 = ranges::partial_sort(ranges::make_subrange(I{array}, S{array+N}), I{array+M});
         CHECK(res2.base() == array+N);
         for(int i = 0; i < M; ++i)
             CHECK(array[i] == i);
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         auto res3 = ranges::partial_sort(::MakeTestRange(array, array+N), array+M);
         CHECK(::is_dangling(res3));
         for(int i = 0; i < M; ++i)
             CHECK(array[i] == i);
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         auto res4 = ranges::partial_sort(::MakeTestRange(I{array}, S{array+N}), I{array+M});
         CHECK(::is_dangling(res4));
         for(int i = 0; i < M; ++i)
             CHECK(array[i] == i);
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         res = ranges::partial_sort(array, array+M, array+N, eastl::greater<int>());
         CHECK(res == array+N);
         for(int i = 0; i < M; ++i)
             CHECK(array[i] == N-i-1);
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         res2 = ranges::partial_sort(I{array}, I{array+M}, S{array+N}, eastl::greater<int>());
         CHECK(res2.base() == array+N);
         for(int i = 0; i < M; ++i)
             CHECK(array[i] == N-i-1);
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         res = ranges::partial_sort(ranges::make_subrange(array, array+N), array+M, eastl::greater<int>());
         CHECK(res == array+N);
         for(int i = 0; i < M; ++i)
             CHECK(array[i] == N-i-1);
 
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         res2 = ranges::partial_sort(ranges::make_subrange(I{array}, S{array+N}), I{array+M}, eastl::greater<int>());
         CHECK(res2.base() == array+N);
         for(int i = 0; i < M; ++i)

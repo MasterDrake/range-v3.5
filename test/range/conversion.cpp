@@ -47,8 +47,6 @@ private:
     eastl::vector<T> data_;
 public:
     using size_type = std::size_t;
-   //TODO:23) Eastl needs a eastl::allocator implemention compatible for std::allocator. Luckily we didnd't need it here :D
-   //using allocator_type = eastl::allocator<T>;
 
     vector_like() = default;
     template<typename I>
@@ -87,8 +85,8 @@ public:
     }
     size_type max_size() const
     {
-       // return data_.max_size();
-        //TODO:23) Since eastl::vector doesn't have a max_size() member function, I just used the cpp reference one:https://en.cppreference.com/w/cpp/container/vector/max_size
+        //return data_.max_size();
+        //Since eastl::vector doesn't have a max_size() member function, I just used the cpp reference one:https://en.cppreference.com/w/cpp/container/vector/max_size
         //It's not perfect or correct but at least it works so be wary!
 
         /*This value typically reflects the theoretical limit on the size of the container, at most eastl::numeric_limits<difference_type>::max(). 

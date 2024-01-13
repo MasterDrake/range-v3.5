@@ -142,7 +142,7 @@ namespace
         CHECK(ranges::stable_sort(array, array+N) == array+N);
         CHECK(eastl::is_sorted(array, array+N));
         // test random pattern
-        std::shuffle(array, array+N, gen);
+        eastl::shuffle(array, array+N, gen);
         CHECK(ranges::stable_sort(array, array+N) == array+N);
         CHECK(eastl::is_sorted(array, array+N));
         // test sorted pattern

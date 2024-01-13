@@ -42,13 +42,13 @@ namespace
         eastl::unique_ptr<int[]> array{new int[N]};
         for (int i = 0; (unsigned)i < N; ++i)
             array[i] = i;
-        std::shuffle(array.get(), array.get()+N, gen);
+        eastl::shuffle(array.get(), array.get()+N, gen);
         CHECK(ranges::nth_element(array.get(), array.get()+M, array.get()+N) == array.get()+N);
         CHECK((unsigned)array[M] == M);
-        std::shuffle(array.get(), array.get()+N, gen);
+        eastl::shuffle(array.get(), array.get()+N, gen);
         CHECK(ranges::nth_element(::as_lvalue(ranges::make_subrange(array.get(), array.get()+N)), array.get()+M) == array.get()+N);
         CHECK((unsigned)array[M] == M);
-        std::shuffle(array.get(), array.get()+N, gen);
+        eastl::shuffle(array.get(), array.get()+N, gen);
         CHECK(ranges::nth_element(ranges::make_subrange(array.get(), array.get()+N), array.get()+M) == array.get()+N);
         CHECK((unsigned)array[M] == M);
         ranges::nth_element(array.get(), array.get()+N, array.get()+N); // first, last, end
@@ -94,7 +94,7 @@ int main()
     S ia[N];
     for(int i = 0; i < N; ++i)
         ia[i].i = ia[i].j = i;
-    std::shuffle(ia, ia+N, gen);
+    eastl::shuffle(ia, ia+N, gen);
     ranges::nth_element(ia, ia+M, eastl::less<int>(), &S::i);
     CHECK(ia[M].i == M);
     CHECK(ia[M].j == M);

@@ -63,7 +63,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         for (int i = 0; i <= N; ++i)
         {
             push_heap(ia, ia+i).check([&](int *r){CHECK(r == ia + i);});
@@ -79,7 +79,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         for (int i = 0; i <= N; ++i)
         {
             push_heap(ia, ia+i, eastl::greater<int>()).check([&](int *r){CHECK(r == ia+i);});
@@ -101,7 +101,7 @@ namespace
         int* ib = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i].i = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         for (int i = 0; i <= N; ++i)
         {
             push_heap(ia, ia+i, eastl::greater<int>(), &S::i).check([&](S *r){CHECK(r == ia+i);});
@@ -125,7 +125,7 @@ namespace
         eastl::unique_ptr<int>* ia = new eastl::unique_ptr<int>[N];
         for (int i = 0; i < N; ++i)
             ia[i].reset(new int(i));
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         for (int i = 0; i <= N; ++i)
         {
             push_heap(ia, ia+i, indirect_less()).check([&](eastl::unique_ptr<int> *r){CHECK(r == ia+i);});
@@ -164,7 +164,7 @@ int main()
         int* ib = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i].i = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         for (int i = 0; i <= N; ++i)
         {
             CHECK(ranges::push_heap(ranges::make_subrange(ia, ia+i), eastl::greater<int>(), &S::i) == ia+i);

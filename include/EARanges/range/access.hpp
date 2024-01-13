@@ -38,7 +38,6 @@
 
 namespace ranges
 {
-    //TODO: Capire qua se ranges vuole che io usi i CharTraits o se usando eastl::string che non ne fa uso, devo solo avere class CharT come template parameter?
     template<class CharT>
     EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<eastl::basic_string_view<CharT>> = true;
 

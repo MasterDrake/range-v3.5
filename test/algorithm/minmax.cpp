@@ -56,7 +56,7 @@ namespace
         EARANGES_ENSURE(N > 0);
         eastl::unique_ptr<int[]> a{new int[N]};
         eastl::iota(a.get(), a.get()+N, 0);
-        std::shuffle(a.get(), a.get()+N, gen);
+        eastl::shuffle(a.get(), a.get()+N, gen);
         test_iter(Iter(a.get()), Sent(a.get()+N));
     }
 
@@ -93,7 +93,7 @@ namespace
         EARANGES_ENSURE(N > 0);
         eastl::unique_ptr<int[]> a{new int[N]};
         eastl::iota(a.get(), a.get()+N, 0);
-        std::shuffle(a.get(), a.get()+N, gen);
+        eastl::shuffle(a.get(), a.get()+N, gen);
         test_iter_comp(Iter(a.get()), Sent(a.get()+N));
     }
 

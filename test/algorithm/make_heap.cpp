@@ -46,7 +46,7 @@ namespace
         int* ia = new int [N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ia, ia+N) == ia+N);
         CHECK(eastl::is_heap(ia, ia+N));
         delete [] ia;
@@ -57,7 +57,7 @@ namespace
         int* ia = new int [N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ia, Sentinel<int*>(ia+N)) == ia+N);
         CHECK(eastl::is_heap(ia, ia+N));
         delete [] ia;
@@ -68,11 +68,11 @@ namespace
         int* ia = new int [N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ranges::make_subrange(ia, ia+N)) == ia+N);
         CHECK(eastl::is_heap(ia, ia+N));
 
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(::is_dangling(ranges::make_heap(::MakeTestRange(ia, ia+N))));
         CHECK(eastl::is_heap(ia, ia+N));
 
@@ -84,11 +84,11 @@ namespace
         int* ia = new int [N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ranges::make_subrange(ia, Sentinel<int*>(ia+N))) == ia+N);
         CHECK(eastl::is_heap(ia, ia+N));
 
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(::is_dangling(ranges::make_heap(::MakeTestRange(ia, Sentinel<int*>(ia+N)))));
         CHECK(eastl::is_heap(ia, ia+N));
 
@@ -100,7 +100,7 @@ namespace
         int* ia = new int [N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ia, ia+N, eastl::greater<int>()) == ia+N);
         CHECK(eastl::is_heap(ia, ia+N, eastl::greater<int>()));
         delete [] ia;
@@ -111,7 +111,7 @@ namespace
         int* ia = new int [N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ia, Sentinel<int*>(ia+N), eastl::greater<int>()) == ia+N);
         CHECK(eastl::is_heap(ia, ia+N, eastl::greater<int>()));
         delete [] ia;
@@ -122,11 +122,11 @@ namespace
         int* ia = new int [N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ranges::make_subrange(ia, ia+N), eastl::greater<int>()) == ia+N);
         CHECK(eastl::is_heap(ia, ia+N, eastl::greater<int>()));
 
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(::is_dangling(ranges::make_heap(::MakeTestRange(ia, ia+N), eastl::greater<int>())));
         CHECK(eastl::is_heap(ia, ia+N, eastl::greater<int>()));
 
@@ -138,11 +138,11 @@ namespace
         int* ia = new int [N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ranges::make_subrange(ia, Sentinel<int*>(ia+N)), eastl::greater<int>()) == ia+N);
         CHECK(eastl::is_heap(ia, ia+N, eastl::greater<int>()));
 
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(::is_dangling(ranges::make_heap(::MakeTestRange(ia, Sentinel<int*>(ia+N)), eastl::greater<int>())));
         CHECK(eastl::is_heap(ia, ia+N, eastl::greater<int>()));
 
@@ -161,7 +161,7 @@ namespace
         eastl::unique_ptr<int>* ia = new eastl::unique_ptr<int> [N];
         for (int i = 0; i < N; ++i)
             ia[i].reset(new int(i));
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ia, ia+N, indirect_less()) == ia+N);
         CHECK(eastl::is_heap(ia, ia+N, indirect_less()));
         delete [] ia;
@@ -178,7 +178,7 @@ namespace
         S* ib = new S [N];
         for (int i = 0; i < N; ++i)
             ib[i].i = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         CHECK(ranges::make_heap(ib, ib+N, eastl::less<int>(), &S::i) == ib+N);
         eastl::transform(ib, ib+N, ia, eastl::mem_fn(&S::i));
         CHECK(eastl::is_heap(ia, ia+N));

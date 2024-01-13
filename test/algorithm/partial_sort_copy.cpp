@@ -58,7 +58,7 @@ namespace
         int* output = new int[M];
         for (int i = 0; i < N; ++i)
             input[i] = i;
-        std::shuffle(input, input+N, gen);
+        eastl::shuffle(input, input+N, gen);
         partial_sort_copy(Iter(input), Iter(input+N), output, output+M).check([&](int* r)
         {
             int* e = output + eastl::min(N, M);
@@ -66,7 +66,7 @@ namespace
             int i = 0;
             for (int* x = output; x < e; ++x, ++i)
                 CHECK(*x == i);
-            std::shuffle(input, input+N, gen);
+            eastl::shuffle(input, input+N, gen);
         });
         partial_sort_copy(Iter(input), Iter(input+N), output, output+M, eastl::greater<int>()).check([&](int* r)
         {
@@ -75,7 +75,7 @@ namespace
             int i = N-1;
             for (int* x = output; x < e; ++x, --i)
                 CHECK(*x == i);
-            std::shuffle(input, input+N, gen);
+            eastl::shuffle(input, input+N, gen);
         });
         delete [] output;
         delete [] input;
@@ -166,7 +166,7 @@ int main()
         U output[M];
         for (int j = 0; j < N; ++j)
             input[j].i = j;
-        std::shuffle(input, input+N, gen);
+        eastl::shuffle(input, input+N, gen);
         U * r2 = ranges::partial_sort_copy(input, output, eastl::less<int>(), &S::i, &U::i);
         U* e = output + eastl::min(N, M);
         CHECK(r2 == e);
@@ -183,7 +183,7 @@ int main()
         U output[M];
         for (int j = 0; j < N; ++j)
             input[j].i = j;
-        std::shuffle(input, input+N, gen);
+        eastl::shuffle(input, input+N, gen);
         auto r0 = ranges::partial_sort_copy(input, eastl::move(output), eastl::less<int>(), &S::i, &U::i);
         U* e = output + eastl::min(N, M);
 #ifndef EARANGES_WORKAROUND_MSVC_573728

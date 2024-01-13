@@ -94,7 +94,7 @@ namespace
     {
         eastl::unique_ptr<int[]> a{new int[N]};
         eastl::iota(a.get(), a.get()+N, 0);
-        std::shuffle(a.get(), a.get()+N, gen);
+        eastl::shuffle(a.get(), a.get()+N, gen);
         test_iter(Iter(a.get()), Sent(a.get()+N));
     }
 
@@ -112,7 +112,7 @@ namespace
             const unsigned N = 100;
             eastl::unique_ptr<int[]> a{new int[N]};
             eastl::fill_n(a.get(), N, 5);
-            std::shuffle(a.get(), a.get()+N, gen);
+            eastl::shuffle(a.get(), a.get()+N, gen);
             ranges::minmax_element_result<Iter> p = ranges::minmax_element(Iter(a.get()), Sent(a.get()+N));
             CHECK(base(p.min) == a.get());
             CHECK(base(p.max) == a.get()+N-1);
@@ -167,7 +167,7 @@ namespace
     {
         eastl::unique_ptr<int[]> a{new int[N]};
         eastl::iota(a.get(), a.get()+N, 0);
-        std::shuffle(a.get(), a.get()+N, gen);
+        eastl::shuffle(a.get(), a.get()+N, gen);
         test_iter_comp(Iter(a.get()), Sent(a.get()+N));
     }
 
@@ -185,7 +185,7 @@ namespace
             const unsigned N = 100;
             eastl::unique_ptr<int[]> a{new int[N]};
             eastl::fill_n(a.get(), N, 5);
-            std::shuffle(a.get(), a.get()+N, gen);
+            eastl::shuffle(a.get(), a.get()+N, gen);
             typedef eastl::greater<int> Compare;
             Compare comp;
             ranges::minmax_element_result<Iter> p = ranges::minmax_element(Iter(a.get()), Sent(a.get()+N), comp);

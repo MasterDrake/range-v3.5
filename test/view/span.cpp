@@ -13,7 +13,6 @@
 // THE SOFTWARE.
 //
 ///////////////////////////////////////////////////////////////////////////////
-//TODO: remember to use eastl::span instead in the library, not sure if that's the case or not, maybe I'm talking about string_view that isn't supported due the lack of char traits and the fact that easl::basic_string_view is all we have
 #include <EARanges/view/span.hpp>
 
 #include <EASTL/array.h>

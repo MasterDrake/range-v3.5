@@ -63,7 +63,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         CHECK(ranges::sort_heap(ia, ia+N) == ia+N);
         CHECK(eastl::is_sorted(ia, ia+N));
@@ -75,7 +75,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         CHECK(ranges::sort_heap(ia, Sentinel<int*>(ia+N)) == ia+N);
         CHECK(eastl::is_sorted(ia, ia+N));
@@ -87,7 +87,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         CHECK(ranges::sort_heap(::as_lvalue(ranges::make_subrange(ia, ia+N))) == ia+N);
         CHECK(eastl::is_sorted(ia, ia+N));
@@ -99,7 +99,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N);
         CHECK(ranges::sort_heap(::as_lvalue(ranges::make_subrange(ia, Sentinel<int*>(ia+N)))) == ia+N);
         CHECK(eastl::is_sorted(ia, ia+N));
@@ -111,7 +111,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         CHECK(ranges::sort_heap(ia, ia+N, eastl::greater<int>()) == ia+N);
         CHECK(eastl::is_sorted(ia, ia+N, eastl::greater<int>()));
@@ -123,7 +123,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         CHECK(ranges::sort_heap(ia, Sentinel<int*>(ia+N), eastl::greater<int>()) == ia+N);
         CHECK(eastl::is_sorted(ia, ia+N, eastl::greater<int>()));
@@ -135,7 +135,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         CHECK(ranges::sort_heap(::as_lvalue(ranges::make_subrange(ia, ia+N)), eastl::greater<int>()) == ia+N);
         CHECK(eastl::is_sorted(ia, ia+N, eastl::greater<int>()));
@@ -147,7 +147,7 @@ namespace
         int* ia = new int[N];
         for (int i = 0; i < N; ++i)
             ia[i] = i;
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, eastl::greater<int>());
         CHECK(ranges::sort_heap(ranges::make_subrange(ia, Sentinel<int*>(ia+N)), eastl::greater<int>()) == ia+N);
         CHECK(eastl::is_sorted(ia, ia+N, eastl::greater<int>()));
@@ -167,7 +167,7 @@ namespace
         eastl::unique_ptr<int>* ia = new eastl::unique_ptr<int>[N];
         for (int i = 0; i < N; ++i)
             ia[i].reset(new int(i));
-        std::shuffle(ia, ia+N, gen);
+        eastl::shuffle(ia, ia+N, gen);
         eastl::make_heap(ia, ia+N, indirect_less());
         CHECK(ranges::sort_heap(ia, ia+N, indirect_less()) == ia+N);
         CHECK(eastl::is_sorted(ia, ia+N, indirect_less()));
@@ -185,7 +185,7 @@ namespace
         int* ib = new int[N];
         for (int i = 0; i < N; ++i)
             ib[i] = i;
-        std::shuffle(ib, ib+N, gen);
+        eastl::shuffle(ib, ib+N, gen);
         eastl::make_heap(ib, ib+N);
         eastl::transform(ib, ib+N, ia, [](int i){return S{i};});
         CHECK(ranges::sort_heap(ia, ia+N, eastl::less<int>(), &S::i) == ia+N);
