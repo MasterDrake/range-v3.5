@@ -6,7 +6,8 @@ on: [push, pull_request]
 env:
   CMAKE_VERSION: 3.16.2
   NINJA_VERSION: 1.9.0
-  VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+  VCPKG_ROOT: '${{ runner.workspace }}/vcpkg'
+
 
 jobs:
   build:
@@ -462,6 +463,8 @@ jobs:
                                   # to date with fixes on the v11 branch.
       with:
            vcpkgGitCommitId: '53bef8994c541b6561884a8395ea35715ece75db'
+           vcpkgDirectory: ${{ env.VCPKG_ROOT }}
+
 
 
     - name: Configure
