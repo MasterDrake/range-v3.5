@@ -21,20 +21,6 @@
 
 //TODO:41) This fails because vector doesn't use iterators but just T*, so increasing an rvalue is pointless. I guess...
 
-void * __cdecl operator new[](size_t size, const char * name, int flags,
-                              unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-
 CPP_template(class Rng)(requires ranges::range<Rng>)
 ranges::borrowed_subrange_t<Rng> algorithm(Rng &&rng);
 

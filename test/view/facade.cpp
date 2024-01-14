@@ -15,21 +15,7 @@
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-void * __cdecl operator new[](size_t size, const char * name, int flags,
-                              unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-struct MyRange
-  : ranges::view_facade<MyRange>
+struct MyRange: ranges::view_facade<MyRange>
 {
 private:
     friend ranges::range_access;

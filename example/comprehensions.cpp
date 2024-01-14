@@ -14,18 +14,7 @@
 #include <iostream>
 #include <EARanges/all.hpp>
 
-void * __cdecl operator new[](size_t size, const char * name, int flags,
-                              unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
-}
+#include "../test/eastl_utils.h"
 
 using namespace ranges;
 

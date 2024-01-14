@@ -41,7 +41,7 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-//TODO:Some deprecated shit here!
+//TODO:Some deprecated shit here! I guess I fucked up when I was cleaning it :O :O :O
 namespace ranges
 {
     /// \addtogroup group-algorithms

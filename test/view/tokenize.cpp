@@ -8,19 +8,6 @@
 
 //TODO:42) This won't work because of the incompatibility between regex and eastl::string :/ But I assume the problem is only with the checks, otherwise something will work. Even tho he think they're not forward ranges :(
 
-void * __cdecl operator new[](size_t size, const char * name, int flags,
-                              unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
 int main()
 {
     using namespace ranges;

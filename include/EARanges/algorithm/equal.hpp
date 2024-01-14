@@ -30,7 +30,7 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-//TODO: Check deprecated in equal
+//TODO: Check deprecated in equal. I fucked up cleaning some of these overloads... Now it explains the errors
 namespace ranges
 {
     /// \addtogroup group-algorithms

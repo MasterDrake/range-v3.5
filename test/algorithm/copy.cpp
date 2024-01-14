@@ -23,17 +23,7 @@
 #include "../array.hpp"
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
-
-
-void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset, const char * name, int flags, unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
+#include "../eastl_utils.h"
 
 #if EARANGES_CXX_CONSTEXPR >= EARANGES_CXX_CONSTEXPR_14 && EARANGES_CONSTEXPR_INVOKE
 constexpr /*c++14*/

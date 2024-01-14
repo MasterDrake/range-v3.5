@@ -16,21 +16,9 @@
 #include <EARanges/view/iota.hpp>
 #include <EARanges/core.hpp>
 #include "../simple_test.hpp"
+#include "../eastl_utils.h"
 
 //TODO:24) eastl has checks for exceptions, so I think we should surrounder those calls with those defines.
-
-void * __cdecl operator new[](size_t size, const char * name, int flags,
-                              unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
-}
 
 int main()
 {

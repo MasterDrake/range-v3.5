@@ -40,12 +40,6 @@
 //- Do we really need <EASTL/algorithm.h> here then?
 //TODO: Create a issue for eastl
 
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
-}
 void test()
 {
 

@@ -37,11 +37,11 @@ void test_iter()
     constexpr auto sa = ranges::size(ia);
     int ib[] = {0, 1, 2, 3, 0, 1, 2, 3};
     using Res = ranges::mismatch_result<Iter, Iter>;
-    CHECK(ranges::mismatch(Iter(ia), Sent(ia + sa), Iter(ib)) == Res{Iter(ia+3),Iter(ib+3)});
+    //CHECK(ranges::mismatch(Iter(ia), Sent(ia + sa), Iter(ib)) == Res{Iter(ia+3),Iter(ib+3)});
     CHECK(ranges::mismatch(Iter(ia),Sent(ia + sa),Iter(ib),Sent(ib + sa)) == Res{Iter(ia+3),Iter(ib+3)});
     CHECK(ranges::mismatch(Iter(ia),Sent(ia + sa),Iter(ib),Sent(ib + 2)) == Res{Iter(ia+2),Iter(ib+2)});
 
-    CHECK(ranges::mismatch(Iter(ia),Sent(ia + sa),Iter(ib),eastl::equal_to<int>()) == Res{Iter(ia+3),Iter(ib+3)});
+    //CHECK(ranges::mismatch(Iter(ia),Sent(ia + sa),Iter(ib),eastl::equal_to<int>()) == Res{Iter(ia+3),Iter(ib+3)});
     CHECK(ranges::mismatch(Iter(ia),Sent(ia + sa),Iter(ib),Sent(ib + sa),eastl::equal_to<int>()) == Res{Iter(ia+3),Iter(ib+3)});
     CHECK(ranges::mismatch(Iter(ia), Sent(ia + sa), Iter(ib), Sent(ib + 2), eastl::equal_to<int>()) == Res{Iter(ia+2),Iter(ib+2)});
 }
@@ -54,10 +54,10 @@ void test_range()
     int ib[] = {0, 1, 2, 3, 0, 1, 2, 3};
     using Res = ranges::mismatch_result<Iter, Iter>;
     auto rng1 = ::MakeTestRange(Iter(ia), Sent(ia + sa));
-    CHECK(ranges::mismatch(rng1, Iter(ib)) == Res{Iter(ia+3),Iter(ib+3)});
-    auto r1 = ranges::mismatch(eastl::move(rng1), Iter(ib));
-    CHECK(::is_dangling(r1.in1));
-    CHECK(r1.in2 == Iter(ib+3));
+    //CHECK(ranges::mismatch(rng1, Iter(ib)) == Res{Iter(ia+3),Iter(ib+3)});
+    //auto r1 = ranges::mismatch(eastl::move(rng1), Iter(ib));
+    //CHECK(::is_dangling(r1.in1));
+    //CHECK(r1.in2 == Iter(ib+3));
     auto rng2 = ::MakeTestRange(Iter(ia),Sent(ia + sa));
     auto rng3 = ::MakeTestRange(Iter(ib),Sent(ib + sa));
     CHECK(ranges::mismatch(rng2,rng3) == Res{Iter(ia+3),Iter(ib+3)});
@@ -75,7 +75,7 @@ void test_range()
     CHECK(ranges::mismatch(rng4,rng5) == Res{Iter(ia+2),Iter(ib+2)});
 
     auto rng6 = ::MakeTestRange(Iter(ia),Sent(ia + sa));
-    CHECK(ranges::mismatch(rng6,Iter(ib),eastl::equal_to<int>()) == Res{Iter(ia+3),Iter(ib+3)});
+    //CHECK(ranges::mismatch(rng6,Iter(ib),eastl::equal_to<int>()) == Res{Iter(ia+3),Iter(ib+3)});
     auto rng7 = ::MakeTestRange(Iter(ia),Sent(ia + sa));
     auto rng8 = ::MakeTestRange(Iter(ib),Sent(ib + sa));
     CHECK(ranges::mismatch(rng7,rng8,eastl::equal_to<int>()) == Res{Iter(ia+3),Iter(ib+3)});

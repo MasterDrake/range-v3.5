@@ -51,8 +51,10 @@
   - Rimuovere tutte le reference a std usando grepWin e la seguente regex.
 \bstd\b(?!(?:::cout|::initializer_list|::size_t|::uintmax_t|::stringstream|::ptrdiff_t|::nullptr_t|::uint32_t|::intmax_t|::boolalpha|::cerr|::regex_constants|::istream|::ostream|::regex_token_iterator|::basic_ostream|::basic_istream|::ios_base|::out_of_range|::source_location|::atomic|::logic_error|::memory_order_relaxed)\b)  - ^(out|doc|extra|perf|include\EARanges\experimental)$
   - *.cpp|*.hpp
+  
+  - The errors in mismatch and equal are because of deleted overloads. They should work. But technically they should've printed some deprecate warnings or messages. Need to restore some old versions and check.
 
- ## STRING
+  ## STRING
  - For ranges, eastl::string does not conform the 'container' concept because it can't be initialized with an iterator Pair.
  - To solve this we need to add another constructor:
  ```c++

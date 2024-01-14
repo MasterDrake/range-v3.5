@@ -27,6 +27,7 @@
 #include <EARanges/view/zip.hpp>
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
+#include "../eastl_utils.h"
 
 struct S
 {

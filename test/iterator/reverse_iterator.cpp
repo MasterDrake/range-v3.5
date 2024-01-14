@@ -26,6 +26,7 @@
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
+#include "../eastl_utils.h"
 
 template<class It>
 void test()

@@ -25,20 +25,6 @@
 #include "../test_iterators.hpp"
 
 //TODO: BUGBUG views::split doesn't like istreamIterators and eastl::string, so not sure if we should care or not...
-
-void * __cdecl operator new[](size_t size, const char * name, int flags,
-                              unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
 EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 #if defined(__clang__) && __clang_major__ < 6

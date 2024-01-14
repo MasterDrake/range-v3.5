@@ -18,23 +18,8 @@
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-void * __cdecl operator new[](size_t size, const char * name, int flags,
-                              unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-
 template<typename BidiRange>
-struct my_reverse_view
-  : ranges::view_adaptor<my_reverse_view<BidiRange>, BidiRange>
+struct my_reverse_view : ranges::view_adaptor<my_reverse_view<BidiRange>, BidiRange>
 {
 private:
     CPP_assert(ranges::bidirectional_range<BidiRange>);

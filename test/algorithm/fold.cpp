@@ -29,24 +29,13 @@
 
 #include "../simple_test.hpp"
 #include "../test_iterators.hpp"
+#include "../eastl_utils.h"
 
 #include <cstdio>
 
 int __cdecl EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64 n, char const * __restrict pFormat, char * arguments)
 {
     return vsnprintf(pDestination, n, pFormat, arguments);
-}
-
-void * __cdecl operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
-
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
 }
 
 struct Approx

@@ -4,19 +4,8 @@
 
 #include <EARanges/view/transform.hpp>
 
-void * __cdecl operator new[](size_t size, const char * name, int flags,
-                              unsigned debugFlags, const char * file, int line)
-{
-    return new uint8_t[size];
-}
+#include "../test/eastl_utils.h"
 
-void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-                              const char * name, int flags, unsigned debugFlags,
-                              const char * file, int line)
-{
-    return new uint8_t[size];
-
-    }
 int main()
 {
     eastl::vector<int> numbers{1, 2, 3};

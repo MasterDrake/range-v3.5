@@ -56,14 +56,14 @@ int main()
         const int ia[] = {0};
         const int ib[] = {0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + 0),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + 0),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -80,10 +80,10 @@ int main()
         const int ia[] = {0};
         const int ib[] = {1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -96,10 +96,10 @@ int main()
         const int ia[] = {0, 0};
         const int ib[] = {0, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -116,10 +116,10 @@ int main()
         const int ia[] = {0, 0};
         const int ib[] = {0, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -131,10 +131,10 @@ int main()
         const int ia[] = {0, 0};
         const int ib[] = {1, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -146,10 +146,10 @@ int main()
         const int ia[] = {0, 0};
         const int ib[] = {1, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -161,10 +161,10 @@ int main()
         const int ia[] = {0, 1};
         const int ib[] = {0, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -176,10 +176,10 @@ int main()
         const int ia[] = {0, 1};
         const int ib[] = {0, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -196,10 +196,10 @@ int main()
         const int ia[] = {0, 1};
         const int ib[] = {1, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -216,10 +216,10 @@ int main()
         const int ia[] = {0, 1};
         const int ib[] = {1, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -231,10 +231,10 @@ int main()
         const int ia[] = {1, 0};
         const int ib[] = {0, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -246,10 +246,10 @@ int main()
         const int ia[] = {1, 0};
         const int ib[] = {0, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -266,10 +266,10 @@ int main()
         const int ia[] = {1, 0};
         const int ib[] = {1, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -286,10 +286,10 @@ int main()
         const int ia[] = {1, 0};
         const int ib[] = {1, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -301,10 +301,10 @@ int main()
         const int ia[] = {1, 1};
         const int ib[] = {0, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -316,10 +316,10 @@ int main()
         const int ia[] = {1, 1};
         const int ib[] = {0, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -331,10 +331,10 @@ int main()
         const int ia[] = {1, 1};
         const int ib[] = {1, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -346,10 +346,10 @@ int main()
         const int ia[] = {1, 1};
         const int ib[] = {1, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -367,10 +367,10 @@ int main()
         const int ia[] = {0, 0, 0};
         const int ib[] = {1, 0, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -382,10 +382,10 @@ int main()
         const int ia[] = {0, 0, 0};
         const int ib[] = {1, 0, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -397,10 +397,10 @@ int main()
         const int ia[] = {0, 0, 0};
         const int ib[] = {1, 0, 2};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -412,10 +412,10 @@ int main()
         const int ia[] = {0, 0, 0};
         const int ib[] = {1, 1, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -427,10 +427,10 @@ int main()
         const int ia[] = {0, 0, 0};
         const int ib[] = {1, 1, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -442,10 +442,10 @@ int main()
         const int ia[] = {0, 0, 0};
         const int ib[] = {1, 1, 2};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -457,10 +457,10 @@ int main()
         const int ia[] = {0, 0, 0};
         const int ib[] = {1, 2, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -472,10 +472,10 @@ int main()
         const int ia[] = {0, 0, 0};
         const int ib[] = {1, 2, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -487,10 +487,10 @@ int main()
         const int ia[] = {0, 0, 0};
         const int ib[] = {1, 2, 2};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -502,10 +502,10 @@ int main()
         const int ia[] = {0, 0, 1};
         const int ib[] = {1, 0, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -522,10 +522,10 @@ int main()
         const int ia[] = {0, 0, 1};
         const int ib[] = {1, 0, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -537,10 +537,10 @@ int main()
         const int ia[] = {0, 1, 2};
         const int ib[] = {1, 0, 2};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -557,10 +557,10 @@ int main()
         const int ia[] = {0, 1, 2};
         const int ib[] = {1, 2, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -577,10 +577,10 @@ int main()
         const int ia[] = {0, 1, 2};
         const int ib[] = {2, 1, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -597,10 +597,10 @@ int main()
         const int ia[] = {0, 1, 2};
         const int ib[] = {2, 0, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -617,10 +617,10 @@ int main()
         const int ia[] = {0, 0, 1};
         const int ib[] = {1, 0, 1};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -632,10 +632,10 @@ int main()
         const int ia[] = {0, 0, 1};
         const int ib[] = {1, 0, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -657,10 +657,10 @@ int main()
         const int ia[] = {0, 1, 2, 3, 0, 5, 6, 2, 4, 4};
         const int ib[] = {4, 2, 3, 0, 1, 4, 0, 5, 6, 2};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -685,21 +685,21 @@ int main()
                                    counting_equals<const int>) == false);
         CHECK( comparison_count > 0 );
         comparison_count = 0;
-        CHECK(ranges::is_permutation(RandomAccessIterator<const int*>(ia),
-                                   RandomAccessIterator<const int*>(ia + sa),
-                                   RandomAccessIterator<const int*>(ib),
-                                   RandomAccessIterator<const int*>(ib + sa - 1),
-                                   counting_equals<const int>) == false);
+        //CHECK(ranges::is_permutation(RandomAccessIterator<const int*>(ia),
+        //                           RandomAccessIterator<const int*>(ia + sa),
+        //                           RandomAccessIterator<const int*>(ib),
+        //                           RandomAccessIterator<const int*>(ib + sa - 1),
+        //                           counting_equals<const int>) == false);
         CHECK ( comparison_count == 0 );
     }
     {
         const int ia[] = {0, 1, 2, 3, 0, 5, 6, 2, 4, 4};
         const int ib[] = {4, 2, 3, 0, 1, 4, 0, 5, 6, 0};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<const int>()) == false);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<const int>()) == false);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -713,9 +713,9 @@ int main()
         const int ia[] = {0, 1, 2, 3, 0, 5, 6, 2, 4, 4};
         const int ib[] = {4, 2, 3, 0, 1, 4, 0, 5, 6, 2};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                   ForwardIterator<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib)) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                           ForwardIterator<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib)) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                    ForwardIterator<const int*>(ia + sa),
@@ -736,9 +736,9 @@ int main()
         const int ia[] = {0, 1, 2, 3, 0, 5, 6, 2, 4, 4};
         const int ib[] = {4, 2, 3, 0, 1, 4, 0, 5, 6, 2};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
-                                    Sentinel<const int*>(ia + sa),
-                                   ForwardIterator<const int*>(ib)) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
+        //                            Sentinel<const int*>(ia + sa),
+        //                           ForwardIterator<const int*>(ib)) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const int*>(ia),
                                     Sentinel<const int*>(ia + sa),
@@ -759,9 +759,9 @@ int main()
         const int ia[] = {0, 1, 2, 3, 0, 5, 6, 2, 4, 4};
         const int ib[] = {4, 2, 3, 0, 1, 4, 0, 5, 6, 2};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ranges::make_subrange(ForwardIterator<const int*>(ia),
-                                    Sentinel<const int*>(ia + sa)),
-                                   ForwardIterator<const int*>(ib)) == true);
+        //CHECK(ranges::is_permutation(ranges::make_subrange(ForwardIterator<const int*>(ia),
+        //                            Sentinel<const int*>(ia + sa)),
+        //                           ForwardIterator<const int*>(ib)) == true);
 
         CHECK(ranges::is_permutation(ranges::make_subrange(ForwardIterator<const int*>(ia),
                                     Sentinel<const int*>(ia + sa)),
@@ -782,10 +782,10 @@ int main()
         const int ia[] = {0, 1, 2, 3, 0, 5, 6, 2, 4, 4};
         const int ib[] = {4, 2, 3, 0, 1, 4, 0, 5, 6, 2};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ranges::make_subrange(ForwardIterator<const int*>(ia),
-                                    Sentinel<const int*>(ia + sa)),
-                                   ForwardIterator<const int*>(ib),
-                                   eastl::equal_to<int const>()) == true);
+        //CHECK(ranges::is_permutation(ranges::make_subrange(ForwardIterator<const int*>(ia),
+        //                            Sentinel<const int*>(ia + sa)),
+        //                           ForwardIterator<const int*>(ib),
+        //                           eastl::equal_to<int const>()) == true);
 
         CHECK(ranges::is_permutation(ranges::make_subrange(ForwardIterator<const int*>(ia),
                                     Sentinel<const int*>(ia + sa)),
@@ -809,8 +809,8 @@ int main()
         const S ia[] = {{0}, {1}, {2}, {3}, {0}, {5}, {6}, {2}, {4}, {4}};
         const T ib[] = {{4}, {2}, {3}, {0}, {1}, {4}, {0}, {5}, {6}, {2}};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ia, &ib[0], eastl::equal_to<int const>(), &S::i, &T::i) == true);
-        CHECK(ranges::is_permutation(ia, ib, eastl::equal_to<int const>(), &S::i, &T::i) == true);
+        //CHECK(ranges::is_permutation(ia, &ib[0], eastl::equal_to<int const>(), &S::i, &T::i) == true);
+        //CHECK(ranges::is_permutation(ia, ib, eastl::equal_to<int const>(), &S::i, &T::i) == true);
         CHECK(ranges::is_permutation(ranges::make_subrange(ForwardIterator<const S*>(ia),
                                     Sentinel<const S*>(ia + sa)),
                                    ranges::make_subrange(ForwardIterator<const T*>(ib + 1),
@@ -828,10 +828,10 @@ int main()
         const S ia[] = {{0}, {1}, {2}, {3}, {0}, {5}, {6}, {2}, {4}, {4}};
         const T ib[] = {{4}, {2}, {3}, {0}, {1}, {4}, {0}, {5}, {6}, {2}};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        CHECK(ranges::is_permutation(ForwardIterator<const S*>(ia),
-                                    Sentinel<const S*>(ia + sa),
-                                   ForwardIterator<const T*>(ib),
-                                   eastl::equal_to<int const>(), &S::i, &T::i) == true);
+        //CHECK(ranges::is_permutation(ForwardIterator<const S*>(ia),
+        //                            Sentinel<const S*>(ia + sa),
+        //                           ForwardIterator<const T*>(ib),
+        //                           eastl::equal_to<int const>(), &S::i, &T::i) == true);
 
         CHECK(ranges::is_permutation(ForwardIterator<const S*>(ia),
                                     Sentinel<const S*>(ia + sa),

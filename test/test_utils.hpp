@@ -29,6 +29,7 @@
 #include "./debug_view.hpp"
 #include "./simple_test.hpp"
 #include "./test_iterators.hpp"
+#include "eastl_utils.h"
 
 #if defined(__clang__) || defined(__GNUC__)
 #if defined(__has_builtin)
