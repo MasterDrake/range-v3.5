@@ -28,6 +28,8 @@
 #include <iostream>
 using eastl::string;
 using std::cout;
+
+
 void * __cdecl operator new[](size_t size, const char * name, int flags,
                               unsigned debugFlags, const char * file, int line)
 {

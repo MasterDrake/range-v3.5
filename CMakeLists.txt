@@ -14,9 +14,15 @@ else()
     set(is_standalone NO)
 endif()
 
+if (WIN32)
+	#set(VCPKG_DEFAULT_TRIPLET x64-windows)
+elseif (UNIX)
+	set(VCPKG_DEFAULT_TRIPLET x64-linux)
+endif()
+
 set(VCPKG_LIBRARY_LINKAGE static)
-#include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-include("vcpkg/scripts/buildsystems/vcpkg.cmake")
+include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+#include("vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 project(EARanges CXX)
 
@@ -79,7 +85,7 @@ if(EARANGES_EXAMPLES)
 endif()
 
 if(EARANGES_PERF)
-  message(STATUS "Building perfs!")
+  message(STATUS "Building perf tests!")
   include(gtest)
   include(gbenchmark)
   add_subdirectory(perf)
