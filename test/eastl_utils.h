@@ -1,5 +1,7 @@
 #ifdef _WIN32
 #define CDeclFunction __cdecl
+#else
+#define CDeclFunction 
 #endif
 
 void * CDeclFunction operator new[](size_t size, const char * name, int flags, unsigned debugFlags, const char * file, int line)

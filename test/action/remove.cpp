@@ -36,7 +36,8 @@ struct Data
 void simple_test()
 {
     //TODO: Come fa a compilare anche con std nonostante nessuno lo includa, da usare compile build score.
-    std::vector<Data> list;
+    //Linux gcc infatti non gli piace :/
+    eastl::vector<Data> list;
     list.emplace_back(Data{1});
     list.emplace_back(Data{2});
     list.emplace_back(Data{3});

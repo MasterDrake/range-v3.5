@@ -122,7 +122,7 @@ void moar_tests()
        //     std::istreambuf_iterator<char>{sin},
        //     std::istreambuf_iterator<char>{}};
 #else
-       / auto rng = make_subrange(
+       // auto rng = make_subrange(
        //     eastl::istreambuf_iterator<char>{sin},
        //     eastl::istreambuf_iterator<char>{});
 #endif

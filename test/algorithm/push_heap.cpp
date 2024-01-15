@@ -33,7 +33,7 @@
 #include <EASTL/memory.h>
 #include <EASTL/random.h>
 #include <EASTL/algorithm.h>
-#include <EASTl/heap.h>
+#include <EASTL/heap.h>
 #include <EASTL/functional.h>
 #include <EARanges/core.hpp>
 #include <EARanges/algorithm/heap_algorithm.hpp>

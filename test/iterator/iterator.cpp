@@ -42,16 +42,16 @@ void test_insert_iterator()
     copy(std::initializer_list<int>{1,2,3,4}, inserter(vi, vi.begin()+2));
     ::check_equal(vi, {5,6,1,2,3,4,7,8});
 }
-
+//TODO:How it's possible that MSVC doesn't complain about eastl<->std string comparisons???
 void test_ostream_joiner()
 {
     std::ostringstream oss;
     eastl::vector<int> vi{};
     copy(vi, make_ostream_joiner(oss, ","));
-    ::check_equal(oss.str(), eastl::string{""});
+    ::check_equal(oss.str().c_str(), eastl::string{""}.c_str());
     vi = {1,2,3,4};
     copy(vi, make_ostream_joiner(oss, ","));
-    ::check_equal(oss.str(), eastl::string{"1,2,3,4"});
+    ::check_equal(oss.str().c_str(), eastl::string{"1,2,3,4"}.c_str());
 }
 
 void test_move_iterator()

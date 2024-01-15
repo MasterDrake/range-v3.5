@@ -70,7 +70,7 @@ int main()
 
     {
         eastl::string s{"This is his face"};
-        char ch[] =  {' '};
+        //char ch[] =  {' '};
         //eastl::vector<eastl::string> rgs = actions::split(s, ch);
         //CHECK(rgs.size() == 4u);
         //CHECK(rgs[0] == "This");

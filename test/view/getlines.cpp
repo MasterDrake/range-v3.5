@@ -17,7 +17,9 @@
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
+#if _WIN32
 #include "Windows.h"
+#endif
 
 using namespace ranges;
 
@@ -44,8 +46,13 @@ good men
     {
 
         auto danteRng = getlines(danteFile);
+        //TODO:This should be C++17 guarded anyway when it comes to linux.
+#if _WIN32
         SetConsoleOutputCP(CP_UTF8);
         for(const auto & line : danteRng)
+#else
+        EARANGES_FOR(const auto& line, danteRng)
+#endif
             std::cout << line.c_str() << "\n";
     }
     else

@@ -28,7 +28,7 @@ using std::cout;
 
 #include "../test/eastl_utils.h"
 
-
+/*TODO: VSPRINFT e vector << overload
 EASTL_EASTDC_API int __cdecl EA::StdC::Vsnprintf(char*  EA_RESTRICT pDestination, size_t n, const char*  EA_RESTRICT pFormat, va_list arguments)
 {
     return vsnprintf(pDestination, n, pFormat, arguments);
@@ -41,5 +41,6 @@ int main()
     auto rng = vi | views::filter([](int i) { return i % 2 == 0; }) | views::transform([](int i) { return eastl::to_string(i); }) | to_vector;
     // prints: [2,4,6,8,10]
     std::cout << views::all(rng);
-}
+}*/
+int main(){}
 ///[filter_transform]

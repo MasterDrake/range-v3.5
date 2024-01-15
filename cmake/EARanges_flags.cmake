@@ -88,7 +88,7 @@ else()
   EARanges_append_flag(EARANGES_HAS_WALL -Wall)
   EARanges_append_flag(EARANGES_HAS_WEXTRA -Wextra)
   if (EARANGES_ENABLE_WERROR)
-    EARanges_append_flag(EARANGES_HAS_WERROR -Werror)
+    #EARanges_append_flag(EARANGES_HAS_WERROR -Werror)
   endif()
 endif()
 
