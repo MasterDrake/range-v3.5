@@ -15,10 +15,10 @@ else()
 endif()
 
 if (WIN32)
-	#set(VCPKG_DEFAULT_TRIPLET x64-windows)
+	#set(VCPKG_TARGET_TRIPLET x64-windows)
 	include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 elseif (UNIX)
-	set(VCPKG_DEFAULT_TRIPLET x64-linux)
+	set(VCPKG_TARGET_TRIPLET x64-linux)
  	include("/home/ilies/GameDev/Libraries/vcpkg/scripts/buildsystems/vcpkg.cmake")
 endif()
 
