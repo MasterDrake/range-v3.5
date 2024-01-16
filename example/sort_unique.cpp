@@ -22,7 +22,7 @@
 using std::cout;
 
 #include "../test/eastl_utils.h"
-//TODO: vector operator overload
+
 int main()
 {
     eastl::vector<int> vi{9, 4, 5, 2, 9, 1, 0, 2, 6, 7, 4, 5, 6, 5, 9, 2, 7,
@@ -31,6 +31,6 @@ int main()
     using namespace ranges;
     vi |= actions::sort | actions::unique;
     // prints: [0,1,2,3,4,5,6,7,8,9]
-    //cout << views::all(vi) << '\n';
+    cout << views::all(vi) << '\n';
 }
 ///[sort_unique]

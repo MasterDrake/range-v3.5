@@ -176,7 +176,7 @@ int main()
             CHECK(ib[i] == ir[i]);
         }
     }
-    //TODO:6) Remove all std include, even the ones eastl doesn't have a replacement for like std::except or streams.
+
     { // Test calling it with proxy iterators
         using namespace ranges;
         int ia[] = {1, 2, 3, 4, 5};

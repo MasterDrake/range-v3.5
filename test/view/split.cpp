@@ -258,27 +258,27 @@ void moar_tests()
         CHECK(i == sv.end());
     }
 
-    {
-        //eastl::string hello{"hello"};
-        //std::stringstream sin{hello.c_str()};
-        //auto rng = make_subrange(
-        //    std::istreambuf_iterator<char>{sin},
-        //    std::istreambuf_iterator<char>{});
-        //auto sv = views::split(rng, views::empty<char>);
-        //auto i = sv.begin();
-        //CHECK(i != sv.end());
-        //++i;
-        //CHECK(i != sv.end());
-        //++i;
-        //CHECK(i != sv.end());
-        //check_equal(*i, single_view<char>{'l'});
-        //++i;
-        //CHECK(i != sv.end());
-        //check_equal(*i, single_view<char>{'l'});
-        //++i;
-        //CHECK(i != sv.end());
-        //++i;
-        //CHECK(i == sv.end());
+    {/*
+        eastl::string hello{"hello"};
+        std::stringstream sin{hello};
+        auto rng = make_subrange(
+            std::istreambuf_iterator<char>{sin},
+            std::istreambuf_iterator<char>{});
+        auto sv = views::split(rng, views::empty<char>);
+        auto i = sv.begin();
+        CHECK(i != sv.end());
+        ++i;
+        CHECK(i != sv.end());
+        ++i;
+        CHECK(i != sv.end());
+        check_equal(*i, single_view<char>{'l'});
+        ++i;
+        CHECK(i != sv.end());
+        check_equal(*i, single_view<char>{'l'});
+        ++i;
+        CHECK(i != sv.end());
+        ++i;
+        CHECK(i == sv.end());*/
     }
 }
 

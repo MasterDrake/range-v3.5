@@ -31,16 +31,6 @@
 #include "../test_iterators.hpp"
 #include "../eastl_utils.h"
 
-#include <cstdio>
-/*
-#ifdef _WIN32
-int CDeclFunction EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64 n, char const * __restrict pFormat, char * arguments)
-#else
-int Vsnprintf(char*  EA_RESTRICT pDestination, size_t n, const char*  EA_RESTRICT pFormat, va_list arguments)
-#endif
-{
-    return vsnprintf(pDestination, n, pFormat, arguments);
-}*/
 
 struct Approx
 {
@@ -84,11 +74,11 @@ void test_right()
     // f(0.25, f(0.75, 1))
     CHECK(ranges::fold_right(da, da + 2, 1, eastl::minus<>()) == Approx{0.5});
     CHECK(ranges::fold_right(da, 1, eastl::minus<>()) == Approx{0.5});
-    //TODO: fix vsprintf on linux
-    //int xs[] = {1, 2, 3};
-    //auto concat = [](int i, const eastl::string& s) { return s + eastl::to_string(i); };
-    //CHECK(ranges::fold_right(xs, xs + 2, eastl::string(), concat) == "21");
-    //CHECK(ranges::fold_right(xs, eastl::string(), concat) == "321");
+
+    int xs[] = {1, 2, 3};
+    auto concat = [](int i, const eastl::string& s) { return s + eastl::to_string(i); };
+    CHECK(ranges::fold_right(xs, xs + 2, eastl::string(), concat) == "21");
+    CHECK(ranges::fold_right(xs, eastl::string(), concat) == "321");
 }
 
 int main()

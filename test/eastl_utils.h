@@ -30,3 +30,47 @@ void * CDeclFunction operator new[](size_t size, size_t alignement, size_t offse
 //{
 //    return vsnprintf(pDestination, n, pFormat, arguments);
 //}
+
+#include <cstdio>
+
+EASTL_EASTDC_API CDeclFunction int EA::StdC::Vsnprintf(char*  EA_RESTRICT pDestination, size_t n, const char*  EA_RESTRICT pFormat, va_list arguments)
+{
+    return vsnprintf(pDestination, n, pFormat, arguments);
+}
+
+#include <iosfwd>
+#include <EASTL/vector.h>
+
+namespace eastl
+{
+    template<typename T>
+    std::ostream& operator<<(std::ostream& os, const eastl::vector<T>& vec)
+    {
+        for(const auto& elem : vec)
+            os << elem;
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const eastl::string& str)
+    {
+        return os << str.c_str();
+    }
+
+    std::istream& operator>>(std::istream& is, eastl::string& mystring)
+    {
+        const auto bufSize = 256 * 10;
+        char buff[bufSize];
+
+        // getting the string from the stream
+        is.get(buff, bufSize, '\n');
+
+        // copying buff into myString
+        mystring = eastl::string(buff);
+
+        // clearing the stream buffer
+        is.clear();
+        is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        return is;
+    }
+}

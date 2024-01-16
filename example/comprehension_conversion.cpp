@@ -23,13 +23,12 @@
 using std::cout;
 
 #include "../test/eastl_utils.h"
-//TODO: vector <<operator overload
 int main()
 {
     using namespace ranges;
     auto vi = views::for_each(views::ints(1, 6), [](int i) { return yield_from(views::repeat_n(i, i)); }) |
               to<eastl::vector>();
     // prints: [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5]
-    //cout << views::all(vi) << '\n';
+    cout << views::all(vi) << '\n';
 }
 ///[comprehension_conversion]

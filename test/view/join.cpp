@@ -250,8 +250,7 @@ int main()
         eastl::string input{"foobarbaxbat"};
         eastl::string insert{"X"};
         auto rng = op(input, 2, insert);
-        //TODO:I should fix this somehow :/
-        //std::cout << rng << '\n';
+        std::cout << rng << '\n';
         ::check_equal(rng, {'f','o','X','o','b','X','a','r','X','b','a','X','x','b','X','a','t'});
     }
 
@@ -263,9 +262,7 @@ int main()
         eastl::vector<eastl::string> input{"foo","bar","bax","bat"};
         eastl::string insert{"XX"};
         auto rng = op(input, 2, insert);
-        //todo: remember the hack 36
-        //TODO: linux doesn't like alwatys constexpr I guesss
-        //std::cout << rng << '\n';
+        std::cout << rng << '\n';
         ::check_equal(rng, {"foo","bar","XX","bax","bat"});
     }
 

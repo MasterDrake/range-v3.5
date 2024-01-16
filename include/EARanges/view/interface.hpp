@@ -15,18 +15,6 @@
 
 #include <iosfwd>
 
-//TODO:36) Apparently without eastl::string included somewhere in the .cpp file, it won't compile because it doesn't know what's a eastl::basic_string, what a conondrum. 
-//This header_guard approach should work, but I woulnd't trust it. Luckily eastl includes this guards :D
-//Basically if you're compiling a .cpp file and you already have <EASTL/string> included then it won't include it here again, otherwise it will.
-//Now that I think about it, even that hack should be guard defined :O
-//Again, very risky.
-//Now that I think about it, is it really necessary here?
-//#ifndef EASTL_STRING_H
-//#include <EASTL/string.h>
-//#endif
-//So the answer is no, what a journey!
-//TODO:EASTL config.h has some macro for these include checks...
-
 #include <EARanges/meta/meta.hpp>
 
 #include <EARanges/concepts/concepts.hpp>
@@ -119,16 +107,8 @@ namespace ranges
             {
                 for(;;)
                 {
-                    #ifdef EASTL_STRING_H
-                    //HACKHACK for eastl::string, I should use some ranges facilities for getting the value_type, unfortunately it doesn't work. Also not sure how secure is using easl::basic_string hardcoding char and using that type for every string in eastl
-                    // BTW we can forward declare eastl::basic_string so that we don't have to add it here. I mean, if we are calling this on a string range, we already have a string header with everything defined.
-                   // if constexpr(eastl::is_same_v<eastl::remove_reference_t<decltype(*it)>, eastl::basic_string<char, eastl::allocator>>)
-                   //if constexpr(eastl::is_same_v<ranges::iter_value_t<Rng>(rng), eastl::basic_string<char, eastl::allocator>>) using range_value_t returns char...
-                    EA_CONSTEXPR_IF((bool)(eastl::is_same_v<eastl::remove_cvref_t<ranges::range_value_t<Rng>>, eastl::string>))
-                        sout << it->c_str();
-                    else
-                    #endif
-                        sout << *it;
+                    sout << *it;
+                    
                     if(++it == e)
                         break;
                     sout << ',';

@@ -4,7 +4,7 @@
 #include <EARanges/view/filter.hpp>
 
 #include "../test/eastl_utils.h"
-//TODO: vector operator << overload
+
 int main()
 {
     eastl::vector<int> numbers{1, 2, 3, 4};
@@ -16,6 +16,6 @@ int main()
           return num % 2 == 0;
         });
 
-   // std::cout << even << '\n';
+    std::cout << even << '\n';
 }
 //! [filter example]

@@ -18,9 +18,10 @@
 #include "../simple_test.hpp"
 
 // BUGBUGBUG
-namespace std {
+namespace eastl 
+{
     template<typename F, typename S>
-    ostream& operator<<(ostream& os, eastl::pair<F, S> const& p)
+    std::ostream& operator<<(std::ostream& os, eastl::pair<F, S> const& p)
     {
         return os << '{' << p.first << ", " << p.second << '}';
     }

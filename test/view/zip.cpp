@@ -39,29 +39,8 @@
 
 
 //TODO: 44) BUGBUGBUGBUG nothing works here :( Zip-view is incredibly broken. Stuff that doesn't work got commented out. Some of these commented out stuff works, it just doesn't work well with tests, so there's a underlying problem somehow...
-namespace std
-{
-    //TODO: to be checked better...
-    istream& operator>>(istream& IN, eastl::string& mystring)
-    {
-        // allocating random space
-        const int buffSz = 100;
-        char buff[buffSz];
 
-        // getting the string from the stream
-        IN.get(buff, buffSz, '\n');
-
-        // copying buff into myString
-        mystring = eastl::string(buff);
-
-        // clearing the stream buffer
-        IN.clear();
-        IN.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-        return IN;
-    }
-}
-
+//TODO: The >>operator overload doesn't work now :(
 #if defined(__cpp_lib_ranges) && __cpp_lib_ranges >= 201911
 // See https://github.com/ericniebler/range-v3/issues/1480
 void test_bug1480()

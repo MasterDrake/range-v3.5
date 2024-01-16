@@ -50,18 +50,14 @@ struct printer
     {
         if (first_) first_ = false;
         else os_ << ',';
-        //TODO:this iff should wprk even if
-        /*EA_CONSTEXPR_IF((eastl::is_same_v<T, eastl::basic_string<char, eastl::allocator>>))
-            os_ << t.c_str();
-        else
-            os_ << t;*/
+        os_ << t;
     }
 };
 
-namespace std
+namespace eastl
 {
     template<typename... Ts>
-    std::ostream &operator<<(std::ostream &os, eastl::tuple<Ts...> const &t)
+    std::ostream& operator<<(std::ostream &os, eastl::tuple<Ts...> const &t)
     {
         os << '(';
         auto first = true;
@@ -293,15 +289,17 @@ void test_bug_1296()
 //TODO:28) Figure out if this is still an issue or not and fix it, right now it doesn't work.
 void test_1422()
 {
-    //int v1[] = {1,2,3};
-    //auto e = v1 | ranges::views::enumerate;
-    //auto cp = ranges::views::cartesian_product(e, e);
-    //using CP = decltype(cp);
-    //CPP_assert(ranges::input_range<CP>);
-}   //
+    /*
+    int v1[] = {1,2,3};
+    auto e = v1 | ranges::views::enumerate;
+    auto cp = ranges::views::cartesian_product(e, e);
+    using CP = decltype(cp);
+    CPP_assert(ranges::input_range<CP>);
+    */
+}  
 
 int main()
-{/*
+{
     int some_ints[] = {0,1,2,3};
     char const * some_strings[] = {"John", "Paul", "George", "Ringo"};
     auto rng = views::cartesian_product(
@@ -356,6 +354,6 @@ int main()
     test_bug_1269();
     test_bug_1279();
     test_bug_1296();
-*/
+
     return test_result();
 }

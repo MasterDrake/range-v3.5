@@ -18,7 +18,6 @@
 
 #include <EARanges/range/access.hpp>
 
-//TODO:Questo è importante da sapere :O o forse no?
 #if EARANGES_CXX_RANGE_BASED_FOR < EARANGES_CXX_RANGE_BASED_FOR_17
 /// A range-based for macro, basically a hack until the built-in range-for can handle
 /// Ranges that have a different type for begin and end. \ingroup range-core

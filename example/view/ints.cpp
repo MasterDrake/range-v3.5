@@ -2,11 +2,11 @@
 #include <iostream>
 #include <EASTL/vector.h>
 #include <EARanges/view/iota.hpp>
-//TODO: operator overloading è meglio
+
 int main()
 {
-    auto numbers = ranges::views::ints(3, 785);
+    auto numbers = ranges::views::ints(3, 7);
 
-    //std::cout << numbers << '\n';
+    std::cout << numbers << '\n';
 }
 //! [ints example]
