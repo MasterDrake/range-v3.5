@@ -40,6 +40,7 @@ EASTL_EASTDC_API CDeclFunction int EA::StdC::Vsnprintf(char*  EA_RESTRICT pDesti
 
 #include <iosfwd>
 #include <EASTL/vector.h>
+#include <EASTL/list.h>
 
 namespace eastl
 {
@@ -51,11 +52,19 @@ namespace eastl
         return os;
     }
 
+    template<typename T>
+    std::ostream& operator<<(std::ostream& os, const eastl::list<T>& vec)
+    {
+        for(const auto& elem : vec)
+            os << elem;
+        return os;
+    }
+
     std::ostream& operator<<(std::ostream& os, const eastl::string& str)
     {
         return os << str.c_str();
     }
-
+    //TODO: doesn't work very well I guess...
     std::istream& operator>>(std::istream& is, eastl::string& mystring)
     {
         const auto bufSize = 256 * 10;
