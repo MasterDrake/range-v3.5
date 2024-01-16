@@ -31,7 +31,7 @@
 #include <EARanges/detail/prologue.hpp>
 
 EARANGES_DIAGNOSTIC_PUSH
-EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
+
 
 namespace ranges
 {

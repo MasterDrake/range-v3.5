@@ -27,8 +27,6 @@
 
 using namespace std::placeholders;
 
-EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
-
 template<class InIter, class OutIter>
 void
 test1()
@@ -87,21 +85,6 @@ test2()
         int ia[] = {0, 1, 2, 3, 4};
         constexpr auto sa = ranges::size(ia);
         int ib[sa] = {1, 2, 3, 4, 5};
-        //ranges::binary_transform_result<InIter1, InIter2, OutIter> r = ranges::transform(InIter1(ib), Sentinel<int const *>(ib + sa), InIter2(ia), OutIter(ib), eastl::minus<int>());
-        //CHECK(base(r.in1) == ib + sa);
-        //CHECK(base(r.in2) == ia + sa);
-        //CHECK(base(r.out) == ib + sa);
-        //CHECK(ib[0] == 1);
-        //CHECK(ib[1] == 1);
-        //CHECK(ib[2] == 1);
-        //CHECK(ib[3] == 1);
-        //CHECK(ib[4] == 1);
-    }
-
-    {
-        int ia[] = {0, 1, 2, 3, 4};
-        constexpr auto sa = ranges::size(ia);
-        int ib[sa] = {1, 2, 3, 4, 5};
         ranges::binary_transform_result<InIter1, InIter2, OutIter> r =
             ranges::transform(InIter1(ib), Sentinel<int const *>(ib + sa),
                               InIter2(ia), Sentinel<int const *>(ia + sa),
@@ -114,38 +97,6 @@ test2()
         CHECK(ib[2] == 1);
         CHECK(ib[3] == 1);
         CHECK(ib[4] == 1);
-    }
-
-    {
-        int ia[] = {0, 1, 2, 3, 4};
-        constexpr auto sa = ranges::size(ia);
-        int ib[sa] = {1, 2, 3, 4, 5};
-        auto rng0 = ranges::make_subrange(InIter1(ib), Sentinel<int const *>(ib + sa));
-        //ranges::binary_transform_result<InIter1, InIter2, OutIter> r = ranges::transform(rng0, InIter2(ia),OutIter(ib), eastl::minus<int>());
-        //CHECK(base(r.in1) == ib + sa);
-        //CHECK(base(r.in2) == ia + sa);
-        //CHECK(base(r.out) == ib + sa);
-        //CHECK(ib[0] == 1);
-        //CHECK(ib[1] == 1);
-        //CHECK(ib[2] == 1);
-        //CHECK(ib[3] == 1);
-        //CHECK(ib[4] == 1);
-    }
-
-    {
-        int ia[] = {0, 1, 2, 3, 4};
-        constexpr auto sa = ranges::size(ia);
-        int ib[sa] = {1, 2, 3, 4, 5};
-        auto rng0 = ranges::make_subrange(InIter1(ib), Sentinel<int const *>(ib + sa));
-        //auto r = ranges::transform(eastl::move(rng0), InIter2(ia), OutIter(ib), eastl::minus<int>());
-        //CHECK(base(r.in1) == ib + sa);
-        //CHECK(base(r.in2) == ia + sa);
-        //CHECK(base(r.out) == ib + sa);
-        //CHECK(ib[0] == 1);
-        //CHECK(ib[1] == 1);
-        //CHECK(ib[2] == 1);
-        //CHECK(ib[3] == 1);
-        //CHECK(ib[4] == 1);
     }
 
     {

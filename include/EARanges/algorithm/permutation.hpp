@@ -131,19 +131,16 @@ namespace ranges
                                                    P1 proj1 = P1{},
                                                    P2 proj2 = P2{}) //
         {
-            if(EARANGES_CONSTEXPR_IF(sized_sentinel_for<S1, I1> &&
-                                   sized_sentinel_for<S2, I2>))
+            if(EARANGES_CONSTEXPR_IF(sized_sentinel_for<S1, I1> && sized_sentinel_for<S2, I2>))
             {
-                EARANGES_DIAGNOSTIC_PUSH
-                EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
                 return distance(begin1, end1) == distance(begin2, end2) &&
                        (*this)(eastl::move(begin1),
                                eastl::move(end1),
                                eastl::move(begin2),
+                               eastl::move(end2),
                                eastl::move(pred),
                                eastl::move(proj1),
                                eastl::move(proj2));
-                EARANGES_DIAGNOSTIC_POP
             }
             return detail::is_permutation_impl(eastl::move(begin1),
                                                eastl::move(end1),
@@ -167,15 +164,13 @@ namespace ranges
         {
             if(EARANGES_CONSTEXPR_IF(sized_range<Rng1> && sized_range<Rng2>))
             {
-                EARANGES_DIAGNOSTIC_PUSH
-                EARANGES_DIAGNOSTIC_IGNORE_DEPRECATED_DECLARATIONS
                 return distance(rng1) == distance(rng2) && (*this)(begin(rng1),
                                                                    end(rng1),
                                                                    begin(rng2),
+                                                                   end(rng2),
                                                                    eastl::move(pred),
                                                                    eastl::move(proj1),
                                                                    eastl::move(proj2));
-                EARANGES_DIAGNOSTIC_POP
             }
             return detail::is_permutation_impl(begin(rng1),
                                                end(rng1),
@@ -191,9 +186,7 @@ namespace ranges
     EARANGES_FUNC_BEGIN(next_permutation)
 
         /// \brief function template \c next_permutation
-        template(typename I, typename S, typename C = less, typename P = identity)(
-            requires bidirectional_iterator<I> AND sentinel_for<S, I> AND
-                sortable<I, C, P>)
+        template(typename I, typename S, typename C = less, typename P = identity)(requires bidirectional_iterator<I> AND sentinel_for<S, I> AND sortable<I, C, P>)
         constexpr bool EARANGES_FUNC(next_permutation)(I first, S end_, C pred = C{}, P proj = P{}) //
         {
             if(first == end_)
@@ -222,8 +215,7 @@ namespace ranges
         }
 
         /// \overload
-        template(typename Rng, typename C = less, typename P = identity)(
-            requires bidirectional_range<Rng> AND sortable<iterator_t<Rng>, C, P>)
+        template(typename Rng, typename C = less, typename P = identity)(requires bidirectional_range<Rng> AND sortable<iterator_t<Rng>, C, P>)
         constexpr bool EARANGES_FUNC(next_permutation)(Rng && rng, C pred = C{}, P proj = P{}) //
         {
             return (*this)(begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
@@ -234,9 +226,7 @@ namespace ranges
     EARANGES_FUNC_BEGIN(prev_permutation)
 
         /// \brief function template \c prev_permutation
-        template(typename I, typename S, typename C = less, typename P = identity)(
-            requires bidirectional_iterator<I> AND sentinel_for<S, I> AND
-                sortable<I, C, P>)
+        template(typename I, typename S, typename C = less, typename P = identity)(requires bidirectional_iterator<I> AND sentinel_for<S, I> AND sortable<I, C, P>)
         constexpr bool EARANGES_FUNC(prev_permutation)(I first, S end_, C pred = C{}, P proj = P{}) //
         {
             if(first == end_)
@@ -265,8 +255,7 @@ namespace ranges
         }
 
         /// \overload
-        template(typename Rng, typename C = less, typename P = identity)(
-            requires bidirectional_range<Rng> AND sortable<iterator_t<Rng>, C, P>)
+        template(typename Rng, typename C = less, typename P = identity)(requires bidirectional_range<Rng> AND sortable<iterator_t<Rng>, C, P>)
         constexpr bool EARANGES_FUNC(prev_permutation)(Rng && rng, C pred = C{}, P proj = P{}) //
         {
             return (*this)(begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
