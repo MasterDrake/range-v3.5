@@ -62,7 +62,7 @@ elseif("x${EARANGES_CXX_STD}" STREQUAL "xdefault")
   if (EARANGES_CXX_COMPILER_CLANGCL OR EARANGES_CXX_COMPILER_MSVC)
     set(EARANGES_CXX_STD 17)
   else()
-    set(EARANGES_CXX_STD 14)
+    set(EARANGES_CXX_STD 20)
   endif()
 endif()
 

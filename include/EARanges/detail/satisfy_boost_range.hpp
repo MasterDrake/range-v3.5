@@ -46,7 +46,7 @@ namespace eastl
     struct range_size;
 } // namespace boost
 
-//TODO: Forse non dovrebbe servire questo eastl, ma meglio di niente, ripetita iuvant, altrimenti ritorniamo a boost e usiamo std per una migliore compatibilità
+//TODO: Forse non dovrebbe servire questo eastl, ma meglio di niente, ripetita iuvant, altrimenti ritorniamo a boost e usiamo std per una migliore compatibilita'
 /// \brief Macro specialising Boost Range metafunctions for the specified view
 #define EARANGES_SATISFY_BOOST_RANGE(view_name)                                           \
     namespace eastl                                                                     \
