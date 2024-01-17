@@ -67,16 +67,15 @@ int main()
         any_view<any_view<char, category::random_access>, category::random_access> v1 = views::single(s | views::drop(1));
         any_view<any_view<char, category::random_access>, category::random_access> v2 = views::single(s | views::drop(2));
         auto v3 = views::concat(v1, v2);
-        //TODO:30a) Conversion to eastl::strings are finicky
-        //auto owner1 = v3 | to<eastl::vector<eastl::vector<char>>>();
-        //auto owner2 = v3 | to<eastl::vector<eastl::string>>();
-        //
-        //::check_equal(owner1, eastl::vector<eastl::vector<char>>{{'b', 'c'}, {'c'}});
-        //::check_equal(owner2, eastl::vector<eastl::string>{{"bc"}, {"c"}});
+        auto owner1 = v3 | to<eastl::vector<eastl::vector<char>>>();
+        auto owner2 = v3 | to<eastl::vector<eastl::string>>();
+        
+        ::check_equal(owner1, eastl::vector<eastl::vector<char>>{{'b', 'c'}, {'c'}});
+        ::check_equal(owner2, eastl::vector<eastl::string>{{"bc"}, {"c"}});
     }
 
     // map
-    //TODO:30b) same here, especially with stringstream floating around
+    //TODO:30) same here, especially with stringstream floating around
     auto to_string = [](int i){ return eastl::to_string(i); };
     //auto m = views::zip(views::ints, views::ints | views::transform(to_string)) | views::take(5) | to<eastl::map<int, eastl::string>>();
     using P = eastl::pair<int const, eastl::string>;

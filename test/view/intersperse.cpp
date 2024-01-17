@@ -42,30 +42,29 @@ c_str_(char const *sz)
 int main()
 {
     using namespace ranges;
-    //TODO:33) No conversion from c_str to eastl::string :/
     {
         auto r0 = views::intersperse(c_str("abcde"), ',');
         CPP_assert(common_range<decltype(r0)>);
         CHECK((r0.end() - r0.begin()) == 9);
-        //CHECK(to<eastl::string>(r0) == "a,b,c,d,e");
+        CHECK(to<eastl::string>(r0) == "a,b,c,d,e");
         CHECK(r0.size() == 9u);
 
-        //auto r1 = views::intersperse(c_str(""), ',');
-        //CPP_assert(common_range<decltype(r1)>);
-        //CHECK(to<eastl::string>(r1) == "");
-        //CHECK(r1.size() == 0u);
-        //
-        //auto r2 = views::intersperse(c_str("a"), ',');
-        //CPP_assert(common_range<decltype(r2)>);
-        //CHECK(to<eastl::string>(r2) == "a");
-        //CHECK(r2.size() == 1u);
-        //
-        //auto r3 = views::intersperse(c_str("ab"), ',');
-        //CPP_assert(common_range<decltype(r3)>);
-        //CHECK(to<eastl::string>(r3) == "a,b");
-        //CHECK(r3.size() == 3u);
+        auto r1 = views::intersperse(c_str(""), ',');
+        CPP_assert(common_range<decltype(r1)>);
+        CHECK(to<eastl::string>(r1) == "");
+        CHECK(r1.size() == 0u);
+        
+        auto r2 = views::intersperse(c_str("a"), ',');
+        CPP_assert(common_range<decltype(r2)>);
+        CHECK(to<eastl::string>(r2) == "a");
+        CHECK(r2.size() == 1u);
+        
+        auto r3 = views::intersperse(c_str("ab"), ',');
+        CPP_assert(common_range<decltype(r3)>);
+        CHECK(to<eastl::string>(r3) == "a,b");
+        CHECK(r3.size() == 3u);
     }
-    /*
+
     {
         auto r0 = views::intersperse(c_str("abcde"), ',') | views::reverse;
         CPP_assert(common_range<decltype(r0)>);
@@ -100,7 +99,7 @@ int main()
         auto r3 = views::intersperse(c_str_("ab"), ',');
         CPP_assert(!common_range<decltype(r3)>);
         CHECK(to<eastl::string>(r3) == "a,b");
-    }*/
+    }
 
     {
         auto r0 = views::intersperse(c_str("abcde"), ',');

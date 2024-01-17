@@ -39,10 +39,10 @@ namespace
     {
         namespace rv = ranges::views;
         return eastl::string();
-        //return rv::sliding(s, static_cast<std::ptrdiff_t>(sizeof(T))) //
-        //       | rv::stride(static_cast<std::ptrdiff_t>(sizeof(T)))   //
-        //       | rv::for_each([](auto x) { return x | rv::reverse; }) //
-        //       | ranges::to<eastl::string>;
+        return rv::sliding(s, static_cast<std::ptrdiff_t>(sizeof(T))) //
+               | rv::stride(static_cast<std::ptrdiff_t>(sizeof(T)))   //
+               | rv::for_each([](auto x) { return x | rv::reverse; }) //
+               | ranges::to<eastl::string>;
     }
 #endif // endianness
 } // namespace

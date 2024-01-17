@@ -636,13 +636,11 @@ int main()
                                     Sentinel<const int*>(ib + sa - 1)),
                                    eastl::equal_to<int const>()) == false);
     }
-    //TODO:PERMUTATION OVERLOAD ARE BROKEN, need to check here compared to range-v3
      //common_range tests, with sentinels, with predicate and projections:
     {
         const S ia[] = {{0}, {1}, {2}, {3}, {0}, {5}, {6}, {2}, {4}, {4}};
         const T ib[] = {{4}, {2}, {3}, {0}, {1}, {4}, {0}, {5}, {6}, {2}};
         const unsigned sa = sizeof(ia)/sizeof(ia[0]);
-        //CHECK(ranges::is_permutation(ia, ib, eastl::equal_to<int const>(), &S::i, &T::i) == true);
         CHECK(ranges::is_permutation(ranges::make_subrange(ForwardIterator<const S *>(ia),
                                     Sentinel<const S*>(ia + sa)),
                                    ranges::make_subrange(ForwardIterator<const T*>(ib + 1),

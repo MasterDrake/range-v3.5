@@ -133,15 +133,14 @@ int main()
     }
 
     // Just for fun:
-    //TODO:35) yeah, fixing this eastl::string conversion ain't fun at all, Mr. Niebler
-    /*{
+    {
         eastl::string str = "Now,is,the,time,for,all,good,men,to,come,to,the,aid,of,their,country";
         auto res = str | views::split(',') | views::join(' ') | to<eastl::string>();
         CHECK(res == "Now is the time for all good men to come to the aid of their country");
         static_assert(range_cardinality<decltype(res)>::value == ranges::finite, "");
-    }*/
+    }
 
-    /* {
+    {
         eastl::vector<eastl::string> vs{"This","is","his","face"};
         auto rng3 = views::join(vs);
         static_assert(range_cardinality<decltype(rng3)>::value == ranges::finite, "");
@@ -154,7 +153,7 @@ int main()
         CPP_assert(!sized_range<decltype(rng4)>);
         CPP_assert(!sized_sentinel_for<decltype(end(rng4)), decltype(begin(rng4))>);
         CHECK(to<eastl::string>(rng4) == "This is his face");
-    }*/
+    }
 
     {
         auto rng5 = views::join(twice(twice(42)));
@@ -262,7 +261,6 @@ int main()
         eastl::vector<eastl::string> input{"foo","bar","bax","bat"};
         eastl::string insert{"XX"};
         auto rng = op(input, 2, insert);
-        //todo: remember the hack 36
         std::cout << rng << '\n';
         ::check_equal(rng, {"foo","bar","XX","bax","bat"});
     }

@@ -110,6 +110,18 @@ namespace eastl
 #endif // EASTL_INTERNAL_MEMORY_BASE_H
 ```
 
+# EASTL STRING
+- In order to make eastl::string a container, it needs an iterator constructor
+```c++
+		//TODO:Should use decltype(*Iter) instead of iterator_traits
+		//TODO:Add ranges header and use ranges::distance(first, last) to reserve memory beforehand.
+		template <typename Iter, typename = eastl::enable_if_t<eastl::is_same_v<typename eastl::iterator_traits<Iter>::value_type, value_type>>>
+		basic_string(Iter first, Iter last, const allocator_type& allocator = EASTL_BASIC_STRING_DEFAULT_ALLOCATOR) : mPair(allocator)
+		{		
+			for(; first != last; ++first)
+                push_back(*first);			
+		}
+```
 # to_string()
 - To use to_string, you need to implement vsprintf or use EA::StdC::Vsprintf
 - or define it yourself like this:

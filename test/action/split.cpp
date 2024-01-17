@@ -47,47 +47,47 @@ int main()
         ::check_equal(rgv2[8], {17});
         ::check_equal(rgv2[9], {19});
     }
-    //TODO:3a) Typical eastl::string and lack of Char traits, c_str needs a specialization only for eastl::string. can't covert to eastl::string without a constrsuctor that takes an iterator pair.
+
     {
         eastl::string s{"This is his face"};
-        //eastl::vector<eastl::string> rgs = actions::split(s, views::c_str(" "));
-        //CHECK(rgs.size() == 4u);
-        //CHECK(rgs[0] == "This");
-        //CHECK(rgs[1] == "is");
-        //CHECK(rgs[2] == "his");
-        //CHECK(rgs[3] == "face");
+        eastl::vector<eastl::string> rgs = actions::split(s, views::c_str(" "));
+        CHECK(rgs.size() == 4u);
+        CHECK(rgs[0] == "This");
+        CHECK(rgs[1] == "is");
+        CHECK(rgs[2] == "his");
+        CHECK(rgs[3] == "face");
     }
 
     {
         eastl::string s{"This is his face"};
-        //eastl::vector<eastl::string> rgs = eastl::move(s) | actions::split(views::c_str(" "));
-        //CHECK(rgs.size() == 4u);
-        //CHECK(rgs[0] == "This");
-        //CHECK(rgs[1] == "is");
-        //CHECK(rgs[2] == "his");
-        //CHECK(rgs[3] == "face");
-    }
-
-    {
-        eastl::string s{"This is his face"};
-        char ch[] =  {' '};
-        //eastl::vector<eastl::string> rgs = actions::split(s, ch);
-        //CHECK(rgs.size() == 4u);
-        //CHECK(rgs[0] == "This");
-        //CHECK(rgs[1] == "is");
-        //CHECK(rgs[2] == "his");
-        //CHECK(rgs[3] == "face");
+        eastl::vector<eastl::string> rgs = eastl::move(s) | actions::split(views::c_str(" "));
+        CHECK(rgs.size() == 4u);
+        CHECK(rgs[0] == "This");
+        CHECK(rgs[1] == "is");
+        CHECK(rgs[2] == "his");
+        CHECK(rgs[3] == "face");
     }
 
     {
         eastl::string s{"This is his face"};
         char ch[] =  {' '};
-        //eastl::vector<eastl::string> rgs = eastl::move(s) | actions::split(ch);
-        //CHECK(rgs.size() == 4u);
-        //CHECK(rgs[0] == "This");
-        //CHECK(rgs[1] == "is");
-        //CHECK(rgs[2] == "his");
-        //CHECK(rgs[3] == "face");
+        eastl::vector<eastl::string> rgs = actions::split(s, ch);
+        CHECK(rgs.size() == 4u);
+        CHECK(rgs[0] == "This");
+        CHECK(rgs[1] == "is");
+        CHECK(rgs[2] == "his");
+        CHECK(rgs[3] == "face");
+    }
+
+    {
+        eastl::string s{"This is his face"};
+        char ch[] =  {' '};
+        eastl::vector<eastl::string> rgs = eastl::move(s) | actions::split(ch);
+        CHECK(rgs.size() == 4u);
+        CHECK(rgs[0] == "This");
+        CHECK(rgs[1] == "is");
+        CHECK(rgs[2] == "his");
+        CHECK(rgs[3] == "face");
     }
 
     {
@@ -105,33 +105,33 @@ int main()
         ::check_equal(rgv3[0], {1,2,3,4,5,6,7,8,9});
         ::check_equal(rgv3[1], {11,12,13,14,15,16,17,18,19,20});
     }
-    // TODO:3b) Cannot convert char to eastl::string
+
     {
        eastl::string str("now  is \t the\ttime");
        auto toks = actions::split_when(str, +[](int i) { return std::isspace(i); });
-       //static_assert(eastl::is_same<decltype(toks), eastl::vector<eastl::string>>::value, "");
-       //CHECK(toks.size() == 4u);
-       //if(toks.size() == 4u)
-       //{
-       //    CHECK(toks[0] == "now");
-       //    CHECK(toks[1] == "is");
-       //    CHECK(toks[2] == "the");
-       //    CHECK(toks[3] == "time");
-       //}
+       static_assert(eastl::is_same<decltype(toks), eastl::vector<eastl::string>>::value, "");
+       CHECK(toks.size() == 4u);
+       if(toks.size() == 4u)
+       {
+           CHECK(toks[0] == "now");
+           CHECK(toks[1] == "is");
+           CHECK(toks[2] == "the");
+           CHECK(toks[3] == "time");
+       }
     }
-    //TODO:3c) Cannot convert char to eastl::string
+
     {
        eastl::string str("now  is \t the\ttime");
        auto toks =  eastl::move(str) | actions::split_when(+[](int i) { return std::isspace(i); });
-       //static_assert(eastl::is_same<decltype(toks), eastl::vector<eastl::string>>::value, "");
-       //CHECK(toks.size() == 4u);
-       //if(toks.size() == 4u)
-       //{
-       //   CHECK(toks[0] == "now");
-       //   CHECK(toks[1] == "is");
-       //   CHECK(toks[2] == "the");
-       //   CHECK(toks[3] == "time");
-       //}
+       static_assert(eastl::is_same<decltype(toks), eastl::vector<eastl::string>>::value, "");
+       CHECK(toks.size() == 4u);
+       if(toks.size() == 4u)
+       {
+          CHECK(toks[0] == "now");
+          CHECK(toks[1] == "is");
+          CHECK(toks[2] == "the");
+          CHECK(toks[3] == "time");
+       }
     }
 
     return ::test_result();
