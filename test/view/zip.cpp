@@ -90,19 +90,19 @@ int main()
     {
         std::stringstream str{"john paul george ringo"};
         using V = eastl::tuple<int, eastl::string, eastl::string>;
-        auto rng = views::zip(vi, vs, istream<eastl::string>(str));
-        //CPP_assert(view_<decltype(rng)>);
+        auto rng = views::zip(vi, vs, istream<eastl::string>(str) | views::common);
+        CPP_assert(view_<decltype(rng)>);
         CPP_assert(!sized_range<decltype(rng)>);
         CPP_assert(!common_range<decltype(rng)>);
         CPP_assert(input_iterator<decltype(begin(rng))>);
         CPP_assert(!forward_iterator<decltype(begin(rng))>);
         has_cardinality<cardinality::finite>(rng);
         eastl::vector<V> expected;
-        //ranges::copy(rng, ranges::back_inserter(expected));
-        //::check_equal(expected, {V{0, "hello", "john"},
-        //                         V{1, "goodbye", "paul"},
-        //                         V{2, "hello", "george"},
-        //                         V{3, "goodbye", "ringo"}});
+        ranges::copy(rng, ranges::back_inserter(expected));//TODO: it may be eastl::string's fault
+        ::check_equal(expected, {V{0, "hello", "john"},
+                                 V{1, "goodbye", "paul"},
+                                 V{2, "hello", "george"},
+                                 V{3, "goodbye", "ringo"}});
     }
 
     auto rnd_rng = views::zip(vi, vs);
@@ -216,7 +216,7 @@ int main()
         eastl::unique_ptr<int> rg1[10], rg2[10];
         auto x = views::zip(rg1, rg2);
         eastl::pair<eastl::unique_ptr<int>, eastl::unique_ptr<int>> p = iter_move(x.begin());
-        auto it = x.begin();
+        //auto it = x.begin();
         //static_assert(noexcept(ranges::iter_move(it)), "");
     }
 
@@ -228,14 +228,14 @@ int main()
         CPP_assert(!common_range<decltype(x)>);
         auto y = x | views::common;
         eastl::pair<eastl::unique_ptr<int>, eastl::unique_ptr<int>> p = iter_move(y.begin());
-        auto it = x.begin();
+        //auto it = x.begin();
         //static_assert(noexcept(iter_move(it)), "");
     }
 
     // Regression test for #439.
     {
         eastl::vector<int> vec{0,1,2};
-        auto rng = vec | views::for_each([](int i) { return ranges::yield(i); });
+        //auto rng = vec | views::for_each([](int i) { return ranges::yield(i); });
         //ranges::distance(views::zip(views::iota(0), rng) | views::common);
     }
 

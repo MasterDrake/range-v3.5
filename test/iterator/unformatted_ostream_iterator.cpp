@@ -75,7 +75,7 @@ int main()
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
-            auto const actual = endian_adjust<float>(output.str());
+            auto const actual = endian_adjust<float>(output.str().c_str());
             CHECK(actual == expected);
         }
 #endif // __cplusplus > 201703L
@@ -98,7 +98,7 @@ int main()
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
-            auto const actual = endian_adjust<unsigned int>(output.str());
+            auto const actual = endian_adjust<unsigned int>(output.str().c_str());
             CHECK(actual == expected);
         }
         {
@@ -107,7 +107,7 @@ int main()
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
-            auto const actual = endian_adjust<double>(output.str());
+            auto const actual = endian_adjust<double>(output.str().c_str());
             CHECK(actual == expected);
         }
 #endif // __cplusplus > 201703L

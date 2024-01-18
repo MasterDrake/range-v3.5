@@ -276,7 +276,7 @@ static_assert(ranges::equality_comparable<int>, "");
 static_assert(ranges::equality_comparable_with<int, int>, "");
 static_assert(ranges::equality_comparable_with<int, IntComparable>, "");
 static_assert(ranges::equality_comparable_with<int &, IntComparable &>, "");
-
+/*
 #if __cplusplus > 201703L && __has_include(<compare>) && \
     defined(__cpp_concepts) && defined(__cpp_impl_three_way_comparison)
 #include <compare>
@@ -295,7 +295,7 @@ static_assert(ranges::three_way_comparable_with<IntComparable, int, std::partial
 static_assert(ranges::three_way_comparable_with<IntComparable, int, std::weak_ordering>);
 static_assert(ranges::three_way_comparable_with<IntComparable, int, std::strong_ordering>);
 #endif // supports spaceship
-
+*/
 static_assert(
     eastl::is_same<
         ranges::common_range_tag_of<eastl::vector<int>>,

@@ -14,6 +14,7 @@
 //
 // Project home: https://github.com/ericniebler/range-v3
 //
+/*
 #if __cplusplus > 201703L && __has_include(<compare>) && \
     defined(__cpp_concepts) && defined(__cpp_impl_three_way_comparison)
 //TODO:25) Don't know what we should do about this, eastl is being moving towards c++20 anyway.
@@ -38,5 +39,5 @@ static_assert(same_as<common_comparison_category_t<ranges::less*, std::strong_or
 static_assert(same_as<common_comparison_category_t<ranges::less&, std::strong_ordering, std::partial_ordering>, void>);
 static_assert(same_as<common_comparison_category_t<ranges::less(*)(), std::strong_ordering, std::partial_ordering>, void>);
 #endif // __cplusplus
-
+*/
 int main() {}

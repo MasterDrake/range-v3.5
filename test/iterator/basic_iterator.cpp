@@ -431,16 +431,16 @@ namespace test_move_only
     CPP_assert(ranges::forward_iterator<iterator<MoveOnly *>>);
 
     //TODO:20) eastl::tuple problems ...
-    //void test()
-    //{
-    //    MoveOnly buf[10] = {};
-    //    iterator<MoveOnly *> i(buf);
-    //    *i = eastl::tuple<MoveOnly>{};
-    //    ranges::common_tuple<MoveOnly &> x = *i;
-    //    (void)x;
-    //    eastl::tuple<MoveOnly> v = ranges::iter_move(i);
-    //    *i = eastl::move(v);
-    //}
+    void test()
+    {
+        MoveOnly buf[10] = {};
+        iterator<MoveOnly *> i(buf);
+        *i = eastl::tuple<MoveOnly>{};
+        ranges::common_tuple<MoveOnly &> x = *i;
+        (void)x;
+        eastl::tuple<MoveOnly> v = ranges::iter_move(i);
+        *i = eastl::move(v);
+    }
 } // namespace test_move_only
 
 namespace test_forward_sized
