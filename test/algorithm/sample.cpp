@@ -33,8 +33,6 @@
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
 
-//TODO: random vs eastl: use default_random_engine instead of std::...
-
 namespace
 {
     template<typename I, typename S>
@@ -42,8 +40,7 @@ namespace
     {
         for (; first != mid; ++first)
             EARANGES_ENSURE(first != last);
-        for (; first != last; ++first)
-            ;
+        for (; first != last; ++first);
         return true;
     }
 }
@@ -56,7 +53,7 @@ int main()
         eastl::array<int, N> i;
         ranges::iota(i, 0);
         eastl::array<int, K> a{}, b{}, c{};
-        std::minstd_rand g1, g2 = g1;
+        eastl::RNG<> g1, g2 = g1;
 
         {
             auto result = ranges::sample(RandomAccessIterator<int*>(i.data()), Sentinel<int*>(i.data()+N), a.begin(), K, g1);
@@ -85,7 +82,7 @@ int main()
         eastl::array<int, N> i;
         ranges::iota(i, 0);
         eastl::array<int, K> a{}, b{}, c{};
-        std::minstd_rand g1, g2 = g1;
+        eastl::RNG<> g1, g2 = g1;
         auto rng = ranges::make_subrange(RandomAccessIterator<int*>(i.data()), Sentinel<int*>(i.data() + N));
 
         {
@@ -156,7 +153,7 @@ int main()
         eastl::array<int, N> i;
         ranges::iota(i, 0);
         eastl::array<int, K> a{}, b{}, c{};
-        std::minstd_rand g1, g2 = g1;
+        eastl::RNG<> g1, g2 = g1;
 
         {
             auto result = ranges::sample(RandomAccessIterator<int*>(i.data()),
@@ -186,7 +183,7 @@ int main()
         eastl::array<int, N> i;
         ranges::iota(i, 0);
         eastl::array<int, K> a{}, b{}, c{};
-        std::minstd_rand g1, g2 = g1;
+        eastl::RNG<> g1, g2 = g1;
         auto rng = ranges::make_subrange(RandomAccessIterator<int*>(i.data()), Sentinel<int*>(i.data() + N));
 
         {
@@ -257,7 +254,7 @@ int main()
     {
         int data[] = {0,1,2,3};
         int sample[2];
-        std::minstd_rand g;
+        eastl::RNG<> g;
         {
             auto result = ranges::sample(data, sample, g);
             CHECK(in_sequence(ranges::begin(data), result.in, ranges::end(data)));

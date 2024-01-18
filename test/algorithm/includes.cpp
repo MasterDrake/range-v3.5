@@ -28,14 +28,6 @@
 #include "../test_utils.hpp"
 
 EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
-//static size_t counter = 0;
-//void * __cdecl operator new[](size_t size, size_t alignement, size_t offset,
-//                              const char * name, int flags, unsigned debugFlags,
-//                              const char * file, int line)
-//{
-//    std::cout << "Allocation:#" << counter++ << " Size: " << size << " in " << file << ": " << line << ".\n";
-//    return new uint8_t[size];
-//}
 
 namespace
 {

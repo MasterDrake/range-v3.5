@@ -36,8 +36,7 @@ void test_iter()
     int ia[] = {0, 1, 2, 3, 4};
     const unsigned sa = sizeof(ia)/sizeof(ia[0]);
     int ib[sa] = {0};
-    ranges::replace_copy_if_result<InIter, OutIter> r = ranges::replace_copy_if(InIter(ia), Sent(ia+sa), OutIter(ib),
-        [](int i){return 2==i;}, 5);
+    ranges::replace_copy_if_result<InIter, OutIter> r = ranges::replace_copy_if(InIter(ia), Sent(ia+sa), OutIter(ib), [](int i){return 2==i;}, 5);
     CHECK(base(r.in) == ia + sa);
     CHECK(base(r.out) == ib + sa);
     CHECK(ib[0] == 0);

@@ -65,8 +65,7 @@ int main()
     }
 
     {
-        // Regression test: ensure that we can post-increment a counted_iterator<I>
-        // when decltype(declval<I &>()++) is void.
+        // Regression test: ensure that we can post-increment a counted_iterator<I> when decltype(declval<I &>()++) is void.
         CPP_assert(ranges::input_iterator<fortytwo_erator>);
         ranges::counted_iterator<fortytwo_erator> c{{}, 42};
         c++;

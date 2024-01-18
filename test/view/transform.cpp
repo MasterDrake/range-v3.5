@@ -129,8 +129,7 @@ int main()
         eastl::vector<MoveOnlyString> res;
         using R1 = decltype(rng1);
         using I1 = iterator_t<R1>;
-        // Needlessly verbose -- a simple transform would do the same, but this
-        // is an interesting test.
+        // Needlessly verbose -- a simple transform would do the same, but this is an interesting test.
         auto proj = overload(
             [](I1 i1) -> MoveOnlyString& {return (*i1).first;},
             [](copy_tag, I1) -> MoveOnlyString {return {};},

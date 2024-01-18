@@ -88,7 +88,6 @@ void test_case_size_optimization()
 void test_case_from_nullptr_constructor()
 {
     // This implementation doesn't support the silly nullptr_t constructor.
-    //todo: there's nothing to do, just know that even eastl uses std::nullptr_t
     CPP_assert(!eastl::is_constructible<span<int>, std::nullptr_t>::value);
     CPP_assert(!eastl::is_constructible<span<const int>, std::nullptr_t>::value);
 

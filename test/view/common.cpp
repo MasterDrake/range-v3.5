@@ -37,8 +37,7 @@ int main()
         CPP_assert(view_<decltype(rng2)>);
         CPP_assert(common_range<decltype(rng2)>);
         CPP_assert(input_iterator<decltype(rng2.begin())>);
-        CPP_assert(same_as<typename eastl::iterator_traits<decltype(rng2.begin())>::iterator_category,
-                            eastl::input_iterator_tag>);
+        CPP_assert(same_as<typename eastl::iterator_traits<decltype(rng2.begin())>::iterator_category, eastl::input_iterator_tag>);
         CPP_assert(!forward_iterator<decltype(rng2.begin())>);
         ::check_equal(rng2, {1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4});
     }

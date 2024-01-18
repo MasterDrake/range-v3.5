@@ -38,6 +38,7 @@
 EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 //TODO: HACKHACK ok that's weird, the hack to make heap tests work by changing promote_heap_impl made this uncompilable, so I had to revert it by adding () after easl::less<ValueType> :/
+//I'm wrong, there are two lines to be modified and an additional include to be added.
 namespace
 {
     eastl::default_random_engine gen;

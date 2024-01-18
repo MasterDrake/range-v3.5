@@ -34,8 +34,7 @@ int main()
         auto fib = views::generate([=]()mutable->int{int tmp = i; i += j; eastl::swap(i, j); return tmp;});
         CPP_assert(ranges::input_range<decltype(fib)> && ranges::view_<decltype(fib)>);
         check_equal(fib | views::take_exactly(10), {0,1,1,2,3,5,8,13,21,34});
-        // The generator cannot be called when it's const-qualified, so "fib const"
-        // does not model View.
+        // The generator cannot be called when it's const-qualified, so "fib const" does not model View.
         CPP_assert(!ranges::view_<decltype(fib) const>);
     }
 

@@ -25,8 +25,6 @@ struct vector_like : eastl::vector<T>
 
     using typename eastl::vector<T>::size_type;
     using typename eastl::vector<T>::value_type;
-    using typename eastl::vector<T>::base_type::DoAllocate;
-    using typename eastl::vector<T>::DoAllocate;
 
     size_type last_reservation{};
     size_type reservation_count{};

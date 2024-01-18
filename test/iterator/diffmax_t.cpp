@@ -14,6 +14,30 @@
 #include "../test_utils.hpp"
 
 //#include <iomanip>
+
+namespace eastl
+{
+    template<typename T = void>
+    struct logical_xor : public binary_function<T, T, bool>
+    {
+        EA_CPP14_CONSTEXPR T operator()(const T& a, const T& b) const
+        {
+            return a ^ b;
+        }
+    };
+
+    // http://en.cppreference.com/w/cpp/utility/functional/bit_xor_void
+    template<>
+    struct logical_xor<void>
+    {
+        template<typename A, typename B>
+        EA_CPP14_CONSTEXPR auto operator()(A && a, B && b) const -> decltype(eastl::forward<A>(a) && eastl::forward<B>(b))
+        {
+            return eastl::forward<A>(a) ^ eastl::forward<B>(b);
+        }
+    };
+}
+
 #include <EASTL/functional.h>
 using ranges::detail::diffmax_t;
 
@@ -66,7 +90,7 @@ int main()
     check<eastl::modulus>();
     check<eastl::logical_and>();
     check<eastl::logical_or>();
-   //TODO: eastl needs a logical xor check<eastl::bit_xor>();
+    check<eastl::logical_xor>();
 
     return test_result();
 }

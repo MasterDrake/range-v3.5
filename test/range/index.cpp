@@ -22,6 +22,7 @@
 
 int main()
 {
+#if EASTL_EXCEPTIONS_ENABLED
     {
         eastl::vector<int> vi{1,2,3,4};
         CHECK(ranges::index(vi, 0) == 1);
@@ -122,6 +123,6 @@ int main()
         static_assert(vi1 == 2, "");
     }
     #endif
-
+#endif
     return ::test_result();
 }

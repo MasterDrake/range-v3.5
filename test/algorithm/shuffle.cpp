@@ -38,7 +38,7 @@ int main()
         eastl::array<int, N> a, b, c;
         for (auto p : {&a, &b, &c})
             ranges::iota(*p, 0);
-        eastl::RNG g1, g2 = g1;
+        eastl::RNG<> g1, g2 = g1;
         ranges::shuffle(RandomAccessIterator<int*>(a.data()), Sentinel<int*>(a.data()+N), g1);
         CHECK(!ranges::equal(a, b));
 
@@ -54,7 +54,7 @@ int main()
         eastl::array<int, N> a, b, c;
         for (auto p : {&a, &b, &c})
             ranges::iota(*p, 0);
-        eastl::RNG g1, g2 = g1;
+        eastl::RNG<> g1, g2 = g1;
         auto rng = ::MakeTestRange(RandomAccessIterator<int*>(a.data()), Sentinel<int*>(a.data() + N));
         ranges::shuffle(rng, g1);
         CHECK(!ranges::equal(a, b));

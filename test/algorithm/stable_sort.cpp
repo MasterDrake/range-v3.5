@@ -19,7 +19,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/memory.h>
-#include <random>
+#include <EASTL/random.h>
 #include <EASTL/vector.h>
 #include <EASTL/algorithm.h>
 #include <EASTL/sort.h>
@@ -34,7 +34,7 @@ EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION
 
 namespace
 {
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
 #if !defined(__clang__) || !defined(_MSVC_STL_VERSION) // Avoid #890
     struct indirect_less

@@ -23,7 +23,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <EASTL/memory.h>
-#include <random>
+#include <EASTL/random.h>
 #include <EASTL/algorithm.h>
 #include <EASTL/heap.h>
 #include <EASTL/sort.h>
@@ -56,7 +56,7 @@ namespace
         return r;
     }
 
-    std::mt19937 gen;
+    eastl::default_random_engine gen;
 
     void test_1(int N)
     {
@@ -219,8 +219,8 @@ int main()
     test_9(1000);
     test_10(1000);
 
-    {//eastl::addressof vs constexpr, possible FIX : using __builtin_addressof(T) since that's what msvc, gcc and clang are using anyway... But who know what happens on non-constexpr ..........
-       // STATIC_CHECK(test_constexpr());
+    {
+        STATIC_CHECK(test_constexpr());
     }
 
     return test_result();
