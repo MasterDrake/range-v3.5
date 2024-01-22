@@ -71,7 +71,9 @@ int main()
         insert(views::ref(s), 12);
         ::check_equal(s, {0,2,4,6,8,10,12});
     }
-    //TODO:1) No allocation is being made for this vector_like :/1162vector<T, Allocator>::insert(const_iterator position, InputIterator first, InputIterator last)
+    //TODO:1) No allocation is being made for this vector_like :/ I can't override DoAllocate which is the function called in insert 
+    // 1162
+    // vector<T, Allocator>::insert(const_iterator position, InputIterator first, InputIterator last)
 
     {
        const std::size_t N = 1024;

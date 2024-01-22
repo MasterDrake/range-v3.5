@@ -102,8 +102,8 @@ int main()
         auto rng2 = l | views::chunk(3);
         CPP_assert(forward_range<decltype(rng2)>);
         CPP_assert(!bidirectional_range<decltype(rng2)>);
-        //TODO:29) this assertation failed :(
-        //CPP_assert(!sized_range<decltype(rng2)>);
+        //TODO:29) this assertation fails :(
+        CPP_assert(!sized_range<decltype(rng2)>);
         auto it2 = ranges::begin(rng2);
         ::check_equal(*it2++, {0,1,2});
         ::check_equal(*it2++, {3,4,5});

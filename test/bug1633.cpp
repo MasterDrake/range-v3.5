@@ -26,8 +26,8 @@ struct Y {
     using iterator_category = eastl::forward_iterator_tag;
 };
 
-//TODO:45) I don't like this is_std_iterator_traits thing and I can't seem to fix it unfortunately. This doesn't work.
-//static_assert(ranges::detail::is_std_iterator_traits_specialized_v<X>, "");
+//TODO:45) I don't like this is_std_iterator_traits thing and I can't seem to fix it unfortunately. This doesn't work(not sure we care but it still needs to be fixed). I have no idea how it works and why 
+static_assert(ranges::detail::is_std_iterator_traits_specialized_v<X>, "");
 static_assert(!ranges::detail::is_std_iterator_traits_specialized_v<Y>, "");
 static_assert(!ranges::detail::is_std_iterator_traits_specialized_v<int*>, "");
 

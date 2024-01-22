@@ -84,14 +84,13 @@ using RI = eastl::reverse_iterator<I>;
 
 void issue_420_regression()
 {
-    // Verify that sized_sentinel_for<eastl::reverse_iterator<S>, eastl::reverse_iterator<I>>
-    // properly requires sized_sentinel_for<I, S>
+    // Verify that sized_sentinel_for<eastl::reverse_iterator<S>, eastl::reverse_iterator<I>> properly requires sized_sentinel_for<I, S>
     
-    //TODO:21) One of those unsolvable cases where I don't even know where to begin because it's not even dependant on eastl, it's just primitives :(.
+    //TODO:21) Gotta add some template functions to check that it can be compared with other sentinels in O(1). :(.
     CPP_assert(sized_sentinel_for<RI<int*>, RI<int*>>);
-    //CPP_assert(!sized_sentinel_for<RI<int*>, RI<float*>>);
+    CPP_assert(!sized_sentinel_for<RI<int*>, RI<float*>>);
     using BI = BidirectionalIterator<int*>;
-    //CPP_assert(!sized_sentinel_for<RI<BI>, RI<BI>>);
+    CPP_assert(!sized_sentinel_for<RI<BI>, RI<BI>>);
 }
 
 struct value_type_tester_thingy {};

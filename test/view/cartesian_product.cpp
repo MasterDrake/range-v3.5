@@ -289,15 +289,14 @@ void test_bug_1296()
 }
 
 // https://github.com/ericniebler/range-v3/issues/1422
-//TODO:28) Figure out if this is still an issue or not and fix it, right now it doesn't work.
 void test_1422()
 {
-    //int v1[] = {1,2,3};
-    //auto e = v1 | ranges::views::enumerate;
-    //auto cp = ranges::views::cartesian_product(e, e);
-    //using CP = decltype(cp);
-    //CPP_assert(ranges::input_range<CP>);
-}   //
+    int v1[] = {1,2,3};
+    auto e = v1 | ranges::views::enumerate;
+    auto cp = ranges::views::cartesian_product(e, e);
+    using CP = decltype(cp);
+    CPP_assert(ranges::input_range<CP>);
+}   
 
 int main()
 {

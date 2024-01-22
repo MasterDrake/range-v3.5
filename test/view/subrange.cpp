@@ -113,15 +113,15 @@ int main()
 
     r0 = r0.next();
     //TODO:41a) ++ needs l-value :O
-    //++r0.begin();
+    ++r0.begin();
     CHECK(r0.begin() == vi.begin()+2);
     CHECK(r0.size() == 2u);
     //TODO:41b) -- needs l-value :O
-    //r0 = {r0.begin(), --r0.end()}; // --r0.end();
-    //CHECK(r0.end() == vi.end()-1);
-    //CHECK(r0.size() == 1u);
-    //CHECK(r0.front() == 3);
-    //CHECK(r0.back() == 3);
+    r0 = {r0.begin(), --r0.end()}; // --r0.end();
+    CHECK(r0.end() == vi.end()-1);
+    CHECK(r0.size() == 1u);
+    CHECK(r0.front() == 3);
+    CHECK(r0.back() == 3);
 
     eastl::pair<eastl::vector<int>::iterator, unreachable_sentinel_t> p1 = r1;
     CHECK(p1.first == vi.begin()+1);

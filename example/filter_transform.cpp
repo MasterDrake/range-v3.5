@@ -24,8 +24,6 @@
 
 #include <cstdio>
 
-using std::cout;
-
 #include "../test/eastl_utils.h"
 
 

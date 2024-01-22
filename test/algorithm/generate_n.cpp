@@ -115,7 +115,7 @@ int main()
     test<RandomAccessIterator<int*>, Sentinel<int*> >();
 
     test2();
-    //Funny how here constexpr checks work for generate_n but not for generate :/
+
     {
         STATIC_CHECK(test_constexpr<ForwardIterator<int *>>());
         STATIC_CHECK(test_constexpr<BidirectionalIterator<int *>>());

@@ -330,13 +330,13 @@ int main()
         using CR = range_common_reference_t<Rng>;
         auto proj = [](CR r) { return r; };
         auto pred = [](CR r1, CR r2) { return r1 < r2; };
-        //TODO: zip vs iter_move vs swap :(
-        //sort(rng, pred, proj);
-        //::check_equal(v0,{1,2,2,3,3,3,4,4,4,4,5,5,5,5,5});
-        //::check_equal(v1,{5,5,5,4,5,5,3,4,4,4,1,2,2,3,3});
-        //
-        //// Check that this compiles, too:
-        //sort(rng);
+        //TODO: eastl::swap vs adl :(
+        sort(rng, pred, proj);
+        ::check_equal(v0,{1,2,2,3,3,3,4,4,4,4,5,5,5,5,5});
+        ::check_equal(v1,{5,5,5,4,5,5,3,4,4,4,1,2,2,3,3});
+        
+        // Check that this compiles, too:
+        sort(rng);
     }
 
     return ::test_result();

@@ -17,8 +17,6 @@
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-#include "Windows.h"
-
 using namespace ranges;
 
 int main()
@@ -38,18 +36,6 @@ good men
     CPP_assert(input_range<Rng> && view_<Rng>);
     CPP_assert(!(forward_range<Rng> && view_<Rng>));
     CPP_assert(same_as<range_rvalue_reference_t<Rng>, eastl::string &&>);
-
-    std::ifstream danteFile("dante.txt");
-    if (danteFile.is_open())
-    {
-
-        auto danteRng = getlines(danteFile);
-        SetConsoleOutputCP(CP_UTF8);
-        for(const auto & line : danteRng)
-            std::cout << line.c_str() << "\n";
-    }
-    else
-        std::cerr << "Failed to load " << "dante.txt"<< std::endl;
 
     return ::test_result();
 }

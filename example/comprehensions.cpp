@@ -40,8 +40,7 @@ main()
     // Display the first 100 triples
     EARANGES_FOR(auto triple, triples | views::take(100))
     {
-        std::cout << '(' << eastl::get<0>(triple) << ',' << eastl::get<1>(triple)
-                  << ',' << eastl::get<2>(triple) << ')' << '\n';
+        std::cout << '(' << eastl::get<0>(triple) << ',' << eastl::get<1>(triple) << ',' << eastl::get<2>(triple) << ')' << '\n';
     }
 }
 

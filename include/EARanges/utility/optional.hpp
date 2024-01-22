@@ -34,7 +34,7 @@ namespace ranges
 {
     template<typename>
     struct optional;
-
+    //TODO: wrap exception code around EA_EXCEPTIONS macro...
     struct bad_optional_access : std::exception
     {
         virtual const char * what() const noexcept override

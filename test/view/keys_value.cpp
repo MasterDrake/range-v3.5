@@ -59,9 +59,8 @@ int main()
 
         eastl::vector<int> xs = {42, 100, -1234};
         auto exs = views::zip(views::ints, xs);
-       //TODO:38)Unfortunately one of the most interesting views doesn't work right off of the bat :(:(:(
        // Could be testing related and that's it?
-       //::check_equal(views::keys(exs), {0, 1, 2});
+       ::check_equal(views::keys(exs), {0, 1, 2});
     }
 
     {

@@ -149,7 +149,7 @@ void forward_test()
     using Src = eastl::slist<int>;
     static_assert(!ranges::bidirectional_range<Src> && ranges::forward_range<Src>, "Must be exactly forward.");
     //TODO:31) this static assert fails with eastl::slist :(
-    //static_assert(eastl::is_same<drop_last_view<views::all_t<Src&>>, drop_last_view<views::all_t<Src&>, detail::drop_last_view::mode_forward>>::value, "Must have correct view.");
+    static_assert(eastl::is_same<drop_last_view<views::all_t<Src&>>, drop_last_view<views::all_t<Src&>, detail::drop_last_view::mode_forward>>::value, "Must have correct view.");
 
     Src src = {1,2,3,4};
 

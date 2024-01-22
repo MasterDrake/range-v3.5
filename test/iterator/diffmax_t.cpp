@@ -18,7 +18,7 @@
 namespace eastl
 {
     template<typename T = void>
-    struct logical_xor : public binary_function<T, T, bool>
+    struct logical_xor
     {
         EA_CPP14_CONSTEXPR T operator()(const T& a, const T& b) const
         {
