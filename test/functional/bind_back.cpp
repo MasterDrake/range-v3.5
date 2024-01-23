@@ -12,6 +12,7 @@
 #include <EARanges/functional/bind_back.hpp>
 #include <EARanges/functional/concepts.hpp>
 #include "../simple_test.hpp"
+#include <EASTL/string.h>
 #include "../eastl_utils.h"
 
 using namespace ranges;

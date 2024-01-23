@@ -31,7 +31,6 @@ using std::cout;
 auto is_six = [](int i) { return i == 6; };
 
 #include "../test/eastl_utils.h"
-
 int main()
 {
     eastl::vector<int> v{6, 2, 3, 4, 5, 6};

@@ -26,18 +26,13 @@
 
 #include "../test/eastl_utils.h"
 
-
-EASTL_EASTDC_API int __cdecl EA::StdC::Vsnprintf(char*  EA_RESTRICT pDestination, size_t n, const char*  EA_RESTRICT pFormat, va_list arguments)
-{
-    return vsnprintf(pDestination, n, pFormat, arguments);
-}
-
 int main()
 {
     eastl::vector<int> const vi{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     using namespace ranges;
     auto rng = vi | views::filter([](int i) { return i % 2 == 0; }) | views::transform([](int i) { return eastl::to_string(i); }) | to_vector;
     // prints: [2,4,6,8,10]
-    std::cout << views::all(rng);
+    std::cout << views::all(rng) << std::endl;
 }
+
 ///[filter_transform]

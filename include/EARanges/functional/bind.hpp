@@ -16,7 +16,7 @@
 
 #include <EASTL/type_traits.h>
 #include <EASTL/functional.h>
-//TODO:: FUNCTIONAL qui è un big problem per std::BIND -.--.--.-
+//TODO:: FUNCTIONAL qui e' un big problem per std::BIND -.--.--.-
 #include <functional>
 
 #include <EARanges/meta/meta.hpp>

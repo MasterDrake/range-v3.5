@@ -5,7 +5,7 @@
 
 int main()
 {
-    auto numbers = ranges::views::ints(3, 785);
+    auto numbers = ranges::views::ints(3, 7);
 
     std::cout << numbers << '\n';
 }

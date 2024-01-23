@@ -142,7 +142,7 @@ namespace ranges
 } // namespace ranges
 
 #include <EARanges/detail/epilogue.hpp>
-#include "../detail/satisfy_boost_range.hpp"
+#include <EARanges/detail/satisfy_boost_range.hpp>
 EARANGES_SATISFY_BOOST_RANGE(::ranges::filter_view)
 
 #endif

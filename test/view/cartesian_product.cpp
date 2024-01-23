@@ -50,17 +50,14 @@ struct printer
     {
         if (first_) first_ = false;
         else os_ << ',';
-        EA_CONSTEXPR_IF((eastl::is_same_v<T, eastl::string>))
-            os_ << t.c_str();
-        else
-            os_ << t;
+        os_ << t;
     }
 };
 
-namespace std
+namespace eastl
 {
     template<typename... Ts>
-    std::ostream &operator<<(std::ostream &os, eastl::tuple<Ts...> const &t)
+    std::ostream& operator<<(std::ostream &os, eastl::tuple<Ts...> const &t)
     {
         os << '(';
         auto first = true;

@@ -46,7 +46,7 @@ namespace ranges
     {
         template<typename I>
         using iter_traits_t = meta::conditional_t<is_std_iterator_traits_specialized_v<I>, eastl::iterator_traits<I>, I>;
-
+/*TODO: I dont' think we should rely on std implementions...
 #if defined(_GLIBCXX_DEBUG)
         template(typename I, typename T, typename Seq)(
             requires same_as<I, __gnu_debug::_Safe_iterator<T *, Seq>>)
@@ -83,6 +83,7 @@ namespace ranges
         template(typename I)(requires same_as<I, class I::_Span_iterator>)
         auto iter_concept_(I, priority_tag<3>) -> ranges::contiguous_iterator_tag;
 #endif
+*/
         template(typename I, typename T)(requires same_as<I, T *>)
         auto iter_concept_(T *, priority_tag<3>) -> ranges::contiguous_iterator_tag;
         template<typename I>

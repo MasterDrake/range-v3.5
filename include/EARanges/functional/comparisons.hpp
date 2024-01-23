@@ -83,7 +83,7 @@ namespace ranges
         }
         using is_transparent = void;
     };
-
+/*TODO: I don't know if we need it or where is it, especially the ehader or the three_way_comparable_with concept that i guess is in compare.hpp
 #if __cplusplus > 201703L && __has_include(<compare>) && \
     defined(__cpp_concepts) && defined(__cpp_impl_three_way_comparison)
     struct compare_three_way
@@ -97,7 +97,7 @@ namespace ranges
         using is_transparent = void;
     };
 #endif // __cplusplus
-
+*/
     /// @}
 } // namespace ranges
 

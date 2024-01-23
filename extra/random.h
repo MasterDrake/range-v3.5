@@ -396,7 +396,9 @@ namespace eastl
                       "Generator result type should be at least 8 bytes.");
         // TODO:https://prng.di.unimi.it/#remarks#Generating uniform doubles in the unit
         // interval
-        return params.a() + (g() >> 11) * 0x1.0p-53 * (params.b() - params.a());
+        //TODO: This won't work on linux 
+        //return params.a() + (g() >> 11) * 0x1.0p-53 * (params.b() - params.a());
+        return 0;
     }
 
     template<class RealType>

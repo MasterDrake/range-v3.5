@@ -14,10 +14,10 @@
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-#include <EASTl/type_traits.h>
-#include <EASTl/vector.h>
-#include <EASTl/list.h>
-#include <EASTl/slist.h>
+#include <EASTL/type_traits.h>
+#include <EASTL/vector.h>
+#include <EASTL/list.h>
+#include <EASTL/slist.h>
 
 #include <EARanges/view/drop_last.hpp>
 #include <EARanges/view/take_exactly.hpp>

@@ -20,7 +20,6 @@
 #include <EARanges/meta/meta.hpp>
 
 #include <EARanges/concepts/concepts.hpp>
-#include <EARanges/concepts/compare.hpp>
 
 #include <EARanges/detail/config.hpp>
 #include <EARanges/utility/static_const.hpp>

@@ -31,7 +31,6 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-//TODO: rimuove deprecati
 namespace ranges
 {
     /// \addtogroup group-views

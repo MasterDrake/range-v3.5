@@ -25,7 +25,7 @@
 #include "../test_utils.hpp"
 
 //TODO:21) technically this doesn't work but eastl doesn't have streams capabilities so that's why this can be skipped or ""easily"" fixed by implementing such facilities. Just skip it or remove it.
-//IN realtà è sempre causato dal fatto che string non accetta un paio di iterators...
+//IN realtï¿½ ï¿½ sempre causato dal fatto che string non accetta un paio di iterators...
 namespace
 {
 #if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
@@ -76,7 +76,7 @@ int main()
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
-            auto const actual = endian_adjust<float>(output.str());
+            auto const actual = endian_adjust<float>(output.str().c_str());
             CHECK(actual == expected);
         }
 #endif // __cplusplus > 201703L
@@ -99,7 +99,7 @@ int main()
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
-            auto const actual = endian_adjust<unsigned int>(output.str());
+            auto const actual = endian_adjust<unsigned int>(output.str().c_str());
             CHECK(actual == expected);
         }
         {
@@ -108,7 +108,7 @@ int main()
             auto output = std::ostringstream();
             ranges::copy(input, ranges::unformatted_ostream_iterator<>(output));
 
-            auto const actual = endian_adjust<double>(output.str());
+            auto const actual = endian_adjust<double>(output.str().c_str());
             CHECK(actual == expected);
         }
 #endif // __cplusplus > 201703L

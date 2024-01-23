@@ -38,16 +38,14 @@ namespace ranges
         struct indirect_zip_fn_
         {
             // tuple value
-            template(typename... Its)(
-                requires (sizeof...(Its) != 2) AND and_v<indirectly_readable<Its>...>)
+            template(typename... Its)(requires (sizeof...(Its) != 2) AND and_v<indirectly_readable<Its>...>)
             eastl::tuple<iter_value_t<Its>...> operator()(copy_tag, Its...) const
             {
                 EARANGES_EXPECT(false);
             }
 
             // tuple reference
-            template(typename... Its)(
-                requires (sizeof...(Its) != 2) AND and_v<indirectly_readable<Its>...>)
+            template(typename... Its)(requires (sizeof...(Its) != 2) AND and_v<indirectly_readable<Its>...>)
             common_tuple<iter_reference_t<Its>...>
             operator()(Its const &... its) const //
                 noexcept(meta::and_c<noexcept(iter_reference_t<Its>(*its))...>::value)
@@ -56,19 +54,16 @@ namespace ranges
             }
 
             // tuple rvalue reference
-            template(typename... Its)(
-                requires (sizeof...(Its) != 2) AND and_v<indirectly_readable<Its>...>)
+            template(typename... Its)(requires (sizeof...(Its) != 2) AND and_v<indirectly_readable<Its>...>)
             common_tuple<iter_rvalue_reference_t<Its>...> //
             operator()(move_tag, Its const &... its) const //
-                noexcept(meta::and_c<noexcept(
-                             iter_rvalue_reference_t<Its>(iter_move(its)))...>::value)
+                noexcept(meta::and_c<noexcept(iter_rvalue_reference_t<Its>(iter_move(its)))...>::value)
             {
                 return common_tuple<iter_rvalue_reference_t<Its>...>{iter_move(its)...};
             }
 
             // pair value
-            template(typename It1, typename It2)(
-                requires indirectly_readable<It1> AND indirectly_readable<It2>)
+            template(typename It1, typename It2)(requires indirectly_readable<It1> AND indirectly_readable<It2>)
             eastl::pair<iter_value_t<It1>, iter_value_t<It2>> //
             operator()(copy_tag, It1, It2) const
             {
@@ -76,8 +71,7 @@ namespace ranges
             }
 
             // pair reference
-            template(typename It1, typename It2)(
-                requires indirectly_readable<It1> AND indirectly_readable<It2>)
+            template(typename It1, typename It2)(requires indirectly_readable<It1> AND indirectly_readable<It2>)
             common_pair<iter_reference_t<It1>, iter_reference_t<It2>>
             operator()(It1 const & it1, It2 const & it2) const //
                 noexcept( //
@@ -88,8 +82,7 @@ namespace ranges
             }
 
             // pair rvalue reference
-            template(typename It1, typename It2)(
-                requires indirectly_readable<It1> AND indirectly_readable<It2>)
+            template(typename It1, typename It2)(requires indirectly_readable<It1> AND indirectly_readable<It2>)
             common_pair<iter_rvalue_reference_t<It1>, iter_rvalue_reference_t<It2>>
             operator()(move_tag, It1 const & it1, It2 const & it2) const
                 noexcept(noexcept(iter_rvalue_reference_t<It1>(iter_move(it1))) &&
@@ -117,8 +110,7 @@ namespace ranges
     };
 
     template<typename... Rng>
-    EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<zip_view<Rng...>> =
-        and_v<enable_borrowed_range<Rng>...>;
+    EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<zip_view<Rng...>> = and_v<enable_borrowed_range<Rng>...>;
 
 #if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
     template<typename... Rng>
@@ -180,7 +172,7 @@ namespace ranges
     /// @}
 } // namespace ranges
 
-#include "../detail/satisfy_boost_range.hpp"
+#include <EARanges/detail/satisfy_boost_range.hpp>
 EARANGES_SATISFY_BOOST_RANGE(::ranges::zip_view)
 
 #include <EARanges/detail/epilogue.hpp>

@@ -109,7 +109,7 @@ namespace
   void print(Seq seq, std::size_t n)
   {
     std::cout << "sequence: " << seq.name().c_str() << '\n';
-    for(auto i : seq(n) | ranges::views::take(n))
+    EARANGES_FOR(auto i , seq(n) | ranges::views::take(n))
       std::cout << i << '\n';
   }
 
@@ -168,7 +168,7 @@ namespace
     template<typename Computation, typename Sizes>
     benchmark(Computation &&c, Sizes &&sizes, double target_deviation = 0.25, std::size_t max_iters = 100, std::size_t min_iters = 5)
     {
-      for(auto size : sizes)
+      EARANGES_FOR(auto size , sizes)
       {
         eastl::vector<duration_t> durations;
         duration_t deviation;

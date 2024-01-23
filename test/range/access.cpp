@@ -238,7 +238,7 @@ using CI = int const *;
 CPP_assert(ranges::input_or_output_iterator<I>);
 CPP_assert(ranges::input_or_output_iterator<CI>);
 
-#if defined(__cpp_lib_string_view) && __cpp_lib_string_view >= 201603L
+
 void test_string_view_p0970()
 {
     // basic_string_views are non-dangling
@@ -255,7 +255,7 @@ void test_string_view_p0970()
         CHECK(result == eastl::string_view{hw}.begin() + 7);
     }
 }
-#endif
+
 
 int main()
 {

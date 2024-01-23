@@ -23,7 +23,6 @@
 using std::cout;
 
 #include "../test/eastl_utils.h"
-
 int main()
 {
     using namespace ranges;

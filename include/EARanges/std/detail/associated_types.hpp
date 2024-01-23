@@ -22,7 +22,7 @@
 #include <EARanges/detail/config.hpp>
 
 #include <EARanges/detail/prologue.hpp>
-//TODO:In linux gcc and clang ci sarà da divertirsi, non dimenticarti di modificare tutto il sotto.
+//TODO:In linux gcc and clang ci sarï¿½ da divertirsi, non dimenticarti di modificare tutto il sotto.
 namespace ranges
 {
     /// \addtogroup group-iterator
@@ -261,7 +261,7 @@ namespace ranges
 #else
 #if defined(__GLIBCXX__)
         template<typename I>
-        char (&is_std_iterator_traits_specialized_impl_(std::__iterator_traits<I> *))[2];
+        char (&is_std_iterator_traits_specialized_impl_(eastl::iterator_traits<I>*))[2];
         template<typename I>
         char is_std_iterator_traits_specialized_impl_(void *);
 #elif defined(_LIBCPP_VERSION)
@@ -306,6 +306,6 @@ namespace ranges
     /// \endcond
 } // namespace ranges
 
-#include "../../detail/epilogue.hpp"
+#include <EARanges/detail/epilogue.hpp>
 
 #endif
