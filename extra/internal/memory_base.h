@@ -33,6 +33,9 @@ namespace eastl
 		else
 			return reinterpret_cast<T*>(&const_cast<char&>(reinterpret_cast<const volatile char&>(value)));
 	}
+	
+	template<typename T>
+    const T * addressof(const T && value) = delete;
 
 } // namespace eastl
 

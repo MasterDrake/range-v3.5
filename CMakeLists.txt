@@ -31,6 +31,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Export compilation data-base
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 find_package(EASTL CONFIG REQUIRED)
+find_package(benchmark CONFIG REQUIRED)
+find_package(GTest CONFIG REQUIRED)
 
 include(EARanges_options)
 include(EARanges_env)
@@ -86,8 +88,6 @@ endif()
 
 if(EARANGES_PERF)
   message(STATUS "Building perf tests!")
-  include(gtest)
-  include(gbenchmark)
   add_subdirectory(perf)
 endif()
 

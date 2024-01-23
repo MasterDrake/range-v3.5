@@ -249,7 +249,7 @@ int main()
         auto y = x | views::common;
         eastl::pair<eastl::unique_ptr<int>, eastl::unique_ptr<int>> p = iter_move(y.begin());
         auto it = x.begin();
-        // TODO: some stuff needs to be declared noexcept, except I don't know what
+        // TODO: some stuff needs to be declared noexcept, except I don't know what. Why it's not in the ranges:: namespace?
         static_assert(noexcept(iter_move(it)), "");
     }
 
