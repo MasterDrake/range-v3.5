@@ -25,20 +25,13 @@
 // Implementation based on the code in libc++
 //   http://http://libcxx.llvm.org/
 
-//#include <EASTL/algorithm.h>
+#include <EASTL/algorithm.h>
 #include <EASTL/heap.h>
 #include <EARanges/core.hpp>
 #include <EARanges/algorithm/heap_algorithm.hpp>
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 #include "../test_iterators.hpp"
-
-//TODO:16) Troublesome example:
-//- promote_heap_impl has a () that's useless near eastl::less<ValueType>, won't compile with it.
-//- talking about eastl::less, EASTL/heap.h needs to include <EASTL/functional.h>
-//- The IS_HEAP_X doesn't work :/
-//- Do we really need <EASTL/algorithm.h> here then?
-//TODO: Create a issue for eastl
 
 void test()
 {
