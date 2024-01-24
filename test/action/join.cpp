@@ -22,7 +22,7 @@ int main()
     using namespace ranges;
     eastl::vector<eastl::string> v {"hello"," ","world"};
     auto s = v | move | actions::join;
-    static_assert(ranges::container<eastl::string>);
+    static_assert(ranges::container<eastl::string>, "");
     static_assert(eastl::is_same<decltype(s), eastl::string>::value, "");
     CHECK(s == "hello world");
     

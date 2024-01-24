@@ -31,9 +31,9 @@ struct vector_like : eastl::vector<T>
 
     inline T* DoAllocate(size_type n)
     {
-      eastl::vector<T>::DoAllocate(n);
       last_reservation = n;
       ++reservation_count;
+      return eastl::vector<T>::DoAllocate(n);
     }
 };
 

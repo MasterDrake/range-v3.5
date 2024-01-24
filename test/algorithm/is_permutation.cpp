@@ -678,5 +678,3 @@ int main()
 
     return ::test_result();
 }
-
-int main(){}

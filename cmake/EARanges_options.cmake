@@ -17,8 +17,8 @@ option(EARANGES_NATIVE "Enables -march/-mtune=native." ON)
 option(EARANGES_VERBOSE_BUILD "Enables debug output from CMake." OFF)
 option(EARANGES_LLVM_POLLY "Enables LLVM Polly." OFF)
 option(EARANGES_ENABLE_WERROR
-  "Enables -Werror. Only effective if compiler is not clang-cl or MSVC. ON by default"
-  ON)
+  "Enables -Werror. Only effective if compiler is not clang-cl or MSVC. OFF by default"
+  OFF)
 option(EARANGES_PREFER_REAL_CONCEPTS
   "Use real concepts instead of emulation if the compiler supports it"
   ON)

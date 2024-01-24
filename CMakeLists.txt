@@ -19,7 +19,7 @@ if (WIN32)
 	include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 elseif (UNIX)
 	set(VCPKG_TARGET_TRIPLET x64-linux)
- 	include("/home/ilies/GameDev/Libraries/vcpkg/scripts/buildsystems/vcpkg.cmake")
+ 	include("/home/drake/GameDev/Libraries/vcpkg/scripts/buildsystems/vcpkg.cmake")
 endif()
 
 set(VCPKG_LIBRARY_LINKAGE static)

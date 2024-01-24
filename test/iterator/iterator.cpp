@@ -48,10 +48,10 @@ void test_ostream_joiner()
     std::ostringstream oss;
     eastl::vector<int> vi{};
     copy(vi, make_ostream_joiner(oss, ","));
-    ::check_equal(oss.str().c_str(), eastl::string{""}.c_str());
+    ::check_equal(eastl::string(oss.str().c_str(), oss.str().length()), eastl::string{""});
     vi = {1,2,3,4};
     copy(vi, make_ostream_joiner(oss, ","));
-    ::check_equal(oss.str().c_str(), eastl::string{"1,2,3,4"}.c_str());
+    ::check_equal(eastl::string(oss.str().c_str(), oss.str().length()), eastl::string{"1,2,3,4"});
 }
 
 void test_move_iterator()
