@@ -122,11 +122,6 @@ namespace ranges
 
     EARANGES_FUNC_END(is_heap_until)
 
-    namespace cpp20
-    {
-        using ranges::is_heap_until;
-    }
-
     EARANGES_FUNC_BEGIN(is_heap)
 
         /// \brief function template \c is_heap
@@ -153,10 +148,6 @@ namespace ranges
 
     EARANGES_FUNC_END(is_heap)
 
-    namespace cpp20
-    {
-        using ranges::is_heap;
-    }
     /// @}
 
     /// \cond
@@ -287,10 +278,6 @@ namespace ranges
 
     EARANGES_FUNC_END(push_heap)
 
-    namespace cpp20
-    {
-        using ranges::push_heap;
-    }
     /// @}
 
     /// \cond

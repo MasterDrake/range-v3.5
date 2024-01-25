@@ -70,8 +70,8 @@ namespace ranges
 #endif
 
     namespace views
-    {
-        struct cpp20_counted_fn
+    {	//TODO: it's not used...
+        /*struct cpp20_counted_fn
         {
             template(typename I)(requires input_or_output_iterator<I> AND (!random_access_iterator<I>)) //
             subrange<counted_iterator<I>, default_sentinel_t> //
@@ -84,7 +84,7 @@ namespace ranges
             {
                 return {it, it + n};
             }
-        };
+        };*/
 
         struct counted_fn
         {
