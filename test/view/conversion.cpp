@@ -30,12 +30,6 @@
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
-#if _WIN32
-int __cdecl EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64 n, char const * __restrict pFormat, char * arguments)
-{
-    return vsnprintf(pDestination, n, pFormat, arguments);
-}
-#endif
 int main()
 {
     using namespace ranges;

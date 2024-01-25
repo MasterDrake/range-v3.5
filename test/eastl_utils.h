@@ -33,7 +33,7 @@ void * CDeclFunction operator new[](size_t size, size_t alignement, size_t offse
 
 #include <cstdio>
 
-EASTL_EASTDC_API CDeclFunction int EA::StdC::Vsnprintf(char*  EA_RESTRICT pDestination, size_t n, const char*  EA_RESTRICT pFormat, va_list arguments)
+int CDeclFunction EA::StdC::Vsnprintf(char*  EA_RESTRICT pDestination, size_t n, const char*  EA_RESTRICT pFormat, va_list arguments)
 {
     return vsnprintf(pDestination, n, pFormat, arguments);
 }

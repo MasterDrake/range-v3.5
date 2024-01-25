@@ -68,7 +68,7 @@ endif()
 if(EARANGES_CXX_STD MATCHES "^[0-9]+$")
   if(EARANGES_CXX_COMPILER_MSVC AND EARANGES_CXX_STD LESS 17)
     # MSVC is currently supported only in 17+ mode
-    set(EARANGES_CXX_STD 17)
+    set(EARANGES_CXX_STD 20)
   elseif(EARANGES_CXX_STD LESS 14)
     set(EARANGES_CXX_STD 14)
   endif()
