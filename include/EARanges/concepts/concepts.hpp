@@ -1007,9 +1007,7 @@ namespace concepts
         /// \concept swappable_with
         /// \brief The \c swappable_with concept
         template<typename T, typename U>
-        CPP_concept swappable_with =
-            common_reference_with<detail::as_cref_t<T>, detail::as_cref_t<U>> &&
-            CPP_requires_ref(defs::swappable_with_, T, U);
+        CPP_concept swappable_with = common_reference_with<detail::as_cref_t<T>, detail::as_cref_t<U>> && CPP_requires_ref(defs::swappable_with_, T, U);
 
     }  // inline namespace defs
 

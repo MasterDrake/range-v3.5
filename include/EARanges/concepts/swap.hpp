@@ -161,30 +161,28 @@ namespace concepts
     /// \cond
     namespace adl_swap_detail
     {
-        struct nope
-        {};
-
-        // Intentionally create an ambiguity with eastl::swap, which is
-        // (possibly) unconstrained.
+        // Intentionally create an ambiguity with eastl::swap, which is (possibly) unconstrained.
         template<typename T>
-        nope swap(T &, T &) = delete;
+        eastl::unused swap(T &, T &) = delete;
 
         template<typename T, std::size_t N>
-        nope swap(T (&)[N], T (&)[N]) = delete;
+        eastl::unused swap(T (&)[N], T (&)[N]) = delete;
+
+        eastl::unused swap(eastl::argument_sink, eastl::argument_sink) = delete;
 
 #ifdef CPP_WORKAROUND_MSVC_895622
-        nope swap();
+        eastl::unused swap();
 #endif
 
         template<typename T, typename U>
         decltype(swap(eastl::declval<T>(), eastl::declval<U>())) try_adl_swap_(int);
 
         template<typename T, typename U>
-        nope try_adl_swap_(long);
+        eastl::unused try_adl_swap_(long);
 
         template<typename T, typename U = T>
         CPP_INLINE_VAR constexpr bool is_adl_swappable_v =
-            !META_IS_SAME(decltype(adl_swap_detail::try_adl_swap_<T, U>(42)), nope);
+            !META_IS_SAME(decltype(adl_swap_detail::try_adl_swap_<T, U>(42)), eastl::unused);
 
         struct swap_fn
         {
