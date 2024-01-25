@@ -49,20 +49,21 @@
 #define CPP_WORKAROUND_MSVC_784772 // Failure to invoke *explicit* bool conversion in a constant expression
 #endif
 
-#if !defined(CPP_CXX_CONCEPTS)
-#ifdef CPP_DOXYGEN_INVOKED
-#define CPP_CXX_CONCEPTS 201800L
-#elif defined(__cpp_concepts) && __cpp_concepts > 0
-// gcc-6 concepts are too buggy to use
-#if !defined(__GNUC__) || defined(__clang__) || __GNUC__ >= 7
-#define CPP_CXX_CONCEPTS __cpp_concepts
-#else
+//BUGBUGBUG Don't use real concepts otherwise you'll fail compilation on c++20, funnily enough about | to conversions...
+//#if !defined(CPP_CXX_CONCEPTS)
+//#ifdef CPP_DOXYGEN_INVOKED
+//#define CPP_CXX_CONCEPTS 201800L
+//#elif defined(__cpp_concepts) && __cpp_concepts > 0
+//// gcc-6 concepts are too buggy to use
+//#if !defined(__GNUC__) || defined(__clang__) || __GNUC__ >= 7
+//#define CPP_CXX_CONCEPTS __cpp_concepts
+//#else
+//#define CPP_CXX_CONCEPTS 0L
+//#endif
+//#else
 #define CPP_CXX_CONCEPTS 0L
-#endif
-#else
-#define CPP_CXX_CONCEPTS 0L
-#endif
-#endif
+//#endif
+//#endif
 
 #define CPP_PP_CAT_(X, ...)  X ## __VA_ARGS__
 #define CPP_PP_CAT(X, ...)   CPP_PP_CAT_(X, __VA_ARGS__)

@@ -37,6 +37,7 @@ namespace ranges
 
         template<typename T, typename...>
         using always_ = T;
+        
         //TODO:Let's not hope I don't have to deal with it -.-
 #if defined(_MSC_VER) && !defined(__clang__) && !defined(__EDG__)
         // MSVC laughs at your silly micro-optimizations and implements
@@ -120,7 +121,7 @@ namespace ranges
 
         template<typename T>
         using difference_result_t = decltype(eastl::declval<T const &>() - eastl::declval<T const &>());
-
+        
         template<typename, typename = void>
         struct incrementable_traits_2_
         {};
@@ -144,14 +145,7 @@ namespace ranges
         {};
 
         template<typename T>
-        struct incrementable_traits_1_<T *>
-#ifdef __clang__
-          : conditional_t<__is_object(T), with_difference_type_<std::ptrdiff_t>, nil_>
-#elif defined(_MSC_VER) && !defined(__EDG__)
-          : conditional_t<eastl::is_object_v<T>, with_difference_type_<std::ptrdiff_t>, nil_>
-#else // ^^^ MSVC / not MSVC vvv
-          : conditional_t<is_object_<T>(0), with_difference_type_<std::ptrdiff_t>, nil_>
-#endif // detect MSVC
+        struct incrementable_traits_1_<T *> : conditional_t<eastl::is_object_v<T>, with_difference_type_<std::ptrdiff_t>, nil_>
         {};
 
         template<typename T>
@@ -173,13 +167,8 @@ namespace ranges
     /// \cond
     namespace detail
     {
-#ifdef __clang__
-        template<typename T, bool = __is_object(T)>
-#elif defined(_MSC_VER) && !defined(__EDG__)
         template<typename T, bool = eastl::is_object_v<T>>
-#else // ^^^ MSVC / not MSVC vvv
-        template<typename T, bool = is_object_<T>(0)>
-#endif // detect MSVC
+#
         struct with_value_type_
         {};
         template<typename T>
@@ -252,7 +241,7 @@ namespace ranges
             using reference = void;
             using pointer = void;
         };
-
+        /*
         // For testing whether a particular instantiation of eastl::iterator_traits
         // is user-specified or not. //TODO: Altri cazzi qua, quandi si attiva c++20.
 #if defined(_MSVC_STL_UPDATE) && defined(__cpp_lib_concepts) && _MSVC_STL_UPDATE >= 201908L
@@ -302,6 +291,7 @@ namespace ranges
         // This helps with `T volatile*` and `void *`.
         template<typename T>
         EARANGES_INLINE_VAR constexpr bool is_std_iterator_traits_specialized_v<T *> = false;
+        */
     } // namespace detail
     /// \endcond
 } // namespace ranges

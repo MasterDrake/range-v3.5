@@ -52,18 +52,9 @@ namespace ranges
 
     template<typename I>
     using iter_common_reference_t = common_reference_t<iter_reference_t<I>, iter_value_t<I> &>;
-
-#if defined(EARANGES_DEEP_STL_INTEGRATION) && EARANGES_DEEP_STL_INTEGRATION && \
-    !defined(EARANGES_DOXYGEN_INVOKED)
-    template<typename T>
-    using iter_difference_t =
-        typename meta::conditional_t<detail::is_std_iterator_traits_specialized_v<T>,
-                                   eastl::iterator_traits<uncvref_t<T>>,
-                                   incrementable_traits<uncvref_t<T>>>::difference_type;
-#else
+    
     template<typename T>
     using iter_difference_t = typename incrementable_traits<uncvref_t<T>>::difference_type;
-#endif
 
     // Defined in <range/v3/iterator/access.hpp>
     // template<typename T>

@@ -45,7 +45,7 @@ namespace ranges
     namespace detail
     {
         template<typename I>
-        using iter_traits_t = meta::conditional_t<is_std_iterator_traits_specialized_v<I>, eastl::iterator_traits<I>, I>;
+        using iter_traits_t = eastl::iterator_traits<I>;
 /*TODO: I dont' think we should rely on std implementions...
 #if defined(_GLIBCXX_DEBUG)
         template(typename I, typename T, typename Seq)(
@@ -91,17 +91,15 @@ namespace ranges
         template<typename I>
         auto iter_concept_(I, priority_tag<1>) -> typename iter_traits_t<I>::iterator_category;
         template<typename I>
-        auto iter_concept_(I, priority_tag<0>) -> enable_if_t<!is_std_iterator_traits_specialized_v<I>, eastl::random_access_iterator_tag>;
+        auto iter_concept_(I, priority_tag<0>) -> eastl::random_access_iterator_tag;
 
         template<typename I>
-        using iter_concept_t =
-            decltype(iter_concept_<I>(eastl::declval<I>(), priority_tag<3>{}));
+        using iter_concept_t = decltype(iter_concept_<I>(eastl::declval<I>(), priority_tag<3>{}));
 
         using ::concepts::detail::weakly_equality_comparable_with_;
 
         template<typename I>
-        using readable_types_t =
-            meta::list<iter_value_t<I>, iter_reference_t<I>, iter_rvalue_reference_t<I>>;
+        using readable_types_t = meta::list<iter_value_t<I>, iter_reference_t<I>, iter_rvalue_reference_t<I>>;
     } // namespace detail
       /// \endcond
 
