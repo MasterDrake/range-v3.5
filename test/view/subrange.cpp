@@ -112,12 +112,11 @@ int main()
     r1.end() = unreachable;
 
     r0 = r0.next();
-    //TODO:41a) ++ needs l-value :O
-    ++r0.begin();
+    //HACKHACKHACK: Refer to the subrange.hpp:281 hack... The original code was also different "++r0.begin();" but with the pre-increment the tests will fail...
+    r0.begin() = r0.begin()++;
     CHECK(r0.begin() == vi.begin()+2);
     CHECK(r0.size() == 2u);
-    //TODO:41b) -- needs l-value :O
-    r0 = {r0.begin(), --r0.end()}; // --r0.end();
+    r0 = {r0.begin(), (r0.end() = --r0.end())}; // --r0.end(); //HACKHACKHACK: Refere to the subrange.hpp:281 hack. The original code is the one commented out, works as a charm as oneliner.
     CHECK(r0.end() == vi.end()-1);
     CHECK(r0.size() == 1u);
     CHECK(r0.front() == 3);

@@ -171,8 +171,7 @@ namespace ranges
         struct adl_hook
         {};
 
-        template(std::size_t N, typename I, typename S, subrange_kind K)(
-            requires (N == 0)) //
+        template(std::size_t N, typename I, typename S, subrange_kind K)(requires (N == 0)) //
         constexpr I get(subrange<I, S, K> const & r)
         {
             return r.begin();
@@ -279,6 +278,17 @@ namespace ranges
         {
             return last_();
         }
+        //HACKHACKHACK: Because not every container uses iterator objects but pointers, there is a need for non-const returning reference to be able to modify the subrange since pointers don't have ++operators that modify the iterator and return it.
+        //Therefore any other use will fails because it's trying to call ++ on rvalues. It's scary but so far no-one complains about operations on rvalues or subrange miss-use so while it's important to keep in mind, it's not a problem.
+        constexpr I& begin() noexcept(eastl::is_nothrow_copy_constructible<I>::value)
+        {
+            return first_();
+        }
+        constexpr S& end() noexcept(eastl::is_nothrow_copy_constructible<S>::value)
+        {
+            return last_();
+        }
+
         constexpr bool empty() const
         {
             return first_() == last_();
