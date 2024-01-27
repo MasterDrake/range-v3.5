@@ -37,6 +37,8 @@
 #include "../simple_test.hpp"
 #include "../test_utils.hpp"
 
+//TODO: Some test fails, I guess it has to do with eastl::string...
+
 #if defined(__cpp_lib_ranges) && __cpp_lib_ranges >= 201911
 // See https://github.com/ericniebler/range-v3/issues/1480
 void test_bug1480()
@@ -213,8 +215,7 @@ int main()
         auto x = views::zip(rg1, rg2);
         eastl::pair<eastl::unique_ptr<int>, eastl::unique_ptr<int>> p = iter_move(x.begin());
         auto it = x.begin();
-        //TODO: some stuff needs to be declared noexcept, except I don't know what
-        //static_assert(noexcept(ranges::iter_move(it)), "");
+        static_assert(noexcept(ranges::iter_move(it)), "");
     }
 
     // Really a test for common_iterator's iter_move, but this is a good place for it.
@@ -226,8 +227,7 @@ int main()
         auto y = x | views::common;
         eastl::pair<eastl::unique_ptr<int>, eastl::unique_ptr<int>> p = iter_move(y.begin());
         auto it = x.begin();
-        // TODO: some stuff needs to be declared noexcept, except I don't know what. Why it's not in the ranges:: namespace?
-        //static_assert(noexcept(iter_move(it)), "");
+        static_assert(noexcept(iter_move(it)), "");
     }
 
     // Regression test for #439.

@@ -680,22 +680,22 @@ private:
 	Impl mImpl;
 
 	template <size_t I, typename... Ts_>
-    EA_CONSTEXPR friend tuple_element_t<I, tuple<Ts_...>> & get(tuple<Ts_...> & t);
+    EA_CONSTEXPR friend tuple_element_t<I, tuple<Ts_...>> & get(tuple<Ts_...> & t) EA_NOEXCEPT;
 
 	template <size_t I, typename... Ts_>
-	EA_CONSTEXPR friend const_tuple_element_t<I, tuple<Ts_...>>& get(const tuple<Ts_...>& t);
+	EA_CONSTEXPR friend const_tuple_element_t<I, tuple<Ts_...>>& get(const tuple<Ts_...>& t)EA_NOEXCEPT;
 
 	template <size_t I, typename... Ts_>
-    EA_CONSTEXPR friend tuple_element_t<I, tuple<Ts_...>> && get(tuple<Ts_...> && t);
+    EA_CONSTEXPR friend tuple_element_t<I, tuple<Ts_...>> && get(tuple<Ts_...> && t) EA_NOEXCEPT;
 
 	template <typename T_, typename... ts_>
-    EA_CONSTEXPR friend T_ & get(tuple<ts_...> & t);
+    EA_CONSTEXPR friend T_ & get(tuple<ts_...> & t) EA_NOEXCEPT;
 
 	template <typename T_, typename... ts_>
-    EA_CONSTEXPR friend const T_ & get(const tuple<ts_...> & t);
+    EA_CONSTEXPR friend const T_ & get(const tuple<ts_...> & t) EA_NOEXCEPT;
 
 	template <typename T_, typename... ts_>
-    EA_CONSTEXPR friend T_ && get(tuple<ts_...> && t);
+    EA_CONSTEXPR friend T_ && get(tuple<ts_...> && t) EA_NOEXCEPT;
 };
 
 // template specialization for an empty tuple
@@ -703,47 +703,48 @@ template <>
 class tuple<>
 {
 public:
-	void swap(tuple&) {}
+    void swap(tuple &) EA_NOEXCEPT
+    {}
 };
 
 template <size_t I, typename... Ts>
-EA_CONSTEXPR inline tuple_element_t<I, tuple<Ts...>> & get(tuple<Ts...> & t)
+EA_CONSTEXPR inline tuple_element_t<I, tuple<Ts...>> & get(tuple<Ts...> & t) EA_NOEXCEPT
 {
 	return get<I>(t.mImpl);
 }
 
 template <size_t I, typename... Ts>
-EA_CONSTEXPR inline const_tuple_element_t<I, tuple<Ts...>> & get(const tuple<Ts...> & t)
+EA_CONSTEXPR inline const_tuple_element_t<I, tuple<Ts...>> & get(const tuple<Ts...> & t) EA_NOEXCEPT
 {
 	return get<I>(t.mImpl);
 }
 
 template <size_t I, typename... Ts>
-EA_CONSTEXPR inline tuple_element_t<I, tuple<Ts...>> && get(tuple<Ts...> && t)
+EA_CONSTEXPR inline tuple_element_t<I, tuple<Ts...>> && get(tuple<Ts...> && t) EA_NOEXCEPT
 {
 	return get<I>(eastl::move(t.mImpl));
 }
 
 template <typename T, typename... Ts>
-EA_CONSTEXPR inline T & get(tuple<Ts...> & t)
+EA_CONSTEXPR inline T & get(tuple<Ts...> & t) EA_NOEXCEPT
 {
 	return get<T>(t.mImpl);
 }
 
 template <typename T, typename... Ts>
-EA_CONSTEXPR inline const T & get(const tuple<Ts...> & t)
+EA_CONSTEXPR inline const T & get(const tuple<Ts...> & t) EA_NOEXCEPT
 {
 	return get<T>(t.mImpl);
 }
 
 template <typename T, typename... Ts>
-EA_CONSTEXPR inline T && get(tuple<Ts...> && t)
+EA_CONSTEXPR inline T && get(tuple<Ts...> && t) EA_NOEXCEPT
 {
 	return get<T>(eastl::move(t.mImpl));
 }
 
 template <typename... Ts>
-EA_CONSTEXPR inline void swap(tuple<Ts...> & a, tuple<Ts...> & b)
+EA_CONSTEXPR inline void swap(tuple<Ts...> & a, tuple<Ts...> & b) EA_NOEXCEPT
 {
 	a.swap(b);
 }

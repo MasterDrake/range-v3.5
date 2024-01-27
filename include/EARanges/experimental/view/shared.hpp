@@ -114,6 +114,6 @@ namespace ranges
     /// @}
 } // namespace ranges
 
-#include "../../detail/epilogue.hpp"
+#include <EARanges/detail/epilogue.hpp>
 
 #endif

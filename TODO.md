@@ -141,7 +141,7 @@ int __cdecl EA::StdC::Vsnprintf(char * __restrict pDestination, unsigned __int64
 - The changes are in two files, obviously: tuple and tuple_fwd_decls.h
 
 - tuple_fwd_decls.h
-- The changes are the added EA_CONSTEXPR in the get methods.
+- The changes are the added EA_CONSTEXPR and EA_NOEXCEPT in the get methods just like the standard dectates.
 ```c++
 /////////////////////////////////////////////////////////////////////////////
 // Copyright (c) Electronic Arts Inc. All rights reserved.
@@ -160,40 +160,54 @@ namespace eastl
 	class tuple;
 
 	template <typename Tuple>
-	class tuple_size;
+	struct tuple_size;
+
+#if EASTL_VARIABLE_TEMPLATES_ENABLED
+	template <class T>
+	EA_CONSTEXPR size_t tuple_size_v = tuple_size<T>::value;
+#endif
 
 	template <size_t I, typename Tuple>
-	class tuple_element;
+	struct tuple_element;
 
 	template <size_t I, typename Tuple>
 	using tuple_element_t = typename tuple_element<I, Tuple>::type;
+
+	template<typename T> struct is_lvalue_reference;
+
+	template<bool B, typename T, typename F>
+	struct conditional;
+
+	template <typename T> struct add_lvalue_reference;
+
+	template <typename T> struct remove_reference;
 
 	// const typename for tuple_element_t, for when tuple or TupleImpl cannot itself be const
 	template <size_t I, typename Tuple>
 	using const_tuple_element_t = typename conditional<
 						is_lvalue_reference<tuple_element_t<I, Tuple>>::value,
-							 add_lvalue_reference_t<const remove_reference_t<tuple_element_t<I, Tuple>>>,
+							 typename add_lvalue_reference<const typename remove_reference<tuple_element_t<I, Tuple>>::type>::type,
 							 const tuple_element_t<I, Tuple>
 						>::type;
 
 	// get
 	template <size_t I, typename... Ts_>
-    EA_CONSTEXPR tuple_element_t<I, tuple<Ts_...>> & get(tuple<Ts_...> & t);
+    EA_CONSTEXPR tuple_element_t<I, tuple<Ts_...>> & get(tuple<Ts_...> & t) EA_NOEXCEPT;
 
 	template <size_t I, typename... Ts_>
-    EA_CONSTEXPR const_tuple_element_t<I, tuple<Ts_...>> & get(const tuple<Ts_...> & t);
+    EA_CONSTEXPR const_tuple_element_t<I, tuple<Ts_...>> & get(const tuple<Ts_...> & t) EA_NOEXCEPT;
 
 	template <size_t I, typename... Ts_>
-    EA_CONSTEXPR tuple_element_t<I, tuple<Ts_...>> && get(tuple<Ts_...> && t);
+    EA_CONSTEXPR tuple_element_t<I, tuple<Ts_...>> && get(tuple<Ts_...> && t) EA_NOEXCEPT;
 
 	template <typename T, typename... ts_>
-    EA_CONSTEXPR T & get(tuple<ts_...> & t);
+    EA_CONSTEXPR T & get(tuple<ts_...> & t) EA_NOEXCEPT;
 
 	template <typename T, typename... ts_>
-    EA_CONSTEXPR const T & get(const tuple<ts_...> & t);
+    EA_CONSTEXPR const T & get(const tuple<ts_...> & t) EA_NOEXCEPT;
 
 	template <typename T, typename... ts_>
-    EA_CONSTEXPR T && get(tuple<ts_...> && t);
+    EA_CONSTEXPR T && get(tuple<ts_...> && t) EA_NOEXCEPT;
 }
 
 #endif  // EASTL_VARIADIC_TEMPLATES_ENABLED
@@ -234,18 +248,13 @@ namespace eastl
 template <typename... Ts> struct TupleTypes {};
 
 // tuple_size helper
-template <typename T> class tuple_size {};
-template <typename T> class tuple_size<const T>          : public tuple_size<T> {};
-template <typename T> class tuple_size<volatile T>       : public tuple_size<T> {};
-template <typename T> class tuple_size<const volatile T> : public tuple_size<T> {};
+template <typename T> struct tuple_size {};
+template <typename T> struct tuple_size<const T>          : public tuple_size<T> {};
+template <typename T> struct tuple_size<volatile T>       : public tuple_size<T> {};
+template <typename T> struct tuple_size<const volatile T> : public tuple_size<T> {};
 
-template <typename... Ts> class tuple_size<TupleTypes<Ts...>> : public integral_constant<size_t, sizeof...(Ts)> {};
-template <typename... Ts> class tuple_size<tuple<Ts...>>      : public integral_constant<size_t, sizeof...(Ts)> {};
-
-#if EASTL_VARIABLE_TEMPLATES_ENABLED
-	template <class T>
-	EA_CONSTEXPR size_t tuple_size_v = tuple_size<T>::value;
-#endif
+template <typename... Ts> struct tuple_size<TupleTypes<Ts...>> : public integral_constant<size_t, sizeof...(Ts)> {};
+template <typename... Ts> struct tuple_size<tuple<Ts...>>      : public integral_constant<size_t, sizeof...(Ts)> {};
 
 namespace Internal
 {
@@ -254,32 +263,32 @@ namespace Internal
 } // namespace Internal
 
 template <typename Indices, typename... Ts>
-class tuple_size<Internal::TupleImpl<Indices, Ts...>> : public integral_constant<size_t, sizeof...(Ts)>
+struct tuple_size<Internal::TupleImpl<Indices, Ts...>> : public integral_constant<size_t, sizeof...(Ts)>
 {
 };
 
 // tuple_element helper to be able to isolate a type given an index
 template <size_t I, typename T>
-class tuple_element
+struct tuple_element
 {
 };
 
 template <size_t I>
-class tuple_element<I, TupleTypes<>>
+struct tuple_element<I, TupleTypes<>>
 {
 public:
 	static_assert(I != I, "tuple_element index out of range");
 };
 
 template <typename H, typename... Ts>
-class tuple_element<0, TupleTypes<H, Ts...>>
+struct tuple_element<0, TupleTypes<H, Ts...>>
 {
 public:
 	typedef H type;
 };
 
 template <size_t I, typename H, typename... Ts>
-class tuple_element<I, TupleTypes<H, Ts...>>
+struct tuple_element<I, TupleTypes<H, Ts...>>
 {
 public:
 	typedef tuple_element_t<I - 1, TupleTypes<Ts...>> type;
@@ -287,28 +296,28 @@ public:
 
 // specialization for tuple
 template <size_t I, typename... Ts>
-class tuple_element<I, tuple<Ts...>>
+struct tuple_element<I, tuple<Ts...>>
 {
 public:
 	typedef tuple_element_t<I, TupleTypes<Ts...>> type;
 };
 
 template <size_t I, typename... Ts>
-class tuple_element<I, const tuple<Ts...>>
+struct tuple_element<I, const tuple<Ts...>>
 {
 public:
 	typedef typename add_const<tuple_element_t<I, TupleTypes<Ts...>>>::type type;
 };
 
 template <size_t I, typename... Ts>
-class tuple_element<I, volatile tuple<Ts...>>
+struct tuple_element<I, volatile tuple<Ts...>>
 {
 public:
 	typedef typename add_volatile<tuple_element_t<I, TupleTypes<Ts...>>>::type type;
 };
 
 template <size_t I, typename... Ts>
-class tuple_element<I, const volatile tuple<Ts...>>
+struct tuple_element<I, const volatile tuple<Ts...>>
 {
 public:
 	typedef typename add_cv<tuple_element_t<I, TupleTypes<Ts...>>>::type type;
@@ -316,22 +325,22 @@ public:
 
 // specialization for TupleImpl
 template <size_t I, typename Indices, typename... Ts>
-class tuple_element<I, Internal::TupleImpl<Indices, Ts...>> : public tuple_element<I, tuple<Ts...>>
+struct tuple_element<I, Internal::TupleImpl<Indices, Ts...>> : public tuple_element<I, tuple<Ts...>>
 {
 };
 
 template <size_t I, typename Indices, typename... Ts>
-class tuple_element<I, const Internal::TupleImpl<Indices, Ts...>> : public tuple_element<I, const tuple<Ts...>>
+struct tuple_element<I, const Internal::TupleImpl<Indices, Ts...>> : public tuple_element<I, const tuple<Ts...>>
 {
 };
 
 template <size_t I, typename Indices, typename... Ts>
-class tuple_element<I, volatile Internal::TupleImpl<Indices, Ts...>> : public tuple_element<I, volatile tuple<Ts...>>
+struct tuple_element<I, volatile Internal::TupleImpl<Indices, Ts...>> : public tuple_element<I, volatile tuple<Ts...>>
 {
 };
 
 template <size_t I, typename Indices, typename... Ts>
-class tuple_element<I, const volatile Internal::TupleImpl<Indices, Ts...>> : public tuple_element<
+struct tuple_element<I, const volatile Internal::TupleImpl<Indices, Ts...>> : public tuple_element<
 																				 I, const volatile tuple<Ts...>>
 {
 };
@@ -401,14 +410,11 @@ namespace Internal
 	{
 	public:
 		EA_CONSTEXPR TupleLeaf() : mValue() {}
-		EA_CONSTEXPR TupleLeaf(const TupleLeaf&) = default;
-		EA_CONSTEXPR TupleLeaf& operator=(const TupleLeaf&) = delete;
+		TupleLeaf& operator=(const TupleLeaf&) = delete;
 
 		// We shouldn't need this explicit constructor as it should be handled by the template below but OSX clang
 		// is_constructible type trait incorrectly gives false for is_constructible<T&&, T&&>::value
-        EA_CONSTEXPR explicit TupleLeaf(ValueType && v)
-          : mValue(eastl::forward<ValueType>(v))
-        {}
+		EA_CONSTEXPR explicit TupleLeaf(ValueType&& v) : mValue(eastl::forward<ValueType>(v)) {}
 
 		template <typename T, typename = typename enable_if<is_constructible<ValueType, T&&>::value>::type>
         EA_CONSTEXPR explicit TupleLeaf(T && t)
@@ -417,13 +423,13 @@ namespace Internal
 		}
 
 		template <typename T>
-        EA_CONSTEXPR explicit TupleLeaf(const TupleLeaf<I, T> & t)
+		explicit TupleLeaf(const TupleLeaf& t)
 			: mValue(t.getInternal())
 		{
 		}
 
 		template <typename T>
-        EA_CONSTEXPR TupleLeaf & operator=(T && t)
+		TupleLeaf& operator=(T&& t)
 		{
 			mValue = eastl::forward<T>(t);
 			return *this;
@@ -435,11 +441,8 @@ namespace Internal
 			return 0;
 		}
 
-		ValueType& getInternal() { return mValue; }
-        EA_CONSTEXPR const ValueType & getInternal() const
-        {
-            return mValue;
-        }
+		EA_CONSTEXPR ValueType& getInternal() { return mValue; }
+		EA_CONSTEXPR const ValueType& getInternal() const { return mValue; }
 
 	private:
 		ValueType mValue;  
@@ -450,9 +453,12 @@ namespace Internal
 	class TupleLeaf<I, ValueType, true> : private ValueType
 	{
 	public:
-		// true_type / false_type constructors for case where ValueType is default constructible and should be value
-		// initialized and case where it is not
-		TupleLeaf(const TupleLeaf&) = default;
+		TupleLeaf() = default;
+		TupleLeaf& operator=(const TupleLeaf&) = delete;
+
+		// We shouldn't need this explicit constructor as it should be handled by the template below but OSX clang
+		// is_constructible type trait incorrectly gives false for is_constructible<T&&, T&&>::value
+		explicit TupleLeaf(ValueType&& v) : ValueType(eastl::forward<ValueType>(v)) {}
 
 		template <typename T, typename = typename enable_if<is_constructible<ValueType, T&&>::value>::type>
 		explicit TupleLeaf(T&& t)
@@ -461,7 +467,7 @@ namespace Internal
 		}
 
 		template <typename T>
-		explicit TupleLeaf(const TupleLeaf<I, T>& t)
+		explicit TupleLeaf(const TupleLeaf& t)
 			: ValueType(t.getInternal())
 		{
 		}
@@ -481,9 +487,6 @@ namespace Internal
 
 		ValueType& getInternal() { return static_cast<ValueType&>(*this); }
 		const ValueType& getInternal() const { return static_cast<const ValueType&>(*this); }
-
-	private:
-		TupleLeaf& operator=(const TupleLeaf&) = delete;
 	};
 
 
@@ -531,13 +534,13 @@ namespace Internal
 	EA_CONSTEXPR tuple_element_t<I, TupleImpl<Indices, Ts...>>&& get(TupleImpl<Indices, Ts...>&& t);
 
 	template <typename T, typename Indices, typename... Ts>
-    EA_CONSTEXPR T & get(TupleImpl<Indices, Ts...> & t);
+	EA_CONSTEXPR T& get(TupleImpl<Indices, Ts...>& t);
 
 	template <typename T, typename Indices, typename... Ts>
-    EA_CONSTEXPR const T & get(const TupleImpl<Indices, Ts...> & t);
+	EA_CONSTEXPR const T& get(const TupleImpl<Indices, Ts...>& t);
 
 	template <typename T, typename Indices, typename... Ts>
-    EA_CONSTEXPR T && get(TupleImpl<Indices, Ts...> && t);
+	EA_CONSTEXPR T&& get(TupleImpl<Indices, Ts...>&& t);
 
 	template <size_t... Indices, typename... Ts>
 	struct TupleImpl<integer_sequence<size_t, Indices...>, Ts...> : public TupleLeaf<Indices, Ts>...
@@ -548,27 +551,26 @@ namespace Internal
 		// https://connect.microsoft.com/VisualStudio/feedback/details/1126958/error-in-template-parameter-pack-expansion-of-std-index-sequence
 		// 
 		template <typename... Us, typename... ValueTypes>
-        EA_CONSTEXPR explicit TupleImpl(integer_sequence<size_t, Indices...>,
-                                       TupleTypes<Us...>, ValueTypes &&... values)
+		EA_CONSTEXPR explicit TupleImpl(integer_sequence<size_t, Indices...>, TupleTypes<Us...>, ValueTypes&&... values)
 			: TupleLeaf<Indices, Ts>(eastl::forward<ValueTypes>(values))...
 		{
 		}
 
 		template <typename OtherTuple>
-        EA_CONSTEXPR TupleImpl(OtherTuple && t)
+		TupleImpl(OtherTuple&& t)
 			: TupleLeaf<Indices, Ts>(eastl::forward<tuple_element_t<Indices, MakeTupleTypes_t<OtherTuple>>>(get<Indices>(t)))...
 		{
 		}
 
 		template <typename OtherTuple>
-        EA_CONSTEXPR TupleImpl & operator=(OtherTuple && t)
+		TupleImpl& operator=(OtherTuple&& t)
 		{
 			swallow(TupleLeaf<Indices, Ts>::operator=(
 						eastl::forward<tuple_element_t<Indices, MakeTupleTypes_t<OtherTuple>>>(get<Indices>(t)))...);
 			return *this;
 		}
 
-		EA_CONSTEXPR TupleImpl & operator=(const TupleImpl & t)
+		TupleImpl& operator=(const TupleImpl& t)
 		{
 			swallow(TupleLeaf<Indices, Ts>::operator=(static_cast<const TupleLeaf<Indices, Ts>&>(t).getInternal())...);
 			return *this;
@@ -814,79 +816,6 @@ namespace Internal
 	template <typename T>
 	using MakeTupleReturn_t = typename MakeTupleReturnImpl<decay_t<T>>::type;
 
-
-	// tuple_cat helpers
-	//
-	//
-	//
-
-	// TupleCat2Impl
-	template <typename Tuple1, typename Is1, typename Tuple2, typename Is2>
-	struct TupleCat2Impl;
-
-	template <typename... T1s, size_t... I1s, typename... T2s, size_t... I2s>
-	struct TupleCat2Impl<tuple<T1s...>, index_sequence<I1s...>, tuple<T2s...>, index_sequence<I2s...>>
-	{
-		using ResultType = tuple<T1s..., T2s...>;
-
-		template <typename Tuple1, typename Tuple2>
-		static inline ResultType DoCat2(Tuple1&& t1, Tuple2&& t2)
-		{
-			return ResultType(get<I1s>(eastl::forward<Tuple1>(t1))..., get<I2s>(eastl::forward<Tuple2>(t2))...);
-		}
-	};
-
-	// TupleCat2
-	template <typename Tuple1, typename Tuple2>
-	struct TupleCat2;
-
-	template <typename... T1s, typename... T2s>
-	struct TupleCat2<tuple<T1s...>, tuple<T2s...>>
-	{
-		using Is1        = make_index_sequence<sizeof...(T1s)>;
-		using Is2        = make_index_sequence<sizeof...(T2s)>;
-		using TCI        = TupleCat2Impl<tuple<T1s...>, Is1, tuple<T2s...>, Is2>;
-		using ResultType = typename TCI::ResultType;
-
-		template <typename Tuple1, typename Tuple2>
-		static inline ResultType DoCat2(Tuple1&& t1, Tuple2&& t2)
-		{
-			return TCI::DoCat2(eastl::forward<Tuple1>(t1), eastl::forward<Tuple2>(t2));
-		}
-	};
-
-	// TupleCat
-	template <typename... Tuples>
-	struct TupleCat;
-
-	template <typename Tuple1, typename Tuple2, typename... TuplesRest>
-	struct TupleCat<Tuple1, Tuple2, TuplesRest...>
-	{
-		using FirstResultType = typename TupleCat2<Tuple1, Tuple2>::ResultType;
-		using ResultType      = typename TupleCat<FirstResultType, TuplesRest...>::ResultType;
-
-		template <typename TupleArg1, typename TupleArg2, typename... TupleArgsRest>
-		static inline ResultType DoCat(TupleArg1&& t1, TupleArg2&& t2, TupleArgsRest&&... ts)
-		{
-			return TupleCat<FirstResultType, TuplesRest...>::DoCat(
-				TupleCat2<TupleArg1, TupleArg2>::DoCat2(eastl::forward<TupleArg1>(t1), eastl::forward<TupleArg2>(t2)),
-				eastl::forward<TupleArgsRest>(ts)...);
-		}
-	};
-
-	template <typename Tuple1, typename Tuple2>
-	struct TupleCat<Tuple1, Tuple2>
-	{
-		using TC2 = TupleCat2<Tuple1, remove_reference_t<Tuple2>>;
-		using ResultType = typename TC2::ResultType;
-
-		template <typename TupleArg1, typename TupleArg2>
-		static inline ResultType DoCat(TupleArg1&& t1, TupleArg2&& t2)
-		{
-			return TC2::DoCat2(eastl::forward<TupleArg1>(t1), eastl::forward<TupleArg2>(t2));
-		}
-	};
-
 #if defined(EA_COMPILER_HAS_THREE_WAY_COMPARISON)
 	template <typename... T1s, typename... T2s, size_t... Is>
 	constexpr auto TupleThreeWay(const tuple<T1s...>& t1, const tuple<T2s...>& t2, index_sequence<Is...> is)
@@ -961,29 +890,32 @@ public:
 		return *this;
 	}
 
-	void swap(tuple& t) { mImpl.swap(t.mImpl); }
+	EA_CONSTEXPR void swap(tuple & t)
+    {
+        mImpl.swap(t.mImpl);
+    }
 
 private:
 	typedef Internal::TupleImpl<make_index_sequence<sizeof...(Ts) + 1>, T, Ts...> Impl;
 	Impl mImpl;
 
 	template <size_t I, typename... Ts_>
-    EA_CONSTEXPR friend tuple_element_t<I, tuple<Ts_...>> & get(tuple<Ts_...> & t);
+    EA_CONSTEXPR friend tuple_element_t<I, tuple<Ts_...>> & get(tuple<Ts_...> & t) EA_NOEXCEPT;
 
 	template <size_t I, typename... Ts_>
-	EA_CONSTEXPR friend const_tuple_element_t<I, tuple<Ts_...>>& get(const tuple<Ts_...>& t);
+	EA_CONSTEXPR friend const_tuple_element_t<I, tuple<Ts_...>>& get(const tuple<Ts_...>& t)EA_NOEXCEPT;
 
 	template <size_t I, typename... Ts_>
-    EA_CONSTEXPR friend tuple_element_t<I, tuple<Ts_...>> && get(tuple<Ts_...> && t);
+    EA_CONSTEXPR friend tuple_element_t<I, tuple<Ts_...>> && get(tuple<Ts_...> && t) EA_NOEXCEPT;
 
 	template <typename T_, typename... ts_>
-    EA_CONSTEXPR friend T_ & get(tuple<ts_...> & t);
+    EA_CONSTEXPR friend T_ & get(tuple<ts_...> & t) EA_NOEXCEPT;
 
 	template <typename T_, typename... ts_>
-    EA_CONSTEXPR friend const T_ & get(const tuple<ts_...> & t);
+    EA_CONSTEXPR friend const T_ & get(const tuple<ts_...> & t) EA_NOEXCEPT;
 
 	template <typename T_, typename... ts_>
-    EA_CONSTEXPR friend T_ && get(tuple<ts_...> && t);
+    EA_CONSTEXPR friend T_ && get(tuple<ts_...> && t) EA_NOEXCEPT;
 };
 
 // template specialization for an empty tuple
@@ -991,47 +923,48 @@ template <>
 class tuple<>
 {
 public:
-	void swap(tuple&) {}
+    void swap(tuple &) EA_NOEXCEPT
+    {}
 };
 
 template <size_t I, typename... Ts>
-EA_CONSTEXPR inline tuple_element_t<I, tuple<Ts...>> & get(tuple<Ts...> & t)
+EA_CONSTEXPR inline tuple_element_t<I, tuple<Ts...>> & get(tuple<Ts...> & t) EA_NOEXCEPT
 {
 	return get<I>(t.mImpl);
 }
 
 template <size_t I, typename... Ts>
-EA_CONSTEXPR inline const_tuple_element_t<I, tuple<Ts...>> & get(const tuple<Ts...> & t)
+EA_CONSTEXPR inline const_tuple_element_t<I, tuple<Ts...>> & get(const tuple<Ts...> & t) EA_NOEXCEPT
 {
 	return get<I>(t.mImpl);
 }
 
 template <size_t I, typename... Ts>
-EA_CONSTEXPR inline tuple_element_t<I, tuple<Ts...>> && get(tuple<Ts...> && t)
+EA_CONSTEXPR inline tuple_element_t<I, tuple<Ts...>> && get(tuple<Ts...> && t) EA_NOEXCEPT
 {
 	return get<I>(eastl::move(t.mImpl));
 }
 
 template <typename T, typename... Ts>
-EA_CONSTEXPR inline T & get(tuple<Ts...> & t)
+EA_CONSTEXPR inline T & get(tuple<Ts...> & t) EA_NOEXCEPT
 {
 	return get<T>(t.mImpl);
 }
 
 template <typename T, typename... Ts>
-EA_CONSTEXPR inline const T & get(const tuple<Ts...> & t)
+EA_CONSTEXPR inline const T & get(const tuple<Ts...> & t) EA_NOEXCEPT
 {
 	return get<T>(t.mImpl);
 }
 
 template <typename T, typename... Ts>
-EA_CONSTEXPR inline T && get(tuple<Ts...> && t)
+EA_CONSTEXPR inline T && get(tuple<Ts...> && t) EA_NOEXCEPT
 {
 	return get<T>(eastl::move(t.mImpl));
 }
 
 template <typename... Ts>
-inline void swap(tuple<Ts...>& a, tuple<Ts...>& b)
+EA_CONSTEXPR inline void swap(tuple<Ts...> & a, tuple<Ts...> & b) EA_NOEXCEPT
 {
 	a.swap(b);
 }
@@ -1065,13 +998,112 @@ template <typename... T1s, typename... T2s> inline bool operator<=(const tuple<T
 template <typename... T1s, typename... T2s> inline bool operator>=(const tuple<T1s...>& t1, const tuple<T2s...>& t2) { return !(t1 < t2); }
 #endif
 
+namespace Internal
+{
+	// tuple_cat helpers
+	//
+	//
+	//
+
+	// TupleCat2Impl
+	template <typename Tuple1, typename Is1, typename Tuple2, typename Is2>
+	struct TupleCat2Impl;
+
+	template <typename... T1s, size_t... I1s, typename... T2s, size_t... I2s>
+	struct TupleCat2Impl<tuple<T1s...>, index_sequence<I1s...>, tuple<T2s...>, index_sequence<I2s...>>
+	{
+		using ResultType = tuple<T1s..., T2s...>;
+
+		template <typename Tuple1, typename Tuple2>
+		static inline ResultType DoCat2(Tuple1&& t1, Tuple2&& t2)
+		{
+			return ResultType(get<I1s>(eastl::forward<Tuple1>(t1))..., get<I2s>(eastl::forward<Tuple2>(t2))...);
+		}
+	};
+
+	// TupleCat2
+	template <typename Tuple1, typename Tuple2>
+	struct TupleCat2;
+
+	template <typename... T1s, typename... T2s>
+	struct TupleCat2<tuple<T1s...>, tuple<T2s...>>
+	{
+		using Is1        = make_index_sequence<sizeof...(T1s)>;
+		using Is2        = make_index_sequence<sizeof...(T2s)>;
+		using TCI        = TupleCat2Impl<tuple<T1s...>, Is1, tuple<T2s...>, Is2>;
+		using ResultType = typename TCI::ResultType;
+
+		template <typename Tuple1, typename Tuple2>
+		static inline ResultType DoCat2(Tuple1&& t1, Tuple2&& t2)
+		{
+			return TCI::DoCat2(eastl::forward<Tuple1>(t1), eastl::forward<Tuple2>(t2));
+		}
+	};
+
+	// TupleCat
+	template <typename... Tuples>
+	struct TupleCat;
+
+	template <typename Tuple1, typename Tuple2, typename... TuplesRest>
+	struct TupleCat<Tuple1, Tuple2, TuplesRest...>
+	{
+		using TC2             = TupleCat2<Tuple1, Tuple2>;
+		using FirstResultType = typename TupleCat2<Tuple1, Tuple2>::ResultType;
+		using ResultType      = typename TupleCat<FirstResultType, TuplesRest...>::ResultType;
+
+		template <typename TupleArg1, typename TupleArg2, typename... TupleArgsRest>
+		static inline ResultType DoCat(TupleArg1&& t1, TupleArg2&& t2, TupleArgsRest&&... ts)
+		{
+			return TupleCat<FirstResultType, TuplesRest...>::DoCat(
+				TC2::DoCat2(eastl::forward<TupleArg1>(t1), eastl::forward<TupleArg2>(t2)),
+				eastl::forward<TupleArgsRest>(ts)...);
+		}
+	};
+
+	template <typename Tuple1, typename Tuple2>
+	struct TupleCat<Tuple1, Tuple2>
+	{
+		using TC2 = TupleCat2<Tuple1, Tuple2>;
+		using ResultType = typename TC2::ResultType;
+
+		template <typename TupleArg1, typename TupleArg2>
+		static inline ResultType DoCat(TupleArg1&& t1, TupleArg2&& t2)
+		{
+			return TC2::DoCat2(eastl::forward<TupleArg1>(t1), eastl::forward<TupleArg2>(t2));
+		}
+	};
+
+	template <typename... Ts>
+	struct TupleCat<tuple<Ts...>>
+	{
+		using ResultType = tuple<Ts...>;
+		
+		template <typename TupleArg>
+		static inline tuple<Ts...> DoCat(TupleArg&& t)
+		{
+			return eastl::forward<TupleArg>(t);
+		}
+	};
+
+	template <>
+	struct TupleCat<>
+	{
+		using ResultType = tuple<>;
+		
+		static inline tuple<> DoCat()
+		{
+			return {};
+		}
+	};
+}
+	
 // tuple_cat 
 //
 //
 template <typename... Tuples>
-inline typename Internal::TupleCat<Tuples...>::ResultType tuple_cat(Tuples&&... ts)
+inline typename Internal::TupleCat<eastl::remove_cvref_t<Tuples>...>::ResultType tuple_cat(Tuples&&... ts)
 {
-	return Internal::TupleCat<Tuples...>::DoCat(eastl::forward<Tuples>(ts)...);
+	return Internal::TupleCat<eastl::remove_cvref_t<Tuples>...>::DoCat(eastl::forward<Tuples>(ts)...);
 }
 
 
@@ -1142,7 +1174,7 @@ namespace detail
 	template <class F, class Tuple, size_t... I>
 	EA_CONSTEXPR decltype(auto) apply_impl(F&& f, Tuple&& t, index_sequence<I...>)
 	{
-		return invoke(eastl::forward<F>(f), get<I>(eastl::forward<Tuple>(t))...);
+		return eastl::invoke(eastl::forward<F>(f), get<I>(eastl::forward<Tuple>(t))...);
 	}
 } // namespace detail
 
@@ -1160,26 +1192,21 @@ EA_CONSTEXPR decltype(auto) apply(F&& f, Tuple&& t)
 // C++17 structured bindings support for eastl::tuple
 //
 #ifndef EA_COMPILER_NO_STRUCTURED_BINDING
-	#include <tuple>
+// we can't forward declare tuple_size and tuple_element because some std implementations
+// don't declare it in the std namespace, but instead alias it.
+#include <tuple>
+
 	namespace std
 	{
-		// NOTE(rparolin): Some platform implementations didn't check the standard specification and implemented the
-		// "tuple_size" and "tuple_element" primary template with as a struct.  The standard specifies they are
-		// implemented with the class keyword so we provide the template specializations as a class and disable the
-		// generated warning.
-		EA_DISABLE_CLANG_WARNING(-Wmismatched-tags)
-
 		template <class... Ts>
-		class tuple_size<::eastl::tuple<Ts...>> : public ::eastl::integral_constant<size_t, sizeof...(Ts)>
+		struct tuple_size<::eastl::tuple<Ts...>> : public ::eastl::integral_constant<size_t, sizeof...(Ts)>
 		{
 		};
 
 		template <size_t I, class... Ts>
-		class tuple_element<I, ::eastl::tuple<Ts...>> : public ::eastl::tuple_element<I, ::eastl::tuple<Ts...>>
+		struct tuple_element<I, ::eastl::tuple<Ts...>> : public ::eastl::tuple_element<I, ::eastl::tuple<Ts...>>
 		{
 		};
-
-		EA_RESTORE_CLANG_WARNING()
 	}
 #endif
 
