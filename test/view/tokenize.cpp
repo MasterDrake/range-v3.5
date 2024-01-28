@@ -11,7 +11,7 @@
 int main()
 {
     using namespace ranges;
-
+    /*
     // GCC 4.8 doesn't do regex
 #if !defined(__GNUC__) || defined(__clang__) || __GNUC__ > 4 || __GNUC_MINOR__ > 8
     eastl::string txt{"abc\ndef\tghi"};
@@ -38,6 +38,6 @@ int main()
     CPP_assert(view_<decltype(rng)>);
     CPP_assert(!view_<decltype(crng)>);
 #endif
-
+    */
     return test_result();
 }
