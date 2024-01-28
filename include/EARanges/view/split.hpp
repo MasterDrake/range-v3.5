@@ -248,77 +248,60 @@ namespace ranges
             }
 
             CPP_broken_friend_member
-            friend constexpr auto operator==(split_inner_iterator const & x,
-                                             split_inner_iterator const & y)
-                -> CPP_broken_friend_ret(bool)(
-                    requires forward_range<Base>)
+            friend constexpr auto operator==(split_inner_iterator const & x, split_inner_iterator const & y) -> CPP_broken_friend_ret(bool)(requires forward_range<Base>)
             {
                 return x.i_.curr_ == y.i_.curr_;
             }
             CPP_broken_friend_member
-            friend constexpr auto operator!=(split_inner_iterator const & x,
-                                             split_inner_iterator const & y)
-                -> CPP_broken_friend_ret(bool)(
-                    requires forward_range<Base>)
+            friend constexpr auto operator!=(split_inner_iterator const & x, split_inner_iterator const & y) -> CPP_broken_friend_ret(bool)(requires forward_range<Base>)
             {
                 return x.i_.curr_ != y.i_.curr_;
             }
 #ifdef EARANGES_WORKAROUND_MSVC_756601
             template<typename = void>
 #endif // EARANGES_WORKAROUND_MSVC_756601
-            friend constexpr bool operator==(split_inner_iterator const & x,
-                                             default_sentinel_t)
+            friend constexpr bool operator==(split_inner_iterator const & x, default_sentinel_t)
             {
                 return x.done_();
             }
 #ifdef EARANGES_WORKAROUND_MSVC_756601
             template<typename = void>
 #endif // EARANGES_WORKAROUND_MSVC_756601
-            friend constexpr bool operator==(default_sentinel_t,
-                                             split_inner_iterator const & x)
+            friend constexpr bool operator==(default_sentinel_t, split_inner_iterator const & x)
             {
                 return x.done_();
             }
 #ifdef EARANGES_WORKAROUND_MSVC_756601
             template<typename = void>
 #endif // EARANGES_WORKAROUND_MSVC_756601
-            friend constexpr bool operator!=(split_inner_iterator const & x,
-                                             default_sentinel_t)
+            friend constexpr bool operator!=(split_inner_iterator const & x, default_sentinel_t)
             {
                 return !x.done_();
             }
 #ifdef EARANGES_WORKAROUND_MSVC_756601
             template<typename = void>
 #endif // EARANGES_WORKAROUND_MSVC_756601
-            friend constexpr bool operator!=(default_sentinel_t,
-                                             split_inner_iterator const & x)
+            friend constexpr bool operator!=(default_sentinel_t, split_inner_iterator const & x)
             {
                 return !x.done_();
             }
 #ifdef EARANGES_WORKAROUND_MSVC_756601
             template<typename = void>
 #endif // EARANGES_WORKAROUND_MSVC_756601
-            friend constexpr decltype(auto) iter_move(
-                split_inner_iterator const &
-                    i) noexcept(noexcept(ranges::iter_move(i.current_())))
+            friend constexpr decltype(auto) iter_move(split_inner_iterator const & i) noexcept(noexcept(ranges::iter_move(i.current_())))
             {
                 return ranges::iter_move(i.current_());
             }
             CPP_broken_friend_member
-            friend constexpr auto iter_swap(
-                split_inner_iterator const & x,
-                split_inner_iterator const &
-                    y) noexcept(noexcept(ranges::iter_swap(x.current_(), y.current_())))
-                -> CPP_broken_friend_ret(void)(
-                    requires indirectly_swappable<iterator_t<Base>>)
+            friend constexpr auto iter_swap(split_inner_iterator const & x, split_inner_iterator const & y) noexcept(noexcept(ranges::iter_swap(x.current_(), y.current_())))
+                -> CPP_broken_friend_ret(void)(requires indirectly_swappable<iterator_t<Base>>)
             {
                 ranges::iter_swap(x.current_(), y.current_());
             }
         };
 
         template<typename It>
-        using split_outer_iterator_base =
-            meta::invoke<here_or_there_<forward_iterator<It>>, It>;
+        using split_outer_iterator_base = meta::invoke<here_or_there_<forward_iterator<It>>, It>;
 
         template<typename JoinView, bool Const>
         struct split_outer_iterator;
@@ -387,22 +370,17 @@ namespace ranges
             split_outer_iterator() = default;
 
             CPP_member
-            constexpr explicit CPP_ctor(split_outer_iterator)(Parent * parent)(
-                requires (!forward_range<Base>))
+            constexpr explicit CPP_ctor(split_outer_iterator)(Parent * parent)(requires (!forward_range<Base>))
               : parent_(parent)
             {}
 
             CPP_member
-            constexpr CPP_ctor(split_outer_iterator)(Parent * parent,
-                                                     iterator_t<Base> current)(
-                requires forward_range<Base>)
+            constexpr CPP_ctor(split_outer_iterator)(Parent * parent, iterator_t<Base> current)(requires forward_range<Base>)
               : Current{eastl::move(current)}
               , parent_(parent)
             {}
 
-            template(bool Other)(
-                requires Const AND CPP_NOT(Other) AND
-                convertible_to<iterator_t<V>, iterator_t<Base>>)
+            template(bool Other)( requires Const AND CPP_NOT(Other) AND convertible_to<iterator_t<V>, iterator_t<Base>>)
             constexpr split_outer_iterator(
                 split_outer_iterator<split_view<V, Pattern>, Other> i)
               : Current{eastl::move(i.curr_)}
@@ -454,50 +432,40 @@ namespace ranges
             }
 
             CPP_broken_friend_member
-            friend constexpr auto operator==(split_outer_iterator const & x,
-                                             split_outer_iterator const & y)
-                -> CPP_broken_friend_ret(bool)(
-                    requires forward_range<Base>)
+            friend constexpr auto operator==(split_outer_iterator const & x, split_outer_iterator const & y) -> CPP_broken_friend_ret(bool)(requires forward_range<Base>)
             {
                 return x.curr_ == y.curr_;
             }
             CPP_broken_friend_member
-            friend constexpr auto operator!=(split_outer_iterator const & x,
-                                             split_outer_iterator const & y)
-                -> CPP_broken_friend_ret(bool)(
-                    requires forward_range<Base>)
+            friend constexpr auto operator!=(split_outer_iterator const & x, split_outer_iterator const & y) -> CPP_broken_friend_ret(bool)(requires forward_range<Base>)
             {
                 return x.curr_ != y.curr_;
             }
 #ifdef EARANGES_WORKAROUND_MSVC_756601
             template<typename = void>
 #endif // EARANGES_WORKAROUND_MSVC_756601
-            friend constexpr bool operator==(split_outer_iterator const & x,
-                                             default_sentinel_t)
+            friend constexpr bool operator==(split_outer_iterator const & x, default_sentinel_t)
             {
                 return x.current_() == ranges::end(x.base_());
             }
 #ifdef EARANGES_WORKAROUND_MSVC_756601
             template<typename = void>
 #endif // EARANGES_WORKAROUND_MSVC_756601
-            friend constexpr bool operator==(default_sentinel_t,
-                                             split_outer_iterator const & x)
+            friend constexpr bool operator==(default_sentinel_t, split_outer_iterator const & x)
             {
                 return x.current_() == ranges::end(x.base_());
             }
 #ifdef EARANGES_WORKAROUND_MSVC_756601
             template<typename = void>
 #endif // EARANGES_WORKAROUND_MSVC_756601
-            friend constexpr bool operator!=(split_outer_iterator const & x,
-                                             default_sentinel_t)
+            friend constexpr bool operator!=(split_outer_iterator const & x, default_sentinel_t)
             {
                 return x.current_() != ranges::end(x.base_());
             }
 #ifdef EARANGES_WORKAROUND_MSVC_756601
             template<typename = void>
 #endif // EARANGES_WORKAROUND_MSVC_756601
-            friend constexpr bool operator!=(default_sentinel_t,
-                                             split_outer_iterator const & x)
+            friend constexpr bool operator!=(default_sentinel_t, split_outer_iterator const & x)
             {
                 return x.current_() != ranges::end(x.base_());
             }
@@ -584,29 +552,25 @@ namespace ranges
         }
         CPP_member
         constexpr auto begin() const //
-            -> CPP_ret(outer_iterator<true>)(
-                requires forward_range<V> && forward_range<const V>)
+            -> CPP_ret(outer_iterator<true>)(requires forward_range<V> && forward_range<const V>)
         {
             return {this, ranges::begin(base_)};
         }
         CPP_member
         constexpr auto end() //
-            -> CPP_ret(outer_iterator<simple_view<V>()>)(
-                requires forward_range<V> && common_range<V>)
+            -> CPP_ret(outer_iterator<simple_view<V>()>)(requires forward_range<V> && common_range<V>)
         {
             return outer_iterator<simple_view<V>()>{this, ranges::end(base_)};
         }
         constexpr auto end() const
         {
 #if EARANGES_CXX_IF_CONSTEXPR >= EARANGES_CXX_IF_CONSTEXPR_17
-            if constexpr(forward_range<V> && forward_range<const V> &&
-                         common_range<const V>)
+            if constexpr(forward_range<V> && forward_range<const V> && common_range<const V>)
                 return outer_iterator<true>{this, ranges::end(base_)};
             else
                 return default_sentinel;
 #else
-            return end_(meta::bool_ < forward_range<V> && forward_range<const V> &&
-                        common_range<const V> > {});
+            return end_(meta::bool_ < forward_range<V> && forward_range<const V> && common_range<const V> > {});
 #endif
         }
     };
@@ -617,13 +581,10 @@ namespace ranges
             viewable_range<P> AND
             indirectly_comparable<iterator_t<R>, iterator_t<P>, ranges::equal_to> AND
             (forward_range<R> || detail::tiny_range<P>)) //
-    split_view(R &&, P &&)
-            ->split_view<views::all_t<R>, views::all_t<P>>;
+    split_view(R &&, P &&) -> split_view<views::all_t<R>, views::all_t<P>>;
 
-    template(typename R)(
-        requires input_range<R>)
-        split_view(R &&, range_value_t<R>)
-            ->split_view<views::all_t<R>, single_view<range_value_t<R>>>;
+    template(typename R)(requires input_range<R>)
+        split_view(R &&, range_value_t<R>) -> split_view<views::all_t<R>, single_view<range_value_t<R>>>;
 #endif
 
     namespace views
@@ -677,7 +638,7 @@ namespace ranges
 
 #include <EARanges/detail/epilogue.hpp>
 
-#include "../detail/satisfy_boost_range.hpp"
+#include <EARanges/detail/satisfy_boost_range.hpp>
 EARANGES_SATISFY_BOOST_RANGE(::ranges::split_view)
 
 #endif
