@@ -35,9 +35,7 @@
     - seq_vec/sec_simd
     - par
     - par_vec/par_simd
-  
-  - Check if eastl::algorithms == ranges::algorithms
-  
+    
   - Add ranges::clamp that clamps every element in a range. More like, add a test.
       - https://en.cppreference.com/w/cpp/algorithm/ranges/clamp 
   - Sostituire EARANGES_ASSERT con EASTL_ASSERT o EASTL_ASSERT_MSG o EASTL_CT_ASSERT
@@ -2342,3 +2340,140 @@ namespace eastl
 
 #endif
 ```
+
+# using eastl::algorithms
+- Ranges algorithm use default implementation for the algorithms and not making use of the eastl ones.
+
+- [ ] adjacent_find
+- [ ] adjacent_find`<Compare>`
+- [ ] all_of (C++11)
+- [ ] any_of (C++11)
+- [ ] none_of (C++11)
+- [ ] binary_search
+- [ ] binary_search`<Compare>`
+- [ ] binary_search_i
+- [ ] binary_search_i`<Compare>`
+- [ ] change_heap (Found in heap.h)
+- [ ] change_heap`<Compare>` (Found in heap.h)
+- [ ] clamp
+- [ ] copy
+- [ ] copy_if (C++11)
+- [ ] copy_n (C++11)
+- [ ] copy_backward
+- [ ] count
+- [ ] count_if
+- [ ] equal
+- [ ] equal`<Compare>`
+- [ ] equal_range
+- [ ] equal_range`<Compare>`
+- [ ] fill
+- [ ] fill_n
+- [ ] find
+- [ ] find_end
+- [ ] find_end`<Compare>`
+- [ ] find_first_of
+- [ ] find_first_of`<Compare>`
+- [ ] find_first_not_of
+- [ ] find_first_not_of`<Compare>`
+- [ ] find_last_of
+- [ ] find_last_of`<Compare>`
+- [ ] find_last_not_of
+- [ ] find_last_not_of`<Compare>`
+- [ ] find_if
+- [ ] find_if_not
+- [ ] for_each
+- [ ] generate
+- [ ] generate_n
+- [ ] identical
+- [ ] identical`<Compare>`
+- [ ] iter_swap
+- [ ] lexicographical_compare
+- [ ] lexicographical_compare`<Compare>`
+- [ ] lexicographical_compare_three_way
+- [ ] lower_bound
+- [ ] lower_bound`<Compare>`
+- [ ] make_heap (Found in heap.h)
+- [ ] make_heap`<Compare>` (Found in heap.h)
+- [ ] min
+- [ ] min`<Compare>`
+- [ ] max
+- [ ] max`<Compare>`
+- [ ] min_alt (Exists to work around the problem of conflicts with min/max #defines on some systems)
+- [ ] min_alt`<Compare>`
+- [ ] max_alt
+- [ ] max_alt`<Compare>`
+- [ ] median
+- [ ] median`<Compare>`
+- [ ] merge (Found in sort.h)
+- [ ] merge`<Compare>` (Found in sort.h)
+- [ ] min_element
+- [ ] min_element`<Compare>`
+- [ ] max_element
+- [ ] max_element`<Compare>`
+- [ ] mismatch
+- [ ] mismatch`<Compare>`
+- [ ] move
+- [ ] move_backward
+- [ ] nth_element (Found in sort.h)
+- [ ] nth_element`<Compare>` (Found in sort.h)
+- [ ] partial_sort (Found in sort.h)
+- [ ] partial_sort`<Compare>` (Found in sort.h)
+- [ ] push_heap (Found in heap.h)
+- [ ] push_heap`<Compare>` (Found in heap.h)
+- [ ] pop_heap (Found in heap.h)
+- [ ] pop_heap`<Compare>` (Found in heap.h)
+- [ ] random_shuffle`<Random>`
+- [ ] remove
+- [ ] remove_if
+- [ ] apply_and_remove
+- [ ] apply_and_remove_if
+- [ ] remove_copy
+- [ ] remove_copy_if
+- [ ] remove_heap (Found in heap.h)
+- [ ] remove_heap`<Compare>` (Found in heap.h)
+- [ ] replace
+- [ ] replace_if
+- [ ] replace_copy
+- [ ] replace_copy_if
+- [ ] reverse_copy
+- [ ] reverse
+- [ ] random_shuffle
+- [ ] rotate
+- [ ] rotate_copy
+- [ ] search
+- [ ] search`<Compare>`
+- [ ] search_n
+- [ ] set_difference
+- [ ] set_difference`<Compare>`
+- [ ] set_difference_2
+- [ ] set_difference_2`<Compare>`
+- [ ] set_decomposition
+- [ ] set_decomposition`<Compare>`
+- [ ] set_intersection
+- [ ] set_intersection`<Compare>`
+- [ ] set_symmetric_difference
+- [ ] set_symmetric_difference`<Compare>`
+- [ ] set_union
+- [ ] set_union`<Compare>`
+- [ ] sort (Found in sort.h)
+- [ ] sort`<Compare>` (Found in sort.h)
+- [ ] sort_heap (Found in heap.h)
+- [ ] sort_heap`<Compare>` (Found in heap.h)
+- [ ] stable_sort (Found in sort.h)
+- [ ] stable_sort`<Compare>` (Found in sort.h)
+- [ ] partition (Found in sort.h)
+- [ ] stable_partition (Found in sort.h)
+- [ ] swap
+- [ ] swap_ranges
+- [ ] transform
+- [ ] transform`<Operation>`
+- [ ] unique
+- [ ] unique`<Compare>`
+- [ ] upper_bound
+- [ ] upper_bound`<Compare>`
+- [ ] is_permutation
+- [ ] is_permutation`<Predicate>`
+- [ ] next_permutation
+- [ ] next_permutation`<Compare>`
+- [ ] is_partitioned
+- [ ] partition_point
