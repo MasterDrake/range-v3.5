@@ -31,7 +31,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-views
     /// @{
@@ -182,6 +184,7 @@ namespace ranges
     EARANGES_INLINE_VAR constexpr bool is_pipeable_v<views::view_closure<ViewFn>> = true;
     /// @}
 } // namespace ranges
+}
 
 #include <EARanges/detail/epilogue.hpp>
 

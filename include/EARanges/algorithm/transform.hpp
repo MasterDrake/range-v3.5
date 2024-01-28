@@ -33,109 +33,143 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-//TODO: Rimuovere i deprecati e il namespace
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename O>
-    using unary_transform_result = detail::in_out_result<I, O>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename O>
+        using unary_transform_result = detail::in_out_result<I, O>;
 
-    template<typename I1, typename I2, typename O>
-    using binary_transform_result = detail::in1_in2_out_result<I1, I2, O>;
+        template<typename I1, typename I2, typename O>
+        using binary_transform_result = detail::in1_in2_out_result<I1, I2, O>;
 
-    EARANGES_FUNC_BEGIN(transform)
+        EARANGES_FUNC_BEGIN(transform)
 
-        // Single-range variant
-        /// \brief function template \c transform
-        template(typename I, typename S, typename O, typename F, typename P = identity)(
-            requires input_iterator<I> AND sentinel_for<S, I> AND
-            weakly_incrementable<O> AND copy_constructible<F> AND
-            indirectly_writable<O, indirect_result_t<F &, projected<I, P>>>)
-        constexpr unary_transform_result<I, O> //
-        EARANGES_FUNC(transform)(I first, S last, O out, F fun, P proj = P{}) //
-        {
-            for(; first != last; ++first, ++out)
-                *out = invoke(fun, invoke(proj, *first));
-            return {first, out};
-        }
+            // Single-range variant
+            /// \brief function template \c transform
+            template(
+                typename I, typename S, typename O, typename F, typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    weakly_incrementable<O>
+                        AND copy_constructible<F>
+                            AND indirectly_writable<
+                                O,
+                                indirect_result_t<
+                                    F &,
+                                    projected<I,
+                                              P>>>) constexpr unary_transform_result<I,
+                                                                                     O> //
+            EARANGES_FUNC(transform)(I first, S last, O out, F fun, P proj = P{})       //
+            {
+                for(; first != last; ++first, ++out)
+                    *out = invoke(fun, invoke(proj, *first));
+                return {first, out};
+            }
 
-        /// \overload
-        template(typename Rng, typename O, typename F, typename P = identity)(
-            requires input_range<Rng> AND weakly_incrementable<O> AND
-            copy_constructible<F> AND
-            indirectly_writable<O, indirect_result_t<F &, projected<iterator_t<Rng>, P>>>)
-        constexpr unary_transform_result<borrowed_iterator_t<Rng>, O> //
-        EARANGES_FUNC(transform)(Rng && rng, O out, F fun, P proj = P{}) //
-        {
-            return (*this)(
-                begin(rng), end(rng), eastl::move(out), eastl::move(fun), eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename O, typename F, typename P = identity)(
+                requires input_range<Rng> AND weakly_incrementable<O> AND copy_constructible<
+                    F>
+                    AND indirectly_writable<
+                        O,
+                        indirect_result_t<
+                            F &,
+                            projected<
+                                iterator_t<Rng>,
+                                P>>>) constexpr unary_transform_result<borrowed_iterator_t<Rng>,
+                                                                       O>    //
+            EARANGES_FUNC(transform)(Rng && rng, O out, F fun, P proj = P{}) //
+            {
+                return (*this)(begin(rng),
+                               end(rng),
+                               eastl::move(out),
+                               eastl::move(fun),
+                               eastl::move(proj));
+            }
 
-        // Double-range variant, 4-iterator version
-        /// \overload
-        template(typename I0,
-                 typename S0,
-                 typename I1,
-                 typename S1,
-                 typename O,
-                 typename F,
-                 typename P0 = identity,
-                 typename P1 = identity)(
-            requires input_iterator<I0> AND sentinel_for<S0, I0> AND
-                input_iterator<I1> AND sentinel_for<S1, I1> AND
-                weakly_incrementable<O> AND copy_constructible<F> AND
-                indirectly_writable<
-                    O,
-                    indirect_result_t<F &, projected<I0, P0>, projected<I1, P1>>>)
-        constexpr binary_transform_result<I0, I1, O> //
-        EARANGES_FUNC(transform)(I0 begin0,
-                               S0 end0,
-                               I1 begin1,
-                               S1 end1,
-                               O out,
-                               F fun,
-                               P0 proj0 = P0{},
-                               P1 proj1 = P1{}) //
-        {
-            for(; begin0 != end0 && begin1 != end1; ++begin0, ++begin1, ++out)
-                *out = invoke(fun, invoke(proj0, *begin0), invoke(proj1, *begin1));
-            return {begin0, begin1, out};
-        }
+            // Double-range variant, 4-iterator version
+            /// \overload
+            template(typename I0,
+                     typename S0,
+                     typename I1,
+                     typename S1,
+                     typename O,
+                     typename F,
+                     typename P0 = identity,
+                     typename P1 = identity)(
+                requires input_iterator<I0> AND sentinel_for<S0, I0> AND input_iterator<
+                    I1>
+                    AND sentinel_for<S1, I1>
+                        AND weakly_incrementable<O>
+                            AND copy_constructible<F>
+                                AND indirectly_writable<
+                                    O,
+                                    indirect_result_t<
+                                        F &,
+                                        projected<I0, P0>,
+                                        projected<
+                                            I1,
+                                            P1>>>) constexpr binary_transform_result<I0,
+                                                                                     I1,
+                                                                                     O> //
+            EARANGES_FUNC(transform)(I0 begin0,
+                                     S0 end0,
+                                     I1 begin1,
+                                     S1 end1,
+                                     O out,
+                                     F fun,
+                                     P0 proj0 = P0{},
+                                     P1 proj1 = P1{}) //
+            {
+                for(; begin0 != end0 && begin1 != end1; ++begin0, ++begin1, ++out)
+                    *out = invoke(fun, invoke(proj0, *begin0), invoke(proj1, *begin1));
+                return {begin0, begin1, out};
+            }
 
-        /// \overload
-        template(typename Rng0,
-                 typename Rng1,
-                 typename O,
-                 typename F,
-                 typename P0 = identity,
-                 typename P1 = identity)(
-            requires input_range<Rng0> AND input_range<Rng1> AND
-                weakly_incrementable<O> AND copy_constructible<F> AND
-                indirectly_writable<
-                    O,
-                    indirect_result_t<F &,
-                                      projected<iterator_t<Rng0>, P0>,
-                                      projected<iterator_t<Rng1>, P1>>>)
-        constexpr binary_transform_result<borrowed_iterator_t<Rng0>,
-                                          borrowed_iterator_t<Rng1>,
-                                          O> //
-        EARANGES_FUNC(transform)(
-            Rng0 && rng0, Rng1 && rng1, O out, F fun, P0 proj0 = P0{}, P1 proj1 = P1{}) //
-        {
-            return (*this)(begin(rng0),
-                           end(rng0),
-                           begin(rng1),
-                           end(rng1),
-                           eastl::move(out),
-                           eastl::move(fun),
-                           eastl::move(proj0),
-                           eastl::move(proj1));
-        }
+            /// \overload
+            template(typename Rng0,
+                     typename Rng1,
+                     typename O,
+                     typename F,
+                     typename P0 = identity,
+                     typename P1 = identity)(
+                requires input_range<Rng0> AND input_range<Rng1> AND weakly_incrementable<
+                    O>
+                    AND copy_constructible<F>
+                        AND indirectly_writable<
+                            O,
+                            indirect_result_t<
+                                F &,
+                                projected<iterator_t<Rng0>, P0>,
+                                projected<
+                                    iterator_t<Rng1>,
+                                    P1>>>) constexpr binary_transform_result<borrowed_iterator_t<Rng0>,
+                                                                             borrowed_iterator_t<
+                                                                                 Rng1>,
+                                                                             O> //
+            EARANGES_FUNC(transform)(Rng0 && rng0,
+                                     Rng1 && rng1,
+                                     O out,
+                                     F fun,
+                                     P0 proj0 = P0{},
+                                     P1 proj1 = P1{}) //
+            {
+                return (*this)(begin(rng0),
+                               end(rng0),
+                               begin(rng1),
+                               end(rng1),
+                               eastl::move(out),
+                               eastl::move(fun),
+                               eastl::move(proj0),
+                               eastl::move(proj1));
+            }
 
-    EARANGES_FUNC_END(transform)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(transform)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

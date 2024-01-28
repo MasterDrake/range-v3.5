@@ -18,62 +18,64 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        // Accepts initializer_lists as either the first or second parameter, or both,
-        // and forwards on to an implementation.
-        template<typename ImplFn>
-        struct with_braced_init_args : ImplFn
+        /// \cond
+        namespace detail
         {
-        private:
-            constexpr ImplFn const & base() const
+            // Accepts initializer_lists as either the first or second parameter, or both,
+            // and forwards on to an implementation.
+            template<typename ImplFn>
+            struct with_braced_init_args : ImplFn
             {
-                return *this;
-            }
+            private:
+                constexpr ImplFn const & base() const
+                {
+                    return *this;
+                }
 
-        public:
-            using ImplFn::operator();
+            public:
+                using ImplFn::operator();
 
-            template<typename V0, typename... Args>
-            constexpr invoke_result_t<ImplFn const &, std::initializer_list<V0>, Args...>
-            operator()(std::initializer_list<V0> && rng0, Args &&... args) const
-            {
-                return base()(static_cast<std::initializer_list<V0> &&>(rng0), static_cast<Args &&>(args)...);
-            }
-            /// \overload
-            template<typename Rng0, typename V1, typename... Args>
-            constexpr invoke_result_t<ImplFn const &,
-                                      Rng0,
-                                      std::initializer_list<V1>,
-                                      Args...> //
-            operator()(Rng0 && rng0, std::initializer_list<V1> && rng1, Args &&... args)
-                const
-            {
-                return base()( //
-                    static_cast<Rng0 &&>(rng0),
-                    static_cast<std::initializer_list<V1> &&>(rng1),
-                    static_cast<Args &&>(args)...);
-            }
-            /// \overload
-            template<typename V0, typename V1, typename... Args>
-            constexpr invoke_result_t<ImplFn const &,
-                                      std::initializer_list<V0>,
-                                      std::initializer_list<V1>,
-                                      Args...>
-            operator()(std::initializer_list<V0> && rng0, std::initializer_list<V1> && rng1, Args &&... args) const
-            {
-                return base()( //
-                    static_cast<std::initializer_list<V0> &&>(rng0),
-                    static_cast<std::initializer_list<V1> &&>(rng1),
-                    static_cast<Args &&>(args)...);
-            }
-        };
-    } // namespace detail
-    /// \endcond
-} // namespace ranges
+                template<typename V0, typename... Args>
+                constexpr invoke_result_t<ImplFn const &, std::initializer_list<V0>,
+                                          Args...>
+                operator()(std::initializer_list<V0> && rng0, Args &&... args) const
+                {
+                    return base()(static_cast<std::initializer_list<V0> &&>(rng0),
+                                  static_cast<Args &&>(args)...);
+                }
+                /// \overload
+                template<typename Rng0, typename V1, typename... Args>
+                constexpr invoke_result_t<ImplFn const &, Rng0, std::initializer_list<V1>,
+                                          Args...> //
+                operator()(Rng0 && rng0, std::initializer_list<V1> && rng1,
+                           Args &&... args) const
+                {
+                    return base()( //
+                        static_cast<Rng0 &&>(rng0),
+                        static_cast<std::initializer_list<V1> &&>(rng1),
+                        static_cast<Args &&>(args)...);
+                }
+                /// \overload
+                template<typename V0, typename V1, typename... Args>
+                constexpr invoke_result_t<ImplFn const &, std::initializer_list<V0>,
+                                          std::initializer_list<V1>, Args...>
+                operator()(std::initializer_list<V0> && rng0,
+                           std::initializer_list<V1> && rng1, Args &&... args) const
+                {
+                    return base()( //
+                        static_cast<std::initializer_list<V0> &&>(rng0),
+                        static_cast<std::initializer_list<V1> &&>(rng1),
+                        static_cast<Args &&>(args)...);
+                }
+            };
+        } // namespace detail
+        /// \endcond
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

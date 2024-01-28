@@ -32,93 +32,97 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    template<typename G>
-    struct generate_n_view : view_facade<generate_n_view<G>, finite>
+    namespace ranges
     {
-    private:
-        friend range_access;
-        using result_t = invoke_result_t<G &>;
-        semiregular_box_t<G> gen_;
-        detail::non_propagating_cache<result_t> val_;
-        std::size_t n_;
-        struct cursor
+        /// \addtogroup group-views
+        /// @{
+        template<typename G>
+        struct generate_n_view : view_facade<generate_n_view<G>, finite>
         {
         private:
-            generate_n_view * rng_;
+            friend range_access;
+            using result_t = invoke_result_t<G &>;
+            semiregular_box_t<G> gen_;
+            detail::non_propagating_cache<result_t> val_;
+            std::size_t n_;
+            struct cursor
+            {
+            private:
+                generate_n_view * rng_;
+
+            public:
+                cursor() = default;
+                explicit cursor(generate_n_view * rng)
+                  : rng_(rng)
+                {}
+                bool equal(default_sentinel_t) const
+                {
+                    return 0 == rng_->n_;
+                }
+                result_t && read() const
+                {
+                    if(!rng_->val_)
+                        rng_->val_.emplace(rng_->gen_());
+                    return static_cast<result_t &&>(static_cast<result_t &>(*rng_->val_));
+                }
+                void next()
+                {
+                    EARANGES_EXPECT(0 != rng_->n_);
+                    if(rng_->val_)
+                        rng_->val_.reset();
+                    else
+                        static_cast<void>(rng_->gen_());
+                    --rng_->n_;
+                }
+            };
+            cursor begin_cursor()
+            {
+                return cursor{this};
+            }
 
         public:
-            cursor() = default;
-            explicit cursor(generate_n_view * rng)
-              : rng_(rng)
+            generate_n_view() = default;
+            explicit generate_n_view(G g, std::size_t n)
+              : gen_(eastl::move(g))
+              , n_(n)
             {}
-            bool equal(default_sentinel_t) const
+            result_t & cached()
             {
-                return 0 == rng_->n_;
+                return *val_;
             }
-            result_t && read() const
+            std::size_t size() const
             {
-                if(!rng_->val_)
-                    rng_->val_.emplace(rng_->gen_());
-                return static_cast<result_t &&>(static_cast<result_t &>(*rng_->val_));
-            }
-            void next()
-            {
-                EARANGES_EXPECT(0 != rng_->n_);
-                if(rng_->val_)
-                    rng_->val_.reset();
-                else
-                    static_cast<void>(rng_->gen_());
-                --rng_->n_;
-            }
-        };
-        cursor begin_cursor()
-        {
-            return cursor{this};
-        }
-
-    public:
-        generate_n_view() = default;
-        explicit generate_n_view(G g, std::size_t n)
-          : gen_(eastl::move(g))
-          , n_(n)
-        {}
-        result_t & cached()
-        {
-            return *val_;
-        }
-        std::size_t size() const
-        {
-            return n_;
-        }
-    };
-
-    namespace views
-    {
-        struct generate_n_fn
-        {
-            template(typename G)(
-                requires invocable<G &> AND copy_constructible<G> AND
-                    eastl::is_object<detail::decay_t<invoke_result_t<G &>>>::value AND
-                    constructible_from<detail::decay_t<invoke_result_t<G &>>,
-                                       invoke_result_t<G &>> AND
-                    assignable_from<detail::decay_t<invoke_result_t<G &>> &,
-                                    invoke_result_t<G &>>)
-            generate_n_view<G> operator()(G g, std::size_t n) const
-            {
-                return generate_n_view<G>{eastl::move(g), n};
+                return n_;
             }
         };
 
-        /// \relates generate_n_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(generate_n_fn, generate_n)
-    } // namespace views
-    /// @}
-} // namespace ranges
+        namespace views
+        {
+            struct generate_n_fn
+            {
+                template(typename G)(
+                    requires invocable<G &> AND copy_constructible<G> AND
+                        eastl::is_object<detail::decay_t<invoke_result_t<G &>>>::value AND
+                            constructible_from<detail::decay_t<invoke_result_t<G &>>,
+                                               invoke_result_t<G &>>
+                                AND assignable_from<
+                                    detail::decay_t<invoke_result_t<G &>> &,
+                                    invoke_result_t<G &>>) generate_n_view<G>
+                operator()(G g, std::size_t n) const
+                {
+                    return generate_n_view<G>{eastl::move(g), n};
+                }
+            };
+
+            /// \relates generate_n_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(generate_n_fn, generate_n)
+        } // namespace views
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 #include <EARanges/detail/satisfy_boost_range.hpp>

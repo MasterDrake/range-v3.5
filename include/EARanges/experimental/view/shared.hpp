@@ -26,93 +26,111 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    namespace experimental
+    namespace ranges
     {
-        template<typename Rng>
-        struct shared_view : view_interface<shared_view<Rng>, range_cardinality<Rng>::value>
+        /// \addtogroup group-views
+        /// @{
+        namespace experimental
         {
-        private:
-            // shared storage
-            eastl::shared_ptr<Rng> rng_ptr_;
-
-        public:
-            shared_view() = default;
-
-            // construct from a range rvalue
-            explicit shared_view(Rng rng) : rng_ptr_{eastl::make_shared<Rng>(eastl::move(rng))}
-            {}
-
-            // use the stored range's begin and end
-            iterator_t<Rng> begin() const
+            template<typename Rng>
+            struct shared_view
+              : view_interface<shared_view<Rng>, range_cardinality<Rng>::value>
             {
-                return ranges::begin(*rng_ptr_);
-            }
-            sentinel_t<Rng> end() const
-            {
-                return ranges::end(*rng_ptr_);
-            }
+            private:
+                // shared storage
+                eastl::shared_ptr<Rng> rng_ptr_;
 
-            CPP_auto_member
-            auto CPP_fun(size)()(const requires sized_range<Rng>)
-            {
-                return ranges::size(*rng_ptr_);
-            }
-        };
+            public:
+                shared_view() = default;
 
-        template<typename SharedFn>
-        struct shared_closure;
+                // construct from a range rvalue
+                explicit shared_view(Rng rng)
+                  : rng_ptr_{eastl::make_shared<Rng>(eastl::move(rng))}
+                {}
 
-        struct EARANGES_STRUCT_WITH_ADL_BARRIER(shared_closure_base)
-        {
-            // Piping requires viewable_ranges.
-            template(typename Rng, typename SharedFn)(requires range<Rng> AND (!viewable_range<Rng>) AND constructible_from<detail::decay_t<Rng>, Rng>)
-            friend constexpr auto operator|(Rng && rng, shared_closure<SharedFn> vw)
-            {
-                return static_cast<SharedFn &&>(vw)(static_cast<Rng &&>(rng));
-            }
-
-            template<typename SharedFn, typename Pipeable>
-            friend constexpr auto operator|(shared_closure<SharedFn> sh, Pipeable pipe) -> CPP_broken_friend_ret(shared_closure<composed<Pipeable, SharedFn>>)(requires (is_pipeable_v<Pipeable>))
-            {
-                return shared_closure<composed<Pipeable, SharedFn>>{compose(static_cast<Pipeable &&>(pipe), static_cast<SharedFn &&>(sh))};
-            }
-        };
-
-        template<typename SharedFn>
-        struct shared_closure
-          : shared_closure_base
-          , SharedFn
-        {
-            shared_closure() = default;
-            constexpr explicit shared_closure(SharedFn fn) : SharedFn(static_cast<SharedFn &&>(fn))
-            {}
-        };
-
-        namespace views
-        {
-            struct shared_fn
-            {
-                template(typename Rng)(requires range<Rng> AND (!viewable_range<Rng>)AND constructible_from<detail::decay_t<Rng>, Rng>)
-                shared_view<detail::decay_t<Rng>> operator()(Rng && rng) const
+                // use the stored range's begin and end
+                iterator_t<Rng> begin() const
                 {
-                    return shared_view<detail::decay_t<Rng>>{static_cast<Rng &&>(rng)};
+                    return ranges::begin(*rng_ptr_);
+                }
+                sentinel_t<Rng> end() const
+                {
+                    return ranges::end(*rng_ptr_);
+                }
+
+                CPP_auto_member auto CPP_fun(size)()(const requires sized_range<Rng>)
+                {
+                    return ranges::size(*rng_ptr_);
                 }
             };
 
-            /// \relates shared_fn
-            /// \ingroup group-views
-            EARANGES_INLINE_VARIABLE(shared_closure<shared_fn>, shared)
-        } // namespace views
-    }     // namespace experimental
+            template<typename SharedFn>
+            struct shared_closure;
 
-    template<typename SharedFn>
-    EARANGES_INLINE_VAR constexpr bool is_pipeable_v<experimental::shared_closure<SharedFn>> = true;
-    /// @}
-} // namespace ranges
+            struct EARANGES_STRUCT_WITH_ADL_BARRIER(shared_closure_base)
+            {
+                // Piping requires viewable_ranges.
+                template(typename Rng, typename SharedFn)(
+                    requires range<Rng> AND(!viewable_range<Rng>)
+                        AND constructible_from<detail::decay_t<Rng>,
+                                               Rng>) friend constexpr auto
+                operator|(Rng && rng, shared_closure<SharedFn> vw)
+                {
+                    return static_cast<SharedFn &&>(vw)(static_cast<Rng &&>(rng));
+                }
+
+                template<typename SharedFn, typename Pipeable>
+                friend constexpr auto operator|(shared_closure<SharedFn> sh,
+                                                Pipeable pipe)
+                    -> CPP_broken_friend_ret(
+                        shared_closure<composed<Pipeable, SharedFn>>)(
+                        requires(is_pipeable_v<Pipeable>))
+                {
+                    return shared_closure<composed<Pipeable, SharedFn>>{compose(
+                        static_cast<Pipeable &&>(pipe), static_cast<SharedFn &&>(sh))};
+                }
+            };
+
+            template<typename SharedFn>
+            struct shared_closure
+              : shared_closure_base
+              , SharedFn
+            {
+                shared_closure() = default;
+                constexpr explicit shared_closure(SharedFn fn)
+                  : SharedFn(static_cast<SharedFn &&>(fn))
+                {}
+            };
+
+            namespace views
+            {
+                struct shared_fn
+                {
+                    template(typename Rng)(
+                        requires range<Rng> AND(!viewable_range<Rng>)
+                            AND constructible_from<detail::decay_t<Rng>, Rng>)
+                        shared_view<detail::decay_t<Rng>>
+                        operator()(Rng && rng) const
+                    {
+                        return shared_view<detail::decay_t<Rng>>{
+                            static_cast<Rng &&>(rng)};
+                    }
+                };
+
+                /// \relates shared_fn
+                /// \ingroup group-views
+                EARANGES_INLINE_VARIABLE(shared_closure<shared_fn>, shared)
+            } // namespace views
+        }     // namespace experimental
+
+        template<typename SharedFn>
+        EARANGES_INLINE_VAR constexpr bool
+            is_pipeable_v<experimental::shared_closure<SharedFn>> = true;
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

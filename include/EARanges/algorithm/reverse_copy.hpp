@@ -29,37 +29,46 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename O>
-    using reverse_copy_result = detail::in_out_result<I, O>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename O>
+        using reverse_copy_result = detail::in_out_result<I, O>;
 
-    EARANGES_FUNC_BEGIN(reverse_copy)
+        EARANGES_FUNC_BEGIN(reverse_copy)
 
-        /// \brief function template \c reverse_copy
-        template(typename I, typename S, typename O)(requires bidirectional_iterator<I> AND sentinel_for<S, I> AND weakly_incrementable<O> AND indirectly_copyable<I, O>)
-        constexpr reverse_copy_result<I, O> EARANGES_FUNC(reverse_copy)(I first, S end_, O out) //
-        {
-            I last = ranges::next(first, end_), res = last;
-            for(; first != last; ++out)
-                *out = *--last;
-            return {res, out};
-        }
+            /// \brief function template \c reverse_copy
+            template(typename I, typename S, typename O)(
+                requires bidirectional_iterator<I> AND sentinel_for<S, I> AND
+                    weakly_incrementable<O>
+                        AND indirectly_copyable<I, O>) constexpr reverse_copy_result<I, O>
+            EARANGES_FUNC(reverse_copy)(I first, S end_, O out) //
+            {
+                I last = ranges::next(first, end_), res = last;
+                for(; first != last; ++out)
+                    *out = *--last;
+                return {res, out};
+            }
 
-        /// \overload
-        template(typename Rng, typename O)(requires bidirectional_range<Rng> AND weakly_incrementable<O> AND indirectly_copyable<iterator_t<Rng>, O>)
-        constexpr reverse_copy_result<borrowed_iterator_t<Rng>, O> //
-        EARANGES_FUNC(reverse_copy)(Rng && rng, O out)            //
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(out));
-        }
+            /// \overload
+            template(typename Rng, typename O)(
+                requires bidirectional_range<Rng> AND weakly_incrementable<O> AND
+                    indirectly_copyable<
+                        iterator_t<Rng>,
+                        O>) constexpr reverse_copy_result<borrowed_iterator_t<Rng>, O> //
+            EARANGES_FUNC(reverse_copy)(Rng && rng, O out)                             //
+            {
+                return (*this)(begin(rng), end(rng), eastl::move(out));
+            }
 
-    EARANGES_FUNC_END(reverse_copy)
+        EARANGES_FUNC_END(reverse_copy)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

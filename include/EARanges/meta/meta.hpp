@@ -117,7 +117,9 @@
 /// \ingroup math
 
 /// Tiny metaprogramming library
-namespace meta
+namespace eastl
+{
+    namespace meta
 {
     namespace detail
     {
@@ -3679,6 +3681,7 @@ namespace meta
         }
     } // namespace literals
 } // namespace meta
+} //namespace eastl
 
 /// \cond
 // Non-portable forward declarations of standard containers

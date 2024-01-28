@@ -30,7 +30,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     template<typename>
     struct optional;
@@ -991,6 +993,7 @@ namespace ranges
     } // namespace detail
     /// \endcond
 } // namespace ranges
+}
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -31,155 +31,154 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-
-    template<typename I, typename O>
-    using unique_copy_result = detail::in_out_result<I, O>;
-
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        template<typename I, typename S, typename O, typename C, typename P>
-        constexpr unique_copy_result<I, O> unique_copy_impl(I first, 
-                                                            S last, 
-                                                            O out, 
-                                                            C pred, 
-                                                            P proj,
-                                                            eastl::input_iterator_tag,
-                                                            eastl::false_type)
+        /// \addtogroup group-algorithms
+        /// @{
+
+        template<typename I, typename O>
+        using unique_copy_result = detail::in_out_result<I, O>;
+
+        /// \cond
+        namespace detail
         {
-            if(first != last)
+            template<typename I, typename S, typename O, typename C, typename P>
+            constexpr unique_copy_result<I, O> unique_copy_impl(I first, S last, O out,
+                                                                C pred, P proj,
+                                                                eastl::input_iterator_tag,
+                                                                eastl::false_type)
             {
-                // Must save a copy into a local because we will need this value
-                // even after we advance the input iterator.
-                iter_value_t<I> value =
-                    *first; // This is guaranteed by indirectly_copyable
-                *out = value;
-                ++out;
-                while(++first != last)
+                if(first != last)
                 {
-                    auto && x = *first;
-                    if(!invoke(pred, invoke(proj, value), invoke(proj, x)))
+                    // Must save a copy into a local because we will need this value
+                    // even after we advance the input iterator.
+                    iter_value_t<I> value =
+                        *first; // This is guaranteed by indirectly_copyable
+                    *out = value;
+                    ++out;
+                    while(++first != last)
                     {
-                        value = (decltype(x) &&)x;
-                        *out = value;
-                        ++out;
+                        auto && x = *first;
+                        if(!invoke(pred, invoke(proj, value), invoke(proj, x)))
+                        {
+                            value = (decltype(x) &&)x;
+                            *out = value;
+                            ++out;
+                        }
                     }
                 }
+                return {first, out};
             }
-            return {first, out};
-        }
 
-        template<typename I, typename S, typename O, typename C, typename P>
-        constexpr unique_copy_result<I, O> unique_copy_impl(I first, 
-                                                            S last, 
-                                                            O out, 
-                                                            C pred, 
-                                                            P proj,
-                                                            eastl::forward_iterator_tag,
-                                                            eastl::false_type)
-        {
-            if(first != last)
+            template<typename I, typename S, typename O, typename C, typename P>
+            constexpr unique_copy_result<I, O> unique_copy_impl(
+                I first, S last, O out, C pred, P proj, eastl::forward_iterator_tag,
+                eastl::false_type)
             {
-                I tmp = first;
-                *out = *tmp;
-                ++out;
-                while(++first != last)
+                if(first != last)
                 {
-                    auto && x = *first;
-                    if(!invoke(pred, invoke(proj, *tmp), invoke(proj, x)))
+                    I tmp = first;
+                    *out = *tmp;
+                    ++out;
+                    while(++first != last)
                     {
-                        *out = (decltype(x) &&)x;
-                        ++out;
-                        tmp = first;
+                        auto && x = *first;
+                        if(!invoke(pred, invoke(proj, *tmp), invoke(proj, x)))
+                        {
+                            *out = (decltype(x) &&)x;
+                            ++out;
+                            tmp = first;
+                        }
                     }
                 }
+                return {first, out};
             }
-            return {first, out};
-        }
 
-        template<typename I, typename S, typename O, typename C, typename P>
-        constexpr unique_copy_result<I, O> unique_copy_impl(I first, 
-                                                            S last, 
-                                                            O out, 
-                                                            C pred, 
-                                                            P proj,
-                                                            eastl::input_iterator_tag,
-                                                            eastl::true_type)
-        {
-            if(first != last)
+            template<typename I, typename S, typename O, typename C, typename P>
+            constexpr unique_copy_result<I, O> unique_copy_impl(I first, S last, O out,
+                                                                C pred, P proj,
+                                                                eastl::input_iterator_tag,
+                                                                eastl::true_type)
             {
-                *out = *first;
-                while(++first != last)
+                if(first != last)
                 {
-                    auto && x = *first;
-                    if(!invoke(pred, invoke(proj, *out), invoke(proj, x)))
-                        *++out = (decltype(x) &&)x;
+                    *out = *first;
+                    while(++first != last)
+                    {
+                        auto && x = *first;
+                        if(!invoke(pred, invoke(proj, *out), invoke(proj, x)))
+                            *++out = (decltype(x) &&)x;
+                    }
+                    ++out;
                 }
-                ++out;
+                return {first, out};
             }
-            return {first, out};
-        }
-    } // namespace detail
-    /// \endcond
+        } // namespace detail
+        /// \endcond
 
-    EARANGES_FUNC_BEGIN(unique_copy)
+        EARANGES_FUNC_BEGIN(unique_copy)
 
-        /// \brief template function unique_copy
-        ///
-        /// range-based version of the `unique_copy` eastl algorithm
-        ///
-        /// \pre `Rng` is a model of the `input_range` concept
-        /// \pre `O` is a model of the `weakly_incrementable` concept
-        /// \pre `C` is a model of the `relation` concept
-        template(typename I,
-                 typename S,
-                 typename O,
-                 typename C = equal_to,
-                 typename P = identity)(
-            requires input_iterator<I> AND sentinel_for<S, I> AND
-                indirect_relation<C, projected<I, P>> AND weakly_incrementable<O> AND
-                indirectly_copyable<I, O> AND
-                (forward_iterator<I> || forward_iterator<O> ||
-                 indirectly_copyable_storable<I, O>)) //
-        constexpr unique_copy_result<I, O> EARANGES_FUNC(unique_copy)(
-            I first, S last, O out, C pred = C{}, P proj = P{}) //
-        {
-            return detail::unique_copy_impl(eastl::move(first),
-                                            eastl::move(last),
-                                            eastl::move(out),
-                                            eastl::move(pred),
-                                            eastl::move(proj),
-                                            iterator_tag_of<I>(),
-                                            meta::bool_<forward_iterator<O>>{});
-        }
+            /// \brief template function unique_copy
+            ///
+            /// range-based version of the `unique_copy` eastl algorithm
+            ///
+            /// \pre `Rng` is a model of the `input_range` concept
+            /// \pre `O` is a model of the `weakly_incrementable` concept
+            /// \pre `C` is a model of the `relation` concept
+            template(typename I,
+                     typename S,
+                     typename O,
+                     typename C = equal_to,
+                     typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    indirect_relation<C, projected<I, P>>
+                        AND weakly_incrementable<O>
+                            AND indirectly_copyable<I, O>
+                                AND(forward_iterator<I> || forward_iterator<O> ||
+                                    indirectly_copyable_storable<I, O>)) //
+                constexpr unique_copy_result<I, O>
+                EARANGES_FUNC(unique_copy)(
+                    I first, S last, O out, C pred = C{}, P proj = P{}) //
+            {
+                return detail::unique_copy_impl(eastl::move(first),
+                                                eastl::move(last),
+                                                eastl::move(out),
+                                                eastl::move(pred),
+                                                eastl::move(proj),
+                                                iterator_tag_of<I>(),
+                                                meta::bool_<forward_iterator<O>>{});
+            }
 
-        /// \overload
-        template(typename Rng, typename O, typename C = equal_to, typename P = identity)(
-            requires input_range<Rng> AND
-                indirect_relation<C, projected<iterator_t<Rng>, P>> AND
-                weakly_incrementable<O> AND indirectly_copyable<iterator_t<Rng>, O> AND
-                (forward_iterator<iterator_t<Rng>> || forward_iterator<O> ||
-                 indirectly_copyable_storable<iterator_t<Rng>, O>)) //
-        constexpr unique_copy_result<borrowed_iterator_t<Rng>, O> //
-        EARANGES_FUNC(unique_copy)(Rng && rng, O out, C pred = C{}, P proj = P{}) //
-        {
-            return detail::unique_copy_impl(begin(rng),
-                                            end(rng),
-                                            eastl::move(out),
-                                            eastl::move(pred),
-                                            eastl::move(proj),
-                                            iterator_tag_of<iterator_t<Rng>>(),
-                                            meta::bool_<forward_iterator<O>>{});
-        }
+            /// \overload
+            template(
+                typename Rng, typename O, typename C = equal_to, typename P = identity)(
+                requires input_range<Rng> AND
+                    indirect_relation<C, projected<iterator_t<Rng>, P>>
+                        AND weakly_incrementable<O>
+                            AND indirectly_copyable<iterator_t<Rng>, O>
+                                AND(forward_iterator<iterator_t<Rng>> ||
+                                    forward_iterator<O> ||
+                                    indirectly_copyable_storable<iterator_t<Rng>, O>)) //
+                constexpr unique_copy_result<borrowed_iterator_t<Rng>, O>              //
+                EARANGES_FUNC(unique_copy)(
+                    Rng && rng, O out, C pred = C{}, P proj = P{}) //
+            {
+                return detail::unique_copy_impl(begin(rng),
+                                                end(rng),
+                                                eastl::move(out),
+                                                eastl::move(pred),
+                                                eastl::move(proj),
+                                                iterator_tag_of<iterator_t<Rng>>(),
+                                                meta::bool_<forward_iterator<O>>{});
+            }
 
-    EARANGES_FUNC_END(unique_copy)
+        EARANGES_FUNC_END(unique_copy)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

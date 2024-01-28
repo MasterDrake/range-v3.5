@@ -27,71 +27,78 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(lexicographical_compare)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(lexicographical_compare)
 
-        /// \brief function template \c lexicographical_compare
-        template(typename I0,
-                 typename S0,
-                 typename I1,
-                 typename S1,
-                 typename C = less,
-                 typename P0 = identity,
-                 typename P1 = identity)(
-            requires input_iterator<I0> AND sentinel_for<S0, I0> AND
-                input_iterator<I1> AND sentinel_for<S1, I1> AND
-                indirect_strict_weak_order<C, projected<I0, P0>, projected<I1, P1>>)
-        constexpr bool EARANGES_FUNC(lexicographical_compare)(I0 begin0,
-                                                            S0 end0,
-                                                            I1 begin1,
-                                                            S1 end1,
-                                                            C pred = C{},
-                                                            P0 proj0 = P0{},
-                                                            P1 proj1 = P1{})
-        {
-            for(; begin1 != end1; ++begin0, ++begin1)
+            /// \brief function template \c lexicographical_compare
+            template(typename I0,
+                     typename S0,
+                     typename I1,
+                     typename S1,
+                     typename C = less,
+                     typename P0 = identity,
+                     typename P1 = identity)(
+                requires input_iterator<I0> AND sentinel_for<S0, I0> AND input_iterator<
+                    I1>
+                    AND sentinel_for<S1, I1>
+                        AND indirect_strict_weak_order<C,
+                                                       projected<I0, P0>,
+                                                       projected<I1, P1>>) constexpr bool
+            EARANGES_FUNC(lexicographical_compare)(I0 begin0,
+                                                   S0 end0,
+                                                   I1 begin1,
+                                                   S1 end1,
+                                                   C pred = C{},
+                                                   P0 proj0 = P0{},
+                                                   P1 proj1 = P1{})
             {
-                if(begin0 == end0 ||
-                   invoke(pred, invoke(proj0, *begin0), invoke(proj1, *begin1)))
-                    return true;
-                if(invoke(pred, invoke(proj1, *begin1), invoke(proj0, *begin0)))
-                    return false;
+                for(; begin1 != end1; ++begin0, ++begin1)
+                {
+                    if(begin0 == end0 ||
+                       invoke(pred, invoke(proj0, *begin0), invoke(proj1, *begin1)))
+                        return true;
+                    if(invoke(pred, invoke(proj1, *begin1), invoke(proj0, *begin0)))
+                        return false;
+                }
+                return false;
             }
-            return false;
-        }
 
-        /// \overload
-        template(typename Rng0,
-                 typename Rng1,
-                 typename C = less,
-                 typename P0 = identity,
-                 typename P1 = identity)(
-            requires input_range<Rng0> AND input_range<Rng1> AND
-                indirect_strict_weak_order<C,
-                                           projected<iterator_t<Rng0>, P0>,
-                                           projected<iterator_t<Rng1>, P1>>)
-        constexpr bool EARANGES_FUNC(lexicographical_compare)(Rng0 && rng0, 
-                                                            Rng1 && rng1, 
-                                                            C pred = C{}, 
-                                                            P0 proj0 = P0{}, 
-                                                            P1 proj1 = P1{}) //
-        {
-            return (*this)(begin(rng0),
-                           end(rng0),
-                           begin(rng1),
-                           end(rng1),
-                           eastl::move(pred),
-                           eastl::move(proj0),
-                           eastl::move(proj1));
-        }
+            /// \overload
+            template(typename Rng0,
+                     typename Rng1,
+                     typename C = less,
+                     typename P0 = identity,
+                     typename P1 = identity)(
+                requires input_range<Rng0> AND input_range<Rng1> AND
+                    indirect_strict_weak_order<
+                        C,
+                        projected<iterator_t<Rng0>, P0>,
+                        projected<iterator_t<Rng1>, P1>>) constexpr bool
+            EARANGES_FUNC(lexicographical_compare)(Rng0 && rng0,
+                                                   Rng1 && rng1,
+                                                   C pred = C{},
+                                                   P0 proj0 = P0{},
+                                                   P1 proj1 = P1{}) //
+            {
+                return (*this)(begin(rng0),
+                               end(rng0),
+                               begin(rng1),
+                               end(rng1),
+                               eastl::move(pred),
+                               eastl::move(proj0),
+                               eastl::move(proj1));
+            }
 
-    EARANGES_FUNC_END(lexicographical_compare)
+        EARANGES_FUNC_END(lexicographical_compare)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

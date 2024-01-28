@@ -30,97 +30,102 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    template<typename Rng>
-    struct move_view : view_adaptor<move_view<Rng>, Rng>
+    namespace ranges
     {
-    private:
-        friend range_access;
-        template<bool Const>
-        struct adaptor : adaptor_base
+        /// \addtogroup group-views
+        /// @{
+        template<typename Rng>
+        struct move_view : view_adaptor<move_view<Rng>, Rng>
         {
-            adaptor() = default;
-            template(bool Other)(requires Const AND CPP_NOT(Other)) //
-            constexpr adaptor(adaptor<Other>)
-            {}
-            using CRng = meta::const_if_c<Const, Rng>;
-            using value_type = range_value_t<Rng>;
-            range_rvalue_reference_t<CRng> read(iterator_t<CRng> const & it) const
+        private:
+            friend range_access;
+            template<bool Const>
+            struct adaptor : adaptor_base
             {
-                return ranges::iter_move(it);
+                adaptor() = default;
+                template(bool Other)(requires Const AND CPP_NOT(Other)) //
+                    constexpr adaptor(adaptor<Other>)
+                {}
+                using CRng = meta::const_if_c<Const, Rng>;
+                using value_type = range_value_t<Rng>;
+                range_rvalue_reference_t<CRng> read(iterator_t<CRng> const & it) const
+                {
+                    return ranges::iter_move(it);
+                }
+                range_rvalue_reference_t<CRng> iter_move(
+                    iterator_t<CRng> const & it) const
+                {
+                    return ranges::iter_move(it);
+                }
+            };
+            adaptor<simple_view<Rng>()> begin_adaptor()
+            {
+                return {};
             }
-            range_rvalue_reference_t<CRng> iter_move(iterator_t<CRng> const & it) const
+            adaptor<simple_view<Rng>()> end_adaptor()
             {
-                return ranges::iter_move(it);
+                return {};
+            }
+            CPP_member
+            auto begin_adaptor() const //
+                -> CPP_ret(adaptor<true>)(requires input_range<Rng const>)
+            {
+                return {};
+            }
+            CPP_member
+            auto end_adaptor() const //
+                -> CPP_ret(adaptor<true>)(requires input_range<Rng const>)
+            {
+                return {};
+            }
+
+        public:
+            move_view() = default;
+            explicit move_view(Rng rng)
+              : move_view::view_adaptor{eastl::move(rng)}
+            {}
+            CPP_auto_member auto CPP_fun(size)()(const //
+                                                 requires sized_range<Rng const>)
+            {
+                return ranges::size(this->base());
+            }
+            CPP_auto_member auto CPP_fun(size)()(requires sized_range<Rng>)
+            {
+                return ranges::size(this->base());
             }
         };
-        adaptor<simple_view<Rng>()> begin_adaptor()
-        {
-            return {};
-        }
-        adaptor<simple_view<Rng>()> end_adaptor()
-        {
-            return {};
-        }
-        CPP_member
-        auto begin_adaptor() const //
-            -> CPP_ret(adaptor<true>)(requires input_range<Rng const>)
-        {
-            return {};
-        }
-        CPP_member
-        auto end_adaptor() const //
-            -> CPP_ret(adaptor<true>)(requires input_range<Rng const>)
-        {
-            return {};
-        }
 
-    public:
-        move_view() = default;
-        explicit move_view(Rng rng) : move_view::view_adaptor{eastl::move(rng)}
-        {}
-        CPP_auto_member
-        auto CPP_fun(size)()(const //
-            requires sized_range<Rng const>)
-        {
-            return ranges::size(this->base());
-        }
-        CPP_auto_member
-        auto CPP_fun(size)()(requires sized_range<Rng>)
-        {
-            return ranges::size(this->base());
-        }
-    };
-
-    template<typename Rng>
-    EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<move_view<Rng>> = enable_borrowed_range<Rng>;
+        template<typename Rng>
+        EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<move_view<Rng>> =
+            enable_borrowed_range<Rng>;
 
 #if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
-    template<typename Rng>
-    move_view(Rng &&) //
-        -> move_view<views::all_t<Rng>>;
+        template<typename Rng>
+        move_view(Rng &&) //
+            ->move_view<views::all_t<Rng>>;
 #endif
 
-    namespace views
-    {
-        struct move_fn
+        namespace views
         {
-            template(typename Rng)(requires viewable_range<Rng> AND input_range<Rng>)
-            move_view<all_t<Rng>> operator()(Rng && rng) const
+            struct move_fn
             {
-                return move_view<all_t<Rng>>{all(static_cast<Rng &&>(rng))};
-            }
-        };
+                template(typename Rng)(requires viewable_range<Rng> AND
+                                           input_range<Rng>) move_view<all_t<Rng>>
+                operator()(Rng && rng) const
+                {
+                    return move_view<all_t<Rng>>{all(static_cast<Rng &&>(rng))};
+                }
+            };
 
-        /// \relates move_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(view_closure<move_fn>, move)
-    } // namespace views
-    /// @}
-} // namespace ranges
+            /// \relates move_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(view_closure<move_fn>, move)
+        } // namespace views
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 #include <EARanges/detail/satisfy_boost_range.hpp>

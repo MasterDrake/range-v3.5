@@ -36,7 +36,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-iterator-concepts
     /// @{
@@ -856,6 +858,7 @@ namespace ranges
     /// 
     /// @}
 } // namespace ranges
+}
 
 #ifdef _GLIBCXX_DEBUG
 // HACKHACK: workaround underconstrained operator- for libstdc++ debug iterator wrapper
@@ -880,14 +883,15 @@ namespace __gnu_debug
 // and libstdc++ (https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71771)
 // underconstrained operator- for reverse_iterator by disabling sized_sentinel_for
 // when the base iterators do not model sized_sentinel_for.
-
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     template<typename S, typename I>
     /*inline*/ constexpr bool
         disable_sized_sentinel<eastl::reverse_iterator<S>, eastl::reverse_iterator<I>> = !static_cast<bool>(sized_sentinel_for<I, S>);
 } // namespace ranges
-
+}
 #endif // defined(__GLIBCXX__) || (defined(_LIBCPP_VERSION) && _LIBCPP_VERSION <= 3900)
 
 #include <EARanges/detail/epilogue.hpp>

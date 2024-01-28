@@ -19,38 +19,45 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-iterator
-    /// @{
-    struct unreachable_sentinel_t
+    namespace ranges
     {
-        template<typename I>
-        friend constexpr auto operator==(I const &, unreachable_sentinel_t) noexcept -> CPP_broken_friend_ret(bool)(requires weakly_incrementable<I>)
+        /// \addtogroup group-iterator
+        /// @{
+        struct unreachable_sentinel_t
         {
-            return false;
-        }
-        template<typename I>
-        friend constexpr auto operator==(unreachable_sentinel_t, I const &) noexcept -> CPP_broken_friend_ret(bool)(requires weakly_incrementable<I>)
-        {
-            return false;
-        }
-        template<typename I>
-        friend constexpr auto operator!=(I const &, unreachable_sentinel_t) noexcept -> CPP_broken_friend_ret(bool)(requires weakly_incrementable<I>)
-        {
-            return true;
-        }
-        template<typename I>
-        friend constexpr auto operator!=(unreachable_sentinel_t, I const &) noexcept -> CPP_broken_friend_ret(bool)(requires weakly_incrementable<I>)
-        {
-            return true;
-        }
-    };
+            template<typename I>
+            friend constexpr auto operator==(I const &, unreachable_sentinel_t) noexcept
+                -> CPP_broken_friend_ret(bool)(requires weakly_incrementable<I>)
+            {
+                return false;
+            }
+            template<typename I>
+            friend constexpr auto operator==(unreachable_sentinel_t, I const &) noexcept
+                -> CPP_broken_friend_ret(bool)(requires weakly_incrementable<I>)
+            {
+                return false;
+            }
+            template<typename I>
+            friend constexpr auto operator!=(I const &, unreachable_sentinel_t) noexcept
+                -> CPP_broken_friend_ret(bool)(requires weakly_incrementable<I>)
+            {
+                return true;
+            }
+            template<typename I>
+            friend constexpr auto operator!=(unreachable_sentinel_t, I const &) noexcept
+                -> CPP_broken_friend_ret(bool)(requires weakly_incrementable<I>)
+            {
+                return true;
+            }
+        };
 
-    EARANGES_INLINE_VARIABLE(unreachable_sentinel_t, unreachable)
+        EARANGES_INLINE_VARIABLE(unreachable_sentinel_t, unreachable)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

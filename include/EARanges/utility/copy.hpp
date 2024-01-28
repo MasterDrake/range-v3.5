@@ -22,35 +22,41 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-utility
-    /// @{
-    namespace aux
+    namespace ranges
     {
-        struct copy_fn : copy_tag
+        /// \addtogroup group-utility
+        /// @{
+        namespace aux
         {
-            template(typename T)(requires constructible_from<detail::decay_t<T>, T>)
-            constexpr auto operator()(T && t) const -> detail::decay_t<T>
+            struct copy_fn : copy_tag
             {
-                return static_cast<T &&>(t);
-            }
+                template(typename T)(
+                    requires constructible_from<detail::decay_t<T>, T>) constexpr auto
+                operator()(T && t) const -> detail::decay_t<T>
+                {
+                    return static_cast<T &&>(t);
+                }
+
+                /// \ingroup group-utility
+                /// \sa `copy_fn`
+                template<typename T>
+                friend constexpr auto operator|(T && t, copy_fn)
+                    -> CPP_broken_friend_ret(detail::decay_t<T>)(
+                        requires constructible_from<detail::decay_t<T>, T>)
+                {
+                    return static_cast<T &&>(t);
+                }
+            };
 
             /// \ingroup group-utility
             /// \sa `copy_fn`
-            template<typename T>
-            friend constexpr auto operator|(T && t, copy_fn) -> CPP_broken_friend_ret(detail::decay_t<T>)(requires constructible_from<detail::decay_t<T>, T>)
-            {
-                return static_cast<T &&>(t);
-            }
-        };
-
-        /// \ingroup group-utility
-        /// \sa `copy_fn`
-        EARANGES_INLINE_VARIABLE(copy_fn, copy)
-    } // namespace aux
-    /// @}
-} // namespace ranges
+            EARANGES_INLINE_VARIABLE(copy_fn, copy)
+        } // namespace aux
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

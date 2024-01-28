@@ -33,55 +33,63 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct split_when_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template<typename Rng>
-            using split_value_t =
-                meta::if_c<(bool)ranges::container<Rng>, //
-                           uncvref_t<Rng>, eastl::vector<range_value_t<Rng>>>;
-
-            template<typename Fun>
-            constexpr auto operator()(Fun fun) const
+            struct split_when_fn
             {
-                return make_action_closure(bind_back(split_when_fn{}, static_cast<Fun &&>(fun)));
-            }
+                template<typename Rng>
+                using split_value_t =
+                    meta::if_c<(bool)ranges::container<Rng>, //
+                               uncvref_t<Rng>, eastl::vector<range_value_t<Rng>>>;
 
-            // BUGBUG something is not right with the actions. It should be possible
-            // to move a container into a split and have elements moved into the result.
-            template(typename Rng, typename Fun)(
-                requires forward_range<Rng> AND
-                        invocable<Fun &, iterator_t<Rng>, sentinel_t<Rng>> AND
-                            invocable<Fun &, iterator_t<Rng>, iterator_t<Rng>> AND
-                                copy_constructible<Fun> AND
-                                    convertible_to<invoke_result_t<Fun &, iterator_t<Rng>,
+                template<typename Fun>
+                constexpr auto operator()(Fun fun) const
+                {
+                    return make_action_closure(
+                        bind_back(split_when_fn{}, static_cast<Fun &&>(fun)));
+                }
+
+                // BUGBUG something is not right with the actions. It should be possible
+                // to move a container into a split and have elements moved into the
+                // result.
+                template(typename Rng, typename Fun)(
+                    requires forward_range<Rng> AND invocable<Fun &, iterator_t<Rng>,
+                                                              sentinel_t<Rng>>
+                        AND invocable<Fun &, iterator_t<Rng>, iterator_t<Rng>>
+                            AND copy_constructible<Fun>
+                                AND convertible_to<invoke_result_t<Fun &, iterator_t<Rng>,
                                                                    sentinel_t<Rng>>,
                                                    eastl::pair<bool, iterator_t<Rng>>>)
-            eastl::vector<split_value_t<Rng>> operator()(Rng && rng, Fun fun) const
-            {
-                return views::split_when(rng, eastl::move(fun)) | to<eastl::vector<split_value_t<Rng>>>();
-            }
+                    eastl::vector<split_value_t<Rng>>
+                    operator()(Rng && rng, Fun fun) const
+                {
+                    return views::split_when(rng, eastl::move(fun)) |
+                           to<eastl::vector<split_value_t<Rng>>>();
+                }
 
-            template(typename Rng, typename Fun)(
-                requires forward_range<Rng> AND
-                        predicate<Fun const &, range_reference_t<Rng>> AND
-                            copy_constructible<Fun>) eastl::vector<split_value_t<Rng>>
-            operator()(Rng && rng, Fun fun) const
-            {
-                return views::split_when(rng, eastl::move(fun)) | to<eastl::vector<split_value_t<Rng>>>();
-            }
-        };
+                template(typename Rng, typename Fun)(
+                    requires forward_range<Rng> AND
+                        predicate<Fun const &, range_reference_t<Rng>>
+                            AND copy_constructible<Fun>) eastl::vector<split_value_t<Rng>>
+                operator()(Rng && rng, Fun fun) const
+                {
+                    return views::split_when(rng, eastl::move(fun)) |
+                           to<eastl::vector<split_value_t<Rng>>>();
+                }
+            };
 
-        /// \relates actions::split_when_fn
-        EARANGES_INLINE_VARIABLE(split_when_fn, split_when)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            /// \relates actions::split_when_fn
+            EARANGES_INLINE_VARIABLE(split_when_fn, split_when)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

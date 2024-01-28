@@ -29,74 +29,80 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    namespace views
+    namespace ranges
     {
-        struct all_fn
+        /// \addtogroup group-views
+        /// @{
+        namespace views
         {
-        private:
-            /// If it's a view already, pass it though.
-            template<typename T>
-            static constexpr auto from_range_(T && t, eastl::true_type, detail::ignore_t, detail::ignore_t)
+            struct all_fn
             {
-                return static_cast<T &&>(t);
-            }
+            private:
+                /// If it's a view already, pass it though.
+                template<typename T>
+                static constexpr auto from_range_(T && t, eastl::true_type,
+                                                  detail::ignore_t, detail::ignore_t)
+                {
+                    return static_cast<T &&>(t);
+                }
 
-            /// If it is container-like, turn it into a view, being careful
-            /// to preserve the Sized-ness of the range.
-            template<typename T>
-            static constexpr auto from_range_(T && t, eastl::false_type, eastl::true_type, detail::ignore_t)
-            {
-                return ranges::views::ref(t);
-            }
+                /// If it is container-like, turn it into a view, being careful
+                /// to preserve the Sized-ness of the range.
+                template<typename T>
+                static constexpr auto from_range_(T && t, eastl::false_type,
+                                                  eastl::true_type, detail::ignore_t)
+                {
+                    return ranges::views::ref(t);
+                }
 
-            /// Not a view and not an lvalue? If it's a borrowed_range, then
-            /// return a subrange holding the range's begin/end.
-            template<typename T>
-            static constexpr auto from_range_(T && t, eastl::false_type, eastl::false_type, eastl::true_type)
-            {
-                return make_subrange(static_cast<T &&>(t));
-            }
+                /// Not a view and not an lvalue? If it's a borrowed_range, then
+                /// return a subrange holding the range's begin/end.
+                template<typename T>
+                static constexpr auto from_range_(T && t, eastl::false_type,
+                                                  eastl::false_type, eastl::true_type)
+                {
+                    return make_subrange(static_cast<T &&>(t));
+                }
 
-        public:
-            template(typename T)(requires range<T &> AND viewable_range<T>)
-            constexpr auto operator()(T && t) const
-            {
-                return all_fn::from_range_(static_cast<T &&>(t),
-                                           meta::bool_<view_<uncvref_t<T>>>{},
-                                           eastl::is_lvalue_reference<T>{},
-                                           meta::bool_<borrowed_range<T>>{});
-            }
+            public:
+                template(typename T)(
+                    requires range<T &> AND viewable_range<T>) constexpr auto
+                operator()(T && t) const
+                {
+                    return all_fn::from_range_(static_cast<T &&>(t),
+                                               meta::bool_<view_<uncvref_t<T>>>{},
+                                               eastl::is_lvalue_reference<T>{},
+                                               meta::bool_<borrowed_range<T>>{});
+                }
+            };
 
-        };
+            /// \relates all_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(view_closure<all_fn>, all)
 
-        /// \relates all_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(view_closure<all_fn>, all)
+            template<typename Rng>
+            using all_t = decltype(all(eastl::declval<Rng>()));
+        } // namespace views
 
         template<typename Rng>
-        using all_t = decltype(all(eastl::declval<Rng>()));
-    } // namespace views
+        struct identity_adaptor : Rng
+        {
+            CPP_assert(view_<Rng>);
 
-    template<typename Rng>
-    struct identity_adaptor : Rng
-    {
-        CPP_assert(view_<Rng>);
+            identity_adaptor() = default;
+            constexpr explicit identity_adaptor(Rng const & rng)
+              : Rng(rng)
+            {}
+            constexpr explicit identity_adaptor(Rng && rng)
+              : Rng(detail::move(rng))
+            {}
+        };
 
-        identity_adaptor() = default;
-        constexpr explicit identity_adaptor(Rng const & rng)
-          : Rng(rng)
-        {}
-        constexpr explicit identity_adaptor(Rng && rng)
-          : Rng(detail::move(rng))
-        {}
-    };
-
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

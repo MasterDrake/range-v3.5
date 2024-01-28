@@ -23,7 +23,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     // clang-format off
     /// \concept indirectly_binary_left_foldable_impl
@@ -109,6 +111,7 @@ namespace ranges
     EARANGES_FUNC_END(fold_left_first)
     /// @}
 } // namespace ranges
+}
 
 #include <EARanges/detail/epilogue.hpp>
 

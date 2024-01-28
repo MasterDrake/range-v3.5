@@ -25,7 +25,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     // bind_back like std::bind_front has no special treatment for nested
     // bind-expressions or reference_wrappers; there is no need to wrap
@@ -186,7 +188,7 @@ namespace ranges
     EARANGES_INLINE_VARIABLE(bind_back_fn, bind_back)
 
 } // namespace ranges
-
+}
 #include <EARanges/detail/epilogue.hpp>
 
 #endif // EARANGES_DETAIL_BIND_BACK_HPP

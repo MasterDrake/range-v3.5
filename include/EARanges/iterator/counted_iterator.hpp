@@ -26,7 +26,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-iterator
     /// @{
@@ -414,8 +416,6 @@ namespace ranges
     } // namespace _counted_iterator_
 } // namespace ranges
 
-namespace eastl
-{
     template<typename I>
     struct iterator_traits<::ranges::counted_iterator<I>> : ::ranges::_counted_iterator_::iterator_traits_<I>
     {};

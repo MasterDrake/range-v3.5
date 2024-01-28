@@ -25,51 +25,54 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    namespace views
+    namespace ranges
     {
-        /// Half-open range of indices: [from, to).
-        struct indices_fn : iota_view<std::size_t>
+        namespace views
         {
-            indices_fn() = default;
-
-            template(typename Val)(requires integral<Val>)
-            iota_view<Val, Val> operator()(Val to) const
+            /// Half-open range of indices: [from, to).
+            struct indices_fn : iota_view<std::size_t>
             {
-                return {Val(), to};
-            }
-            template(typename Val)(requires integral<Val>)
-            iota_view<Val, Val> operator()(Val from, Val to) const
-            {
-                return {from, to};
-            }
-        };
+                indices_fn() = default;
 
-        /// Inclusive range of indices: [from, to].
-        struct closed_indices_fn
-        {
-            template(typename Val)(requires integral<Val>)
-            closed_iota_view<Val> operator()(Val to) const
-            {
-                return {Val(), to};
-            }
-            template(typename Val)(requires integral<Val>)
-            closed_iota_view<Val> operator()(Val from, Val to) const
-            {
-                return {from, to};
-            }
-        };
+                template(typename Val)(requires integral<Val>) iota_view<Val, Val>
+                operator()(Val to) const
+                {
+                    return {Val(), to};
+                }
+                template(typename Val)(requires integral<Val>) iota_view<Val, Val>
+                operator()(Val from, Val to) const
+                {
+                    return {from, to};
+                }
+            };
 
-        /// \relates indices_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(indices_fn, indices)
+            /// Inclusive range of indices: [from, to].
+            struct closed_indices_fn
+            {
+                template(typename Val)(requires integral<Val>) closed_iota_view<Val>
+                operator()(Val to) const
+                {
+                    return {Val(), to};
+                }
+                template(typename Val)(requires integral<Val>) closed_iota_view<Val>
+                operator()(Val from, Val to) const
+                {
+                    return {from, to};
+                }
+            };
 
-        /// \relates closed_indices_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(closed_indices_fn, closed_indices)
-    } // namespace views
-} // namespace ranges
+            /// \relates indices_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(indices_fn, indices)
+
+            /// \relates closed_indices_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(closed_indices_fn, closed_indices)
+        } // namespace views
+    }     // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

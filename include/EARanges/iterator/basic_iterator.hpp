@@ -37,7 +37,9 @@
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MULTIPLE_ASSIGNMENT_OPERATORS
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-iterator Iterator
     /// @{
@@ -901,25 +903,19 @@ namespace ranges
 namespace concepts
 {
     // common_reference specializations for basic_proxy_reference
-    template<typename Cur, typename U, template<typename> class TQual,
-             template<typename> class UQual>
-    struct basic_common_reference<::ranges::detail::basic_proxy_reference_<Cur, true>, U,
-                                  TQual, UQual>
+    template<typename Cur, typename U, template<typename> class TQual, template<typename> class UQual>
+    struct basic_common_reference<::ranges::detail::basic_proxy_reference_<Cur, true>, U,  TQual, UQual>
       : basic_common_reference<::ranges::detail::cursor_reference_t<Cur>, U, TQual, UQual>
     {};
     template<typename T, typename Cur, template<typename> class TQual,
              template<typename> class UQual>
-    struct basic_common_reference<T, ::ranges::detail::basic_proxy_reference_<Cur, true>,
-                                  TQual, UQual>
+    struct basic_common_reference<T, ::ranges::detail::basic_proxy_reference_<Cur, true>, TQual, UQual>
       : basic_common_reference<T, ::ranges::detail::cursor_reference_t<Cur>, TQual, UQual>
     {};
     template<typename Cur1, typename Cur2, template<typename> class TQual,
              template<typename> class UQual>
-    struct basic_common_reference<::ranges::detail::basic_proxy_reference_<Cur1, true>,
-                                  ::ranges::detail::basic_proxy_reference_<Cur2, true>,
-                                  TQual, UQual>
-      : basic_common_reference<::ranges::detail::cursor_reference_t<Cur1>,
-                               ::ranges::detail::cursor_reference_t<Cur2>, TQual, UQual>
+    struct basic_common_reference<::ranges::detail::basic_proxy_reference_<Cur1, true>, ::ranges::detail::basic_proxy_reference_<Cur2, true>, TQual, UQual>
+      : basic_common_reference<::ranges::detail::cursor_reference_t<Cur1>, ::ranges::detail::cursor_reference_t<Cur2>, TQual, UQual>
     {};
 
     // common_type specializations for basic_proxy_reference
@@ -1018,13 +1014,12 @@ namespace ranges
     /// \endcond
 } // namespace ranges
 
-namespace eastl
-{
     template<typename Cur>
     struct iterator_traits<::ranges::basic_iterator<Cur>> : ::ranges::detail::std_iterator_traits<Cur>
     {};
 } // namespace eastl
 /// \endcond
+
 
 EARANGES_DIAGNOSTIC_POP
 

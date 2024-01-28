@@ -29,39 +29,53 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(replace)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(replace)
 
-        /// \brief function template \c replace
-        template(typename I, typename S, typename T1, typename T2, typename P = identity)(
-            requires input_iterator<I> AND sentinel_for<S, I> AND
-                indirectly_writable<I, T2 const &> AND
-                indirect_relation<equal_to, projected<I, P>, T1 const *>)
-        constexpr I EARANGES_FUNC(replace)(I first, S last, T1 const & old_value, T2 const & new_value, P proj = {}) //
-        {
-            for(; first != last; ++first)
-                if(invoke(proj, *first) == old_value)
-                    *first = new_value;
-            return first;
-        }
+            /// \brief function template \c replace
+            template(
+                typename I, typename S, typename T1, typename T2, typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    indirectly_writable<I, T2 const &>
+                        AND indirect_relation<equal_to,
+                                              projected<I, P>,
+                                              T1 const *>) constexpr I
+            EARANGES_FUNC(replace)(I first,
+                                   S last,
+                                   T1 const & old_value,
+                                   T2 const & new_value,
+                                   P proj = {}) //
+            {
+                for(; first != last; ++first)
+                    if(invoke(proj, *first) == old_value)
+                        *first = new_value;
+                return first;
+            }
 
-        /// \overload
-        template(typename Rng, typename T1, typename T2, typename P = identity)(
-            requires input_range<Rng> AND
-                indirectly_writable<iterator_t<Rng>, T2 const &> AND
-                indirect_relation<equal_to, projected<iterator_t<Rng>, P>, T1 const *>)
-        constexpr borrowed_iterator_t<Rng> EARANGES_FUNC(replace)(Rng && rng, T1 const & old_value, T2 const & new_value, P proj = {}) //
-        {
-            return (*this)(begin(rng), end(rng), old_value, new_value, eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename T1, typename T2, typename P = identity)(
+                requires input_range<Rng> AND indirectly_writable<iterator_t<Rng>,
+                                                                  T2 const &>
+                    AND indirect_relation<equal_to,
+                                          projected<iterator_t<Rng>, P>,
+                                          T1 const *>) constexpr borrowed_iterator_t<Rng>
+            EARANGES_FUNC(replace)(
+                Rng && rng, T1 const & old_value, T2 const & new_value, P proj = {}) //
+            {
+                return (*this)(
+                    begin(rng), end(rng), old_value, new_value, eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(replace)
+        EARANGES_FUNC_END(replace)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -31,42 +31,50 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(remove)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(remove)
 
-        /// \brief function template \c remove
-        template(typename I, typename S, typename T, typename P = identity)(requires permutable<I> AND sentinel_for<S, I> AND indirect_relation<equal_to, projected<I, P>, T const *>)
-        constexpr I EARANGES_FUNC(remove)(I first, S last, T const & val, P proj = P{})
-        {
-            first = find(eastl::move(first), last, val, ranges::ref(proj));
-            if(first != last)
+            /// \brief function template \c remove
+            template(typename I, typename S, typename T, typename P = identity)(
+                requires permutable<I> AND sentinel_for<S, I> AND
+                    indirect_relation<equal_to, projected<I, P>, T const *>) constexpr I
+            EARANGES_FUNC(remove)(I first, S last, T const & val, P proj = P{})
             {
-                for(I i = next(first); i != last; ++i)
+                first = find(eastl::move(first), last, val, ranges::ref(proj));
+                if(first != last)
                 {
-                    if(!(invoke(proj, *i) == val))
+                    for(I i = next(first); i != last; ++i)
                     {
-                        *first = iter_move(i);
-                        ++first;
+                        if(!(invoke(proj, *i) == val))
+                        {
+                            *first = iter_move(i);
+                            ++first;
+                        }
                     }
                 }
+                return first;
             }
-            return first;
-        }
 
-        /// \overload
-        template(typename Rng, typename T, typename P = identity)(requires forward_range<Rng> AND permutable<iterator_t<Rng>> AND indirect_relation<equal_to, projected<iterator_t<Rng>, P>, T const *>)
-        constexpr borrowed_iterator_t<Rng> //
-        EARANGES_FUNC(remove)(Rng && rng, T const & val, P proj = P{})
-        {
-            return (*this)(begin(rng), end(rng), val, eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename T, typename P = identity)(
+                requires forward_range<Rng> AND permutable<iterator_t<Rng>> AND
+                    indirect_relation<equal_to,
+                                      projected<iterator_t<Rng>, P>,
+                                      T const *>) constexpr borrowed_iterator_t<Rng> //
+            EARANGES_FUNC(remove)(Rng && rng, T const & val, P proj = P{})
+            {
+                return (*this)(begin(rng), end(rng), val, eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(remove)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(remove)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

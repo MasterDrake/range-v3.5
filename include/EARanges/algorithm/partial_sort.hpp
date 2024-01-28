@@ -31,46 +31,56 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(partial_sort)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(partial_sort)
 
-        /// \brief function template \c partial_sort
-        template(typename I, typename S, typename C = less, typename P = identity)(requires sortable<I, C, P> AND random_access_iterator<I> AND sentinel_for<S, I>)
-        constexpr I EARANGES_FUNC(partial_sort)(I first, I middle, S last, C pred = C{}, P proj = P{}) //
-        {
-            make_heap(first, middle, ranges::ref(pred), ranges::ref(proj));
-            auto const len = middle - first;
-            I i = middle;
-            for(; i != last; ++i)
+            /// \brief function template \c partial_sort
+            template(typename I, typename S, typename C = less, typename P = identity)(
+                requires sortable<I, C, P> AND random_access_iterator<I> AND
+                    sentinel_for<S, I>) constexpr I
+            EARANGES_FUNC(partial_sort)(
+                I first, I middle, S last, C pred = C{}, P proj = P{}) //
             {
-                if(invoke(pred, invoke(proj, *i), invoke(proj, *first)))
+                make_heap(first, middle, ranges::ref(pred), ranges::ref(proj));
+                auto const len = middle - first;
+                I i = middle;
+                for(; i != last; ++i)
                 {
-                    iter_swap(i, first);
-                    detail::sift_down_n(first, len, first, ranges::ref(pred), ranges::ref(proj));
+                    if(invoke(pred, invoke(proj, *i), invoke(proj, *first)))
+                    {
+                        iter_swap(i, first);
+                        detail::sift_down_n(
+                            first, len, first, ranges::ref(pred), ranges::ref(proj));
+                    }
                 }
+                sort_heap(first, middle, ranges::ref(pred), ranges::ref(proj));
+                return i;
             }
-            sort_heap(first, middle, ranges::ref(pred), ranges::ref(proj));
-            return i;
-        }
 
-        /// \overload
-        template(typename Rng, typename C = less, typename P = identity)(requires sortable<iterator_t<Rng>, C, P> AND random_access_range<Rng>)
-        constexpr borrowed_iterator_t<Rng> EARANGES_FUNC(partial_sort)(Rng && rng, iterator_t<Rng> middle, C pred = C{}, P proj = P{}) //
-        {
-            return (*this)(begin(rng),
-                           eastl::move(middle),
-                           end(rng),
-                           eastl::move(pred),
-                           eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename C = less, typename P = identity)(
+                requires sortable<iterator_t<Rng>, C, P> AND
+                    random_access_range<Rng>) constexpr borrowed_iterator_t<Rng>
+            EARANGES_FUNC(partial_sort)(
+                Rng && rng, iterator_t<Rng> middle, C pred = C{}, P proj = P{}) //
+            {
+                return (*this)(begin(rng),
+                               eastl::move(middle),
+                               end(rng),
+                               eastl::move(pred),
+                               eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(partial_sort)
+        EARANGES_FUNC_END(partial_sort)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

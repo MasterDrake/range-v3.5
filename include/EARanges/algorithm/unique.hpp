@@ -32,47 +32,55 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(unique)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(unique)
 
-        /// \brief template function \c unique
-        ///
-        /// range-based version of the \c unique eastl algorithm
-        ///
-        /// \pre `Rng` is a model of the `forward_range` concept
-        /// \pre `I` is a model of the `forward_iterator` concept
-        /// \pre `S` is a model of the `sentinel_for` concept
-        /// \pre `C` is a model of the `relation` concept
-        ///
-        template(typename I, typename S, typename C = equal_to, typename P = identity)(requires sortable<I, C, P> AND sentinel_for<S, I>)
-        constexpr I EARANGES_FUNC(unique)(I first, S last, C pred = C{}, P proj = P{})
-        {
-            first = adjacent_find(eastl::move(first), last, ranges::ref(pred), ranges::ref(proj));
-
-            if(first != last)
+            /// \brief template function \c unique
+            ///
+            /// range-based version of the \c unique eastl algorithm
+            ///
+            /// \pre `Rng` is a model of the `forward_range` concept
+            /// \pre `I` is a model of the `forward_iterator` concept
+            /// \pre `S` is a model of the `sentinel_for` concept
+            /// \pre `C` is a model of the `relation` concept
+            ///
+            template(
+                typename I, typename S, typename C = equal_to, typename P = identity)(
+                requires sortable<I, C, P> AND sentinel_for<S, I>) constexpr I
+            EARANGES_FUNC(unique)(I first, S last, C pred = C{}, P proj = P{})
             {
-                for(I i = next(first); ++i != last;)
-                    if(!invoke(pred, invoke(proj, *first), invoke(proj, *i)))
-                        *++first = iter_move(i);
-                ++first;
+                first = adjacent_find(
+                    eastl::move(first), last, ranges::ref(pred), ranges::ref(proj));
+
+                if(first != last)
+                {
+                    for(I i = next(first); ++i != last;)
+                        if(!invoke(pred, invoke(proj, *first), invoke(proj, *i)))
+                            *++first = iter_move(i);
+                    ++first;
+                }
+                return first;
             }
-            return first;
-        }
 
-        /// \overload
-        template(typename Rng, typename C = equal_to, typename P = identity)(requires sortable<iterator_t<Rng>, C, P> AND range<Rng>)
-        constexpr borrowed_iterator_t<Rng> //
-        EARANGES_FUNC(unique)(Rng && rng, C pred = C{}, P proj = P{}) //
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename C = equal_to, typename P = identity)(
+                requires sortable<iterator_t<Rng>, C, P> AND
+                    range<Rng>) constexpr borrowed_iterator_t<Rng>        //
+            EARANGES_FUNC(unique)(Rng && rng, C pred = C{}, P proj = P{}) //
+            {
+                return (*this)(
+                    begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(unique)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(unique)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -24,26 +24,29 @@
       
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    template<typename T>
-    using is_swappable = concepts::is_swappable<T>;
+    namespace ranges
+    {
+        template<typename T>
+        using is_swappable = concepts::is_swappable<T>;
 
-    template<typename T>
-    using is_nothrow_swappable = concepts::is_nothrow_swappable<T>;
+        template<typename T>
+        using is_nothrow_swappable = concepts::is_nothrow_swappable<T>;
 
-    template<typename T, typename U>
-    using is_swappable_with = concepts::is_swappable_with<T, U>;
+        template<typename T, typename U>
+        using is_swappable_with = concepts::is_swappable_with<T, U>;
 
-    template<typename T, typename U>
-    using is_nothrow_swappable_with = concepts::is_nothrow_swappable_with<T, U>;
+        template<typename T, typename U>
+        using is_nothrow_swappable_with = concepts::is_nothrow_swappable_with<T, U>;
 
-    using concepts::exchange;
+        using concepts::exchange;
 
-    /// \ingroup group-utility
-    /// \relates concepts::adl_swap_detail::swap_fn
-    EARANGES_DEFINE_CPO(uncvref_t<decltype(concepts::swap)>, swap)
-} // namespace ranges
+        /// \ingroup group-utility
+        /// \relates concepts::adl_swap_detail::swap_fn
+        EARANGES_DEFINE_CPO(uncvref_t<decltype(concepts::swap)>, swap)
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

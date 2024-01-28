@@ -29,8 +29,9 @@
 
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_UNSIGNED_MATH
-
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \cond
     namespace detail
@@ -325,8 +326,6 @@ namespace ranges
 /// \cond
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-namespace eastl
-{
     template<>
     struct numeric_limits<::ranges::detail::diffmax_t>
     {

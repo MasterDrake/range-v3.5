@@ -26,33 +26,43 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct transform_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename F, typename P = identity)(requires (!range<F>))
-            constexpr auto operator()(F fun, P proj = P{}) const
+            struct transform_fn
             {
-                return make_action_closure(bind_back(transform_fn{}, eastl::move(fun), eastl::move(proj)));
-            }
+                template(typename F,
+                         typename P = identity)(requires(!range<F>)) constexpr auto
+                operator()(F fun, P proj = P{}) const
+                {
+                    return make_action_closure(
+                        bind_back(transform_fn{}, eastl::move(fun), eastl::move(proj)));
+                }
 
-            template(typename Rng, typename F, typename P = identity)(requires input_range<Rng> AND copy_constructible<F> AND indirectly_writable<iterator_t<Rng>, indirect_result_t<F &, projected<iterator_t<Rng>, P>>>)
-            Rng operator()(Rng && rng, F fun, P proj = P{}) const
-            {
-                ranges::transform(rng, begin(rng), eastl::move(fun), eastl::move(proj));
-                return static_cast<Rng &&>(rng);
-            }
-        };
+                template(typename Rng, typename F, typename P = identity)(
+                    requires input_range<Rng> AND copy_constructible<F> AND
+                        indirectly_writable<
+                            iterator_t<Rng>,
+                            indirect_result_t<F &, projected<iterator_t<Rng>, P>>>) Rng
+                operator()(Rng && rng, F fun, P proj = P{}) const
+                {
+                    ranges::transform(
+                        rng, begin(rng), eastl::move(fun), eastl::move(proj));
+                    return static_cast<Rng &&>(rng);
+                }
+            };
 
-        /// \relates actions::transform_fn
-        EARANGES_INLINE_VARIABLE(transform_fn, transform)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            /// \relates actions::transform_fn
+            EARANGES_INLINE_VARIABLE(transform_fn, transform)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

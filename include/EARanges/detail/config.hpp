@@ -33,18 +33,21 @@
 #include <cstdio>
 #include <cstdlib>
 
-namespace ranges
+namespace eastl
 {
-    namespace detail
+    namespace ranges
     {
-        template<typename = void>
-        [[noreturn]] void assert_failure(char const * file, int line, char const * msg)
+        namespace detail
         {
-            std::fprintf(stderr, "%s(%d): %s\n", file, line, msg);
-            std::abort();
-        }
-    } // namespace detail
-} // namespace ranges
+            template<typename = void>
+            [[noreturn]] void assert_failure(char const * file, int line,
+                                             char const * msg)
+            {
+                std::fprintf(stderr, "%s(%d): %s\n", file, line, msg);
+                std::abort();
+            }
+        } // namespace detail
+    }     // namespace ranges
 
 #endif
 
@@ -55,7 +58,7 @@ namespace ranges
 #if !defined(NDEBUG) && ((defined(__GNUC__) && !defined(__clang__) && \
                           (__GNUC__ < 5 || defined(__MINGW32__))) ||  \
                          defined(_MSVC_STL_VERSION))
-#define EARANGES_ASSERT(...)                                    \
+#define EARANGES_ASSERT(...)                                  \
     static_cast<void>((__VA_ARGS__)                           \
                           ? void(0)                           \
                           : ::ranges::detail::assert_failure( \
@@ -70,7 +73,8 @@ namespace ranges
 
 #ifndef EARANGES_ASSUME
 #if defined(__clang__) || defined(__GNUC__)
-#define EARANGES_ASSUME(COND) static_cast<void>((COND) ? void(0) : __builtin_unreachable())
+#define EARANGES_ASSUME(COND) \
+    static_cast<void>((COND) ? void(0) : __builtin_unreachable())
 #elif defined(_MSC_VER)
 #define EARANGES_ASSUME(COND) static_cast<void>(__assume(COND))
 #else
@@ -88,7 +92,7 @@ namespace ranges
 
 #ifndef EARANGES_ENSURE_MSG
 #if defined(NDEBUG)
-#define EARANGES_ENSURE_MSG(COND, MSG)                             \
+#define EARANGES_ENSURE_MSG(COND, MSG)                           \
     static_cast<void>((COND) ? void(0)                           \
                              : ::ranges::detail::assert_failure( \
                                    __FILE__, __LINE__, "ensure failed: " MSG))
@@ -102,20 +106,20 @@ namespace ranges
 #endif
 
 #define EARANGES_DECLTYPE_AUTO_RETURN(...) \
-    ->decltype(__VA_ARGS__)              \
-    {                                    \
-        return (__VA_ARGS__);            \
-    }                                    \
+    ->decltype(__VA_ARGS__)                \
+    {                                      \
+        return (__VA_ARGS__);              \
+    }                                      \
     /**/
 
-#define EARANGES_DECLTYPE_AUTO_RETURN_NOEXCEPT(...)                                 \
+#define EARANGES_DECLTYPE_AUTO_RETURN_NOEXCEPT(...)                               \
     noexcept(noexcept(decltype(__VA_ARGS__)(__VA_ARGS__)))->decltype(__VA_ARGS__) \
     {                                                                             \
         return (__VA_ARGS__);                                                     \
     }                                                                             \
     /**/
 
-#define EARANGES_AUTO_RETURN_NOEXCEPT(...)                   \
+#define EARANGES_AUTO_RETURN_NOEXCEPT(...)                 \
     noexcept(noexcept(decltype(__VA_ARGS__)(__VA_ARGS__))) \
     {                                                      \
         return (__VA_ARGS__);                              \
@@ -229,70 +233,76 @@ namespace ranges
 
 #if _MSC_VER < 1927
 #define EARANGES_WORKAROUND_MSVC_895622 // Error when phase 1 name binding finds only
-                                      // deleted function
+                                        // deleted function
 
 #if _MSC_VER < 1925
-#define EARANGES_WORKAROUND_MSVC_779708 // ADL for operands of function type [No workaround]
+#define EARANGES_WORKAROUND_MSVC_779708 // ADL for operands of function type [No
+                                        // workaround]
 
 #if _MSC_VER < 1923
-#define EARANGES_WORKAROUND_MSVC_573728 // rvalues of array types bind to lvalue references
-                                      // [no workaround]
+#define EARANGES_WORKAROUND_MSVC_573728 // rvalues of array types bind to lvalue
+                                        // references
+                                        // [no workaround]
 #define EARANGES_WORKAROUND_MSVC_934330 // Deduction guide not correctly preferred to copy
-                                      // deduction candidate [No workaround]
+                                        // deduction candidate [No workaround]
 
 #if _MSC_VER < 1922
 #define EARANGES_WORKAROUND_MSVC_756601 // constexpr friend non-template erroneously
-                                      // rejected with C3615
-#define EARANGES_WORKAROUND_MSVC_793042 // T[0] sometimes accepted as a valid type in SFINAE
-                                      // context
+                                        // rejected with C3615
+#define EARANGES_WORKAROUND_MSVC_793042 // T[0] sometimes accepted as a valid type in
+                                        // SFINAE
+                                        // context
 
 #if _MSC_VER < 1921
 #define EARANGES_WORKAROUND_MSVC_785522 // SFINAE failure for error in immediate context
 #define EARANGES_WORKAROUND_MSVC_786376 // Assertion casting anonymous union member in
-                                      // trailing-return-type
+                                        // trailing-return-type
 #define EARANGES_WORKAROUND_MSVC_787074 // Over-eager substitution of dependent type in
-                                      // non-instantiated nested class template
+                                        // non-instantiated nested class template
 #define EARANGES_WORKAROUND_MSVC_790554 // Assert for return type that uses dependent
-                                      // default non-type template argument
-#endif                                // _MSC_VER < 1921
-#endif                                // _MSC_VER < 1922
-#endif                                // _MSC_VER < 1923
-#endif                                // _MSC_VER < 1925
-#endif                                // _MSC_VER < 1926
+                                        // default non-type template argument
+#endif                                  // _MSC_VER < 1921
+#endif                                  // _MSC_VER < 1922
+#endif                                  // _MSC_VER < 1923
+#endif                                  // _MSC_VER < 1925
+#endif                                  // _MSC_VER < 1926
 
 #if 1 // Fixed in 1920, but more bugs hiding behind workaround
 #define EARANGES_WORKAROUND_MSVC_701385 // Yet another alias expansion error
 #endif
 
 #define EARANGES_WORKAROUND_MSVC_249830 // constexpr and arguments that aren't subject to
-                                      // lvalue-to-rvalue conversion
+                                        // lvalue-to-rvalue conversion
 #define EARANGES_WORKAROUND_MSVC_677925 // Bogus C2676 "binary '++': '_Ty' does not define
-                                      // this operator"
+                                        // this operator"
 #define EARANGES_WORKAROUND_MSVC_683388 // decltype(*i) is incorrectly an rvalue reference
-                                      // for pointer-to-array i
+                                        // for pointer-to-array i
 #define EARANGES_WORKAROUND_MSVC_688606 // SFINAE failing to account for access control
-                                      // during specialization matching
+                                        // during specialization matching
 #define EARANGES_WORKAROUND_MSVC_786312 // Yet another mixed-pack-expansion failure
-#define EARANGES_WORKAROUND_MSVC_792338 // Failure to match specialization enabled via call
-                                      // to constexpr function
-#define EARANGES_WORKAROUND_MSVC_835948 // Silent bad codegen destroying sized_generator [No
-                                      // workaround]
+#define EARANGES_WORKAROUND_MSVC_792338 // Failure to match specialization enabled via
+                                        // call
+                                        // to constexpr function
+#define EARANGES_WORKAROUND_MSVC_835948 // Silent bad codegen destroying sized_generator
+                                        // [No
+                                        // workaround]
 #define EARANGES_WORKAROUND_MSVC_934264 // Explicitly-defaulted inherited default
-                                      // constructor is not correctly implicitly constexpr
+      // constructor is not correctly implicitly constexpr
 #if _MSVC_LANG <= 201703L
 #define EARANGES_WORKAROUND_MSVC_OLD_LAMBDA
 #endif
 
 #if _MSVC_LANG <= 201703L
 #define EARANGES_WORKAROUND_MSVC_UNUSABLE_SPAN // MSVC provides a <span> header that is
-                                             // guarded against use with std <= 17
+                                               // guarded against use with std <= 17
 #endif
 
 #elif defined(__GNUC__) || defined(__clang__)
 #define EARANGES_PRAGMA(X) _Pragma(#X)
 #define EARANGES_DIAGNOSTIC_PUSH EARANGES_PRAGMA(GCC diagnostic push)
 #define EARANGES_DIAGNOSTIC_POP EARANGES_PRAGMA(GCC diagnostic pop)
-#define EARANGES_DIAGNOSTIC_IGNORE_PRAGMAS EARANGES_PRAGMA(GCC diagnostic ignored "-Wpragmas")
+#define EARANGES_DIAGNOSTIC_IGNORE_PRAGMAS \
+    EARANGES_PRAGMA(GCC diagnostic ignored "-Wpragmas")
 #define EARANGES_DIAGNOSTIC_IGNORE(X)                                  \
     EARANGES_DIAGNOSTIC_IGNORE_PRAGMAS                                 \
     EARANGES_PRAGMA(GCC diagnostic ignored "-Wunknown-pragmas")        \
@@ -308,7 +318,8 @@ namespace ranges
 #define EARANGES_DIAGNOSTIC_IGNORE_SIGN_CONVERSION \
     EARANGES_DIAGNOSTIC_IGNORE("-Wsign-conversion")
 #define EARANGES_DIAGNOSTIC_IGNORE_FLOAT_EQUAL EARANGES_DIAGNOSTIC_IGNORE("-Wfloat-equal")
-#define EARANGES_DIAGNOSTIC_IGNORE_FLOAT_CONVERSION EARANGES_DIAGNOSTIC_IGNORE("-Wfloat-conversion")
+#define EARANGES_DIAGNOSTIC_IGNORE_FLOAT_CONVERSION \
+    EARANGES_DIAGNOSTIC_IGNORE("-Wfloat-conversion")
 #define EARANGES_DIAGNOSTIC_IGNORE_MISSING_BRACES \
     EARANGES_DIAGNOSTIC_IGNORE("-Wmissing-braces")
 #define EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS \
@@ -319,8 +330,10 @@ namespace ranges
     EARANGES_DIAGNOSTIC_IGNORE("-Wunneeded-member-function")
 #define EARANGES_DIAGNOSTIC_IGNORE_ZERO_LENGTH_ARRAY \
     EARANGES_DIAGNOSTIC_IGNORE("-Wzero-length-array")
-#define EARANGES_DIAGNOSTIC_IGNORE_CXX17_COMPAT EARANGES_DIAGNOSTIC_IGNORE("-Wc++1z-compat")
-#define EARANGES_DIAGNOSTIC_IGNORE_CXX2A_COMPAT EARANGES_DIAGNOSTIC_IGNORE("-Wc++2a-compat")
+#define EARANGES_DIAGNOSTIC_IGNORE_CXX17_COMPAT \
+    EARANGES_DIAGNOSTIC_IGNORE("-Wc++1z-compat")
+#define EARANGES_DIAGNOSTIC_IGNORE_CXX2A_COMPAT \
+    EARANGES_DIAGNOSTIC_IGNORE("-Wc++2a-compat")
 #define EARANGES_DIAGNOSTIC_IGNORE_UNDEFINED_FUNC_TEMPLATE \
     EARANGES_DIAGNOSTIC_IGNORE("-Wundefined-func-template")
 #define EARANGES_DIAGNOSTIC_IGNORE_INCONSISTENT_OVERRIDE \
@@ -338,18 +351,19 @@ namespace ranges
 #define EARANGES_DIAGNOSTIC_IGNORE_VOID_PTR_DEREFERENCE \
     EARANGES_DIAGNOSTIC_IGNORE("-Wvoid-ptr-dereference")
 #define EARANGES_DIAGNOSTIC_KEYWORD_MACRO EARANGES_DIAGNOSTIC_IGNORE("-Wkeyword-macro")
-#define EARANGES_DIAGNOSTIC_SUGGEST_OVERRIDE EARANGES_DIAGNOSTIC_IGNORE("-Wsuggest-override")
+#define EARANGES_DIAGNOSTIC_SUGGEST_OVERRIDE \
+    EARANGES_DIAGNOSTIC_IGNORE("-Wsuggest-override")
 
 #define EARANGES_WORKAROUND_CWG_1554
 #ifdef __clang__
 #if __clang_major__ < 4
 #define EARANGES_WORKAROUND_CLANG_23135 // constexpr leads to premature instantiation on
-                                      // clang-3.x
+// clang-3.x
 #endif
-#if (__clang_major__ >= 7 && __clang_major__ <= 9) || defined(__apple_build_version__)
+#if(__clang_major__ >= 7 && __clang_major__ <= 9) || defined(__apple_build_version__)
 #define EARANGES_WORKAROUND_CLANG_43400 // template friend is redefinition of itself
 #endif
-#else                                 // __GNUC__
+#else // __GNUC__
 #if __GNUC__ == 7 || __GNUC__ == 8
 #define EARANGES_WORKAROUND_GCC_91525 /* Workaround strange GCC ICE */
 #endif
@@ -461,7 +475,7 @@ namespace ranges
 #endif
 
 #ifndef EARANGES_CXX_LIB_IS_FINAL
-#include <type_traits>
+#include <type_traits> //TODO:this should be eastl/type_traits.h
 #ifdef __cpp_lib_is_final
 #define EARANGES_CXX_LIB_IS_FINAL __cpp_lib_is_final
 #else
@@ -490,7 +504,7 @@ namespace ranges
 #define EARANGES_CXX_THREAD_LOCAL 0
 #elif defined(__IPHONE_OS_VERSION_MIN_REQUIRED) || \
     (defined(__clang__) && (defined(__CYGWIN__) || defined(__apple_build_version__)))
-// BUGBUG avoid unresolved __cxa_thread_atexit
+    // BUGBUG avoid unresolved __cxa_thread_atexit
 #define EARANGES_CXX_THREAD_LOCAL EARANGES_CXX_THREAD_LOCAL_PRE_STANDARD
 #else
 #define EARANGES_CXX_THREAD_LOCAL EARANGES_CXX_FEATURE(THREAD_LOCAL)
@@ -525,8 +539,8 @@ namespace ranges
 #define EARANGES_CXX_INLINE_VARIABLES __cpp_inline_variables
 #elif defined(__clang__) && (__clang_major__ == 3 && __clang_minor__ == 9) && \
     EARANGES_CXX_VER > EARANGES_CXX_STD_14
-// Clang 3.9 supports inline variables in C++17 mode, but doesn't define
-// __cpp_inline_variables
+    // Clang 3.9 supports inline variables in C++17 mode, but doesn't define
+    // __cpp_inline_variables
 #define EARANGES_CXX_INLINE_VARIABLES EARANGES_CXX_INLINE_VARIABLES_17
 #else
 #define EARANGES_CXX_INLINE_VARIABLES EARANGES_CXX_FEATURE(INLINE_VARIABLES)
@@ -536,7 +550,7 @@ namespace ranges
 #if EARANGES_CXX_INLINE_VARIABLES < EARANGES_CXX_INLINE_VARIABLES_17 && \
     !defined(EARANGES_DOXYGEN_INVOKED)
 #define EARANGES_INLINE_VAR
-#define EARANGES_INLINE_VARIABLE(type, name)                           \
+#define EARANGES_INLINE_VARIABLE(type, name)                         \
     namespace                                                        \
     {                                                                \
         constexpr auto & name = ::ranges::static_const<type>::value; \
@@ -544,16 +558,16 @@ namespace ranges
 #else // EARANGES_CXX_INLINE_VARIABLES >= EARANGES_CXX_INLINE_VARIABLES_17
 #define EARANGES_INLINE_VAR inline
 #define EARANGES_INLINE_VARIABLE(type, name) \
-    inline constexpr type name{};          \
+    inline constexpr type name{};            \
     /**/
 #endif // EARANGES_CXX_INLINE_VARIABLES
 
 #if defined(EARANGES_DOXYGEN_INVOKED)
 #define EARANGES_DEFINE_CPO(type, name) \
-    inline constexpr type name{};     \
+    inline constexpr type name{};       \
     /**/
 #elif EARANGES_CXX_INLINE_VARIABLES < EARANGES_CXX_INLINE_VARIABLES_17
-#define EARANGES_DEFINE_CPO(type, name)                                \
+#define EARANGES_DEFINE_CPO(type, name)                              \
     namespace                                                        \
     {                                                                \
         constexpr auto & name = ::ranges::static_const<type>::value; \
@@ -561,11 +575,11 @@ namespace ranges
     /**/
 #else // EARANGES_CXX_INLINE_VARIABLES >= EARANGES_CXX_INLINE_VARIABLES_17
 #define EARANGES_DEFINE_CPO(type, name) \
-    namespace _                       \
-    {                                 \
-        inline constexpr type name{}; \
-    }                                 \
-    using namespace _;                \
+    namespace _                         \
+    {                                   \
+        inline constexpr type name{};   \
+    }                                   \
+    using namespace _;                  \
     /**/
 #endif // EARANGES_CXX_INLINE_VARIABLES
 
@@ -578,11 +592,11 @@ namespace ranges
 #ifndef EARANGES_DOXYGEN_INVOKED
 #define EARANGES_ADL_BARRIER_FOR(S) S##_ns
 #define EARANGES_STRUCT_WITH_ADL_BARRIER(S) \
-    _ranges_adl_barrier_noop_;            \
+    _ranges_adl_barrier_noop_;              \
     namespace EARANGES_ADL_BARRIER_FOR(S)   \
-    {                                     \
-        struct S;                         \
-    }                                     \
+    {                                       \
+        struct S;                           \
+    }                                       \
     using EARANGES_ADL_BARRIER_FOR(S)::S;   \
     struct EARANGES_ADL_BARRIER_FOR(S)::S /**/
 #else
@@ -592,11 +606,11 @@ namespace ranges
 
 #ifndef EARANGES_DOXYGEN_INVOKED
 #define EARANGES_FUNC_BEGIN(NAME) \
-    struct NAME##_fn            \
+    struct NAME##_fn              \
     {
 #define EARANGES_FUNC_END(NAME) \
-    }                         \
-    ;                         \
+    }                           \
+    ;                           \
     EARANGES_INLINE_VARIABLE(NAME##_fn, NAME)
 #define EARANGES_FUNC(NAME) operator() EARANGES_FUNC_CONST_ /**/
 #define EARANGES_FUNC_CONST_(...) (__VA_ARGS__) const
@@ -687,8 +701,7 @@ namespace ranges
 #endif
 #endif // EARANGES_CONSTEXPR_IF
 
-#if !defined(EARANGES_BROKEN_CPO_LOOKUP) && \
-    !defined(EARANGES_DOXYGEN_INVOKED) && \
+#if !defined(EARANGES_BROKEN_CPO_LOOKUP) && !defined(EARANGES_DOXYGEN_INVOKED) && \
     defined(EARANGES_WORKAROUND_MSVC_895622)
 #define EARANGES_BROKEN_CPO_LOOKUP 1
 #endif
@@ -719,5 +732,5 @@ namespace ranges
 #define EARANGES_EMPTY_BASES
 #endif
 #endif
-
+}
 #endif

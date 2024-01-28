@@ -33,85 +33,90 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    template<typename G>
-    struct generate_view : view_facade<generate_view<G>, infinite>
+    namespace ranges
     {
-    private:
-        friend range_access;
-        using result_t = invoke_result_t<G &>;
-        semiregular_box_t<G> gen_;
-        detail::non_propagating_cache<result_t> val_;
-        struct cursor
+        /// \addtogroup group-views
+        /// @{
+        template<typename G>
+        struct generate_view : view_facade<generate_view<G>, infinite>
         {
         private:
-            generate_view * view_;
+            friend range_access;
+            using result_t = invoke_result_t<G &>;
+            semiregular_box_t<G> gen_;
+            detail::non_propagating_cache<result_t> val_;
+            struct cursor
+            {
+            private:
+                generate_view * view_;
+
+            public:
+                cursor() = default;
+                explicit cursor(generate_view * view)
+                  : view_(view)
+                {}
+                result_t && read() const
+                {
+                    if(!view_->val_)
+                        view_->val_.emplace(view_->gen_());
+                    return static_cast<result_t &&>(
+                        static_cast<result_t &>(*view_->val_));
+                }
+                void next()
+                {
+                    if(view_->val_)
+                        view_->val_.reset();
+                    else
+                        static_cast<void>(view_->gen_());
+                }
+            };
+            cursor begin_cursor()
+            {
+                return cursor{this};
+            }
+            unreachable_sentinel_t end_cursor() const
+            {
+                return {};
+            }
 
         public:
-            cursor() = default;
-            explicit cursor(generate_view * view)
-              : view_(view)
+            generate_view() = default;
+            explicit generate_view(G g)
+              : gen_(eastl::move(g))
             {}
-            result_t && read() const
+            result_t & cached()
             {
-                if(!view_->val_)
-                    view_->val_.emplace(view_->gen_());
-                return static_cast<result_t &&>(static_cast<result_t &>(*view_->val_));
-            }
-            void next()
-            {
-                if(view_->val_)
-                    view_->val_.reset();
-                else
-                    static_cast<void>(view_->gen_());
-            }
-        };
-        cursor begin_cursor()
-        {
-            return cursor{this};
-        }
-        unreachable_sentinel_t end_cursor() const
-        {
-            return {};
-        }
-
-    public:
-        generate_view() = default;
-        explicit generate_view(G g)
-          : gen_(eastl::move(g))
-        {}
-        result_t & cached()
-        {
-            return *val_;
-        }
-    };
-
-    namespace views
-    {
-        struct generate_fn
-        {
-            template(typename G)(
-                requires invocable<G &> AND copy_constructible<G> AND
-                    eastl::is_object<detail::decay_t<invoke_result_t<G &>>>::value AND
-                    constructible_from<detail::decay_t<invoke_result_t<G &>>,
-                                       invoke_result_t<G &>> AND
-                    assignable_from<detail::decay_t<invoke_result_t<G &>> &,
-                                    invoke_result_t<G &>>)
-            generate_view<G> operator()(G g) const
-            {
-                return generate_view<G>{eastl::move(g)};
+                return *val_;
             }
         };
 
-        /// \relates generate_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(generate_fn, generate)
-    } // namespace views
-    /// \@}
-} // namespace ranges
+        namespace views
+        {
+            struct generate_fn
+            {
+                template(typename G)(
+                    requires invocable<G &> AND copy_constructible<G> AND
+                        eastl::is_object<detail::decay_t<invoke_result_t<G &>>>::value AND
+                            constructible_from<detail::decay_t<invoke_result_t<G &>>,
+                                               invoke_result_t<G &>>
+                                AND assignable_from<
+                                    detail::decay_t<invoke_result_t<G &>> &,
+                                    invoke_result_t<G &>>) generate_view<G>
+                operator()(G g) const
+                {
+                    return generate_view<G>{eastl::move(g)};
+                }
+            };
+
+            /// \relates generate_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(generate_fn, generate)
+        } // namespace views
+        /// \@}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 #include <EARanges/detail/satisfy_boost_range.hpp>

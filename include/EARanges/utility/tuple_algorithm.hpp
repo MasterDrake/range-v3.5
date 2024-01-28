@@ -30,16 +30,19 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-utility
-    /// @{
-    template<typename Tup>
-    using tuple_indices_t = meta::make_index_sequence<eastl::tuple_size<typename eastl::remove_reference<Tup>::type>::value>;
-
-    struct tuple_apply_fn
+    namespace ranges
     {
-        // clang-format off
+        /// \addtogroup group-utility
+        /// @{
+        template<typename Tup>
+        using tuple_indices_t = meta::make_index_sequence<
+            eastl::tuple_size<typename eastl::remove_reference<Tup>::type>::value>;
+
+        struct tuple_apply_fn
+        {
+            // clang-format off
     private:
         template<typename Fun, typename Tup, std::size_t... Is>
         static constexpr auto //
@@ -56,16 +59,16 @@ namespace ranges
                                         static_cast<Tup &&>(tup),
                                         tuple_indices_t<Tup>{})
         )
-        // clang-format on
-    };
+            // clang-format on
+        };
 
-    /// \ingroup group-utility
-    /// \sa `tuple_apply_fn`
-    EARANGES_INLINE_VARIABLE(tuple_apply_fn, tuple_apply)
+        /// \ingroup group-utility
+        /// \sa `tuple_apply_fn`
+        EARANGES_INLINE_VARIABLE(tuple_apply_fn, tuple_apply)
 
-    struct tuple_transform_fn
-    {
-        // clang-format off
+        struct tuple_transform_fn
+        {
+            // clang-format off
     private:
         template<typename Tup, typename Fun, std::size_t... Is>
         static constexpr auto //
@@ -101,22 +104,22 @@ namespace ranges
                                              static_cast<Tup1 &&>(tup1), fun,
                                              tuple_indices_t<Tup0>{})
         )
-        // clang-format on
-    };
+            // clang-format on
+        };
 
-    /// \ingroup group-utility
-    /// \sa `tuple_transform_fn`
-    EARANGES_INLINE_VARIABLE(tuple_transform_fn, tuple_transform)
+        /// \ingroup group-utility
+        /// \sa `tuple_transform_fn`
+        EARANGES_INLINE_VARIABLE(tuple_transform_fn, tuple_transform)
 
-    struct tuple_foldl_fn
-    {
-    private:
-        template<typename Tup, typename Val, typename Fun>
-        static constexpr Val impl(Tup &&, Val val, Fun &)
+        struct tuple_foldl_fn
         {
-            return val;
-        }
-        // clang-format off
+        private:
+            template<typename Tup, typename Val, typename Fun>
+            static constexpr Val impl(Tup &&, Val val, Fun &)
+            {
+                return val;
+            }
+            // clang-format off
         template<std::size_t I0, std::size_t... Is, typename Tup, typename Val,
                  typename Fun, typename Impl = tuple_foldl_fn>
         static constexpr auto CPP_auto_fun(impl)(Tup &&tup, Val val, Fun &fun)
@@ -143,51 +146,54 @@ namespace ranges
                                          fun,
                                          tuple_indices_t<Tup>{})
         )
-        // clang-format on
-    };
+            // clang-format on
+        };
 
-    /// \ingroup group-utility
-    /// \sa `tuple_foldl_fn`
-    EARANGES_INLINE_VARIABLE(tuple_foldl_fn, tuple_foldl)
+        /// \ingroup group-utility
+        /// \sa `tuple_foldl_fn`
+        EARANGES_INLINE_VARIABLE(tuple_foldl_fn, tuple_foldl)
 
-    struct tuple_for_each_fn
-    {
-    private:
-        template<typename Tup, typename Fun, std::size_t... Is>
-        static constexpr void impl(Tup && tup, Fun & fun, meta::index_sequence<Is...>)
+        struct tuple_for_each_fn
         {
-            (void)std::initializer_list<int>{
-                ((void)fun(detail::adl_get<Is>(static_cast<Tup &&>(tup))), 42)...};
-        }
+        private:
+            template<typename Tup, typename Fun, std::size_t... Is>
+            static constexpr void impl(Tup && tup, Fun & fun, meta::index_sequence<Is...>)
+            {
+                (void)std::initializer_list<int>{
+                    ((void)fun(detail::adl_get<Is>(static_cast<Tup &&>(tup))), 42)...};
+            }
 
-    public:
-        template<typename Tup, typename Fun>
-        constexpr Fun operator()(Tup && tup, Fun fun) const
+        public:
+            template<typename Tup, typename Fun>
+            constexpr Fun operator()(Tup && tup, Fun fun) const
+            {
+                return tuple_for_each_fn::impl(
+                           static_cast<Tup &&>(tup), fun, tuple_indices_t<Tup>{}),
+                       fun;
+            }
+        };
+
+        /// \ingroup group-utility
+        /// \sa `tuple_for_each_fn`
+        EARANGES_INLINE_VARIABLE(tuple_for_each_fn, tuple_for_each)
+
+        struct make_tuple_fn
         {
-            return tuple_for_each_fn::impl(static_cast<Tup &&>(tup), fun, tuple_indices_t<Tup>{}), fun;
-        }
-    };
-
-    /// \ingroup group-utility
-    /// \sa `tuple_for_each_fn`
-    EARANGES_INLINE_VARIABLE(tuple_for_each_fn, tuple_for_each)
-
-    struct make_tuple_fn
-    {
-        // clang-format off
+            // clang-format off
         template<typename... Ts>
         constexpr auto CPP_auto_fun(operator())(Ts &&... ts)(const)
         (
             return eastl::make_tuple(static_cast<Ts &&>(ts)...)
         )
-        // clang-format on
-    };
+            // clang-format on
+        };
 
-    /// \ingroup group-utility
-    /// \sa `make_tuple_fn`
-    EARANGES_INLINE_VARIABLE(make_tuple_fn, make_tuple)
-    /// @}
-} // namespace ranges
+        /// \ingroup group-utility
+        /// \sa `make_tuple_fn`
+        EARANGES_INLINE_VARIABLE(make_tuple_fn, make_tuple)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

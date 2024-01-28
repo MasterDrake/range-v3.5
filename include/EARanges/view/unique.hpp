@@ -29,39 +29,48 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    namespace views
+    namespace ranges
     {
-        struct unique_base_fn
+        /// \addtogroup group-views
+        /// @{
+        namespace views
         {
-            template(typename Rng, typename C = equal_to)(requires viewable_range<Rng> AND forward_range<Rng> AND indirect_relation<C, iterator_t<Rng>>)
-            constexpr adjacent_filter_view<all_t<Rng>, logical_negate<C>> //
-            operator()(Rng && rng, C pred = {}) const
+            struct unique_base_fn
             {
-                return {all(static_cast<Rng &&>(rng)), not_fn(pred)};
-            }
-        };
+                template(typename Rng, typename C = equal_to)(
+                    requires viewable_range<Rng> AND forward_range<Rng> AND
+                        indirect_relation<
+                            C, iterator_t<
+                                   Rng>>) constexpr adjacent_filter_view<all_t<Rng>,
+                                                                         logical_negate<
+                                                                             C>> //
+                operator()(Rng && rng, C pred = {}) const
+                {
+                    return {all(static_cast<Rng &&>(rng)), not_fn(pred)};
+                }
+            };
 
-        struct unique_fn : unique_base_fn
-        {
-            using unique_base_fn::operator();
-
-            template(typename C)(requires (!range<C>))
-            constexpr auto operator()(C && pred) const
+            struct unique_fn : unique_base_fn
             {
-                return make_view_closure(bind_back(unique_base_fn{}, static_cast<C &&>(pred)));
-            }
-        };
+                using unique_base_fn::operator();
 
-        /// \relates unique_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(view_closure<unique_fn>, unique)
-    } // namespace views
-    /// @}
-} // namespace ranges
+                template(typename C)(requires(!range<C>)) constexpr auto operator()(
+                    C && pred) const
+                {
+                    return make_view_closure(
+                        bind_back(unique_base_fn{}, static_cast<C &&>(pred)));
+                }
+            };
+
+            /// \relates unique_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(view_closure<unique_fn>, unique)
+        } // namespace views
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

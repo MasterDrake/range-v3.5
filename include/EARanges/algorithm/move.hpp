@@ -29,50 +29,59 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename O>
-    using move_result = detail::in_out_result<I, O>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename O>
+        using move_result = detail::in_out_result<I, O>;
 
-    EARANGES_HIDDEN_DETAIL(namespace _move CPP_PP_LBRACE())
-    EARANGES_FUNC_BEGIN(move)
+        EARANGES_HIDDEN_DETAIL(namespace _move CPP_PP_LBRACE())
+        EARANGES_FUNC_BEGIN(move)
 
-        /// \brief function template \c move
-        template(typename I, typename S, typename O)(requires input_iterator<I> AND sentinel_for<S, I> AND weakly_incrementable<O> AND indirectly_movable<I, O>)
-        constexpr move_result<I, O> EARANGES_FUNC(move)(I first, S last, O out) //
-        {
-            for(; first != last; ++first, ++out)
-                *out = iter_move(first);
-            return {first, out};
-        }
+            /// \brief function template \c move
+            template(typename I, typename S, typename O)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    weakly_incrementable<O>
+                        AND indirectly_movable<I, O>) constexpr move_result<I, O>
+            EARANGES_FUNC(move)(I first, S last, O out) //
+            {
+                for(; first != last; ++first, ++out)
+                    *out = iter_move(first);
+                return {first, out};
+            }
 
-        /// \overload
-        template(typename Rng, typename O)(requires input_range<Rng> AND weakly_incrementable<O> AND indirectly_movable<iterator_t<Rng>, O>)
-        constexpr move_result<borrowed_iterator_t<Rng>, O> //
-        EARANGES_FUNC(move)(Rng && rng, O out)            //
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(out));
-        }
+            /// \overload
+            template(typename Rng, typename O)(
+                requires input_range<Rng> AND weakly_incrementable<O> AND
+                    indirectly_movable<iterator_t<Rng>,
+                                       O>) constexpr move_result<borrowed_iterator_t<Rng>,
+                                                                 O> //
+            EARANGES_FUNC(move)(Rng && rng, O out)                  //
+            {
+                return (*this)(begin(rng), end(rng), eastl::move(out));
+            }
 
-    EARANGES_FUNC_END(move)
-    EARANGES_HIDDEN_DETAIL(CPP_PP_RBRACE())
+        EARANGES_FUNC_END(move)
+        EARANGES_HIDDEN_DETAIL(CPP_PP_RBRACE())
 
 #ifndef EARANGES_DOXYGEN_INVOKED
-    struct EARANGES_EMPTY_BASES move_fn
-      : aux::move_fn
-      , _move::move_fn
-    {
-        using aux::move_fn::operator();
-        using _move::move_fn::operator();
-    };
+        struct EARANGES_EMPTY_BASES move_fn
+          : aux::move_fn
+          , _move::move_fn
+        {
+            using aux::move_fn::operator();
+            using _move::move_fn::operator();
+        };
 
-    EARANGES_INLINE_VARIABLE(move_fn, move)
+        EARANGES_INLINE_VARIABLE(move_fn, move)
 #endif
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

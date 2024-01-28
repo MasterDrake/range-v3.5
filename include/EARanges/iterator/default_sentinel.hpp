@@ -18,18 +18,21 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-iterator
-    /// @{
-    struct default_sentinel_t
-    {};
+    namespace ranges
+    {
+        /// \addtogroup group-iterator
+        /// @{
+        struct default_sentinel_t
+        {};
 
-    // Default sentinel
-    EARANGES_INLINE_VARIABLE(default_sentinel_t, default_sentinel)
+        // Default sentinel
+        EARANGES_INLINE_VARIABLE(default_sentinel_t, default_sentinel)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

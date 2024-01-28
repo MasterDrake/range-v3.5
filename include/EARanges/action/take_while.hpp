@@ -26,33 +26,43 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct take_while_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename Fun)(requires (!range<Fun>))
-            constexpr auto operator()(Fun fun) const
+            struct take_while_fn
             {
-                return make_action_closure(bind_back(take_while_fn{}, eastl::move(fun)));
-            }
+                template(typename Fun)(requires(!range<Fun>)) constexpr auto operator()(
+                    Fun fun) const
+                {
+                    return make_action_closure(
+                        bind_back(take_while_fn{}, eastl::move(fun)));
+                }
 
-            template(typename Rng, typename Fun)( requires forward_range<Rng> AND erasable_range<Rng &, iterator_t<Rng>, sentinel_t<Rng>> AND indirect_unary_predicate<Fun, iterator_t<Rng>>)
-            Rng operator()(Rng && rng, Fun fun) const
-            {
-                ranges::actions::erase(rng, find_if_not(begin(rng), end(rng), eastl::move(fun)), end(rng));
-                return static_cast<Rng &&>(rng);
-            }
-        };
+                template(typename Rng, typename Fun)(
+                    requires forward_range<Rng> AND
+                        erasable_range<Rng &, iterator_t<Rng>, sentinel_t<Rng>>
+                            AND indirect_unary_predicate<Fun, iterator_t<Rng>>) Rng
+                operator()(Rng && rng, Fun fun) const
+                {
+                    ranges::actions::erase(
+                        rng,
+                        find_if_not(begin(rng), end(rng), eastl::move(fun)),
+                        end(rng));
+                    return static_cast<Rng &&>(rng);
+                }
+            };
 
-        /// \relates actions::take_while_fn
-        EARANGES_INLINE_VARIABLE(take_while_fn, take_while)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            /// \relates actions::take_while_fn
+            EARANGES_INLINE_VARIABLE(take_while_fn, take_while)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -27,40 +27,49 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(adjacent_find)
-        /// \brief function template \c adjacent_find
-        ///
-        /// range-based version of the \c adjacent_find eastl algorithm
-        ///
-        /// \pre `Rng` is a model of the `range` concept
-        /// \pre `C` is a model of the `BinaryPredicate` concept
-        template(typename I, typename S, typename C = equal_to, typename P = identity)(requires forward_iterator<I> AND sentinel_for<S, I> AND indirect_relation<C, projected<I, P>>)
-        constexpr I EARANGES_FUNC(adjacent_find)(I first, S last, C pred = C{}, P proj = P{})
-        {
-            if(first == last)
-                return first;
-            auto inext = first;
-            for(; ++inext != last; first = inext)
-                if(invoke(pred, invoke(proj, *first), invoke(proj, *inext)))
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(adjacent_find)
+            /// \brief function template \c adjacent_find
+            ///
+            /// range-based version of the \c adjacent_find eastl algorithm
+            ///
+            /// \pre `Rng` is a model of the `range` concept
+            /// \pre `C` is a model of the `BinaryPredicate` concept
+            template(
+                typename I, typename S, typename C = equal_to, typename P = identity)(
+                requires forward_iterator<I> AND sentinel_for<S, I> AND
+                    indirect_relation<C, projected<I, P>>) constexpr I
+            EARANGES_FUNC(adjacent_find)(I first, S last, C pred = C{}, P proj = P{})
+            {
+                if(first == last)
                     return first;
-            return inext;
-        }
+                auto inext = first;
+                for(; ++inext != last; first = inext)
+                    if(invoke(pred, invoke(proj, *first), invoke(proj, *inext)))
+                        return first;
+                return inext;
+            }
 
-        /// \overload
-        template(typename Rng, typename C = equal_to, typename P = identity)(requires forward_range<Rng> AND indirect_relation<C, projected<iterator_t<Rng>, P>>)
-        constexpr borrowed_iterator_t<Rng> //
-        EARANGES_FUNC(adjacent_find)(Rng && rng, C pred = C{}, P proj = P{}) //
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
-        }
-    EARANGES_FUNC_END(adjacent_find)
+            /// \overload
+            template(typename Rng, typename C = equal_to, typename P = identity)(
+                requires forward_range<Rng> AND indirect_relation<
+                    C,
+                    projected<iterator_t<Rng>, P>>) constexpr borrowed_iterator_t<Rng> //
+            EARANGES_FUNC(adjacent_find)(Rng && rng, C pred = C{}, P proj = P{})       //
+            {
+                return (*this)(
+                    begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
+            }
+        EARANGES_FUNC_END(adjacent_find)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

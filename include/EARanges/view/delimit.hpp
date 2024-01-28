@@ -30,100 +30,105 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    template<typename Rng, typename Val>
-    struct delimit_view
-      : view_adaptor<delimit_view<Rng, Val>, Rng,
-                     is_finite<Rng>::value ? finite : unknown>
+    namespace ranges
     {
-    private:
-        friend range_access;
-        Val value_;
-
-        struct sentinel_adaptor : adaptor_base
+        /// \addtogroup group-views
+        /// @{
+        template<typename Rng, typename Val>
+        struct delimit_view
+          : view_adaptor<delimit_view<Rng, Val>, Rng,
+                         is_finite<Rng>::value ? finite : unknown>
         {
-            sentinel_adaptor() = default;
-            sentinel_adaptor(Val value)
-              : value_(eastl::move(value))
-            {}
-            template<class I, class S>
-            bool empty(I const & it, S const & last) const
-            {
-                return it == last || *it == value_;
-            }
+        private:
+            friend range_access;
             Val value_;
+
+            struct sentinel_adaptor : adaptor_base
+            {
+                sentinel_adaptor() = default;
+                sentinel_adaptor(Val value)
+                  : value_(eastl::move(value))
+                {}
+                template<class I, class S>
+                bool empty(I const & it, S const & last) const
+                {
+                    return it == last || *it == value_;
+                }
+                Val value_;
+            };
+
+            sentinel_adaptor end_adaptor() const
+            {
+                return {value_};
+            }
+
+        public:
+            delimit_view() = default;
+            constexpr delimit_view(Rng rng, Val value)
+              : delimit_view::view_adaptor{eastl::move(rng)}
+              , value_(eastl::move(value))
+            {}
         };
 
-        sentinel_adaptor end_adaptor() const
-        {
-            return {value_};
-        }
-
-    public:
-        delimit_view() = default;
-        constexpr delimit_view(Rng rng, Val value)
-          : delimit_view::view_adaptor{eastl::move(rng)}
-          , value_(eastl::move(value))
-        {}
-    };
-
-    // the begin iterator will be an iterator into the underlying view (conditionally
-    // borrowed) and the end iterator owns the value to be compared against (borrowed)
-    template<typename Rng, typename Val>
-    EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<delimit_view<Rng, Val>> = //
-        enable_borrowed_range<Rng>;
+        // the begin iterator will be an iterator into the underlying view (conditionally
+        // borrowed) and the end iterator owns the value to be compared against (borrowed)
+        template<typename Rng, typename Val>
+        EARANGES_INLINE_VAR constexpr bool
+            enable_borrowed_range<delimit_view<Rng, Val>> = //
+            enable_borrowed_range<Rng>;
 
 #if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
-    template(typename Rng, typename Val)(
-        requires copy_constructible<Val>)
-    delimit_view(Rng &&, Val)
-        -> delimit_view<views::all_t<Rng>, Val>;
+        template(typename Rng, typename Val)(requires copy_constructible<Val>)
+            delimit_view(Rng &&, Val) -> delimit_view<views::all_t<Rng>, Val>;
 #endif
 
-    namespace views
-    {
-        struct delimit_base_fn
+        namespace views
         {
-            template(typename I_, typename Val, typename I = detail::decay_t<I_>)(
-                requires (!range<I_>) AND convertible_to<I_, I> AND input_iterator<I> AND
-                    semiregular<Val> AND
-                    equality_comparable_with<Val, iter_reference_t<I>>)
-            constexpr auto operator()(I_ && begin_, Val value) const
-                -> delimit_view<subrange<I, unreachable_sentinel_t>, Val>
+            struct delimit_base_fn
             {
-                return {{static_cast<I_ &&>(begin_), {}}, eastl::move(value)};
-            }
+                template(typename I_, typename Val, typename I = detail::decay_t<I_>)(
+                    requires(!range<I_>) AND convertible_to<I_, I> AND input_iterator<I>
+                        AND semiregular<Val>
+                            AND equality_comparable_with<
+                                Val, iter_reference_t<I>>) constexpr auto
+                operator()(I_ && begin_, Val value) const
+                    -> delimit_view<subrange<I, unreachable_sentinel_t>, Val>
+                {
+                    return {{static_cast<I_ &&>(begin_), {}}, eastl::move(value)};
+                }
 
-            template(typename Rng, typename Val)(
-                requires viewable_range<Rng> AND input_range<Rng> AND semiregular<
-                        Val> AND equality_comparable_with<Val, range_reference_t<Rng>>)
-            constexpr auto operator()(Rng && rng, Val value) const //
-                -> delimit_view<all_t<Rng>, Val>
+                template(typename Rng, typename Val)(
+                    requires viewable_range<Rng> AND input_range<Rng> AND semiregular<Val>
+                        AND equality_comparable_with<
+                            Val, range_reference_t<Rng>>) constexpr auto
+                operator()(Rng && rng, Val value) const //
+                    -> delimit_view<all_t<Rng>, Val>
+                {
+                    return {all(static_cast<Rng &&>(rng)), eastl::move(value)};
+                }
+            };
+
+            struct delimit_fn : delimit_base_fn
             {
-                return {all(static_cast<Rng &&>(rng)), eastl::move(value)};
-            }
-        };
+                using delimit_base_fn::operator();
 
-        struct delimit_fn : delimit_base_fn
-        {
-            using delimit_base_fn::operator();
+                template<typename Val>
+                constexpr auto operator()(Val value) const
+                {
+                    return make_view_closure(
+                        bind_back(delimit_base_fn{}, eastl::move(value)));
+                }
+            };
 
-            template<typename Val>
-            constexpr auto operator()(Val value) const
-            {
-                return make_view_closure(bind_back(delimit_base_fn{}, eastl::move(value)));
-            }
-        };
-
-        /// \relates delimit_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(delimit_fn, delimit)
-    } // namespace views
-    /// @}
-} // namespace ranges
+            /// \relates delimit_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(delimit_fn, delimit)
+        } // namespace views
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 #include <EARanges/detail/satisfy_boost_range.hpp>

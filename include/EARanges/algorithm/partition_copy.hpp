@@ -33,71 +33,87 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename O0, typename O1>
-    using partition_copy_result = detail::in_out1_out2_result<I, O0, O1>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename O0, typename O1>
+        using partition_copy_result = detail::in_out1_out2_result<I, O0, O1>;
 
-    EARANGES_FUNC_BEGIN(partition_copy)
+        EARANGES_FUNC_BEGIN(partition_copy)
 
-        /// \brief function template \c partition_copy
-        template(typename I,
-                 typename S,
-                 typename O0,
-                 typename O1,
-                 typename C,
-                 typename P = identity)(
-            requires input_iterator<I> AND sentinel_for<S, I> AND
-                weakly_incrementable<O0> AND weakly_incrementable<O1> AND
-                indirectly_copyable<I, O0> AND indirectly_copyable<I, O1> AND
-                indirect_unary_predicate<C, projected<I, P>>)
-        constexpr partition_copy_result<I, O0, O1> EARANGES_FUNC(partition_copy)(
-            I first, S last, O0 o0, O1 o1, C pred, P proj = P{})
-        {
-            for(; first != last; ++first)
+            /// \brief function template \c partition_copy
+            template(typename I,
+                     typename S,
+                     typename O0,
+                     typename O1,
+                     typename C,
+                     typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    weakly_incrementable<O0>
+                        AND weakly_incrementable<O1>
+                            AND indirectly_copyable<I, O0>
+                                AND indirectly_copyable<I, O1>
+                                    AND indirect_unary_predicate<
+                                        C,
+                                        projected<I,
+                                                  P>>) constexpr partition_copy_result<I,
+                                                                                       O0,
+                                                                                       O1>
+            EARANGES_FUNC(partition_copy)(
+                I first, S last, O0 o0, O1 o1, C pred, P proj = P{})
             {
-                auto && x = *first;
-                if(invoke(pred, invoke(proj, x)))
+                for(; first != last; ++first)
                 {
-                    *o0 = (decltype(x) &&)x;
-                    ++o0;
+                    auto && x = *first;
+                    if(invoke(pred, invoke(proj, x)))
+                    {
+                        *o0 = (decltype(x) &&)x;
+                        ++o0;
+                    }
+                    else
+                    {
+                        *o1 = (decltype(x) &&)x;
+                        ++o1;
+                    }
                 }
-                else
-                {
-                    *o1 = (decltype(x) &&)x;
-                    ++o1;
-                }
+                return {first, o0, o1};
             }
-            return {first, o0, o1};
-        }
 
-        /// \overload
-        template(typename Rng,
-                 typename O0,
-                 typename O1,
-                 typename C,
-                 typename P = identity)(
-            requires input_range<Rng> AND weakly_incrementable<O0> AND
-                weakly_incrementable<O1> AND indirectly_copyable<iterator_t<Rng>, O0> AND
-                indirectly_copyable<iterator_t<Rng>, O1> AND
-                indirect_unary_predicate<C, projected<iterator_t<Rng>, P>>)
-        constexpr partition_copy_result<borrowed_iterator_t<Rng>, O0, O1> //
-        EARANGES_FUNC(partition_copy)(Rng && rng, O0 o0, O1 o1, C pred, P proj = P{})
-        {
-            return (*this)(begin(rng),
-                           end(rng),
-                           eastl::move(o0),
-                           eastl::move(o1),
-                           eastl::move(pred),
-                           eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng,
+                     typename O0,
+                     typename O1,
+                     typename C,
+                     typename P = identity)(
+                requires input_range<Rng> AND weakly_incrementable<O0> AND weakly_incrementable<
+                    O1>
+                    AND indirectly_copyable<iterator_t<Rng>, O0>
+                        AND indirectly_copyable<iterator_t<Rng>, O1>
+                            AND indirect_unary_predicate<
+                                C,
+                                projected<
+                                    iterator_t<Rng>,
+                                    P>>) constexpr partition_copy_result<borrowed_iterator_t<Rng>,
+                                                                         O0,
+                                                                         O1> //
+            EARANGES_FUNC(partition_copy)(Rng && rng, O0 o0, O1 o1, C pred, P proj = P{})
+            {
+                return (*this)(begin(rng),
+                               end(rng),
+                               eastl::move(o0),
+                               eastl::move(o1),
+                               eastl::move(pred),
+                               eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(partition_copy)
+        EARANGES_FUNC_END(partition_copy)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

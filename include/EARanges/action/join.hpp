@@ -29,37 +29,42 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        template<typename Rng>
-        using join_action_value_t_ =
-            meta::if_c<(bool)ranges::container<range_value_t<Rng>>, //
-                       range_value_t<Rng>,                          //
-                       eastl::vector<range_value_t<range_value_t<Rng>>>>;
-
-        struct join_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename Rng)(requires input_range<Rng> AND input_range<range_value_t<Rng>> AND semiregular<join_action_value_t_<Rng>>)
-            join_action_value_t_<Rng> operator()(Rng && rng) const
-            {
-                join_action_value_t_<Rng> ret;
-                auto last = ranges::end(rng);
-                for(auto it = begin(rng); it != last; ++it)
-                    push_back(ret, *it);
-                return ret;
-            }
-        };
+            template<typename Rng>
+            using join_action_value_t_ =
+                meta::if_c<(bool)ranges::container<range_value_t<Rng>>, //
+                           range_value_t<Rng>,                          //
+                           eastl::vector<range_value_t<range_value_t<Rng>>>>;
 
-        /// \relates actions::join_fn
-        /// \sa action_closure
-        EARANGES_INLINE_VARIABLE(action_closure<join_fn>, join)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            struct join_fn
+            {
+                template(typename Rng)(
+                    requires input_range<Rng> AND input_range<range_value_t<Rng>> AND
+                        semiregular<join_action_value_t_<Rng>>) join_action_value_t_<Rng>
+                operator()(Rng && rng) const
+                {
+                    join_action_value_t_<Rng> ret;
+                    auto last = ranges::end(rng);
+                    for(auto it = begin(rng); it != last; ++it)
+                        push_back(ret, *it);
+                    return ret;
+                }
+            };
+
+            /// \relates actions::join_fn
+            /// \sa action_closure
+            EARANGES_INLINE_VARIABLE(action_closure<join_fn>, join)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

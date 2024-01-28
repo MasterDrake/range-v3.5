@@ -30,51 +30,59 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename O>
-    using remove_copy_result = detail::in_out_result<I, O>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename O>
+        using remove_copy_result = detail::in_out_result<I, O>;
 
-    EARANGES_FUNC_BEGIN(remove_copy)
+        EARANGES_FUNC_BEGIN(remove_copy)
 
-        /// \brief function template \c remove_copy
-        template(typename I, typename S, typename O, typename T, typename P = identity)(
-            requires input_iterator<I> AND sentinel_for<S, I> AND
-                weakly_incrementable<O> AND
-                indirect_relation<equal_to, projected<I, P>, T const *> AND
-                indirectly_copyable<I, O>)
-        constexpr remove_copy_result<I, O> EARANGES_FUNC(remove_copy)(
-            I first, S last, O out, T const & val, P proj = P{}) //
-        {
-            for(; first != last; ++first)
+            /// \brief function template \c remove_copy
+            template(
+                typename I, typename S, typename O, typename T, typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    weakly_incrementable<O>
+                        AND indirect_relation<equal_to, projected<I, P>, T const *>
+                            AND indirectly_copyable<I, O>) constexpr remove_copy_result<I,
+                                                                                        O>
+            EARANGES_FUNC(remove_copy)(
+                I first, S last, O out, T const & val, P proj = P{}) //
             {
-                auto && x = *first;
-                if(!(invoke(proj, x) == val))
+                for(; first != last; ++first)
                 {
-                    *out = (decltype(x) &&)x;
-                    ++out;
+                    auto && x = *first;
+                    if(!(invoke(proj, x) == val))
+                    {
+                        *out = (decltype(x) &&)x;
+                        ++out;
+                    }
                 }
+                return {first, out};
             }
-            return {first, out};
-        }
 
-        /// \overload
-        template(typename Rng, typename O, typename T, typename P = identity)(
-            requires input_range<Rng> AND weakly_incrementable<O> AND
-            indirect_relation<equal_to, projected<iterator_t<Rng>, P>, T const *> AND
-            indirectly_copyable<iterator_t<Rng>, O>)
-        constexpr remove_copy_result<borrowed_iterator_t<Rng>, O> //
-        EARANGES_FUNC(remove_copy)(Rng && rng, O out, T const & val, P proj = P{}) //
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(out), val, eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename O, typename T, typename P = identity)(
+                requires input_range<Rng> AND weakly_incrementable<O> AND
+                    indirect_relation<equal_to, projected<iterator_t<Rng>, P>, T const *>
+                        AND indirectly_copyable<
+                            iterator_t<Rng>,
+                            O>) constexpr remove_copy_result<borrowed_iterator_t<Rng>,
+                                                             O>                        //
+            EARANGES_FUNC(remove_copy)(Rng && rng, O out, T const & val, P proj = P{}) //
+            {
+                return (*this)(
+                    begin(rng), end(rng), eastl::move(out), val, eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(remove_copy)
+        EARANGES_FUNC_END(remove_copy)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

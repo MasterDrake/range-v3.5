@@ -25,38 +25,43 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    namespace views
+    namespace ranges
     {
-        struct addressof_fn
+        /// \addtogroup group-views
+        /// @{
+        namespace views
         {
-        private:
-            struct take_address
+            struct addressof_fn
             {
-                template<typename V>
-                constexpr V * operator()(V & value) const noexcept
+            private:
+                struct take_address
                 {
-                    return detail::addressof(value);
-                }
+                    template<typename V>
+                    constexpr V * operator()(V & value) const noexcept
+                    {
+                        return detail::addressof(value);
+                    }
+                };
+
+            public:
+                template(typename Rng)(
+                    requires viewable_range<Rng> AND input_range<Rng> AND
+                        eastl::is_lvalue_reference<range_reference_t<Rng>>::value)   //
+                    constexpr auto CPP_auto_fun(operator())(Rng && rng)(const)       //
+                    (return transform(all(static_cast<Rng &&>(rng)), take_address{}) //
+                    )
             };
 
-        public:
-            template(typename Rng)(requires viewable_range<Rng> AND input_range<Rng> AND eastl::is_lvalue_reference<range_reference_t<Rng>>::value) //
-            constexpr auto CPP_auto_fun(operator())(Rng && rng)(const) //
-            (
-                return transform(all(static_cast<Rng &&>(rng)), take_address{}) //
-            )
-        };
+            /// \relates addressof_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(view_closure<addressof_fn>, addressof)
+        } // namespace views
+        /// @}
+    } // namespace ranges
 
-        /// \relates addressof_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(view_closure<addressof_fn>, addressof)
-    } // namespace views
-    /// @}
-} // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

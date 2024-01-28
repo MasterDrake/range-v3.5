@@ -29,59 +29,60 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    struct range_access
+    namespace ranges
     {
-        /// \cond
-    private:
-        template<typename T>
-        static eastl::false_type single_pass_2_(long);
-        template<typename T>
-        static typename T::single_pass single_pass_2_(int);
-
-        template<typename T>
-        struct single_pass_
+        /// \addtogroup group-views
+        /// @{
+        struct range_access
         {
-            using type = decltype(range_access::single_pass_2_<T>(42));
-        };
+            /// \cond
+        private:
+            template<typename T>
+            static eastl::false_type single_pass_2_(long);
+            template<typename T>
+            static typename T::single_pass single_pass_2_(int);
 
-        template<typename T>
-        static eastl::false_type contiguous_2_(long);
-        template<typename T>
-        static typename T::contiguous contiguous_2_(int);
+            template<typename T>
+            struct single_pass_
+            {
+                using type = decltype(range_access::single_pass_2_<T>(42));
+            };
 
-        template<typename T>
-        struct contiguous_
-        {
-            using type = decltype(range_access::contiguous_2_<T>(42));
-        };
+            template<typename T>
+            static eastl::false_type contiguous_2_(long);
+            template<typename T>
+            static typename T::contiguous contiguous_2_(int);
 
-        template<typename T>
-        static basic_mixin<T> mixin_base_2_(long);
-        template<typename T>
-        static typename T::mixin mixin_base_2_(int);
+            template<typename T>
+            struct contiguous_
+            {
+                using type = decltype(range_access::contiguous_2_<T>(42));
+            };
 
-        template<typename Cur>
-        struct mixin_base_
-        {
-            using type = decltype(range_access::mixin_base_2_<Cur>(42));
-        };
+            template<typename T>
+            static basic_mixin<T> mixin_base_2_(long);
+            template<typename T>
+            static typename T::mixin mixin_base_2_(int);
 
+            template<typename Cur>
+            struct mixin_base_
+            {
+                using type = decltype(range_access::mixin_base_2_<Cur>(42));
+            };
 
-    public:
-        template<typename Cur>
-        using single_pass_t = meta::_t<single_pass_<Cur>>;
+        public:
+            template<typename Cur>
+            using single_pass_t = meta::_t<single_pass_<Cur>>;
 
-        template<typename Cur>
-        using contiguous_t = meta::_t<contiguous_<Cur>>;
+            template<typename Cur>
+            using contiguous_t = meta::_t<contiguous_<Cur>>;
 
-        template<typename Cur>
-        using mixin_base_t = meta::_t<mixin_base_<Cur>>;
+            template<typename Cur>
+            using mixin_base_t = meta::_t<mixin_base_<Cur>>;
 
-        // clang-format off
+            // clang-format off
         template<typename Rng>
         static constexpr auto CPP_auto_fun(begin_cursor)(Rng &rng)
         (
@@ -153,80 +154,82 @@ namespace ranges
     private:
         template<typename Cur>
         using sized_cursor_difference_t = decltype(range_access::distance_to(eastl::declval<Cur>(), eastl::declval<Cur>()));
-        // clang-format on
+            // clang-format on
 
-        template<typename T>
-        static std::ptrdiff_t cursor_difference_2_(detail::ignore_t);
-        template<typename T>
-        static sized_cursor_difference_t<T> cursor_difference_2_(long);
-        template<typename T>
-        static typename T::difference_type cursor_difference_2_(int);
+            template<typename T>
+            static std::ptrdiff_t cursor_difference_2_(detail::ignore_t);
+            template<typename T>
+            static sized_cursor_difference_t<T> cursor_difference_2_(long);
+            template<typename T>
+            static typename T::difference_type cursor_difference_2_(int);
 
-        template<typename T>
-        using cursor_reference_t = decltype(eastl::declval<T const &>().read());
+            template<typename T>
+            using cursor_reference_t = decltype(eastl::declval<T const &>().read());
 
-        template<typename T>
-        static meta::id<uncvref_t<cursor_reference_t<T>>> cursor_value_2_(long);
-        template<typename T>
-        static meta::id<typename T::value_type> cursor_value_2_(int);
+            template<typename T>
+            static meta::id<uncvref_t<cursor_reference_t<T>>> cursor_value_2_(long);
+            template<typename T>
+            static meta::id<typename T::value_type> cursor_value_2_(int);
 
 #ifdef EARANGES_WORKAROUND_CWG_1554
-        template<typename Cur>
-        struct cursor_difference
-        {
-            using type = decltype(range_access::cursor_difference_2_<Cur>(42));
-        };
+            template<typename Cur>
+            struct cursor_difference
+            {
+                using type = decltype(range_access::cursor_difference_2_<Cur>(42));
+            };
 
-        template<typename Cur>
-        struct cursor_value : decltype(range_access::cursor_value_2_<Cur>(42))
-        {};
+            template<typename Cur>
+            struct cursor_value : decltype(range_access::cursor_value_2_<Cur>(42))
+            {};
 #endif // EARANGES_WORKAROUND_CWG_1554
-    public:
+        public:
 #ifdef EARANGES_WORKAROUND_CWG_1554
-        template<typename Cur>
-        using cursor_difference_t = meta::_t<cursor_difference<Cur>>;
+            template<typename Cur>
+            using cursor_difference_t = meta::_t<cursor_difference<Cur>>;
 
-        template<typename Cur>
-        using cursor_value_t = meta::_t<cursor_value<Cur>>;
+            template<typename Cur>
+            using cursor_value_t = meta::_t<cursor_value<Cur>>;
 #else  // ^^^ workaround ^^^ / vvv no workaround vvv
-        template<typename Cur>
-        using cursor_difference_t = decltype(range_access::cursor_difference_2_<Cur>(42));
+            template<typename Cur>
+            using cursor_difference_t =
+                decltype(range_access::cursor_difference_2_<Cur>(42));
 
-        template<typename Cur>
-        using cursor_value_t = meta::_t<decltype(range_access::cursor_value_2_<Cur>(42))>;
+            template<typename Cur>
+            using cursor_value_t =
+                meta::_t<decltype(range_access::cursor_value_2_<Cur>(42))>;
 #endif // EARANGES_WORKAROUND_CWG_1554
 
-        template<typename Cur>
-        static constexpr Cur & pos(basic_iterator<Cur> & it) noexcept
-        {
-            return it.pos();
-        }
-        template<typename Cur>
-        static constexpr Cur const & pos(basic_iterator<Cur> const & it) noexcept
-        {
-            return it.pos();
-        }
-        template<typename Cur>
-        static constexpr Cur && pos(basic_iterator<Cur> && it) noexcept
-        {
-            return detail::move(it.pos());
-        }
+            template<typename Cur>
+            static constexpr Cur & pos(basic_iterator<Cur> & it) noexcept
+            {
+                return it.pos();
+            }
+            template<typename Cur>
+            static constexpr Cur const & pos(basic_iterator<Cur> const & it) noexcept
+            {
+                return it.pos();
+            }
+            template<typename Cur>
+            static constexpr Cur && pos(basic_iterator<Cur> && it) noexcept
+            {
+                return detail::move(it.pos());
+            }
 
-        template<typename Cur>
-        static constexpr Cur cursor(basic_iterator<Cur> it)
-        {
-            return eastl::move(it.pos());
-        }
-        /// endcond
-    };
-    /// @}
+            template<typename Cur>
+            static constexpr Cur cursor(basic_iterator<Cur> it)
+            {
+                return eastl::move(it.pos());
+            }
+            /// endcond
+        };
+        /// @}
 
-    /// \cond
-    namespace detail
-    {
-        //
-        // Concepts that the range cursor must model
-        // clang-format off
+        /// \cond
+        namespace detail
+        {
+            //
+            // Concepts that the range cursor must model
+            // clang-format off
         //
         /// \concept cursor
         /// \brief The \c cursor concept
@@ -396,19 +399,22 @@ namespace ranges
             random_access_cursor<T> && //
             range_access::contiguous_t<uncvref_t<T>>::value && //
             CPP_requires_ref(detail::contiguous_cursor_, T);
-        // clang-format on
+            // clang-format on
 
-        template<typename Cur, bool IsReadable>
-        EARANGES_INLINE_VAR constexpr bool is_writable_cursor_ = true;
+            template<typename Cur, bool IsReadable>
+            EARANGES_INLINE_VAR constexpr bool is_writable_cursor_ = true;
 
-        template<typename Cur>
-        EARANGES_INLINE_VAR constexpr bool is_writable_cursor_<Cur, true> = (bool) writable_cursor<Cur, range_access::cursor_value_t<Cur>>;
+            template<typename Cur>
+            EARANGES_INLINE_VAR constexpr bool is_writable_cursor_<Cur, true> =
+                (bool)writable_cursor<Cur, range_access::cursor_value_t<Cur>>;
 
-        template<typename Cur>
-        EARANGES_INLINE_VAR constexpr bool is_writable_cursor_v = is_writable_cursor_<Cur, (bool)readable_cursor<Cur>>;
-    } // namespace detail
-    /// \endcond
-} // namespace ranges
+            template<typename Cur>
+            EARANGES_INLINE_VAR constexpr bool is_writable_cursor_v =
+                is_writable_cursor_<Cur, (bool)readable_cursor<Cur>>;
+        } // namespace detail
+        /// \endcond
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -30,67 +30,81 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename O>
-    using replace_copy_result = detail::in_out_result<I, O>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename O>
+        using replace_copy_result = detail::in_out_result<I, O>;
 
-    EARANGES_FUNC_BEGIN(replace_copy)
+        EARANGES_FUNC_BEGIN(replace_copy)
 
-        /// \brief function template \c replace_copy
-        template(typename I,
-                 typename S,
-                 typename O,
-                 typename T1,
-                 typename T2,
-                 typename P = identity)(
-            requires input_iterator<I> AND sentinel_for<S, I> AND
-                output_iterator<O, T2 const &> AND indirectly_copyable<I, O> AND
-                indirect_relation<equal_to, projected<I, P>, T1 const *>)
-        constexpr replace_copy_result<I, O> EARANGES_FUNC(replace_copy)(I first,
-                                                                      S last,
-                                                                      O out,
-                                                                      T1 const & old_value,
-                                                                      T2 const & new_value,
-                                                                      P proj = {}) //
-        {
-            for(; first != last; ++first, ++out)
+            /// \brief function template \c replace_copy
+            template(typename I,
+                     typename S,
+                     typename O,
+                     typename T1,
+                     typename T2,
+                     typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    output_iterator<O, T2 const &>
+                        AND indirectly_copyable<I, O>
+                            AND indirect_relation<
+                                equal_to,
+                                projected<I, P>,
+                                T1 const *>) constexpr replace_copy_result<I, O>
+            EARANGES_FUNC(replace_copy)(I first,
+                                        S last,
+                                        O out,
+                                        T1 const & old_value,
+                                        T2 const & new_value,
+                                        P proj = {}) //
             {
-                auto && x = *first;
-                if(invoke(proj, x) == old_value)
-                    *out = new_value;
-                else
-                    *out = (decltype(x) &&)x;
+                for(; first != last; ++first, ++out)
+                {
+                    auto && x = *first;
+                    if(invoke(proj, x) == old_value)
+                        *out = new_value;
+                    else
+                        *out = (decltype(x) &&)x;
+                }
+                return {first, out};
             }
-            return {first, out};
-        }
 
-        /// \overload
-        template(typename Rng,
-                 typename O,
-                 typename T1,
-                 typename T2,
-                 typename P = identity)(
-            requires input_range<Rng> AND output_iterator<O, T2 const &> AND
-                indirectly_copyable<iterator_t<Rng>, O> AND
-                indirect_relation<equal_to, projected<iterator_t<Rng>, P>, T1 const *>)
-        constexpr replace_copy_result<borrowed_iterator_t<Rng>, O> EARANGES_FUNC(replace_copy)(
-            Rng && rng, O out, T1 const & old_value, T2 const & new_value, P proj = {}) //
-        {
-            return (*this)(begin(rng),
-                           end(rng),
-                           eastl::move(out),
-                           old_value,
-                           new_value,
-                           eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng,
+                     typename O,
+                     typename T1,
+                     typename T2,
+                     typename P = identity)(
+                requires input_range<Rng> AND output_iterator<O, T2 const &> AND
+                    indirectly_copyable<iterator_t<Rng>, O>
+                        AND indirect_relation<
+                            equal_to,
+                            projected<iterator_t<Rng>, P>,
+                            T1 const *>) constexpr replace_copy_result<borrowed_iterator_t<Rng>,
+                                                                       O>
+            EARANGES_FUNC(replace_copy)(Rng && rng,
+                                        O out,
+                                        T1 const & old_value,
+                                        T2 const & new_value,
+                                        P proj = {}) //
+            {
+                return (*this)(begin(rng),
+                               end(rng),
+                               eastl::move(out),
+                               old_value,
+                               new_value,
+                               eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(replace_copy)
+        EARANGES_FUNC_END(replace_copy)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

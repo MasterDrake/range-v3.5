@@ -31,31 +31,36 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename O>
-    using copy_n_result = detail::in_out_result<I, O>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename O>
+        using copy_n_result = detail::in_out_result<I, O>;
 
-    EARANGES_FUNC_BEGIN(copy_n)
+        EARANGES_FUNC_BEGIN(copy_n)
 
-        /// \brief function template \c copy_n
-        template(typename I, typename O, typename P = identity)(requires input_iterator<I> AND weakly_incrementable<O> AND indirectly_copyable<I, O>)
-        constexpr copy_n_result<I, O> EARANGES_FUNC(copy_n)(I first, iter_difference_t<I> n, O out)
-        {
-            EARANGES_EXPECT(0 <= n);
-            auto norig = n;
-            auto b = uncounted(first);
-            for(; n != 0; ++b, ++out, --n)
-                *out = *b;
-            return {recounted(first, b, norig), out};
-        }
+            /// \brief function template \c copy_n
+            template(typename I, typename O, typename P = identity)(
+                requires input_iterator<I> AND weakly_incrementable<O> AND
+                    indirectly_copyable<I, O>) constexpr copy_n_result<I, O>
+            EARANGES_FUNC(copy_n)(I first, iter_difference_t<I> n, O out)
+            {
+                EARANGES_EXPECT(0 <= n);
+                auto norig = n;
+                auto b = uncounted(first);
+                for(; n != 0; ++b, ++out, --n)
+                    *out = *b;
+                return {recounted(first, b, norig), out};
+            }
 
-    EARANGES_FUNC_END(copy_n)
+        EARANGES_FUNC_END(copy_n)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

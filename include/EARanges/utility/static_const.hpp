@@ -13,20 +13,23 @@
 #ifndef EARANGES_UTILITY_STATIC_CONST_HPP
 #define EARANGES_UTILITY_STATIC_CONST_HPP
 
-namespace ranges
+namespace eastl
 {
-    /// \ingroup group-utility
-
-    template<typename T>
-    struct static_const
+    namespace ranges
     {
-        static constexpr T value{};
-    };
+        /// \ingroup group-utility
 
-    /// \ingroup group-utility
-    /// \sa `static_const`
-    template<typename T>
-    constexpr T static_const<T>::value;
-} // namespace ranges
+        template<typename T>
+        struct static_const
+        {
+            static constexpr T value{};
+        };
+
+        /// \ingroup group-utility
+        /// \sa `static_const`
+        template<typename T>
+        constexpr T static_const<T>::value;
+    } // namespace ranges
+} // namespace eastl
 
 #endif

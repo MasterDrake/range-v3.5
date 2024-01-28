@@ -32,69 +32,78 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct split_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template<typename Rng>
-            using split_value_t =
-                meta::if_c<(bool)ranges::container<Rng>, //
-                           uncvref_t<Rng>, eastl::vector<range_value_t<Rng>>>;
-
-            template(typename T)(requires range<T &>)
-            constexpr auto operator()(T & t) const
+            struct split_fn
             {
-                return make_action_closure(bind_back(split_fn{}, detail::reference_wrapper_<T>(t)));
-            }
+                template<typename Rng>
+                using split_value_t =
+                    meta::if_c<(bool)ranges::container<Rng>, //
+                               uncvref_t<Rng>, eastl::vector<range_value_t<Rng>>>;
 
-            template<typename T>
-            constexpr auto operator()(T && t) const
-            {
-                return make_action_closure(bind_back(split_fn{}, static_cast<T &&>(t)));
-            }
+                template(typename T)(requires range<T &>) constexpr auto operator()(
+                    T & t) const
+                {
+                    return make_action_closure(
+                        bind_back(split_fn{}, detail::reference_wrapper_<T>(t)));
+                }
 
-            // BUGBUG something is not right with the actions. It should be possible
-            // to move a container into a split and have elements moved into the result.
-            template(typename Rng)(requires input_range<Rng> AND indirectly_comparable<iterator_t<Rng>, range_value_t<Rng> const *, ranges::equal_to>)
-            eastl::vector<split_value_t<Rng>> //
-            operator()(Rng && rng, range_value_t<Rng> val) const
-            {
-                return views::split(rng, eastl::move(val)) | to<eastl::vector<split_value_t<Rng>>>();
-            }
+                template<typename T>
+                constexpr auto operator()(T && t) const
+                {
+                    return make_action_closure(
+                        bind_back(split_fn{}, static_cast<T &&>(t)));
+                }
 
-            template(typename Rng, typename Pattern)(
-                requires input_range<Rng> AND viewable_range<Pattern> AND
-                    forward_range<Pattern> AND
-                    indirectly_comparable<
-                        iterator_t<Rng>,
-                        iterator_t<Pattern>,
-                        ranges::equal_to> AND
-                    (forward_range<Rng> || detail::tiny_range<Pattern>)) //
-            eastl::vector<split_value_t<Rng>> operator()(Rng && rng, Pattern && pattern)
-                const
-            {
-                return views::split(rng, static_cast<Pattern &&>(pattern)) | to<eastl::vector<split_value_t<Rng>>>();
-            }
+                // BUGBUG something is not right with the actions. It should be possible
+                // to move a container into a split and have elements moved into the
+                // result.
+                template(typename Rng)(
+                    requires input_range<Rng> AND indirectly_comparable<
+                        iterator_t<Rng>, range_value_t<Rng> const *, ranges::equal_to>)
+                    eastl::vector<split_value_t<Rng>> //
+                    operator()(Rng && rng, range_value_t<Rng> val) const
+                {
+                    return views::split(rng, eastl::move(val)) |
+                           to<eastl::vector<split_value_t<Rng>>>();
+                }
 
-            /// \cond
-            template<typename Rng, typename T>
-            invoke_result_t<split_fn, Rng, T &> //
-            operator()(Rng && rng, detail::reference_wrapper_<T> r) const
-            {
-                return (*this)(static_cast<Rng &&>(rng), r.get());
-            }
-            /// \endcond
-        };
+                template(typename Rng, typename Pattern)(
+                    requires input_range<Rng> AND viewable_range<Pattern> AND
+                        forward_range<Pattern>
+                            AND indirectly_comparable<iterator_t<Rng>,
+                                                      iterator_t<Pattern>,
+                                                      ranges::equal_to>
+                                AND(forward_range<Rng> || detail::tiny_range<Pattern>)) //
+                    eastl::vector<split_value_t<Rng>>
+                    operator()(Rng && rng, Pattern && pattern) const
+                {
+                    return views::split(rng, static_cast<Pattern &&>(pattern)) |
+                           to<eastl::vector<split_value_t<Rng>>>();
+                }
 
-        /// \relates actions::split_fn
-        EARANGES_INLINE_VARIABLE(split_fn, split)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+                /// \cond
+                template<typename Rng, typename T>
+                invoke_result_t<split_fn, Rng, T &> //
+                operator()(Rng && rng, detail::reference_wrapper_<T> r) const
+                {
+                    return (*this)(static_cast<Rng &&>(rng), r.get());
+                }
+                /// \endcond
+            };
+
+            /// \relates actions::split_fn
+            EARANGES_INLINE_VARIABLE(split_fn, split)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

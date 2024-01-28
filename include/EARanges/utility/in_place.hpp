@@ -20,13 +20,16 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \ingroup group-utility
-    struct in_place_t
-    {};
-    EARANGES_INLINE_VARIABLE(in_place_t, in_place)
-} // namespace ranges
+    namespace ranges
+    {
+        /// \ingroup group-utility
+        struct in_place_t
+        {};
+        EARANGES_INLINE_VARIABLE(in_place_t, in_place)
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

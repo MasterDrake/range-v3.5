@@ -55,167 +55,182 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        template<typename I, typename C, typename P>
-        inline constexpr I unguarded_partition(I first, I last, C & pred, P & proj)
+        /// \cond
+        namespace detail
         {
-            I mid = first + (last - first) / 2, penultimate = ranges::prev(last);
-            auto &&x = *first, &&y = *mid, &&z = *penultimate;
-            auto &&a = invoke(proj, (decltype(x) &&)x),
-                 &&b = invoke(proj, (decltype(y) &&)y),
-                 &&c = invoke(proj, (decltype(z) &&)z);
-
-            // Find the median:
-            I pivot_pnt =
-                invoke(pred, a, b)
-                    ? (invoke(pred, b, c) ? mid
-                                          : (invoke(pred, a, c) ? penultimate : first))
-                    : (invoke(pred, a, c) ? first
-                                          : (invoke(pred, b, c) ? penultimate : mid));
-
-            // Do the partition:
-            while(true)
+            template<typename I, typename C, typename P>
+            inline constexpr I unguarded_partition(I first, I last, C & pred, P & proj)
             {
-                auto && v = *pivot_pnt;
-                auto && pivot = invoke(proj, (decltype(v) &&)v);
-                while(invoke(pred, invoke(proj, *first), pivot))
-                    ++first;
-                --last;
-                while(invoke(pred, pivot, invoke(proj, *last)))
+                I mid = first + (last - first) / 2, penultimate = ranges::prev(last);
+                auto &&x = *first, &&y = *mid, &&z = *penultimate;
+                auto &&a = invoke(proj, (decltype(x) &&)x),
+                     &&b = invoke(proj, (decltype(y) &&)y),
+                     &&c = invoke(proj, (decltype(z) &&)z);
+
+                // Find the median:
+                I pivot_pnt =
+                    invoke(pred, a, b)
+                        ? (invoke(pred, b, c)
+                               ? mid
+                               : (invoke(pred, a, c) ? penultimate : first))
+                        : (invoke(pred, a, c) ? first
+                                              : (invoke(pred, b, c) ? penultimate : mid));
+
+                // Do the partition:
+                while(true)
+                {
+                    auto && v = *pivot_pnt;
+                    auto && pivot = invoke(proj, (decltype(v) &&)v);
+                    while(invoke(pred, invoke(proj, *first), pivot))
+                        ++first;
                     --last;
-                if(!(first < last))
-                    return first;
-                ranges::iter_swap(first, last);
-                pivot_pnt =
-                    pivot_pnt == first ? last : (pivot_pnt == last ? first : pivot_pnt);
-                ++first;
+                    while(invoke(pred, pivot, invoke(proj, *last)))
+                        --last;
+                    if(!(first < last))
+                        return first;
+                    ranges::iter_swap(first, last);
+                    pivot_pnt = pivot_pnt == first
+                                    ? last
+                                    : (pivot_pnt == last ? first : pivot_pnt);
+                    ++first;
+                }
             }
-        }
 
-        template<typename I, typename C, typename P>
-        inline constexpr void unguarded_linear_insert(I last, 
-                                                      iter_value_t<I> val, 
-                                                      C & pred,
-                                                      P & proj)
-        {
-            I next_ = prev(last);
-            while(invoke(pred, invoke(proj, val), invoke(proj, *next_)))
+            template<typename I, typename C, typename P>
+            inline constexpr void unguarded_linear_insert(I last, iter_value_t<I> val,
+                                                          C & pred, P & proj)
             {
-                *last = iter_move(next_);
-                last = next_;
-                --next_;
+                I next_ = prev(last);
+                while(invoke(pred, invoke(proj, val), invoke(proj, *next_)))
+                {
+                    *last = iter_move(next_);
+                    last = next_;
+                    --next_;
+                }
+                *last = eastl::move(val);
             }
-            *last = eastl::move(val);
-        }
 
-        template<typename I, typename C, typename P>
-        inline constexpr void linear_insert(I first, I last, C & pred, P & proj)
-        {
-            iter_value_t<I> val = iter_move(last);
-            if(invoke(pred, invoke(proj, val), invoke(proj, *first)))
+            template<typename I, typename C, typename P>
+            inline constexpr void linear_insert(I first, I last, C & pred, P & proj)
             {
-                move_backward(first, last, last + 1);
-                *first = eastl::move(val);
+                iter_value_t<I> val = iter_move(last);
+                if(invoke(pred, invoke(proj, val), invoke(proj, *first)))
+                {
+                    move_backward(first, last, last + 1);
+                    *first = eastl::move(val);
+                }
+                else
+                    detail::unguarded_linear_insert(last, eastl::move(val), pred, proj);
             }
-            else
-                detail::unguarded_linear_insert(last, eastl::move(val), pred, proj);
-        }
 
-        template<typename I, typename C, typename P>
-        inline constexpr void insertion_sort(I first, I last, C & pred, P & proj)
-        {
-            if(first == last)
-                return;
-            for(I i = next(first); i != last; ++i)
-                detail::linear_insert(first, i, pred, proj);
-        }
-
-        template<typename I, typename C, typename P>
-        inline constexpr void unguarded_insertion_sort(I first, I last, C & pred, P & proj)
-        {
-            for(I i = first; i != last; ++i)
-                detail::unguarded_linear_insert(i, iter_move(i), pred, proj);
-        }
-
-        constexpr int introsort_threshold()
-        {
-            return 16;
-        }
-
-        template<typename I, typename C, typename P>
-        inline constexpr void final_insertion_sort(I first, I last, C & pred, P & proj)
-        {
-            if(last - first > detail::introsort_threshold())
+            template<typename I, typename C, typename P>
+            inline constexpr void insertion_sort(I first, I last, C & pred, P & proj)
             {
-                detail::insertion_sort(first, first + detail::introsort_threshold(), pred, proj);
-                detail::unguarded_insertion_sort(first + detail::introsort_threshold(), last, pred, proj);
+                if(first == last)
+                    return;
+                for(I i = next(first); i != last; ++i)
+                    detail::linear_insert(first, i, pred, proj);
             }
-            else
-                detail::insertion_sort(first, last, pred, proj);
-        }
 
-        template<typename Size>
-        inline constexpr Size log2(Size n)
-        {
-            Size k = 0;
-            for(; n != 1; n >>= 1)
-                ++k;
-            return k;
-        }
-
-        template<typename I, typename Size, typename C, typename P>
-        inline constexpr void introsort_loop(I first, I last, Size depth_limit, C & pred, P & proj)
-        {
-            while(last - first > detail::introsort_threshold())
+            template<typename I, typename C, typename P>
+            inline constexpr void unguarded_insertion_sort(I first, I last, C & pred,
+                                                           P & proj)
             {
-                if(depth_limit == 0)
-                    return partial_sort(first, last, last, eastl::ref(pred), eastl::ref(proj)), void();
-                I cut = detail::unguarded_partition(first, last, pred, proj);
-                detail::introsort_loop(cut, last, --depth_limit, pred, proj);
-                last = cut;
+                for(I i = first; i != last; ++i)
+                    detail::unguarded_linear_insert(i, iter_move(i), pred, proj);
             }
-        }
-    } // namespace detail
-    /// \endcond
 
-    /// \addtogroup group-algorithms
-    /// @{
-
-    // Introsort: Quicksort to a certain depth, then Heapsort. Insertion
-    // sort below a certain threshold.
-    // TODO Forward iterators, like EoP? -Eric Niebler
-
-    EARANGES_FUNC_BEGIN(sort)
-
-        /// \brief function template \c sort
-        template(typename I, typename S, typename C = less, typename P = identity)(requires sortable<I, C, P> AND random_access_iterator<I> AND sentinel_for<S, I>)
-        constexpr I EARANGES_FUNC(sort)(I first, S end_, C pred = C{}, P proj = P{})
-        {
-            I last = ranges::next(first, eastl::move(end_));
-            if(first != last)
+            constexpr int introsort_threshold()
             {
-                detail::introsort_loop(first, last, detail::log2(last - first) * 2, pred, proj);
-                detail::final_insertion_sort(first, last, pred, proj);
+                return 16;
             }
-            return last;
-        }
 
-        /// \overload
-        template(typename Rng, typename C = less, typename P = identity)(requires sortable<iterator_t<Rng>, C, P> AND random_access_range<Rng>)
-        constexpr borrowed_iterator_t<Rng> //
-        EARANGES_FUNC(sort)(Rng && rng, C pred = C{}, P proj = P{}) //
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
-        }
+            template<typename I, typename C, typename P>
+            inline constexpr void final_insertion_sort(I first, I last, C & pred,
+                                                       P & proj)
+            {
+                if(last - first > detail::introsort_threshold())
+                {
+                    detail::insertion_sort(
+                        first, first + detail::introsort_threshold(), pred, proj);
+                    detail::unguarded_insertion_sort(
+                        first + detail::introsort_threshold(), last, pred, proj);
+                }
+                else
+                    detail::insertion_sort(first, last, pred, proj);
+            }
 
-    EARANGES_FUNC_END(sort)
+            template<typename Size>
+            inline constexpr Size log2(Size n)
+            {
+                Size k = 0;
+                for(; n != 1; n >>= 1)
+                    ++k;
+                return k;
+            }
 
-    /// @}
-} // namespace ranges
+            template<typename I, typename Size, typename C, typename P>
+            inline constexpr void introsort_loop(I first, I last, Size depth_limit,
+                                                 C & pred, P & proj)
+            {
+                while(last - first > detail::introsort_threshold())
+                {
+                    if(depth_limit == 0)
+                        return partial_sort(
+                                   first, last, last, eastl::ref(pred), eastl::ref(proj)),
+                               void();
+                    I cut = detail::unguarded_partition(first, last, pred, proj);
+                    detail::introsort_loop(cut, last, --depth_limit, pred, proj);
+                    last = cut;
+                }
+            }
+        } // namespace detail
+        /// \endcond
+
+        /// \addtogroup group-algorithms
+        /// @{
+
+        // Introsort: Quicksort to a certain depth, then Heapsort. Insertion
+        // sort below a certain threshold.
+        // TODO Forward iterators, like EoP? -Eric Niebler
+
+        EARANGES_FUNC_BEGIN(sort)
+
+            /// \brief function template \c sort
+            template(typename I, typename S, typename C = less, typename P = identity)(
+                requires sortable<I, C, P> AND random_access_iterator<I> AND
+                    sentinel_for<S, I>) constexpr I
+            EARANGES_FUNC(sort)(I first, S end_, C pred = C{}, P proj = P{})
+            {
+                I last = ranges::next(first, eastl::move(end_));
+                if(first != last)
+                {
+                    detail::introsort_loop(
+                        first, last, detail::log2(last - first) * 2, pred, proj);
+                    detail::final_insertion_sort(first, last, pred, proj);
+                }
+                return last;
+            }
+
+            /// \overload
+            template(typename Rng, typename C = less, typename P = identity)(
+                requires sortable<iterator_t<Rng>, C, P> AND
+                    random_access_range<Rng>) constexpr borrowed_iterator_t<Rng> //
+            EARANGES_FUNC(sort)(Rng && rng, C pred = C{}, P proj = P{})          //
+            {
+                return (*this)(
+                    begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
+            }
+
+        EARANGES_FUNC_END(sort)
+
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

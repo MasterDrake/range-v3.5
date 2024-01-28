@@ -39,41 +39,19 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        template<typename I, typename S, typename C, typename P>
-        constexpr I partition_impl(I first, S last, C pred, P proj, eastl::forward_iterator_tag)
-        {
-            while(true)
-            {
-                if(first == last)
-                    return first;
-                if(!invoke(pred, invoke(proj, *first)))
-                    break;
-                ++first;
-            }
-            for(I p = first; ++p != last;)
-            {
-                if(invoke(pred, invoke(proj, *p)))
-                {
-                    ranges::iter_swap(first, p);
-                    ++first;
-                }
-            }
-            return first;
-        }
+        /// \addtogroup group-algorithms
+        /// @{
 
-        template<typename I, typename S, typename C, typename P>
-        constexpr I partition_impl(I first, S end_, C pred, P proj, eastl::bidirectional_iterator_tag)
+        /// \cond
+        namespace detail
         {
-            I last = ranges::next(first, end_);
-            while(true)
+            template<typename I, typename S, typename C, typename P>
+            constexpr I partition_impl(I first, S last, C pred, P proj,
+                                       eastl::forward_iterator_tag)
             {
                 while(true)
                 {
@@ -83,45 +61,78 @@ namespace ranges
                         break;
                     ++first;
                 }
-                do
+                for(I p = first; ++p != last;)
                 {
-                    if(first == --last)
-                        return first;
-                } while(!invoke(pred, invoke(proj, *last)));
-                ranges::iter_swap(first, last);
-                ++first;
+                    if(invoke(pred, invoke(proj, *p)))
+                    {
+                        ranges::iter_swap(first, p);
+                        ++first;
+                    }
+                }
+                return first;
             }
-        }
-    } // namespace detail
-    /// \endcond
 
-    EARANGES_FUNC_BEGIN(partition)
+            template<typename I, typename S, typename C, typename P>
+            constexpr I partition_impl(I first, S end_, C pred, P proj,
+                                       eastl::bidirectional_iterator_tag)
+            {
+                I last = ranges::next(first, end_);
+                while(true)
+                {
+                    while(true)
+                    {
+                        if(first == last)
+                            return first;
+                        if(!invoke(pred, invoke(proj, *first)))
+                            break;
+                        ++first;
+                    }
+                    do
+                    {
+                        if(first == --last)
+                            return first;
+                    } while(!invoke(pred, invoke(proj, *last)));
+                    ranges::iter_swap(first, last);
+                    ++first;
+                }
+            }
+        } // namespace detail
+        /// \endcond
 
-        /// \brief function template \c partition
-        template(typename I, typename S, typename C, typename P = identity)(requires permutable<I> AND sentinel_for<S, I> AND indirect_unary_predicate<C, projected<I, P>>)
-        constexpr I EARANGES_FUNC(partition)(I first, S last, C pred, P proj = P{})
-        {
-            return detail::partition_impl(eastl::move(first),
-                                          eastl::move(last),
-                                          eastl::move(pred),
-                                          eastl::move(proj),
-                                          iterator_tag_of<I>());
-        }
+        EARANGES_FUNC_BEGIN(partition)
 
-        /// \overload
-        template(typename Rng, typename C, typename P = identity)(requires forward_range<Rng> AND permutable<iterator_t<Rng>> AND indirect_unary_predicate<C, projected<iterator_t<Rng>, P>>)
-        constexpr borrowed_iterator_t<Rng> EARANGES_FUNC(partition)(Rng && rng, C pred, P proj = P{})
-        {
-            return detail::partition_impl(begin(rng),
-                                          end(rng),
-                                          eastl::move(pred),
-                                          eastl::move(proj),
-                                          iterator_tag_of<iterator_t<Rng>>());
-        }
+            /// \brief function template \c partition
+            template(typename I, typename S, typename C, typename P = identity)(
+                requires permutable<I> AND sentinel_for<S, I> AND
+                    indirect_unary_predicate<C, projected<I, P>>) constexpr I
+            EARANGES_FUNC(partition)(I first, S last, C pred, P proj = P{})
+            {
+                return detail::partition_impl(eastl::move(first),
+                                              eastl::move(last),
+                                              eastl::move(pred),
+                                              eastl::move(proj),
+                                              iterator_tag_of<I>());
+            }
 
-    EARANGES_FUNC_END(partition)
-    /// @}
-} // namespace ranges
+            /// \overload
+            template(typename Rng, typename C, typename P = identity)(
+                requires forward_range<Rng> AND permutable<iterator_t<Rng>> AND
+                    indirect_unary_predicate<
+                        C,
+                        projected<iterator_t<Rng>, P>>) constexpr borrowed_iterator_t<Rng>
+            EARANGES_FUNC(partition)(Rng && rng, C pred, P proj = P{})
+            {
+                return detail::partition_impl(begin(rng),
+                                              end(rng),
+                                              eastl::move(pred),
+                                              eastl::move(proj),
+                                              iterator_tag_of<iterator_t<Rng>>());
+            }
+
+        EARANGES_FUNC_END(partition)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

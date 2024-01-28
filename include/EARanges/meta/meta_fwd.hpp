@@ -225,89 +225,78 @@
 #define META_TEMPLATE_VIS
 #endif
 /// \endcond
-
-namespace meta
+namespace eastl
 {
+    namespace meta
+    {
 #if META_CXX_INTEGER_SEQUENCE
-    using eastl::integer_sequence;
+        using eastl::integer_sequence;
 #else
-    template <typename T, T...>
-    struct integer_sequence;
+        template<typename T, T...>
+        struct integer_sequence;
 #endif
 
-    template <typename... Ts>
-    struct list;
+        template<typename... Ts>
+        struct list;
 
-    template <typename T>
-    struct id;
+        template<typename T>
+        struct id;
 
-    template <template <typename...> class>
-    struct quote;
+        template<template<typename...> class>
+        struct quote;
 
-    template <typename T, template <T...> class F>
-    struct quote_i;
+        template<typename T, template<T...> class F>
+        struct quote_i;
 
-    template <template <typename...> class C, typename... Ts>
-    struct defer;
+        template<template<typename...> class C, typename... Ts>
+        struct defer;
 
-    template <typename T, template <T...> class C, T... Is>
-    struct defer_i;
+        template<typename T, template<T...> class C, T... Is>
+        struct defer_i;
 
 #if META_CXX_VARIABLE_TEMPLATES || defined(META_DOXYGEN_INVOKED)
-    /// is_v
-    /// Test whether a type \p T is an instantiation of class
-    /// template \p C.
-    /// \ingroup trait
-    template <typename, template <typename...> class>
-    META_INLINE_VAR constexpr bool is_v = false;
-    template <typename... Ts, template <typename...> class C>
-    META_INLINE_VAR constexpr bool is_v<C<Ts...>, C> = true;
+        /// is_v
+        /// Test whether a type \p T is an instantiation of class
+        /// template \p C.
+        /// \ingroup trait
+        template<typename, template<typename...> class>
+        META_INLINE_VAR constexpr bool is_v = false;
+        template<typename... Ts, template<typename...> class C>
+        META_INLINE_VAR constexpr bool is_v<C<Ts...>, C> = true;
 #endif
 
 #ifdef META_CONCEPT
-    namespace detail
-    {
-        template <bool B>
-        META_INLINE_VAR constexpr bool barrier = B;
+        namespace detail
+        {
+            template<bool B>
+            META_INLINE_VAR constexpr bool barrier = B;
 
-        template <class T, T> struct require_constant; // not defined
-    }
+            template<class T, T>
+            struct require_constant; // not defined
+        }                            // namespace detail
 
-    template <typename...>
-    META_CONCEPT is_true = META_CONCEPT_BARRIER(true);
+        template<typename...>
+        META_CONCEPT is_true = META_CONCEPT_BARRIER(true);
 
-    template <typename T, typename U>
-    META_CONCEPT same_as =
-        META_CONCEPT_BARRIER(META_IS_SAME(T, U));
+        template<typename T, typename U>
+        META_CONCEPT same_as = META_CONCEPT_BARRIER(META_IS_SAME(T, U));
 
-    template <template <typename...> class C, typename... Ts>
-    META_CONCEPT valid = requires
-    {
-        typename C<Ts...>;
-    };
+        template<template<typename...> class C, typename... Ts>
+        META_CONCEPT valid = requires { typename C<Ts...>; };
 
-    template <typename T, template <T...> class C, T... Is>
-    META_CONCEPT valid_i = requires
-    {
-        typename C<Is...>;
-    };
+        template<typename T, template<T...> class C, T... Is>
+        META_CONCEPT valid_i = requires { typename C<Is...>; };
 
-    template <typename T>
-    META_CONCEPT trait = requires
-    {
-        typename T::type;
-    };
+        template<typename T>
+        META_CONCEPT trait = requires { typename T::type; };
 
-    template <typename T>
-    META_CONCEPT invocable = requires
-    {
-        typename quote<T::template invoke>;
-    };
+        template<typename T>
+        META_CONCEPT invocable = requires { typename quote<T::template invoke>; };
 
-    template <typename T>
-    META_CONCEPT list_like = is_v<T, list>;
+        template<typename T>
+        META_CONCEPT list_like = is_v<T, list>;
 
-    // clang-format off
+        // clang-format off
     template <typename T>
     META_CONCEPT integral = requires
     {
@@ -343,15 +332,16 @@ namespace meta
 
         // { T{} } -> typename T::value_type;
     };
-    // clang-format on
+        // clang-format on
 #endif // META_CONCEPT
 
-    namespace extension
-    {
-        template <META_TYPE_CONSTRAINT(invocable) F, typename L>
-        struct apply;
-    }
-} // namespace meta
+        namespace extension
+        {
+            template<META_TYPE_CONSTRAINT(invocable) F, typename L>
+            struct apply;
+        }
+    } // namespace meta
+} // namespace eastl
 
 #ifdef __clang__
 #pragma GCC diagnostic pop

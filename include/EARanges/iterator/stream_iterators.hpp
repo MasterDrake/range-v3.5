@@ -27,7 +27,11 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+//TODO: Remove chair traits...
+
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-iterator
     /// @{
@@ -238,8 +242,6 @@ namespace ranges
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-namespace eastl
-{
     template<typename T, typename Char, typename Traits>
     struct iterator_traits<::ranges::ostream_iterator<T, Char, Traits>>
       : ::ranges::detail::std_output_iterator_traits<>

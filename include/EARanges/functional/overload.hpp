@@ -25,150 +25,156 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-functional
-    /// @{
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        struct _id
+        /// \addtogroup group-functional
+        /// @{
+        /// \cond
+        namespace detail
         {
+            struct _id
+            {
+                template<typename T>
+                using invoke = T;
+            };
+            struct _ref
+            {
+                template<typename T>
+                using invoke = T &;
+            };
+            struct _cref
+            {
+                template<typename T>
+                using invoke = T const &;
+            };
             template<typename T>
-            using invoke = T;
-        };
-        struct _ref
+            struct _bind_front
+            {
+                template<typename... Args>
+                using invoke = invoke_result_t<T, Args...>;
+            };
+        } // namespace detail
+        /// \endcond
+
+        template<typename... Ts>
+        struct overloaded;
+
+        template<>
+        struct overloaded<>
         {
-            template<typename T>
-            using invoke = T &;
+        private:
+            template<typename...>
+            friend struct overloaded;
+            template<typename, typename...>
+            using _result_t = void;
         };
-        struct _cref
+
+        template<typename First, typename... Rest>
+        struct overloaded<First, Rest...>
         {
-            template<typename T>
-            using invoke = T const &;
-        };
-        template<typename T>
-        struct _bind_front
-        {
-            template<typename... Args>
-            using invoke = invoke_result_t<T, Args...>;
-        };
-    } // namespace detail
-    /// \endcond
+        private:
+            template<typename...>
+            friend struct overloaded;
 
-    template<typename... Ts>
-    struct overloaded;
+            EARANGES_NO_UNIQUE_ADDRESS
+            First first_;
+            EARANGES_NO_UNIQUE_ADDRESS
+            overloaded<Rest...> second_;
 
-    template<>
-    struct overloaded<>
-    {
-    private:
-        template<typename...>
-        friend struct overloaded;
-        template<typename, typename...>
-        using _result_t = void;
-    };
+            template<typename Qual>
+            using _result_first = detail::_bind_front<meta::invoke<Qual, First>>;
+            template<typename Qual>
+            struct _result_second
+            {
+                template<typename... Args>
+                using invoke =
+                    typename overloaded<Rest...>::template _result_t<Qual, Args...>;
+            };
 
-    template<typename First, typename... Rest>
-    struct overloaded<First, Rest...>
-    {
-    private:
-        template<typename...>
-        friend struct overloaded;
-
-        EARANGES_NO_UNIQUE_ADDRESS
-        First first_;
-        EARANGES_NO_UNIQUE_ADDRESS
-        overloaded<Rest...> second_;
-
-        template<typename Qual>
-        using _result_first = detail::_bind_front<meta::invoke<Qual, First>>;
-        template<typename Qual>
-        struct _result_second
-        {
-            template<typename... Args>
-            using invoke = typename overloaded<Rest...>
-                ::template _result_t<Qual, Args...>;
-        };
-
-        template<typename Qual, typename... Args>
-        using _result_t =
-            meta::invoke<
-                meta::conditional_t<
-                    (bool) invocable<meta::invoke<Qual, First>, Args...>,
-                    _result_first<Qual>,
-                    _result_second<Qual>>,
+            template<typename Qual, typename... Args>
+            using _result_t = meta::invoke<
+                meta::conditional_t<(bool)invocable<meta::invoke<Qual, First>, Args...>,
+                                    _result_first<Qual>, _result_second<Qual>>,
                 Args...>;
 
-    public:
-        overloaded() = default;
-        constexpr overloaded(First first, Rest... rest)
-          : first_(static_cast<First &&>(first))
-          , second_{static_cast<Rest &&>(rest)...}
-        {}
+        public:
+            overloaded() = default;
+            constexpr overloaded(First first, Rest... rest)
+              : first_(static_cast<First &&>(first))
+              , second_{static_cast<Rest &&>(rest)...}
+            {}
 
-        template(typename... Args)(
-            requires invocable<First, Args...>)
-        constexpr _result_t<detail::_id, Args...> operator()(Args &&... args) &&
-        {
-            return invoke((First &&) first_, (Args &&) args...);
-        }
-        template(typename... Args)(
-            requires (!invocable<First, Args...>) AND
-                invocable<overloaded<Rest...>, Args...>)
-        constexpr _result_t<detail::_id, Args...> operator()(Args &&... args) &&
-        {
-            return invoke((overloaded<Rest...> &&) second_, (Args &&) args...);
-        }
+            template(typename... Args)(
+                requires invocable<First, Args...>) constexpr _result_t<detail::_id,
+                                                                        Args...>
+            operator()(Args &&... args) &&
+            {
+                return invoke((First &&)first_, (Args &&)args...);
+            }
+            template(typename... Args)(
+                requires(!invocable<First, Args...>)
+                    AND invocable<overloaded<Rest...>,
+                                  Args...>) constexpr _result_t<detail::_id, Args...>
+            operator()(Args &&... args) &&
+            {
+                return invoke((overloaded<Rest...> &&)second_, (Args &&)args...);
+            }
 
-        template(typename... Args)(
-            requires invocable<First &, Args...>)
-        constexpr _result_t<detail::_ref, Args...> operator()(Args &&... args) &
-        {
-            return invoke(first_, (Args &&) args...);
-        }
-        template(typename... Args)(
-            requires (!invocable<First &, Args...>) AND
-                invocable<overloaded<Rest...> &, Args...>)
-        constexpr _result_t<detail::_ref, Args...> operator()(Args &&... args) &
-        {
-            return invoke(second_, (Args &&) args...);
-        }
+            template(typename... Args)(
+                requires invocable<First &, Args...>) constexpr _result_t<detail::_ref,
+                                                                          Args...>
+            operator()(Args &&... args) &
+            {
+                return invoke(first_, (Args &&)args...);
+            }
+            template(typename... Args)(
+                requires(!invocable<First &, Args...>)
+                    AND invocable<overloaded<Rest...> &,
+                                  Args...>) constexpr _result_t<detail::_ref, Args...>
+            operator()(Args &&... args) &
+            {
+                return invoke(second_, (Args &&)args...);
+            }
 
-        template(typename... Args)(
-            requires invocable<First const &, Args...>)
-        constexpr _result_t<detail::_cref, Args...> operator()(Args &&... args) const &
-        {
-            return invoke(first_, (Args &&) args...);
-        }
-        template(typename... Args)(
-            requires (!invocable<First const &, Args...>) AND
-                invocable<overloaded<Rest...> const &, Args...>)
-        constexpr _result_t<detail::_cref, Args...> operator()(Args &&... args) const &
-        {
-            return invoke(second_, (Args &&) args...);
-        }
-    };
+            template(typename... Args)(
+                requires invocable<First const &,
+                                   Args...>) constexpr _result_t<detail::_cref, Args...>
+            operator()(Args &&... args) const &
+            {
+                return invoke(first_, (Args &&)args...);
+            }
+            template(typename... Args)(
+                requires(!invocable<First const &, Args...>)
+                    AND invocable<overloaded<Rest...> const &,
+                                  Args...>) constexpr _result_t<detail::_cref, Args...>
+            operator()(Args &&... args) const &
+            {
+                return invoke(second_, (Args &&)args...);
+            }
+        };
 
-    struct overload_fn
-    {
-        template<typename Fn>
-        constexpr Fn operator()(Fn fn) const
+        struct overload_fn
         {
-            return fn;
-        }
-        template<typename... Fns>
-        constexpr overloaded<Fns...> operator()(Fns... fns) const
-        {
-            return overloaded<Fns...>{static_cast<Fns &&>(fns)...};
-        }
-    };
+            template<typename Fn>
+            constexpr Fn operator()(Fn fn) const
+            {
+                return fn;
+            }
+            template<typename... Fns>
+            constexpr overloaded<Fns...> operator()(Fns... fns) const
+            {
+                return overloaded<Fns...>{static_cast<Fns &&>(fns)...};
+            }
+        };
 
-    /// \ingroup group-functional
-    /// \sa `overload_fn`
-    EARANGES_INLINE_VARIABLE(overload_fn, overload)
-    /// @}
-} // namespace ranges
+        /// \ingroup group-functional
+        /// \sa `overload_fn`
+        EARANGES_INLINE_VARIABLE(overload_fn, overload)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

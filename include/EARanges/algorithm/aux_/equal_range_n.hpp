@@ -32,59 +32,61 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    namespace aux
+    namespace ranges
     {
-        struct equal_range_n_fn
+        namespace aux
         {
-            template(typename I, typename V, typename R = less, typename P = identity)(
-                requires forward_iterator<I> AND indirect_strict_weak_order<R, V const *, projected<I, P>>)
-            constexpr subrange<I> operator()(I first,
-                                             iter_difference_t<I> dist,
-                                             V const & val,
-                                             R pred = R{},
-                                             P proj = P{}) const
+            struct equal_range_n_fn
             {
-                if(0 < dist)
+                template(typename I, typename V, typename R = less,
+                         typename P = identity)(
+                    requires forward_iterator<I> AND indirect_strict_weak_order<
+                        R, V const *, projected<I, P>>) constexpr subrange<I>
+                operator()(I first, iter_difference_t<I> dist, V const & val,
+                           R pred = R{}, P proj = P{}) const
                 {
-                    do
+                    if(0 < dist)
                     {
-                        auto half = dist / 2;
-                        auto middle = ranges::next(first, half);
-                        auto && v = *middle;
-                        auto && pv = invoke(proj, (decltype(v) &&)v);
-                        if(invoke(pred, pv, val))
+                        do
                         {
-                            first = eastl::move(++middle);
-                            dist -= half + 1;
-                        }
-                        else if(invoke(pred, val, pv))
-                        {
-                            dist = half;
-                        }
-                        else
-                        {
-                            return {lower_bound_n(eastl::move(first),
-                                                  half,
-                                                  val,
-                                                  ranges::ref(pred),
-                                                  ranges::ref(proj)),
-                                    upper_bound_n(ranges::next(middle),
-                                                  dist - (half + 1),
-                                                  val,
-                                                  ranges::ref(pred),
-                                                  ranges::ref(proj))};
-                        }
-                    } while(0 != dist);
+                            auto half = dist / 2;
+                            auto middle = ranges::next(first, half);
+                            auto && v = *middle;
+                            auto && pv = invoke(proj, (decltype(v) &&)v);
+                            if(invoke(pred, pv, val))
+                            {
+                                first = eastl::move(++middle);
+                                dist -= half + 1;
+                            }
+                            else if(invoke(pred, val, pv))
+                            {
+                                dist = half;
+                            }
+                            else
+                            {
+                                return {lower_bound_n(eastl::move(first),
+                                                      half,
+                                                      val,
+                                                      ranges::ref(pred),
+                                                      ranges::ref(proj)),
+                                        upper_bound_n(ranges::next(middle),
+                                                      dist - (half + 1),
+                                                      val,
+                                                      ranges::ref(pred),
+                                                      ranges::ref(proj))};
+                            }
+                        } while(0 != dist);
+                    }
+                    return {first, first};
                 }
-                return {first, first};
-            }
-        };
+            };
 
-        EARANGES_INLINE_VARIABLE(equal_range_n_fn, equal_range_n)
-    } // namespace aux
-} // namespace ranges
+            EARANGES_INLINE_VARIABLE(equal_range_n_fn, equal_range_n)
+        } // namespace aux
+    }     // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

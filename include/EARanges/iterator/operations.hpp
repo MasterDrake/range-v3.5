@@ -16,9 +16,6 @@
 #include <EASTL/type_traits.h>
 #include <EASTL/utility.h>
 
-//#include <EASTL/type_traits.h>
-//#include <EASTL/utility.h>
-
 #include <EARanges/range_fwd.hpp>
 
 #include <EARanges/iterator/concepts.hpp>
@@ -27,7 +24,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-iterator
     /// @{
@@ -607,6 +606,7 @@ namespace ranges
 
     /// @}
 } // namespace ranges
+} //namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

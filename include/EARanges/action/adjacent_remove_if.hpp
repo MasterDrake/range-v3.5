@@ -28,38 +28,41 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct adjacent_remove_if_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename Pred, typename Proj = identity)(requires (!range<Pred>))
-            constexpr auto operator()(Pred pred, Proj proj = {}) const
+            struct adjacent_remove_if_fn
             {
-                return make_action_closure(bind_back(adjacent_remove_if_fn{}, eastl::move(pred), eastl::move(proj)));
-            }
+                template(typename Pred, typename Proj = identity)(requires(!range<Pred>)) constexpr auto
+                operator()(Pred pred, Proj proj = {}) const
+                {
+                    return make_action_closure(bind_back( adjacent_remove_if_fn{}, eastl::move(pred), eastl::move(proj)));
+                }
 
-            template(typename Rng, typename Pred, typename Proj = identity)(
-                requires forward_range<Rng> AND
-                    erasable_range<Rng, iterator_t<Rng>, sentinel_t<Rng>> AND
-                    indirect_relation<Pred, projected<iterator_t<Rng>, Proj>> AND
-                    permutable<iterator_t<Rng>>)
-            Rng operator()(Rng && rng, Pred pred, Proj proj = {}) const
-            {
-                auto i = adjacent_remove_if(rng, eastl::move(pred), eastl::move(proj));
-                erase(rng, eastl::move(i), end(rng));
-                return static_cast<Rng &&>(rng);
-            }
-        };
+                template(typename Rng, typename Pred, typename Proj = identity)(
+                    requires forward_range<Rng> AND
+                        erasable_range<Rng, iterator_t<Rng>, sentinel_t<Rng>>
+                            AND indirect_relation<Pred, projected<iterator_t<Rng>, Proj>>
+                                AND permutable<iterator_t<Rng>>) Rng
+                operator()(Rng && rng, Pred pred, Proj proj = {}) const
+                {
+                    auto i = adjacent_remove_if(rng, eastl::move(pred), eastl::move(proj));
+                    erase(rng, eastl::move(i), end(rng));
+                    return static_cast<Rng &&>(rng);
+                }
+            };
 
-        /// \relates actions::adjacent_remove_if_fn
-        EARANGES_INLINE_VARIABLE(adjacent_remove_if_fn, adjacent_remove_if)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            /// \relates actions::adjacent_remove_if_fn
+            EARANGES_INLINE_VARIABLE(adjacent_remove_if_fn, adjacent_remove_if)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

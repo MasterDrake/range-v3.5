@@ -33,7 +33,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-views
     /// @{
@@ -444,8 +446,6 @@ namespace ranges
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-namespace eastl
-{
     template<typename I, typename S, ::ranges::subrange_kind K>
     struct tuple_size<::ranges::subrange<I, S, K>> : eastl::integral_constant<size_t, 2>
     {};

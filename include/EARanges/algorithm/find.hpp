@@ -29,40 +29,48 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(find)
-        /// \brief template function \c find
-        ///
-        /// range-based version of the \c find eastl algorithm
-        ///
-        /// \pre `Rng` is a model of the `range` concept
-        /// \pre `I` is a model of the `input_iterator` concept
-        /// \pre `S` is a model of the `sentinel_for<I>` concept
-        /// \pre `P` is a model of the `invocable<iter_common_reference_t<I>>` concept
-        /// \pre The ResultType of `P` is equality_comparable with V
-        template(typename I, typename S, typename V, typename P = identity)(requires input_iterator<I> AND sentinel_for<S, I> AND indirect_relation<equal_to, projected<I, P>, V const *>)
-        constexpr I EARANGES_FUNC(find)(I first, S last, V const & val, P proj = P{})
-        {
-            for(; first != last; ++first)
-                if(invoke(proj, *first) == val)
-                    break;
-            return first;
-        }
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(find)
+            /// \brief template function \c find
+            ///
+            /// range-based version of the \c find eastl algorithm
+            ///
+            /// \pre `Rng` is a model of the `range` concept
+            /// \pre `I` is a model of the `input_iterator` concept
+            /// \pre `S` is a model of the `sentinel_for<I>` concept
+            /// \pre `P` is a model of the `invocable<iter_common_reference_t<I>>` concept
+            /// \pre The ResultType of `P` is equality_comparable with V
+            template(typename I, typename S, typename V, typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    indirect_relation<equal_to, projected<I, P>, V const *>) constexpr I
+            EARANGES_FUNC(find)(I first, S last, V const & val, P proj = P{})
+            {
+                for(; first != last; ++first)
+                    if(invoke(proj, *first) == val)
+                        break;
+                return first;
+            }
 
-        /// \overload
-        template(typename Rng, typename V, typename P = identity)(requires input_range<Rng> AND indirect_relation<equal_to, projected<iterator_t<Rng>, P>, V const *>)
-        constexpr borrowed_iterator_t<Rng> //
-        EARANGES_FUNC(find)(Rng && rng, V const & val, P proj = P{})
-        {
-            return (*this)(begin(rng), end(rng), val, eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename V, typename P = identity)(
+                requires input_range<Rng> AND
+                    indirect_relation<equal_to,
+                                      projected<iterator_t<Rng>, P>,
+                                      V const *>) constexpr borrowed_iterator_t<Rng> //
+            EARANGES_FUNC(find)(Rng && rng, V const & val, P proj = P{})
+            {
+                return (*this)(begin(rng), end(rng), val, eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(find)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(find)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

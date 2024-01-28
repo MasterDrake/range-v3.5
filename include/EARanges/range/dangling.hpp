@@ -26,33 +26,35 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \ingroup group-range
-    /// A placeholder for an iterator or a sentinel into a range that may
-    /// no longer be valid.
-    struct dangling
+    namespace ranges
     {
-        dangling() = default;
-        /// Implicit converting constructor; ignores argument
-        template(typename T)(requires not_same_as_<T, dangling>)
-        constexpr dangling(T &&)
-        {}
-    };
+        /// \ingroup group-range
+        /// A placeholder for an iterator or a sentinel into a range that may
+        /// no longer be valid.
+        struct dangling
+        {
+            dangling() = default;
+            /// Implicit converting constructor; ignores argument
+            template(typename T)(requires not_same_as_<T, dangling>) constexpr dangling(
+                T &&)
+            {}
+        };
 
-    /// \cond
-    namespace detail
-    {
-        template(class R, class U)(requires range<R>)
-            using maybe_dangling_ =     //
+        /// \cond
+        namespace detail
+        {
+            template(class R, class U)(requires range<R>) using maybe_dangling_ = //
                 meta::conditional_t<detail::_borrowed_range<R>, U, dangling>;
-    }
-    /// \endcond
+        }
+        /// \endcond
 
-    template<typename Rng>
-    using borrowed_iterator_t = detail::maybe_dangling_<Rng, iterator_t<Rng>>;
+        template<typename Rng>
+        using borrowed_iterator_t = detail::maybe_dangling_<Rng, iterator_t<Rng>>;
 
-} // namespace ranges
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -24,31 +24,36 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(fill)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(fill)
 
-        /// \brief function template \c fill
-        template(typename O, typename S, typename V)(requires output_iterator<O, V const &> AND sentinel_for<S, O>)
-        constexpr O EARANGES_FUNC(fill)(O first, S last, V const & val) //
-        {
-            for(; first != last; ++first)
-                *first = val;
-            return first;
-        }
+            /// \brief function template \c fill
+            template(typename O, typename S, typename V)(
+                requires output_iterator<O, V const &> AND sentinel_for<S, O>) constexpr O
+            EARANGES_FUNC(fill)(O first, S last, V const & val) //
+            {
+                for(; first != last; ++first)
+                    *first = val;
+                return first;
+            }
 
-        /// \overload
-        template(typename Rng, typename V)(requires output_range<Rng, V const &>)
-        constexpr borrowed_iterator_t<Rng> EARANGES_FUNC(fill)(Rng && rng, V const & val)
-        {
-            return (*this)(begin(rng), end(rng), val);
-        }
+            /// \overload
+            template(typename Rng, typename V)(
+                requires output_range<Rng, V const &>) constexpr borrowed_iterator_t<Rng>
+            EARANGES_FUNC(fill)(Rng && rng, V const & val)
+            {
+                return (*this)(begin(rng), end(rng), val);
+            }
 
-    EARANGES_FUNC_END(fill)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(fill)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -18,43 +18,45 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        // Extensions: the dangling story actually works, and result structs
-        // are conditionally equality_comparable
-#define EARANGES_ALGO_RESULT_AUX_2(C, T1, M1, T2, M2)                                   \
-    template(typename X, typename Y)(                                                 \
-        requires convertible_to<T1 const &, X> AND convertible_to<T2 const &, Y>)     \
-    operator C<X, Y>() const &                                                        \
-    {                                                                                 \
-        return {M1, M2};                                                              \
-    }                                                                                 \
-    template(typename X, typename Y)(                                                 \
-        requires convertible_to<T1, X> AND convertible_to<T2, Y>)                     \
-    operator C<X, Y>() &&                                                             \
-    {                                                                                 \
-        return {static_cast<T1 &&>(M1), static_cast<T2 &&>(M2)};                      \
-    }                                                                                 \
-    CPP_broken_friend_member                                                          \
-    friend constexpr auto operator==(C<T1, T2> const & x, C<T1, T2> const & y)        \
-        -> CPP_broken_friend_ret(bool)(                                               \
-            requires equality_comparable<T1> && equality_comparable<T2>)              \
-    {                                                                                 \
-        return x.M1 == y.M1 && x.M2 == y.M2;                                          \
-    }                                                                                 \
-    CPP_broken_friend_member                                                          \
-    friend constexpr auto operator!=(C<T1, T2> const & x, C<T1, T2> const & y)        \
-        -> CPP_broken_friend_ret(bool)(                                               \
-            requires equality_comparable<T1> && equality_comparable<T2>)              \
-    {                                                                                 \
-        return !(x == y);                                                             \
-    }                                                                                 \
+        /// \cond
+        namespace detail
+        {
+            // Extensions: the dangling story actually works, and result structs
+            // are conditionally equality_comparable
+#define EARANGES_ALGO_RESULT_AUX_2(C, T1, M1, T2, M2)                              \
+    template(typename X, typename Y)(                                              \
+        requires convertible_to<T1 const &, X> AND convertible_to<T2 const &, Y>)  \
+    operator C<X, Y>() const &                                                     \
+    {                                                                              \
+        return {M1, M2};                                                           \
+    }                                                                              \
+    template(typename X,                                                           \
+             typename Y)(requires convertible_to<T1, X> AND convertible_to<T2, Y>) \
+    operator C<X, Y>() &&                                                          \
+    {                                                                              \
+        return {static_cast<T1 &&>(M1), static_cast<T2 &&>(M2)};                   \
+    }                                                                              \
+    CPP_broken_friend_member                                                       \
+    friend constexpr auto operator==(C<T1, T2> const & x, C<T1, T2> const & y)     \
+        -> CPP_broken_friend_ret(bool)(requires equality_comparable<T1> &&         \
+                                       equality_comparable<T2>)                    \
+    {                                                                              \
+        return x.M1 == y.M1 && x.M2 == y.M2;                                       \
+    }                                                                              \
+    CPP_broken_friend_member                                                       \
+    friend constexpr auto operator!=(C<T1, T2> const & x, C<T1, T2> const & y)     \
+        -> CPP_broken_friend_ret(bool)(requires equality_comparable<T1> &&         \
+                                       equality_comparable<T2>)                    \
+    {                                                                              \
+        return !(x == y);                                                          \
+    }                                                                              \
     /**/
 
-#define EARANGES_ALGO_RESULT_AUX_3(C, T1, M1, T2, M2, T3, M3)                              \
+#define EARANGES_ALGO_RESULT_AUX_3(C, T1, M1, T2, M2, T3, M3)                            \
     template(typename X, typename Y, typename Z)(                                        \
         requires convertible_to<T1 const &, X> AND convertible_to<T2 const &, Y> AND     \
             convertible_to<T3 const &, Z>)                                               \
@@ -71,98 +73,99 @@ namespace ranges
     }                                                                                    \
     CPP_broken_friend_member                                                             \
     friend constexpr auto operator==(C<T1, T2, T3> const & x, C<T1, T2, T3> const & y)   \
-        -> CPP_broken_friend_ret(bool)(                                                  \
-            requires equality_comparable<T1> && equality_comparable<T2> &&               \
-                equality_comparable<T3>)                                                 \
+        -> CPP_broken_friend_ret(bool)(requires equality_comparable<T1> &&               \
+                                       equality_comparable<T2> &&                        \
+                                       equality_comparable<T3>)                          \
     {                                                                                    \
         return x.M1 == y.M1 && x.M2 == y.M2 && x.M3 == y.M3;                             \
     }                                                                                    \
     CPP_broken_friend_member                                                             \
     friend constexpr auto operator!=(C<T1, T2, T3> const & x, C<T1, T2, T3> const & y)   \
-        -> CPP_broken_friend_ret(bool)(                                                  \
-            requires equality_comparable<T1> && equality_comparable<T2> &&               \
-                equality_comparable<T3>)                                                 \
+        -> CPP_broken_friend_ret(bool)(requires equality_comparable<T1> &&               \
+                                       equality_comparable<T2> &&                        \
+                                       equality_comparable<T3>)                          \
     {                                                                                    \
         return !(x == y);                                                                \
     }                                                                                    \
     /**/
 
-        template<typename I, typename O>
-        struct in_out_result
-        {
-            I in;
-            O out;
+            template<typename I, typename O>
+            struct in_out_result
+            {
+                I in;
+                O out;
 
-            EARANGES_ALGO_RESULT_AUX_2(in_out_result, I, in, O, out)
-        };
+                EARANGES_ALGO_RESULT_AUX_2(in_out_result, I, in, O, out)
+            };
 
-        template<typename I1, typename O>
-        struct in1_out_result
-        {
-            I1 in1;
-            O out;
+            template<typename I1, typename O>
+            struct in1_out_result
+            {
+                I1 in1;
+                O out;
 
-            EARANGES_ALGO_RESULT_AUX_2(in1_out_result, I1, in1, O, out)
-        };
+                EARANGES_ALGO_RESULT_AUX_2(in1_out_result, I1, in1, O, out)
+            };
 
-        template<typename I1, typename I2>
-        struct in1_in2_result
-        {
-            I1 in1;
-            I2 in2;
+            template<typename I1, typename I2>
+            struct in1_in2_result
+            {
+                I1 in1;
+                I2 in2;
 
-            EARANGES_ALGO_RESULT_AUX_2(in1_in2_result, I1, in1, I2, in2)
-        };
+                EARANGES_ALGO_RESULT_AUX_2(in1_in2_result, I1, in1, I2, in2)
+            };
 
-        template<typename I, typename Fun>
-        struct in_fun_result
-        {
-            I in;
-            Fun fun;
+            template<typename I, typename Fun>
+            struct in_fun_result
+            {
+                I in;
+                Fun fun;
 
-            EARANGES_ALGO_RESULT_AUX_2(in_fun_result, I, in, Fun, fun)
-        };
+                EARANGES_ALGO_RESULT_AUX_2(in_fun_result, I, in, Fun, fun)
+            };
 
-        template<typename O, typename Fun>
-        struct out_fun_result
-        {
-            O out;
-            Fun fun;
+            template<typename O, typename Fun>
+            struct out_fun_result
+            {
+                O out;
+                Fun fun;
 
-            EARANGES_ALGO_RESULT_AUX_2(out_fun_result, O, out, Fun, fun)
-        };
+                EARANGES_ALGO_RESULT_AUX_2(out_fun_result, O, out, Fun, fun)
+            };
 
-        template<typename T, typename U>
-        struct min_max_result
-        {
-            T min;
-            U max;
+            template<typename T, typename U>
+            struct min_max_result
+            {
+                T min;
+                U max;
 
-            EARANGES_ALGO_RESULT_AUX_2(min_max_result, T, min, U, max)
-        };
+                EARANGES_ALGO_RESULT_AUX_2(min_max_result, T, min, U, max)
+            };
 
-        template<typename I1, typename I2, typename O>
-        struct in1_in2_out_result
-        {
-            I1 in1;
-            I2 in2;
-            O out;
+            template<typename I1, typename I2, typename O>
+            struct in1_in2_out_result
+            {
+                I1 in1;
+                I2 in2;
+                O out;
 
-            EARANGES_ALGO_RESULT_AUX_3(in1_in2_out_result, I1, in1, I2, in2, O, out)
-        };
+                EARANGES_ALGO_RESULT_AUX_3(in1_in2_out_result, I1, in1, I2, in2, O, out)
+            };
 
-        template<typename I, typename O1, typename O2>
-        struct in_out1_out2_result
-        {
-            I in;
-            O1 out1;
-            O2 out2;
+            template<typename I, typename O1, typename O2>
+            struct in_out1_out2_result
+            {
+                I in;
+                O1 out1;
+                O2 out2;
 
-            EARANGES_ALGO_RESULT_AUX_3(in_out1_out2_result, I, in, O1, out1, O2, out2)
-        };
-    } // namespace detail
-    /// \endcond
-} // namespace ranges
+                EARANGES_ALGO_RESULT_AUX_3(in_out1_out2_result, I, in, O1, out1, O2, out2)
+            };
+        } // namespace detail
+        /// \endcond
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

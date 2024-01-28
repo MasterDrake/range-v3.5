@@ -28,8 +28,9 @@
 #include <EARanges/utility/static_const.hpp>
 
 #include <EARanges/detail/prologue.hpp>
-
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     template<typename First, typename Second>
     struct EARANGES_EMPTY_BASES compressed_pair
@@ -100,8 +101,7 @@ namespace ranges
 
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
-namespace eastl
-{
+
     template<typename First, typename Second>
     struct tuple_size<::ranges::compressed_pair<First, Second>> : integral_constant<size_t, 2>
     {};

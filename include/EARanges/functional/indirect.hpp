@@ -25,32 +25,34 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-functional
-    /// @{
-    template<typename Fn>
-    struct indirected
+    namespace ranges
     {
-    private:
-        EARANGES_NO_UNIQUE_ADDRESS
-        Fn fn_;
-
-    public:
-        indirected() = default;
-        indirected(Fn fn)
-          : fn_(eastl::move(fn))
-        {}
-        // value_type (needs no impl)
-        template<typename... Its>
-        [[noreturn]] invoke_result_t<Fn &, iter_reference_t<Its>...> //
-        operator()(copy_tag, Its...) const
+        /// \addtogroup group-functional
+        /// @{
+        template<typename Fn>
+        struct indirected
         {
-            EARANGES_EXPECT(false);
-        }
+        private:
+            EARANGES_NO_UNIQUE_ADDRESS
+            Fn fn_;
 
-        // Reference
-        // clang-format off
+        public:
+            indirected() = default;
+            indirected(Fn fn)
+              : fn_(eastl::move(fn))
+            {}
+            // value_type (needs no impl)
+            template<typename... Its>
+            [[noreturn]] invoke_result_t<Fn &, iter_reference_t<Its>...> //
+            operator()(copy_tag, Its...) const
+            {
+                EARANGES_EXPECT(false);
+            }
+
+            // Reference
+            // clang-format off
         template<typename... Its>
         auto CPP_auto_fun(operator())(Its... its)
         (
@@ -77,23 +79,24 @@ namespace ranges
                 aux::move_t<invoke_result_t<Fn const &, iter_reference_t<Its>...>>>(
                 aux::move(invoke((Fn const &)fn_, *its...)))
         )
-        // clang-format on
-    };
+            // clang-format on
+        };
 
-    struct indirect_fn
-    {
-        template<typename Fn>
-        constexpr indirected<Fn> operator()(Fn fn) const
+        struct indirect_fn
         {
-            return indirected<Fn>{detail::move(fn)};
-        }
-    };
+            template<typename Fn>
+            constexpr indirected<Fn> operator()(Fn fn) const
+            {
+                return indirected<Fn>{detail::move(fn)};
+            }
+        };
 
-    /// \ingroup group-functional
-    /// \sa `indirect_fn`
-    EARANGES_INLINE_VARIABLE(indirect_fn, indirect)
-    /// @}
-} // namespace ranges
+        /// \ingroup group-functional
+        /// \sa `indirect_fn`
+        EARANGES_INLINE_VARIABLE(indirect_fn, indirect)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

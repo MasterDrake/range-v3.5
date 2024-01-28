@@ -25,7 +25,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-iterator
     /// @{
@@ -431,8 +433,6 @@ namespace ranges
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-namespace eastl
-{
     template<typename I>
     struct iterator_traits<::ranges::move_iterator<I>>
     {

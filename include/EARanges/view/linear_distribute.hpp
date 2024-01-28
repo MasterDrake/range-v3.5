@@ -27,95 +27,100 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    namespace views
+    namespace ranges
     {
-        /// \addtogroup group-views
-        /// @{
-
-        template<typename T>
-        struct linear_distribute_view : view_facade<linear_distribute_view<T>, finite>
+        namespace views
         {
-            CPP_assert(eastl::is_arithmetic<T>());
+            /// \addtogroup group-views
+            /// @{
 
-        private:
-            friend range_access;
-            using Calc = meta::conditional_t<eastl::is_floating_point<T>::value, T, double>;
+            template<typename T>
+            struct linear_distribute_view : view_facade<linear_distribute_view<T>, finite>
+            {
+                CPP_assert(eastl::is_arithmetic<T>());
 
-            T from_, to_;
-            Calc delta_;
-            std::ptrdiff_t n_;
+            private:
+                friend range_access;
+                using Calc =
+                    meta::conditional_t<eastl::is_floating_point<T>::value, T, double>;
 
-            constexpr T read() const noexcept
-            {
-                return from_;
-            }
-            constexpr bool equal(default_sentinel_t) const noexcept
-            {
-                return n_ == 0;
-            }
-            constexpr bool equal(linear_distribute_view const & other) const noexcept
-            {
-                bool const eq = n_ == other.n_;
-                EARANGES_DIAGNOSTIC_PUSH
-                EARANGES_DIAGNOSTIC_IGNORE_FLOAT_EQUAL
-                EARANGES_EXPECT(to_ == other.to_);
-                EARANGES_EXPECT(!eq || from_ == other.from_);
-                EARANGES_DIAGNOSTIC_POP
-                return eq;
-            }
-            constexpr void next() noexcept
-            {
-                EARANGES_EXPECT(n_ > 0);
-                --n_;
-                if(n_ == 0)
+                T from_, to_;
+                Calc delta_;
+                std::ptrdiff_t n_;
+
+                constexpr T read() const noexcept
                 {
-                    from_ = to_;
+                    return from_;
                 }
-                else
+                constexpr bool equal(default_sentinel_t) const noexcept
                 {
-                    from_ = T(to_ - (delta_ * Calc(n_ - 1)));
+                    return n_ == 0;
                 }
-            }
+                constexpr bool equal(linear_distribute_view const & other) const noexcept
+                {
+                    bool const eq = n_ == other.n_;
+                    EARANGES_DIAGNOSTIC_PUSH
+                    EARANGES_DIAGNOSTIC_IGNORE_FLOAT_EQUAL
+                    EARANGES_EXPECT(to_ == other.to_);
+                    EARANGES_EXPECT(!eq || from_ == other.from_);
+                    EARANGES_DIAGNOSTIC_POP
+                    return eq;
+                }
+                constexpr void next() noexcept
+                {
+                    EARANGES_EXPECT(n_ > 0);
+                    --n_;
+                    if(n_ == 0)
+                    {
+                        from_ = to_;
+                    }
+                    else
+                    {
+                        from_ = T(to_ - (delta_ * Calc(n_ - 1)));
+                    }
+                }
 
-        public:
-            constexpr linear_distribute_view() = default;
-            constexpr linear_distribute_view(T from, T to, std::ptrdiff_t n) noexcept
-              : from_(from)
-              , to_(to)
-              , delta_(n > 1 ? (to - from) / Calc(n - 1) : 0)
-              , n_(n)
-            {
-                EARANGES_EXPECT(n_ > 0);
-                EARANGES_EXPECT(to_ >= from_);
-            }
-            constexpr std::size_t size() const noexcept
-            {
-                return static_cast<std::size_t>(n_);
-            }
-        };
+            public:
+                constexpr linear_distribute_view() = default;
+                constexpr linear_distribute_view(T from, T to, std::ptrdiff_t n) noexcept
+                  : from_(from)
+                  , to_(to)
+                  , delta_(n > 1 ? (to - from) / Calc(n - 1) : 0)
+                  , n_(n)
+                {
+                    EARANGES_EXPECT(n_ > 0);
+                    EARANGES_EXPECT(to_ >= from_);
+                }
+                constexpr std::size_t size() const noexcept
+                {
+                    return static_cast<std::size_t>(n_);
+                }
+            };
 
-        /// Distributes `n` values linearly in the closed interval [`from`, `to`].
-        ///
-        /// \pre `from <= to && n > 0`
-        ///
-        /// If `from == to`, returns n-times `to`.
-        /// If `n == 1` returns `to`.
-        struct linear_distribute_fn
-        {
-            template(typename T)(requires eastl::is_arithmetic<T>::value)
-            constexpr auto operator()(T from, T to, std::ptrdiff_t n) const
+            /// Distributes `n` values linearly in the closed interval [`from`, `to`].
+            ///
+            /// \pre `from <= to && n > 0`
+            ///
+            /// If `from == to`, returns n-times `to`.
+            /// If `n == 1` returns `to`.
+            struct linear_distribute_fn
             {
-                return linear_distribute_view<T>{from, to, n};
-            }
-        };
+                template(typename T)(
+                    requires eastl::is_arithmetic<T>::value) constexpr auto
+                operator()(T from, T to, std::ptrdiff_t n) const
+                {
+                    return linear_distribute_view<T>{from, to, n};
+                }
+            };
 
-        /// \relates linear_distribute_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(linear_distribute_fn, linear_distribute)
-    } // namespace views
-} // namespace ranges
+            /// \relates linear_distribute_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(linear_distribute_fn, linear_distribute)
+        } // namespace views
+    }     // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

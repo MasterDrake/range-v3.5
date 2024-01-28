@@ -28,81 +28,87 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-iterator
-    /// @{
-
-    struct contiguous_iterator_tag : eastl::random_access_iterator_tag
-    {};
-
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        template<typename I, typename = iter_reference_t<I>, typename R = decltype(iter_move(eastl::declval<I &>())), typename = R &>
-        using iter_rvalue_reference_t = R;
+        /// \addtogroup group-iterator
+        /// @{
 
-        template<typename I>
-        EARANGES_INLINE_VAR constexpr bool has_nothrow_iter_move_v = noexcept(iter_rvalue_reference_t<I>(ranges::iter_move(eastl::declval<I &>())));
-    } // namespace detail
-    /// \endcond
-
-    template<typename I>
-    using iter_rvalue_reference_t = detail::iter_rvalue_reference_t<I>;
-
-    template<typename I>
-    using iter_common_reference_t = common_reference_t<iter_reference_t<I>, iter_value_t<I> &>;
-    
-    template<typename T>
-    using iter_difference_t = typename incrementable_traits<uncvref_t<T>>::difference_type;
-
-    // Defined in <range/v3/iterator/access.hpp>
-    // template<typename T>
-    // using iter_value_t = ...
-
-    // Defined in <range/v3/iterator/access.hpp>
-    // template<typename R>
-    // using iter_reference_t = detail::iter_reference_t_<R>;
-
-    // Defined in <range/v3/range_fwd.hpp>:
-    // template<typename S, typename I>
-    // inline constexpr bool disable_sized_sentinel = false;
-
-    /// \cond
-    namespace detail
-    {
-        template<typename I>
-        using iter_size_t =
-            meta::_t<meta::conditional_t<eastl::is_integral<iter_difference_t<I>>::value,
-                               eastl::make_unsigned<iter_difference_t<I>>,
-                               meta::id<iter_difference_t<I>>>>;
-
-        template<typename I>
-        using iter_arrow_t = decltype(eastl::declval<I &>().operator->());
-
-        template<typename I>
-        using iter_pointer_t =
-            meta::_t<meta::conditional_t<
-                        meta::is_trait<meta::defer<iter_arrow_t, I>>::value,
-                        meta::defer<iter_arrow_t, I>,
-                        eastl::add_pointer<iter_reference_t<I>>>>;
-
-        template<typename T>
-        struct difference_type_ : meta::defer<iter_difference_t, T>
+        struct contiguous_iterator_tag : eastl::random_access_iterator_tag
         {};
 
-        template<typename T>
-        struct value_type_ : meta::defer<iter_value_t, T>
-        {};
+        /// \cond
+        namespace detail
+        {
+            template<typename I, typename = iter_reference_t<I>,
+                     typename R = decltype(iter_move(eastl::declval<I &>())),
+                     typename = R &>
+            using iter_rvalue_reference_t = R;
+
+            template<typename I>
+            EARANGES_INLINE_VAR constexpr bool has_nothrow_iter_move_v = noexcept(
+                iter_rvalue_reference_t<I>(ranges::iter_move(eastl::declval<I &>())));
+        } // namespace detail
+        /// \endcond
+
+        template<typename I>
+        using iter_rvalue_reference_t = detail::iter_rvalue_reference_t<I>;
+
+        template<typename I>
+        using iter_common_reference_t =
+            common_reference_t<iter_reference_t<I>, iter_value_t<I> &>;
 
         template<typename T>
-        struct size_type_ : meta::defer<iter_size_t, T>
-        {};
-    } // namespace detail
+        using iter_difference_t =
+            typename incrementable_traits<uncvref_t<T>>::difference_type;
 
-    /// \endcond
+        // Defined in <range/v3/iterator/access.hpp>
+        // template<typename T>
+        // using iter_value_t = ...
 
-} // namespace ranges
+        // Defined in <range/v3/iterator/access.hpp>
+        // template<typename R>
+        // using iter_reference_t = detail::iter_reference_t_<R>;
+
+        // Defined in <range/v3/range_fwd.hpp>:
+        // template<typename S, typename I>
+        // inline constexpr bool disable_sized_sentinel = false;
+
+        /// \cond
+        namespace detail
+        {
+            template<typename I>
+            using iter_size_t = meta::_t<
+                meta::conditional_t<eastl::is_integral<iter_difference_t<I>>::value,
+                                    eastl::make_unsigned<iter_difference_t<I>>,
+                                    meta::id<iter_difference_t<I>>>>;
+
+            template<typename I>
+            using iter_arrow_t = decltype(eastl::declval<I &>().operator->());
+
+            template<typename I>
+            using iter_pointer_t = meta::_t<meta::conditional_t<
+                meta::is_trait<meta::defer<iter_arrow_t, I>>::value,
+                meta::defer<iter_arrow_t, I>, eastl::add_pointer<iter_reference_t<I>>>>;
+
+            template<typename T>
+            struct difference_type_ : meta::defer<iter_difference_t, T>
+            {};
+
+            template<typename T>
+            struct value_type_ : meta::defer<iter_value_t, T>
+            {};
+
+            template<typename T>
+            struct size_type_ : meta::defer<iter_size_t, T>
+            {};
+        } // namespace detail
+
+        /// \endcond
+
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -26,48 +26,55 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct stride_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename D)(requires detail::integer_like_<D>)
-            constexpr auto operator()(D step) const
+            struct stride_fn
             {
-                return make_action_closure(bind_back(stride_fn{}, step));
-            }
-
-            template(typename Rng, typename D = range_difference_t<Rng>)(requires forward_range<Rng> AND erasable_range<Rng &, iterator_t<Rng>, sentinel_t<Rng>> AND permutable<iterator_t<Rng>>)
-            Rng operator()(Rng && rng, range_difference_t<Rng> const step) const
-            {
-                using I = iterator_t<Rng>;
-                using S = sentinel_t<Rng>;
-                EARANGES_EXPECT(0 < step);
-                if(1 < step)
+                template(typename D)(requires detail::integer_like_<D>) constexpr auto
+                operator()(D step) const
                 {
-                    I first = ranges::begin(rng);
-                    S const last = ranges::end(rng);
-                    if(first != last)
-                    {
-                        for(I i = ranges::next(++first, step - 1, last); i != last; advance(i, step, last), ++first)
-                        {
-                            *first = iter_move(i);
-                        }
-                    }
-                    ranges::actions::erase(rng, first, last);
+                    return make_action_closure(bind_back(stride_fn{}, step));
                 }
-                return static_cast<Rng &&>(rng);
-            }
-        };
 
-        /// \relates actions::stride_fn
-        EARANGES_INLINE_VARIABLE(stride_fn, stride)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+                template(typename Rng, typename D = range_difference_t<Rng>)(
+                    requires forward_range<Rng> AND
+                        erasable_range<Rng &, iterator_t<Rng>, sentinel_t<Rng>>
+                            AND permutable<iterator_t<Rng>>) Rng
+                operator()(Rng && rng, range_difference_t<Rng> const step) const
+                {
+                    using I = iterator_t<Rng>;
+                    using S = sentinel_t<Rng>;
+                    EARANGES_EXPECT(0 < step);
+                    if(1 < step)
+                    {
+                        I first = ranges::begin(rng);
+                        S const last = ranges::end(rng);
+                        if(first != last)
+                        {
+                            for(I i = ranges::next(++first, step - 1, last); i != last;
+                                advance(i, step, last), ++first)
+                            {
+                                *first = iter_move(i);
+                            }
+                        }
+                        ranges::actions::erase(rng, first, last);
+                    }
+                    return static_cast<Rng &&>(rng);
+                }
+            };
+
+            /// \relates actions::stride_fn
+            EARANGES_INLINE_VARIABLE(stride_fn, stride)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

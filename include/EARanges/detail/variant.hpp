@@ -37,7 +37,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     template<std::size_t I>
     struct emplaced_index_t;
@@ -862,8 +864,6 @@ namespace ranges
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
 
-namespace eastl
-{
     template<typename... Ts>
     struct tuple_size<::ranges::variant<Ts...>> : tuple_size<tuple<Ts...>>
     {};

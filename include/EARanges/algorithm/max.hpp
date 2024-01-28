@@ -30,47 +30,60 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(max)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(max)
 
-        /// \brief function template \c max
-        template(typename T, typename C = less, typename P = identity)(requires indirect_strict_weak_order<C, projected<T const *, P>>)
-        constexpr T const & EARANGES_FUNC(max)(T const & a, T const & b, C pred = C{}, P proj = P{}) //
-        {
-            return invoke(pred, invoke(proj, b), invoke(proj, a)) ? a : b;
-        }
-
-        /// \overload
-        template(typename Rng, typename C = less, typename P = identity)(requires input_range<Rng> AND indirect_strict_weak_order<C, projected<iterator_t<Rng>, P>> AND indirectly_copyable_storable<iterator_t<Rng>, range_value_t<Rng> *>)
-        constexpr range_value_t<Rng> //
-        EARANGES_FUNC(max)(Rng && rng, C pred = C{}, P proj = P{}) //
-        {
-            auto first = ranges::begin(rng);
-            auto last = ranges::end(rng);
-            EARANGES_EXPECT(first != last);
-            range_value_t<Rng> result = *first;
-            while(++first != last)
+            /// \brief function template \c max
+            template(typename T, typename C = less, typename P = identity)(
+                requires indirect_strict_weak_order<
+                    C,
+                    projected<T const *, P>>) constexpr T const &
+            EARANGES_FUNC(max)(T const & a, T const & b, C pred = C{}, P proj = P{}) //
             {
-                auto && tmp = *first;
-                if(invoke(pred, invoke(proj, result), invoke(proj, tmp)))
-                    result = (decltype(tmp) &&)tmp;
+                return invoke(pred, invoke(proj, b), invoke(proj, a)) ? a : b;
             }
-            return result;
-        }
 
-        /// \overload
-        template(typename T, typename C = less, typename P = identity)(requires copyable<T> AND indirect_strict_weak_order<C, projected<T const *, P>>)
-        constexpr T EARANGES_FUNC(max)(std::initializer_list<T> const && rng, C pred = C{}, P proj = P{}) //
-        {
-            return (*this)(rng, eastl::move(pred), eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename C = less, typename P = identity)(
+                requires input_range<Rng> AND
+                    indirect_strict_weak_order<C, projected<iterator_t<Rng>, P>>
+                        AND indirectly_copyable_storable<
+                            iterator_t<Rng>,
+                            range_value_t<Rng> *>) constexpr range_value_t<Rng> //
+            EARANGES_FUNC(max)(Rng && rng, C pred = C{}, P proj = P{})          //
+            {
+                auto first = ranges::begin(rng);
+                auto last = ranges::end(rng);
+                EARANGES_EXPECT(first != last);
+                range_value_t<Rng> result = *first;
+                while(++first != last)
+                {
+                    auto && tmp = *first;
+                    if(invoke(pred, invoke(proj, result), invoke(proj, tmp)))
+                        result = (decltype(tmp) &&)tmp;
+                }
+                return result;
+            }
 
-    EARANGES_FUNC_END(max)
-    /// @}
-} // namespace ranges
+            /// \overload
+            template(typename T, typename C = less, typename P = identity)(
+                requires copyable<T> AND
+                    indirect_strict_weak_order<C, projected<T const *, P>>) constexpr T
+            EARANGES_FUNC(max)(
+                std::initializer_list<T> const && rng, C pred = C{}, P proj = P{}) //
+            {
+                return (*this)(rng, eastl::move(pred), eastl::move(proj));
+            }
+
+        EARANGES_FUNC_END(max)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -17,95 +17,98 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-functional
-    /// @{
-    struct plus
+    namespace ranges
     {
-        template<typename T, typename U>
-        constexpr auto operator()(T && t, U && u) const -> decltype((T &&) t + (U &&) u)
+        /// \addtogroup group-functional
+        /// @{
+        struct plus
         {
-            return (T &&) t + (U &&) u;
-        }
-        using is_transparent = void;
-    };
+            template<typename T, typename U>
+            constexpr auto operator()(T && t, U && u) const -> decltype((T &&)t + (U &&)u)
+            {
+                return (T &&)t + (U &&)u;
+            }
+            using is_transparent = void;
+        };
 
-    struct minus
-    {
-        template<typename T, typename U>
-        constexpr auto operator()(T && t, U && u) const -> decltype((T &&) t - (U &&) u)
+        struct minus
         {
-            return (T &&) t - (U &&) u;
-        }
-        using is_transparent = void;
-    };
+            template<typename T, typename U>
+            constexpr auto operator()(T && t, U && u) const -> decltype((T &&)t - (U &&)u)
+            {
+                return (T &&)t - (U &&)u;
+            }
+            using is_transparent = void;
+        };
 
-    struct multiplies
-    {
-        template<typename T, typename U>
-        constexpr auto operator()(T && t, U && u) const -> decltype((T &&) t * (U &&) u)
+        struct multiplies
         {
-            return (T &&) t * (U &&) u;
-        }
-        using is_transparent = void;
-    };
+            template<typename T, typename U>
+            constexpr auto operator()(T && t, U && u) const -> decltype((T &&)t * (U &&)u)
+            {
+                return (T &&)t * (U &&)u;
+            }
+            using is_transparent = void;
+        };
 
-    struct bitwise_or
-    {
-        template<typename T, typename U>
-        constexpr auto operator()(T && t, U && u) const -> decltype((T &&) t | (U &&) u)
+        struct bitwise_or
         {
-            return (T &&) t | (U &&) u;
-        }
-        using is_transparent = void;
-    };
+            template<typename T, typename U>
+            constexpr auto operator()(T && t, U && u) const -> decltype((T &&)t | (U &&)u)
+            {
+                return (T &&)t | (U &&)u;
+            }
+            using is_transparent = void;
+        };
 
-    template<typename T>
-    struct convert_to
-    {
-        // clang-format off
+        template<typename T>
+        struct convert_to
+        {
+            // clang-format off
         template<typename U>
         constexpr auto CPP_auto_fun(operator())(U &&u)(const)
         (
             return static_cast<T>((U &&) u)
         )
-        // clang-format on
-    };
+            // clang-format on
+        };
 
-    template<typename T>
-    struct coerce
-    {
-        constexpr T & operator()(T & t) const
+        template<typename T>
+        struct coerce
         {
-            return t;
-        }
-        /// \overload
-        constexpr T const & operator()(T const & t) const
-        {
-            return t;
-        }
-        /// \overload
-        constexpr T operator()(T && t) const
-        {
-            return (T &&) t;
-        }
-        T operator()(T const &&) const = delete;
-    };
+            constexpr T & operator()(T & t) const
+            {
+                return t;
+            }
+            /// \overload
+            constexpr T const & operator()(T const & t) const
+            {
+                return t;
+            }
+            /// \overload
+            constexpr T operator()(T && t) const
+            {
+                return (T &&)t;
+            }
+            T operator()(T const &&) const = delete;
+        };
 
-    template<typename T>
-    struct coerce<T const> : coerce<T>
-    {};
+        template<typename T>
+        struct coerce<T const> : coerce<T>
+        {};
 
-    template<typename T>
-    struct coerce<T &> : coerce<T>
-    {};
+        template<typename T>
+        struct coerce<T &> : coerce<T>
+        {};
 
-    template<typename T>
-    struct coerce<T &&> : coerce<T>
-    {};
-    /// @}
-} // namespace ranges
+        template<typename T>
+        struct coerce<T &&> : coerce<T>
+        {};
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

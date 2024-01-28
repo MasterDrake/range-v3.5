@@ -20,51 +20,56 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    template<typename I>
-    struct unbounded_view : view_interface<unbounded_view<I>, infinite>
+    namespace ranges
     {
-    private:
-        I it_;
-
-    public:
-        unbounded_view() = default;
-        constexpr explicit unbounded_view(I it)
-          : it_(detail::move(it))
-        {}
-        constexpr I begin() const
+        /// \addtogroup group-views
+        /// @{
+        template<typename I>
+        struct unbounded_view : view_interface<unbounded_view<I>, infinite>
         {
-            return it_;
-        }
-        constexpr unreachable_sentinel_t end() const
-        {
-            return {};
-        }
-    };
+        private:
+            I it_;
 
-    template<typename I>
-    EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<unbounded_view<I>> = true;
-
-    namespace views
-    {
-        struct unbounded_fn
-        {
-            template(typename I)(requires input_iterator<I>)
-            constexpr unbounded_view<I> operator()(I it) const
+        public:
+            unbounded_view() = default;
+            constexpr explicit unbounded_view(I it)
+              : it_(detail::move(it))
+            {}
+            constexpr I begin() const
             {
-                return unbounded_view<I>{detail::move(it)};
+                return it_;
+            }
+            constexpr unreachable_sentinel_t end() const
+            {
+                return {};
             }
         };
 
-        /// \relates unbounded_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(unbounded_fn, unbounded)
-    } // namespace views
-    /// @}
-} // namespace ranges
+        template<typename I>
+        EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<unbounded_view<I>> =
+            true;
+
+        namespace views
+        {
+            struct unbounded_fn
+            {
+                template(typename I)(
+                    requires input_iterator<I>) constexpr unbounded_view<I>
+                operator()(I it) const
+                {
+                    return unbounded_view<I>{detail::move(it)};
+                }
+            };
+
+            /// \relates unbounded_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(unbounded_fn, unbounded)
+        } // namespace views
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 #include <EARanges/detail/satisfy_boost_range.hpp>

@@ -25,29 +25,32 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        /// Reversed the source range in-place.
-        struct reverse_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename Rng)(requires bidirectional_range<Rng> AND permutable<iterator_t<Rng>>)
-            Rng operator()(Rng && rng) const
+            /// Reversed the source range in-place.
+            struct reverse_fn
             {
-                ranges::reverse(rng);
-                return static_cast<Rng &&>(rng);
-            }
-        };
+                template(typename Rng)(requires bidirectional_range<Rng> AND permutable<iterator_t<Rng>>) Rng
+                operator()(Rng && rng) const
+                {
+                    ranges::reverse(rng);
+                    return static_cast<Rng &&>(rng);
+                }
+            };
 
-        /// \relates actions::reverse_fn
-        /// \sa action_closure
-        EARANGES_INLINE_VARIABLE(action_closure<reverse_fn>, reverse)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            /// \relates actions::reverse_fn
+            /// \sa action_closure
+            EARANGES_INLINE_VARIABLE(action_closure<reverse_fn>, reverse)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

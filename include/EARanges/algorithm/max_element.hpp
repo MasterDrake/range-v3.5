@@ -29,34 +29,42 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(max_element)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(max_element)
 
-        /// \brief function template \c max_element
-        template(typename I, typename S, typename C = less, typename P = identity)(requires forward_iterator<I> AND sentinel_for<S, I> AND indirect_strict_weak_order<C, projected<I, P>>)
-        constexpr I EARANGES_FUNC(max_element)(I first, S last, C pred = C{}, P proj = P{})
-        {
-            if(first != last)
-                for(auto tmp = next(first); tmp != last; ++tmp)
-                    if(invoke(pred, invoke(proj, *first), invoke(proj, *tmp)))
-                        first = tmp;
-            return first;
-        }
+            /// \brief function template \c max_element
+            template(typename I, typename S, typename C = less, typename P = identity)(
+                requires forward_iterator<I> AND sentinel_for<S, I> AND
+                    indirect_strict_weak_order<C, projected<I, P>>) constexpr I
+            EARANGES_FUNC(max_element)(I first, S last, C pred = C{}, P proj = P{})
+            {
+                if(first != last)
+                    for(auto tmp = next(first); tmp != last; ++tmp)
+                        if(invoke(pred, invoke(proj, *first), invoke(proj, *tmp)))
+                            first = tmp;
+                return first;
+            }
 
-        /// \overload
-        template(typename Rng, typename C = less, typename P = identity)(requires forward_range<Rng> AND indirect_strict_weak_order<C, projected<iterator_t<Rng>, P>>)
-        constexpr borrowed_iterator_t<Rng> //
-        EARANGES_FUNC(max_element)(Rng && rng, C pred = C{}, P proj = P{})
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename C = less, typename P = identity)(
+                requires forward_range<Rng> AND indirect_strict_weak_order<
+                    C,
+                    projected<iterator_t<Rng>, P>>) constexpr borrowed_iterator_t<Rng> //
+            EARANGES_FUNC(max_element)(Rng && rng, C pred = C{}, P proj = P{})
+            {
+                return (*this)(
+                    begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(max_element)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(max_element)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

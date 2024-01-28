@@ -30,36 +30,47 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename O>
-    using rotate_copy_result = detail::in_out_result<I, O>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename O>
+        using rotate_copy_result = detail::in_out_result<I, O>;
 
-    EARANGES_FUNC_BEGIN(rotate_copy)
+        EARANGES_FUNC_BEGIN(rotate_copy)
 
-        /// \brief function template \c rotate_copy
-        template(typename I, typename S, typename O, typename P = identity)(requires forward_iterator<I> AND sentinel_for<S, I> AND weakly_incrementable<O> AND indirectly_copyable<I, O>)
-        constexpr rotate_copy_result<I, O> //
-        EARANGES_FUNC(rotate_copy)(I first, I middle, S last, O out) //
-        {
-            auto res = ranges::copy(middle, eastl::move(last), eastl::move(out));
-            return {eastl::move(res.in), ranges::copy(eastl::move(first), middle, eastl::move(res.out)).out};
-        }
+            /// \brief function template \c rotate_copy
+            template(typename I, typename S, typename O, typename P = identity)(
+                requires forward_iterator<I> AND sentinel_for<S, I> AND
+                    weakly_incrementable<O>
+                        AND indirectly_copyable<I, O>) constexpr rotate_copy_result<I,
+                                                                                    O> //
+            EARANGES_FUNC(rotate_copy)(I first, I middle, S last, O out)               //
+            {
+                auto res = ranges::copy(middle, eastl::move(last), eastl::move(out));
+                return {
+                    eastl::move(res.in),
+                    ranges::copy(eastl::move(first), middle, eastl::move(res.out)).out};
+            }
 
-        /// \overload
-        template(typename Rng, typename O, typename P = identity)(requires range<Rng> AND weakly_incrementable<O> AND indirectly_copyable<iterator_t<Rng>, O>)
-        constexpr rotate_copy_result<borrowed_iterator_t<Rng>, O> //
-        EARANGES_FUNC(rotate_copy)(Rng && rng, iterator_t<Rng> middle, O out) //
-        {
-            return (*this)(begin(rng), eastl::move(middle), end(rng), eastl::move(out));
-        }
+            /// \overload
+            template(typename Rng, typename O, typename P = identity)(
+                requires range<Rng> AND weakly_incrementable<O> AND indirectly_copyable<
+                    iterator_t<Rng>,
+                    O>) constexpr rotate_copy_result<borrowed_iterator_t<Rng>, O> //
+            EARANGES_FUNC(rotate_copy)(Rng && rng, iterator_t<Rng> middle, O out) //
+            {
+                return (*this)(
+                    begin(rng), eastl::move(middle), end(rng), eastl::move(out));
+            }
 
-    EARANGES_FUNC_END(rotate_copy)
+        EARANGES_FUNC_END(rotate_copy)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

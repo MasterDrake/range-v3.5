@@ -35,7 +35,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-views
     /// @{
@@ -143,9 +145,10 @@ namespace ranges
     } // namespace views
     /// @}
 } // namespace ranges
+}
 
 #include <EARanges/detail/epilogue.hpp>
-#include "../detail/satisfy_boost_range.hpp"
+#include <EARanges/detail/satisfy_boost_range.hpp>
 EARANGES_SATISFY_BOOST_RANGE(::ranges::trim_view)
 
 #endif // EARANGES_VIEW_TRIM_HPP

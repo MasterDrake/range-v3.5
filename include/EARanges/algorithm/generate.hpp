@@ -29,35 +29,43 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename O, typename F>
-    using generate_result = detail::out_fun_result<O, F>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename O, typename F>
+        using generate_result = detail::out_fun_result<O, F>;
 
-    EARANGES_FUNC_BEGIN(generate)
+        EARANGES_FUNC_BEGIN(generate)
 
-        /// \brief function template \c generate_n
-        template(typename O, typename S, typename F)(requires invocable<F &> AND output_iterator<O, invoke_result_t<F &>> AND sentinel_for<S, O>)
-        constexpr generate_result<O, F> EARANGES_FUNC(generate)(O first, S last, F fun) //
-        {
-            for(; first != last; ++first)
-                *first = invoke(fun);
-            return {detail::move(first), detail::move(fun)};
-        }
+            /// \brief function template \c generate_n
+            template(typename O, typename S, typename F)(
+                requires invocable<F &> AND output_iterator<O, invoke_result_t<F &>> AND
+                    sentinel_for<S, O>) constexpr generate_result<O, F>
+            EARANGES_FUNC(generate)(O first, S last, F fun) //
+            {
+                for(; first != last; ++first)
+                    *first = invoke(fun);
+                return {detail::move(first), detail::move(fun)};
+            }
 
-        /// \overload
-        template(typename Rng, typename F)(requires invocable<F &> AND output_range<Rng, invoke_result_t<F &>>)
-        constexpr generate_result<borrowed_iterator_t<Rng>, F> //
-        EARANGES_FUNC(generate)(Rng && rng, F fun)
-        {
-            return {(*this)(begin(rng), end(rng), ref(fun)).out, detail::move(fun)};
-        }
+            /// \overload
+            template(typename Rng, typename F)(
+                requires invocable<F &> AND output_range<
+                    Rng,
+                    invoke_result_t<
+                        F &>>) constexpr generate_result<borrowed_iterator_t<Rng>, F> //
+            EARANGES_FUNC(generate)(Rng && rng, F fun)
+            {
+                return {(*this)(begin(rng), end(rng), ref(fun)).out, detail::move(fun)};
+            }
 
-    EARANGES_FUNC_END(generate)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(generate)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

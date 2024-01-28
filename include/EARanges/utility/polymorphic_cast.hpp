@@ -15,31 +15,34 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    template<typename Target, typename Source>
-    auto polymorphic_downcast(Source * x) noexcept
-        -> meta::if_<eastl::is_pointer<Target>,
-                     decltype((static_cast<Target>(x), dynamic_cast<Target>(x)))>
+    namespace ranges
     {
-        auto result = static_cast<Target>(x);
-        EARANGES_ASSERT(dynamic_cast<Target>(x) == result);
-        return result;
-    }
-    template<typename Target, typename Source>
-    auto polymorphic_downcast(Source && x) noexcept
-        -> meta::if_<eastl::is_reference<Target>,
-                     decltype((static_cast<Target>(eastl::declval<Source>()),
-                               dynamic_cast<Target>(eastl::declval<Source>())))>
-    {
-        auto && result = static_cast<Target>(static_cast<Source &&>(x));
+        template<typename Target, typename Source>
+        auto polymorphic_downcast(Source * x) noexcept
+            -> meta::if_<eastl::is_pointer<Target>,
+                         decltype((static_cast<Target>(x), dynamic_cast<Target>(x)))>
+        {
+            auto result = static_cast<Target>(x);
+            EARANGES_ASSERT(dynamic_cast<Target>(x) == result);
+            return result;
+        }
+        template<typename Target, typename Source>
+        auto polymorphic_downcast(Source && x) noexcept
+            -> meta::if_<eastl::is_reference<Target>,
+                         decltype((static_cast<Target>(eastl::declval<Source>()),
+                                   dynamic_cast<Target>(eastl::declval<Source>())))>
+        {
+            auto && result = static_cast<Target>(static_cast<Source &&>(x));
 #ifndef NDEBUG
-        auto && dresult = dynamic_cast<Target>(static_cast<Source &&>(x));
-        EARANGES_ASSERT(eastl::addressof(dresult) == eastl::addressof(result));
+            auto && dresult = dynamic_cast<Target>(static_cast<Source &&>(x));
+            EARANGES_ASSERT(eastl::addressof(dresult) == eastl::addressof(result));
 #endif
-        return static_cast<Target>(result);
-    }
-} // namespace ranges
+            return static_cast<Target>(result);
+        }
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -20,26 +20,28 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-functional
-    /// @{
-    template<typename Fn1, typename Fn2>
-    struct transformed
+    namespace ranges
     {
-    private:
-        EARANGES_NO_UNIQUE_ADDRESS
-        Fn1 first_;
-        EARANGES_NO_UNIQUE_ADDRESS
-        Fn2 second_;
+        /// \addtogroup group-functional
+        /// @{
+        template<typename Fn1, typename Fn2>
+        struct transformed
+        {
+        private:
+            EARANGES_NO_UNIQUE_ADDRESS
+            Fn1 first_;
+            EARANGES_NO_UNIQUE_ADDRESS
+            Fn2 second_;
 
-    public:
-        transformed() = default;
-        constexpr transformed(Fn1 fn1, Fn2 fn2)
-          : first_(static_cast<Fn1 &&>(fn1))
-          , second_(static_cast<Fn2 &&>(fn2))
-        {}
-        // clang-format off
+        public:
+            transformed() = default;
+            constexpr transformed(Fn1 fn1, Fn2 fn2)
+              : first_(static_cast<Fn1 &&>(fn1))
+              , second_(static_cast<Fn2 &&>(fn2))
+            {}
+            // clang-format off
         template<typename... Args>
         auto CPP_auto_fun(operator())(Args &&... args)
         (
@@ -50,23 +52,24 @@ namespace ranges
         (
             return invoke((Fn1 const &)first_, invoke((Fn2 const &)second_, static_cast<Args &&>(args))...)
         )
-        // clang-format on
-    };
+            // clang-format on
+        };
 
-    struct on_fn
-    {
-        template<typename Fn1, typename Fn2>
-        constexpr transformed<Fn1, Fn2> operator()(Fn1 fn1, Fn2 fn2) const
+        struct on_fn
         {
-            return transformed<Fn1, Fn2>{detail::move(fn1), detail::move(fn2)};
-        }
-    };
+            template<typename Fn1, typename Fn2>
+            constexpr transformed<Fn1, Fn2> operator()(Fn1 fn1, Fn2 fn2) const
+            {
+                return transformed<Fn1, Fn2>{detail::move(fn1), detail::move(fn2)};
+            }
+        };
 
-    /// \ingroup group-functional
-    /// \sa `on_fn`
-    EARANGES_INLINE_VARIABLE(on_fn, on)
-    /// @}
-} // namespace ranges
+        /// \ingroup group-functional
+        /// \sa `on_fn`
+        EARANGES_INLINE_VARIABLE(on_fn, on)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

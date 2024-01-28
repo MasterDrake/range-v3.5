@@ -29,147 +29,180 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        struct to_container
+        /// \cond
+        namespace detail
         {
-            template<typename MetaFn>
-            struct fn;
+            struct to_container
+            {
+                template<typename MetaFn>
+                struct fn;
 
-            template<typename MetaFn, typename Fn>
-            struct closure;
+                template<typename MetaFn, typename Fn>
+                struct closure;
 
-            template<typename MetaFn, typename Rng>
-            using container_t = meta::invoke<MetaFn, Rng>;
+                template<typename MetaFn, typename Rng>
+                using container_t = meta::invoke<MetaFn, Rng>;
 
-            template<typename Rng, typename MetaFn>
-            friend auto operator|(Rng && rng, closure<MetaFn, fn<MetaFn>> (*)(to_container))
-                -> CPP_broken_friend_ret(container_t<MetaFn, Rng>)(requires invocable<fn<MetaFn>, Rng>)
-            {
-                return fn<MetaFn>{}(static_cast<Rng &&>(rng));
-            }
+                template<typename Rng, typename MetaFn>
+                friend auto operator|(Rng && rng,
+                                      closure<MetaFn, fn<MetaFn>> (*)(to_container))
+                    -> CPP_broken_friend_ret(container_t<MetaFn, Rng>)(
+                        requires invocable<fn<MetaFn>, Rng>)
+                {
+                    return fn<MetaFn>{}(static_cast<Rng &&>(rng));
+                }
 
-            template<typename MetaFn, typename Pipeable>
-            friend auto operator|(closure<MetaFn, fn<MetaFn>> (*)(to_container), Pipeable pipe)
-                -> CPP_broken_friend_ret(closure<MetaFn, composed<Pipeable, fn<MetaFn>>>)(requires (is_pipeable_v<Pipeable>))
-            {
-                return closure<MetaFn, composed<Pipeable, fn<MetaFn>>>{ compose(static_cast<Pipeable &&>(pipe), fn<MetaFn>{})};
-            }
-        };
+                template<typename MetaFn, typename Pipeable>
+                friend auto operator|(closure<MetaFn, fn<MetaFn>> (*)(to_container),
+                                      Pipeable pipe)
+                    -> CPP_broken_friend_ret(
+                        closure<MetaFn, composed<Pipeable, fn<MetaFn>>>)(
+                        requires(is_pipeable_v<Pipeable>))
+                {
+                    return closure<MetaFn, composed<Pipeable, fn<MetaFn>>>{
+                        compose(static_cast<Pipeable &&>(pipe), fn<MetaFn>{})};
+                }
+            };
 
-        // A simple, light-weight transform iterator that applies ranges::to
-        // to each element in the range. Used by ranges::to to convert a range
-        // of ranges into a container of containers.
-        template<typename Rng, typename Cont>
-        struct to_container_iterator
-        {
-        private:
-            using I = range_cpp17_iterator_t<Rng>;
-            using ValueType = range_value_t<Cont>;
-            I it_;
+            // A simple, light-weight transform iterator that applies ranges::to
+            // to each element in the range. Used by ranges::to to convert a range
+            // of ranges into a container of containers.
+            template<typename Rng, typename Cont>
+            struct to_container_iterator
+            {
+            private:
+                using I = range_cpp17_iterator_t<Rng>;
+                using ValueType = range_value_t<Cont>;
+                I it_;
 
-        public:
-            using difference_type = typename eastl::iterator_traits<I>::difference_type;
-            using value_type = ValueType;
-            using reference = ValueType;
-            using pointer = typename eastl::iterator_traits<I>::pointer;
-            using iterator_category = typename eastl::iterator_traits<I>::iterator_category;
+            public:
+                using difference_type =
+                    typename eastl::iterator_traits<I>::difference_type;
+                using value_type = ValueType;
+                using reference = ValueType;
+                using pointer = typename eastl::iterator_traits<I>::pointer;
+                using iterator_category =
+                    typename eastl::iterator_traits<I>::iterator_category;
 
-            to_container_iterator() = default;
-            template<typename OtherIt>
-            to_container_iterator(OtherIt it) : it_(eastl::move(it))
-            {}
-            friend bool operator==(to_container_iterator const & a, to_container_iterator const & b)
-            {
-                return a.it_ == b.it_;
-            }
-            friend bool operator!=(to_container_iterator const & a, to_container_iterator const & b)
-            {
-                return !(a == b);
-            }
-            reference operator*() const
-            {
-                return to_container::fn<meta::id<ValueType>>{}(*it_);
-            }
-            to_container_iterator & operator++()
-            {
-                ++it_;
-                return *this;
-            }
-            to_container_iterator operator++(int)
-            {
-                auto tmp = *this;
-                ++it_;
-                return tmp;
-            }
-            CPP_member
-            auto operator--() //
-                -> CPP_ret(to_container_iterator &)(requires derived_from<iterator_category, eastl::bidirectional_iterator_tag>)
-            {
-                --it_;
-                return *this;
-            }
-            CPP_member
-            auto operator--(int) //
-                -> CPP_ret(to_container_iterator &)(requires derived_from<iterator_category, eastl::bidirectional_iterator_tag>)
-            {
-                auto tmp = *this;
-                ++it_;
-                return tmp;
-            }
-            CPP_member
-            auto operator+=(difference_type n) //
-                -> CPP_ret(to_container_iterator &)(requires derived_from<iterator_category, eastl::random_access_iterator_tag>)
-            {
-                it_ += n;
-                return *this;
-            }
-            CPP_member
-            auto operator-=(difference_type n) //
-                -> CPP_ret(to_container_iterator &)(requires derived_from<iterator_category, eastl::random_access_iterator_tag>)
-            {
-                it_ -= n;
-                return *this;
-            }
-            CPP_broken_friend_member
-            friend auto operator+(to_container_iterator i, difference_type n) //
-                -> CPP_broken_friend_ret(to_container_iterator)(requires derived_from<iterator_category, eastl::random_access_iterator_tag>)
-            {
-                return i += n;
-            }
-            CPP_broken_friend_member
-            friend auto operator-(to_container_iterator i, difference_type n) //
-                -> CPP_broken_friend_ret(to_container_iterator)(requires derived_from<iterator_category, eastl::random_access_iterator_tag>)
-            {
-                return i -= n;
-            }
-            CPP_broken_friend_member
-            friend auto operator-(difference_type n, to_container_iterator i) //
-                -> CPP_broken_friend_ret(to_container_iterator)(requires derived_from<iterator_category, eastl::random_access_iterator_tag>)
-            {
-                return i -= n;
-            }
-            CPP_broken_friend_member
-            friend auto operator-(to_container_iterator const & i, to_container_iterator const & j) //
-                -> CPP_broken_friend_ret(difference_type)(requires derived_from<iterator_category, eastl::random_access_iterator_tag>)
-            {
-                return i.it_ - j.it_;
-            }
-            CPP_member
-            auto operator[](difference_type n) const //
-                -> CPP_ret(reference)(requires derived_from<iterator_category, eastl::random_access_iterator_tag>)
-            {
-                return *(*this + n);
-            }
-        };
+                to_container_iterator() = default;
+                template<typename OtherIt>
+                to_container_iterator(OtherIt it)
+                  : it_(eastl::move(it))
+                {}
+                friend bool operator==(to_container_iterator const & a,
+                                       to_container_iterator const & b)
+                {
+                    return a.it_ == b.it_;
+                }
+                friend bool operator!=(to_container_iterator const & a,
+                                       to_container_iterator const & b)
+                {
+                    return !(a == b);
+                }
+                reference operator*() const
+                {
+                    return to_container::fn<meta::id<ValueType>>{}(*it_);
+                }
+                to_container_iterator & operator++()
+                {
+                    ++it_;
+                    return *this;
+                }
+                to_container_iterator operator++(int)
+                {
+                    auto tmp = *this;
+                    ++it_;
+                    return tmp;
+                }
+                CPP_member
+                auto operator--() //
+                    -> CPP_ret(to_container_iterator &)(
+                        requires derived_from<iterator_category,
+                                              eastl::bidirectional_iterator_tag>)
+                {
+                    --it_;
+                    return *this;
+                }
+                CPP_member
+                auto operator--(int) //
+                    -> CPP_ret(to_container_iterator &)(
+                        requires derived_from<iterator_category,
+                                              eastl::bidirectional_iterator_tag>)
+                {
+                    auto tmp = *this;
+                    ++it_;
+                    return tmp;
+                }
+                CPP_member
+                auto operator+=(difference_type n) //
+                    -> CPP_ret(to_container_iterator &)(
+                        requires derived_from<iterator_category,
+                                              eastl::random_access_iterator_tag>)
+                {
+                    it_ += n;
+                    return *this;
+                }
+                CPP_member
+                auto operator-=(difference_type n) //
+                    -> CPP_ret(to_container_iterator &)(
+                        requires derived_from<iterator_category,
+                                              eastl::random_access_iterator_tag>)
+                {
+                    it_ -= n;
+                    return *this;
+                }
+                CPP_broken_friend_member
+                friend auto operator+(to_container_iterator i, difference_type n) //
+                    -> CPP_broken_friend_ret(to_container_iterator)(
+                        requires derived_from<iterator_category,
+                                              eastl::random_access_iterator_tag>)
+                {
+                    return i += n;
+                }
+                CPP_broken_friend_member
+                friend auto operator-(to_container_iterator i, difference_type n) //
+                    -> CPP_broken_friend_ret(to_container_iterator)(
+                        requires derived_from<iterator_category,
+                                              eastl::random_access_iterator_tag>)
+                {
+                    return i -= n;
+                }
+                CPP_broken_friend_member
+                friend auto operator-(difference_type n, to_container_iterator i) //
+                    -> CPP_broken_friend_ret(to_container_iterator)(
+                        requires derived_from<iterator_category,
+                                              eastl::random_access_iterator_tag>)
+                {
+                    return i -= n;
+                }
+                CPP_broken_friend_member
+                friend auto operator-(to_container_iterator const & i,
+                                      to_container_iterator const & j) //
+                    -> CPP_broken_friend_ret(difference_type)(
+                        requires derived_from<iterator_category,
+                                              eastl::random_access_iterator_tag>)
+                {
+                    return i.it_ - j.it_;
+                }
+                CPP_member
+                auto operator[](difference_type n) const //
+                    -> CPP_ret(reference)(
+                        requires derived_from<iterator_category,
+                                              eastl::random_access_iterator_tag>)
+                {
+                    return *(*this + n);
+                }
+            };
 
-        template<typename Rng, typename Cont>
-        using to_container_iterator_t = enable_if_t<(bool)range<Rng>, to_container_iterator<Rng, Cont>>;
+            template<typename Rng, typename Cont>
+            using to_container_iterator_t =
+                enable_if_t<(bool)range<Rng>, to_container_iterator<Rng, Cont>>;
 
-        // clang-format off
+            // clang-format off
         /// \concept range_and_not_view_
         /// \brief The \c range_and_not_view_ concept
         template(typename Rng)(
@@ -233,11 +266,11 @@ namespace ranges
 
         template<typename MetaFn, typename Rng>
         using container_t = meta::invoke<MetaFn, Rng>;
-        // clang-format on
+            // clang-format on
 
-        struct EARANGES_STRUCT_WITH_ADL_BARRIER(to_container_closure_base)
-        {
-            // clang-format off
+            struct EARANGES_STRUCT_WITH_ADL_BARRIER(to_container_closure_base)
+            {
+                // clang-format off
             template(typename Rng, typename MetaFn, typename Fn)(requires input_range<Rng> AND convertible_to_cont<Rng, container_t<MetaFn, Rng>>)
             friend constexpr auto
             operator|(Rng && rng, to_container::closure<MetaFn, Fn> fn)
@@ -425,6 +458,7 @@ namespace ranges
     template<typename MetaFn, typename Fn>
     EARANGES_INLINE_VAR constexpr bool is_pipeable_v<detail::to_container_closure<MetaFn, Fn>> = true;
 } // namespace ranges
+}
 
 #include <EARanges/detail/epilogue.hpp>
 

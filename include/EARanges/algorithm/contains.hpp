@@ -27,29 +27,40 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(contains)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(contains)
 
-        /// \brief function template \c contains
-        template(typename I, typename S, typename T, typename P = identity)(requires input_iterator<I> AND sentinel_for<S, I> AND indirect_relation<equal_to, projected<I, P>, const T *>)
-        constexpr bool EARANGES_FUNC(contains)(I first, S last, const T & val, P proj = {})
-        {
-            return find(eastl::move(first), last, val, eastl::move(proj)) != last;
-        }
+            /// \brief function template \c contains
+            template(typename I, typename S, typename T, typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    indirect_relation<equal_to,
+                                      projected<I, P>,
+                                      const T *>) constexpr bool
+            EARANGES_FUNC(contains)(I first, S last, const T & val, P proj = {})
+            {
+                return find(eastl::move(first), last, val, eastl::move(proj)) != last;
+            }
 
-        /// \overload
-        template(typename Rng, typename T, typename P = identity)(requires input_range<Rng> AND indirect_relation<equal_to, projected<iterator_t<Rng>, P>, const T *>)
-        constexpr bool EARANGES_FUNC(contains)(Rng && rng, const T & val, P proj = {})
-        {
-            return (*this)(begin(rng), end(rng), val, eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename T, typename P = identity)(
+                requires input_range<Rng> AND
+                    indirect_relation<equal_to,
+                                      projected<iterator_t<Rng>, P>,
+                                      const T *>) constexpr bool
+            EARANGES_FUNC(contains)(Rng && rng, const T & val, P proj = {})
+            {
+                return (*this)(begin(rng), end(rng), val, eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(contains)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(contains)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

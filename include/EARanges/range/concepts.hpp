@@ -40,16 +40,18 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-range-concepts
-    /// @{
+    namespace ranges
+    {
+        /// \addtogroup group-range-concepts
+        /// @{
 
-    //
-    // Range concepts below
-    //
+        //
+        // Range concepts below
+        //
 
-    // clang-format off
+        // clang-format off
     /// \concept _range_
     /// \brief The \c _range_ concept
     template<typename T>
@@ -111,20 +113,20 @@ namespace ranges
     /// \brief The \c random_access_range concept
     template<typename T>
     CPP_concept random_access_range = bidirectional_range<T> && CPP_concept_ref(ranges::random_access_range_, T);
-    // clang-format on
+        // clang-format on
 
-    /// \cond
-    namespace detail
-    {
-        template<typename Rng>
-        using data_t = decltype(ranges::data(eastl::declval<Rng &>()));
+        /// \cond
+        namespace detail
+        {
+            template<typename Rng>
+            using data_t = decltype(ranges::data(eastl::declval<Rng &>()));
 
-        template<typename Rng>
-        using element_t = meta::_t<eastl::remove_pointer<data_t<Rng>>>;
-    } // namespace detail
-      /// \endcond
+            template<typename Rng>
+            using element_t = meta::_t<eastl::remove_pointer<data_t<Rng>>>;
+        } // namespace detail
+          /// \endcond
 
-    // clang-format off
+        // clang-format off
     /// \concept contiguous_range_
     /// \brief The \c contiguous_range_ concept
     template(typename T)(concept (contiguous_range_)(T), contiguous_iterator<iterator_t<T>> AND same_as<detail::data_t<T>, eastl::add_pointer_t<iter_reference_t<iterator_t<T>>>>);
@@ -172,32 +174,33 @@ namespace ranges
         !disable_sized_range<uncvref_t<T>> &&
         CPP_requires_ref(ranges::sized_range_, T) &&
         CPP_concept_ref(ranges::sized_range_, T);
-    // clang-format on
+        // clang-format on
 
-    /// \cond
-    namespace ext
-    {
+        /// \cond
+        namespace ext
+        {
+            template<typename T>
+            struct enable_view : eastl::is_base_of<view_base, T>
+            {};
+        } // namespace ext
+        /// \endcond
+
+        // Specialize this if the default is wrong.
         template<typename T>
-        struct enable_view: eastl::is_base_of<view_base, T>
-        {};
-    } // namespace detail
-    /// \endcond
+        EARANGES_INLINE_VAR constexpr bool enable_view = ext::enable_view<T>::value;
 
-    // Specialize this if the default is wrong.
-    template<typename T>
-    EARANGES_INLINE_VAR constexpr bool enable_view = ext::enable_view<T>::value;
+        template<typename Char>
+        EARANGES_INLINE_VAR constexpr bool enable_view<eastl::basic_string_view<Char>> =
+            true;
 
-    template<typename Char>
-   EARANGES_INLINE_VAR constexpr bool enable_view<eastl::basic_string_view<Char>> = true;
+        template<typename T, std::size_t N>
+        EARANGES_INLINE_VAR constexpr bool enable_view<eastl::span<T, N>> = true;
 
-    template<typename T, std::size_t N>
-    EARANGES_INLINE_VAR constexpr bool enable_view<eastl::span<T, N>> = true;
+        //
+        // View concepts below
+        //
 
-    //
-    // View concepts below
-    //
-
-    // clang-format off
+        // clang-format off
     /// \concept view_
     /// \brief The \c view_ concept
     template<typename T>
@@ -210,81 +213,82 @@ namespace ranges
     /// \brief The \c viewable_range concept
     template<typename T>
     CPP_concept viewable_range = range<T> && (borrowed_range<T> || view_<uncvref_t<T>>);
-    // clang-format on
+        // clang-format on
 
-    //////////////////////////////////////////////////////////////////////////////////////
-    // range_tag
-    struct range_tag
-    {};
+        //////////////////////////////////////////////////////////////////////////////////////
+        // range_tag
+        struct range_tag
+        {};
 
-    struct input_range_tag : range_tag
-    {};
-    struct forward_range_tag : input_range_tag
-    {};
-    struct bidirectional_range_tag : forward_range_tag
-    {};
-    struct random_access_range_tag : bidirectional_range_tag
-    {};
-    struct contiguous_range_tag : random_access_range_tag
-    {};
+        struct input_range_tag : range_tag
+        {};
+        struct forward_range_tag : input_range_tag
+        {};
+        struct bidirectional_range_tag : forward_range_tag
+        {};
+        struct random_access_range_tag : bidirectional_range_tag
+        {};
+        struct contiguous_range_tag : random_access_range_tag
+        {};
 
-    template<typename Rng>
-    using range_tag_of =                          //
-        eastl::enable_if_t<                         //
-            range<Rng>,                           //
-            meta::conditional_t<                    //
-                contiguous_range<Rng>,            //
-                contiguous_range_tag,             //
-                meta::conditional_t<                //
-                    random_access_range<Rng>,     //
-                    random_access_range_tag,      //
-                    meta::conditional_t<            //
-                        bidirectional_range<Rng>, //
-                        bidirectional_range_tag,  //
-                        meta::conditional_t<        //
-                            forward_range<Rng>,   //
-                            forward_range_tag,    //
-                            meta::conditional_t<    //
-                                input_range<Rng>, //
-                                input_range_tag,  //
-                                range_tag>>>>>>;
+        template<typename Rng>
+        using range_tag_of =                          //
+            eastl::enable_if_t<                       //
+                range<Rng>,                           //
+                meta::conditional_t<                  //
+                    contiguous_range<Rng>,            //
+                    contiguous_range_tag,             //
+                    meta::conditional_t<              //
+                        random_access_range<Rng>,     //
+                        random_access_range_tag,      //
+                        meta::conditional_t<          //
+                            bidirectional_range<Rng>, //
+                            bidirectional_range_tag,  //
+                            meta::conditional_t<      //
+                                forward_range<Rng>,   //
+                                forward_range_tag,    //
+                                meta::conditional_t<  //
+                                    input_range<Rng>, //
+                                    input_range_tag,  //
+                                    range_tag>>>>>>;
 
-    //////////////////////////////////////////////////////////////////////////////////////
-    // common_range_tag_of
-    struct common_range_tag : range_tag
-    {};
+        //////////////////////////////////////////////////////////////////////////////////////
+        // common_range_tag_of
+        struct common_range_tag : range_tag
+        {};
 
-    template<typename Rng>
-    using common_range_tag_of = //
-        eastl::enable_if_t<       //
-            range<Rng>,         //
-            meta::conditional_t<common_range<Rng>, common_range_tag, range_tag>>;
+        template<typename Rng>
+        using common_range_tag_of = //
+            eastl::enable_if_t<     //
+                range<Rng>,         //
+                meta::conditional_t<common_range<Rng>, common_range_tag, range_tag>>;
 
-    //////////////////////////////////////////////////////////////////////////////////////
-    // sized_range_concept
-    struct sized_range_tag : range_tag
-    {};
+        //////////////////////////////////////////////////////////////////////////////////////
+        // sized_range_concept
+        struct sized_range_tag : range_tag
+        {};
 
-    template<typename Rng>
-    using sized_range_tag_of = //
-        eastl::enable_if_t<      //
-            range<Rng>,        //
-            meta::conditional_t<sized_range<Rng>, sized_range_tag, range_tag>>;
+        template<typename Rng>
+        using sized_range_tag_of = //
+            eastl::enable_if_t<    //
+                range<Rng>,        //
+                meta::conditional_t<sized_range<Rng>, sized_range_tag, range_tag>>;
 
-    /// \cond
-    namespace view_detail_
-    {
-        // clang-format off
+        /// \cond
+        namespace view_detail_
+        {
+            // clang-format off
         /// \concept view
         /// \brief The \c view concept
         template<typename T>
         CPP_concept view = ranges::view_<T>;
-        // clang-format on
-    } // namespace view_detail_
-    /// \endcond
-    
-    /// @}
-} // namespace ranges
+            // clang-format on
+        } // namespace view_detail_
+        /// \endcond
+
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

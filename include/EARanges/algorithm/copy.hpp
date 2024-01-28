@@ -30,49 +30,58 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename O>
-    using copy_result = detail::in_out_result<I, O>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename O>
+        using copy_result = detail::in_out_result<I, O>;
 
-    EARANGES_HIDDEN_DETAIL(namespace _copy CPP_PP_LBRACE())
-    EARANGES_FUNC_BEGIN(copy)
+        EARANGES_HIDDEN_DETAIL(namespace _copy CPP_PP_LBRACE())
+        EARANGES_FUNC_BEGIN(copy)
 
-        /// \brief function template \c copy
-        template(typename I, typename S, typename O)(requires input_iterator<I> AND sentinel_for<S, I> AND weakly_incrementable<O> AND indirectly_copyable<I, O>)
-        constexpr copy_result<I, O> EARANGES_FUNC(copy)(I first, S last, O out) //
-        {
-            for(; first != last; ++first, ++out)
-                *out = *first;
-            return {first, out};
-        }
+            /// \brief function template \c copy
+            template(typename I, typename S, typename O)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    weakly_incrementable<O>
+                        AND indirectly_copyable<I, O>) constexpr copy_result<I, O>
+            EARANGES_FUNC(copy)(I first, S last, O out) //
+            {
+                for(; first != last; ++first, ++out)
+                    *out = *first;
+                return {first, out};
+            }
 
-        /// \overload
-        template(typename Rng, typename O)(requires input_range<Rng> AND weakly_incrementable<O> AND indirectly_copyable<iterator_t<Rng>, O>)
-        constexpr copy_result<borrowed_iterator_t<Rng>, O> //
-        EARANGES_FUNC(copy)(Rng && rng, O out)  //
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(out));
-        }
+            /// \overload
+            template(typename Rng, typename O)(
+                requires input_range<Rng> AND weakly_incrementable<O> AND
+                    indirectly_copyable<
+                        iterator_t<Rng>,
+                        O>) constexpr copy_result<borrowed_iterator_t<Rng>, O> //
+            EARANGES_FUNC(copy)(Rng && rng, O out)                             //
+            {
+                return (*this)(begin(rng), end(rng), eastl::move(out));
+            }
 
-    EARANGES_FUNC_END(copy)
-    EARANGES_HIDDEN_DETAIL(CPP_PP_RBRACE())
+        EARANGES_FUNC_END(copy)
+        EARANGES_HIDDEN_DETAIL(CPP_PP_RBRACE())
 
 #ifndef EARANGES_DOXYGEN_INVOKED
-    struct copy_fn
-      : aux::copy_fn
-      , _copy::copy_fn
-    {
-        using aux::copy_fn::operator();
-        using _copy::copy_fn::operator();
-    };
-    EARANGES_INLINE_VARIABLE(copy_fn, copy)
+        struct copy_fn
+          : aux::copy_fn
+          , _copy::copy_fn
+        {
+            using aux::copy_fn::operator();
+            using _copy::copy_fn::operator();
+        };
+        EARANGES_INLINE_VARIABLE(copy_fn, copy)
 #endif
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -27,59 +27,67 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        template<typename I>
-        constexpr void reverse_impl(I first, I last, eastl::bidirectional_iterator_tag)
+        /// \addtogroup group-algorithms
+        /// @{
+
+        /// \cond
+        namespace detail
         {
-            while(first != last)
+            template<typename I>
+            constexpr void reverse_impl(I first, I last,
+                                        eastl::bidirectional_iterator_tag)
             {
-                if(first == --last)
-                    break;
-                ranges::iter_swap(first, last);
-                ++first;
-            }
-        }
-
-        template<typename I>
-        constexpr void reverse_impl(I first, I last, eastl::random_access_iterator_tag)
-        {
-            if(first != last)
-                for(; first < --last; ++first)
+                while(first != last)
+                {
+                    if(first == --last)
+                        break;
                     ranges::iter_swap(first, last);
-        }
-    } // namespace detail
-    /// \endcond
+                    ++first;
+                }
+            }
 
-    EARANGES_FUNC_BEGIN(reverse)
+            template<typename I>
+            constexpr void reverse_impl(I first, I last,
+                                        eastl::random_access_iterator_tag)
+            {
+                if(first != last)
+                    for(; first < --last; ++first)
+                        ranges::iter_swap(first, last);
+            }
+        } // namespace detail
+        /// \endcond
 
-        /// \brief function template \c reverse
-        template(typename I, typename S)(requires bidirectional_iterator<I> AND sentinel_for<S, I> AND permutable<I>)
-        constexpr I EARANGES_FUNC(reverse)(I first, S end_)
-        {
-            I last = ranges::next(first, end_);
-            detail::reverse_impl(first, last, iterator_tag_of<I>{});
-            return last;
-        }
+        EARANGES_FUNC_BEGIN(reverse)
 
-        /// \overload
-        template(typename Rng, typename I = iterator_t<Rng>)(requires bidirectional_range<Rng> AND permutable<I>)
-        constexpr borrowed_iterator_t<Rng> EARANGES_FUNC(reverse)(Rng && rng) //
-        {
-            return (*this)(begin(rng), end(rng));
-        }
+            /// \brief function template \c reverse
+            template(typename I, typename S)(
+                requires bidirectional_iterator<I> AND sentinel_for<S, I> AND
+                    permutable<I>) constexpr I
+            EARANGES_FUNC(reverse)(I first, S end_)
+            {
+                I last = ranges::next(first, end_);
+                detail::reverse_impl(first, last, iterator_tag_of<I>{});
+                return last;
+            }
 
-    EARANGES_FUNC_END(reverse)
+            /// \overload
+            template(typename Rng, typename I = iterator_t<Rng>)(
+                requires bidirectional_range<Rng> AND
+                    permutable<I>) constexpr borrowed_iterator_t<Rng>
+            EARANGES_FUNC(reverse)(Rng && rng) //
+            {
+                return (*this)(begin(rng), end(rng));
+            }
 
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(reverse)
 
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 #include <EARanges/detail/epilogue.hpp>
 
 #endif

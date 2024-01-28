@@ -23,40 +23,42 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    namespace aux
+    namespace ranges
     {
-        struct partition_point_n_fn
+        namespace aux
         {
-            template(typename I, typename C, typename P = identity)(requires forward_iterator<I> AND indirect_unary_predicate<C, projected<I, P>>)
-            constexpr I operator()(I first,
-                                   iter_difference_t<I> d,
-                                   C pred,
-                                   P proj = P{}) const //
+            struct partition_point_n_fn
             {
-                if(0 < d)
+                template(typename I, typename C, typename P = identity)(
+                    requires forward_iterator<I> AND
+                        indirect_unary_predicate<C, projected<I, P>>) constexpr I
+                operator()(I first, iter_difference_t<I> d, C pred, P proj = P{}) const //
                 {
-                    do
+                    if(0 < d)
                     {
-                        auto half = d / 2;
-                        auto middle = next(uncounted(first), half);
-                        if(invoke(pred, invoke(proj, *middle)))
+                        do
                         {
-                            first = recounted(first, eastl::move(++middle), half + 1);
-                            d -= half + 1;
-                        }
-                        else
-                            d = half;
-                    } while(0 != d);
+                            auto half = d / 2;
+                            auto middle = next(uncounted(first), half);
+                            if(invoke(pred, invoke(proj, *middle)))
+                            {
+                                first = recounted(first, eastl::move(++middle), half + 1);
+                                d -= half + 1;
+                            }
+                            else
+                                d = half;
+                        } while(0 != d);
+                    }
+                    return first;
                 }
-                return first;
-            }
-        };
+            };
 
-        EARANGES_INLINE_VARIABLE(partition_point_n_fn, partition_point_n)
-    } // namespace aux
-} // namespace ranges
+            EARANGES_INLINE_VARIABLE(partition_point_n_fn, partition_point_n)
+        } // namespace aux
+    }     // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

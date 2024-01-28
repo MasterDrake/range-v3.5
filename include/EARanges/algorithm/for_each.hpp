@@ -30,37 +30,49 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename I, typename F>
-    using for_each_result = detail::in_fun_result<I, F>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename I, typename F>
+        using for_each_result = detail::in_fun_result<I, F>;
 
-    EARANGES_FUNC_BEGIN(for_each)
+        EARANGES_FUNC_BEGIN(for_each)
 
-        /// \brief function template \c for_each
-        template(typename I, typename S, typename F, typename P = identity)(requires input_iterator<I> AND sentinel_for<S, I> AND indirectly_unary_invocable<F, projected<I, P>>)
-        constexpr for_each_result<I, F> EARANGES_FUNC(for_each)(I first, S last, F fun, P proj = P{})
-        {
-            for(; first != last; ++first)
+            /// \brief function template \c for_each
+            template(typename I, typename S, typename F, typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    indirectly_unary_invocable<
+                        F,
+                        projected<I, P>>) constexpr for_each_result<I, F>
+            EARANGES_FUNC(for_each)(I first, S last, F fun, P proj = P{})
             {
-                invoke(fun, invoke(proj, *first));
+                for(; first != last; ++first)
+                {
+                    invoke(fun, invoke(proj, *first));
+                }
+                return {detail::move(first), detail::move(fun)};
             }
-            return {detail::move(first), detail::move(fun)};
-        }
 
-        /// \overload
-        template(typename Rng, typename F, typename P = identity)(requires input_range<Rng> AND indirectly_unary_invocable<F, projected<iterator_t<Rng>, P>>)
-        constexpr for_each_result<borrowed_iterator_t<Rng>, F> //
-        EARANGES_FUNC(for_each)(Rng && rng, F fun, P proj = P{})
-        {
-            return {(*this)(begin(rng), end(rng), ref(fun), detail::move(proj)).in, detail::move(fun)};
-        }
+            /// \overload
+            template(typename Rng, typename F, typename P = identity)(
+                requires input_range<Rng> AND indirectly_unary_invocable<
+                    F,
+                    projected<iterator_t<Rng>,
+                              P>>) constexpr for_each_result<borrowed_iterator_t<Rng>,
+                                                             F> //
+            EARANGES_FUNC(for_each)(Rng && rng, F fun, P proj = P{})
+            {
+                return {(*this)(begin(rng), end(rng), ref(fun), detail::move(proj)).in,
+                        detail::move(fun)};
+            }
 
-    EARANGES_FUNC_END(for_each)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(for_each)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

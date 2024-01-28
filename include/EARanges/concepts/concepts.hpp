@@ -28,6 +28,8 @@
 #include <EARanges/concepts/swap.hpp>
 #include <EARanges/concepts/type_traits.hpp>
 
+namespace eastl
+{
 // Disable buggy clang compatibility warning about "requires" and "concept" being
 // C++20 keywords.
 // https://bugs.llvm.org/show_bug.cgi?id=43708
@@ -1228,5 +1230,6 @@ namespace concepts
 
     } // inline namespace defs
 } // namespace concepts
+}
 
 #endif // EARANGES_UTILITY_CONCEPTS_HPP

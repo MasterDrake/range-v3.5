@@ -42,29 +42,32 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    namespace aux
+    namespace ranges
     {
-        struct merge_n_with_buffer_fn
+        namespace aux
         {
-            template(typename I, typename B, typename C = less, typename P = identity)(requires same_as<iter_common_reference_t<I>, iter_common_reference_t<B>> AND indirectly_copyable<I, B> AND mergeable<B, I, I, C, P, P>)
-            I operator()(I begin0,
-                         iter_difference_t<I> n0,
-                         I begin1,
-                         iter_difference_t<I> n1,
-                         B buff,
-                         C r = C{},
-                         P p = P{}) const
+            struct merge_n_with_buffer_fn
             {
-                copy_n(begin0, n0, buff);
-                return merge_n(buff, n0, begin1, n1, begin0, r, p, p).out;
-            }
-        };
+                template(typename I, typename B, typename C = less,
+                         typename P = identity)(
+                    requires same_as<iter_common_reference_t<I>,
+                                     iter_common_reference_t<B>>
+                        AND indirectly_copyable<I, B>
+                            AND mergeable<B, I, I, C, P, P>) I
+                operator()(I begin0, iter_difference_t<I> n0, I begin1,
+                           iter_difference_t<I> n1, B buff, C r = C{}, P p = P{}) const
+                {
+                    copy_n(begin0, n0, buff);
+                    return merge_n(buff, n0, begin1, n1, begin0, r, p, p).out;
+                }
+            };
 
-        EARANGES_INLINE_VARIABLE(merge_n_with_buffer_fn, merge_n_with_buffer)
-    } // namespace aux
-} // namespace ranges
+            EARANGES_INLINE_VARIABLE(merge_n_with_buffer_fn, merge_n_with_buffer)
+        } // namespace aux
+    }     // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

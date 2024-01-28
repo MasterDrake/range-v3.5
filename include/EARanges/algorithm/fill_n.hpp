@@ -26,27 +26,31 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(fill_n)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(fill_n)
 
-        /// \brief function template \c equal
-        template(typename O, typename V)(requires output_iterator<O, V const &>)
-        constexpr O EARANGES_FUNC(fill_n)(O first, iter_difference_t<O> n, V const & val)
-        {
-            EARANGES_EXPECT(n >= 0);
-            auto norig = n;
-            auto b = uncounted(first);
-            for(; n != 0; ++b, --n)
-                *b = val;
-            return recounted(first, b, norig);
-        }
+            /// \brief function template \c equal
+            template(typename O,
+                     typename V)(requires output_iterator<O, V const &>) constexpr O
+            EARANGES_FUNC(fill_n)(O first, iter_difference_t<O> n, V const & val)
+            {
+                EARANGES_EXPECT(n >= 0);
+                auto norig = n;
+                auto b = uncounted(first);
+                for(; n != 0; ++b, --n)
+                    *b = val;
+                return recounted(first, b, norig);
+            }
 
-    EARANGES_FUNC_END(fill_n)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(fill_n)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

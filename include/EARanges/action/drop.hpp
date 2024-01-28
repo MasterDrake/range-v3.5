@@ -26,35 +26,41 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct drop_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename Int)(requires detail::integer_like_<Int>)
-            constexpr auto operator()(Int n) const
+            struct drop_fn
             {
-                EARANGES_EXPECT(n >= Int(0));
-                return make_action_closure(bind_back(drop_fn{}, n));
-            }
+                template(typename Int)(requires detail::integer_like_<Int>) constexpr auto
+                operator()(Int n) const
+                {
+                    EARANGES_EXPECT(n >= Int(0));
+                    return make_action_closure(bind_back(drop_fn{}, n));
+                }
 
-            template(typename Rng)(requires forward_range<Rng> AND erasable_range<Rng &, iterator_t<Rng>, iterator_t<Rng>>)
-            Rng operator()(Rng && rng, range_difference_t<Rng> n) const
-            {
-                EARANGES_EXPECT(n >= 0);
-                ranges::actions::erase(rng, begin(rng), ranges::next(begin(rng), n, end(rng)));
-                return static_cast<Rng &&>(rng);
-            }
-        };
+                template(typename Rng)(
+                    requires forward_range<Rng> AND
+                        erasable_range<Rng &, iterator_t<Rng>, iterator_t<Rng>>) Rng
+                operator()(Rng && rng, range_difference_t<Rng> n) const
+                {
+                    EARANGES_EXPECT(n >= 0);
+                    ranges::actions::erase(
+                        rng, begin(rng), ranges::next(begin(rng), n, end(rng)));
+                    return static_cast<Rng &&>(rng);
+                }
+            };
 
-        /// \relates actions::drop_fn
-        EARANGES_INLINE_VARIABLE(drop_fn, drop)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            /// \relates actions::drop_fn
+            EARANGES_INLINE_VARIABLE(drop_fn, drop)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

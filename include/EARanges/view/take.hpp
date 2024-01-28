@@ -30,7 +30,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
+{
+    namespace ranges
 {
     /// \addtogroup group-views
     /// @{
@@ -56,10 +58,9 @@ namespace ranges
               : end_(eastl::move(last))
             {}
             template(bool Other)(
-                requires Const AND CPP_NOT(Other) AND
-                convertible_to<sentinel_t<Rng>,
-                               sentinel_t<Base>>)
-                constexpr sentinel(sentinel<Other> that)
+                requires Const AND CPP_NOT(Other) AND convertible_to<
+                    sentinel_t<Rng>, sentinel_t<Base>>) constexpr sentinel(sentinel<Other>
+                                                                               that)
               : end_(eastl::move(that.end_))
             {}
             constexpr sentinel_t<Base> base() const
@@ -145,7 +146,8 @@ namespace ranges
         {
             return sentinel<false>{ranges::end(take.base_)};
         }
-        static auto end_sized_(take_view const & take, eastl::false_type, eastl::false_type)
+        static auto end_sized_(take_view const & take, eastl::false_type,
+                               eastl::false_type)
         {
             return sentinel<true>{ranges::end(take.base_)};
         }
@@ -163,9 +165,7 @@ namespace ranges
             return base_;
         }
 
-        CPP_auto_member
-        constexpr auto CPP_fun(begin)()(
-            requires(!simple_view<Rng>()))
+        CPP_auto_member constexpr auto CPP_fun(begin)()(requires(!simple_view<Rng>()))
         {
 #if EARANGES_CXX_IF_CONSTEXPR >= EARANGES_CXX_IF_CONSTEXPR_17
             if constexpr(sized_range<Rng>)
@@ -190,9 +190,8 @@ namespace ranges
 #endif
         }
 
-        CPP_auto_member
-        constexpr auto CPP_fun(begin)()(const //
-            requires range<Rng const>)
+        CPP_auto_member constexpr auto CPP_fun(begin)()(const //
+                                                        requires range<Rng const>)
         {
 #if EARANGES_CXX_IF_CONSTEXPR >= EARANGES_CXX_IF_CONSTEXPR_17
             if constexpr(sized_range<Rng const>)
@@ -210,9 +209,7 @@ namespace ranges
 #endif
         }
 
-        CPP_auto_member
-        constexpr auto CPP_fun(end)()(
-            requires(!simple_view<Rng>()))
+        CPP_auto_member constexpr auto CPP_fun(end)()(requires(!simple_view<Rng>()))
         {
 #if EARANGES_CXX_IF_CONSTEXPR >= EARANGES_CXX_IF_CONSTEXPR_17
             if constexpr(sized_range<Rng>)
@@ -231,9 +228,8 @@ namespace ranges
 #endif
         }
 
-        CPP_auto_member
-        constexpr auto CPP_fun(end)()(const //
-            requires range<Rng const>)
+        CPP_auto_member constexpr auto CPP_fun(end)()(const //
+                                                      requires range<Rng const>)
         {
 #if EARANGES_CXX_IF_CONSTEXPR >= EARANGES_CXX_IF_CONSTEXPR_17
             if constexpr(sized_range<Rng const>)
@@ -253,16 +249,13 @@ namespace ranges
 #endif
         }
 
-        CPP_auto_member
-        constexpr auto CPP_fun(size)()(
-            requires sized_range<Rng>)
+        CPP_auto_member constexpr auto CPP_fun(size)()(requires sized_range<Rng>)
         {
             auto n = ranges::size(base_);
             return ranges::min(n, static_cast<decltype(n)>(count_));
         }
-        CPP_auto_member
-        constexpr auto CPP_fun(size)()(const //
-            requires sized_range<Rng const>)
+        CPP_auto_member constexpr auto CPP_fun(size)()(const //
+                                                       requires sized_range<Rng const>)
         {
             auto n = ranges::size(base_);
             return ranges::min(n, static_cast<decltype(n)>(count_));
@@ -282,8 +275,8 @@ namespace ranges
     {
         struct take_base_fn
         {
-            template(typename Rng)(requires viewable_range<Rng>)
-            take_view<all_t<Rng>> operator()(Rng && rng, range_difference_t<Rng> n) const
+            template(typename Rng)(requires viewable_range<Rng>) take_view<all_t<Rng>>
+            operator()(Rng && rng, range_difference_t<Rng> n) const
             {
                 return {all(static_cast<Rng &&>(rng)), n};
             }
@@ -293,8 +286,8 @@ namespace ranges
         {
             using take_base_fn::operator();
 
-            template(typename Int)(requires detail::integer_like_<Int>)
-            constexpr auto operator()(Int n) const
+            template(typename Int)(requires detail::integer_like_<Int>) constexpr auto
+            operator()(Int n) const
             {
                 return make_view_closure(bind_back(take_base_fn{}, n));
             }
@@ -305,9 +298,10 @@ namespace ranges
     } // namespace views
     /// @}
 } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
-#include "../detail/satisfy_boost_range.hpp"
+#include <EARanges/detail/satisfy_boost_range.hpp>
 EARANGES_SATISFY_BOOST_RANGE(::ranges::take_view)
 
 #endif

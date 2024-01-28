@@ -25,110 +25,124 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    struct getlines_view : view_facade<getlines_view, unknown>
+    namespace ranges
     {
-    private:
-        friend range_access;
-        std::istream * sin_;
-        eastl::string str_;
-        char delim_;
-        struct cursor
+        /// \addtogroup group-views
+        /// @{
+        struct getlines_view : view_facade<getlines_view, unknown>
         {
         private:
             friend range_access;
-            using single_pass = eastl::true_type;
-            getlines_view * rng_ = nullptr;
+            std::istream * sin_;
+            eastl::string str_;
+            char delim_;
+            struct cursor
+            {
+            private:
+                friend range_access;
+                using single_pass = eastl::true_type;
+                getlines_view * rng_ = nullptr;
 
-        public:
-            cursor() = default;
-            explicit cursor(getlines_view * rng) : rng_(rng)
-            {}
+            public:
+                cursor() = default;
+                explicit cursor(getlines_view * rng)
+                  : rng_(rng)
+                {}
+                void next()
+                {
+                    rng_->next();
+                }
+                eastl::string & read() const noexcept
+                {
+                    return rng_->str_;
+                }
+                bool equal(default_sentinel_t) const
+                {
+                    return !rng_->sin_;
+                }
+                bool equal(cursor that) const
+                {
+                    return !rng_->sin_ == !that.rng_->sin_;
+                }
+            };
             void next()
             {
-                rng_->next();
+                if(!getline(*sin_, str_, delim_))
+                    sin_ = nullptr;
             }
-            eastl::string & read() const noexcept
+            cursor begin_cursor()
             {
-                return rng_->str_;
+                return cursor{this};
             }
-            bool equal(default_sentinel_t) const
+
+            // implementation according to
+            // https://en.cppreference.com/w/cpp/string/basic_string/getline
+            std::istream & getline(std::istream & sin, eastl::string & str,
+                                   const char del)
             {
-                return !rng_->sin_;
+                eastl::string::value_type c;
+
+                str.erase(); // 1) Calls str.erase().
+
+                while(sin.get(
+                    c)) // 2) Extracts characters from input and appends them to str until
+                        // one of the following occurs (checked in the order listed)
+                {
+                    if(sin.eof()) // 2a) end-of-file condition on input, in which case,
+                                  // getline sets eofbit.
+                    {
+                        sin.setstate(std::ios_base::eofbit);
+                        break;
+                    }
+                    if(c ==
+                       del) // b)The next available input character is delim, as tested by
+                            // Traits::eq(c, delim), in which case the delimiter character
+                            // is extracted from input, but is not appended to str.
+                    {
+                        break;
+                    }
+                    if(str.size() >=
+                       str.max_size()) // 2c) str.max_size() characters have been stored,
+                                       // in which case getline sets failbit and returns.
+                    {
+                        sin.setstate(std::ios_base::failbit);
+                        break;
+                    }
+                    else
+                        str += c;
+                }
+                return sin;
             }
-            bool equal(cursor that) const
+
+        public:
+            getlines_view() = default;
+            getlines_view(std::istream & sin, char delim = '\n')
+              : sin_(&sin)
+              , str_{}
+              , delim_(delim)
             {
-                return !rng_->sin_ == !that.rng_->sin_;
+                this->next(); // prime the pump
+            }
+            eastl::string & cached() noexcept
+            {
+                return str_;
             }
         };
-        void next()
-        {
-            if(!getline(*sin_, str_, delim_))
-                sin_ = nullptr;
-        }
-        cursor begin_cursor()
-        {
-            return cursor{this};
-        }
 
-        //implementation according to https://en.cppreference.com/w/cpp/string/basic_string/getline
-        std::istream& getline(std::istream& sin, eastl::string& str, const char del)
+        struct getlines_fn
         {
-            eastl::string::value_type c;
-
-            str.erase();//1) Calls str.erase().
-
-            while (sin.get(c)) //2) Extracts characters from input and appends them to str until one of the following occurs (checked in the order listed)
+            getlines_view operator()(std::istream & sin, char delim = '\n') const
             {
-                if (sin.eof()) //2a) end-of-file condition on input, in which case, getline sets eofbit.
-                {
-                    sin.setstate(std::ios_base::eofbit);
-                    break;
-                }
-                if (c == del) //b)The next available input character is delim, as tested by Traits::eq(c, delim), in which case the delimiter character is extracted from input, but is not appended to str.
-                {
-                    break;
-                }
-                if (str.size() >= str.max_size())//2c) str.max_size() characters have been stored, in which case getline sets failbit and returns.
-                {
-                    sin.setstate(std::ios_base::failbit);
-                    break;
-                }
-                else
-                    str += c;
+                return getlines_view{sin, delim};
             }
-            return sin;
-        }
+        };
 
-    public:
-        getlines_view() = default;
-        getlines_view(std::istream & sin, char delim = '\n')
-          : sin_(&sin)
-          , str_{}
-          , delim_(delim)
-        {
-            this->next(); // prime the pump
-        }
-        eastl::string& cached() noexcept
-        {
-            return str_;
-        }
-    };
-
-    struct getlines_fn
-    {
-        getlines_view operator()(std::istream & sin, char delim = '\n') const
-        {
-            return getlines_view{sin, delim};
-        }
-    };
-
-    EARANGES_INLINE_VARIABLE(getlines_fn, getlines)
-    /// @}
-} // namespace ranges
+        EARANGES_INLINE_VARIABLE(getlines_fn, getlines)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

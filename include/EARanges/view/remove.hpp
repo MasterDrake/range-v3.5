@@ -31,66 +31,89 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    namespace views
+    namespace ranges
     {
-        struct remove_base_fn
+        /// \addtogroup group-views
+        /// @{
+        namespace views
         {
-        private:
-            template<typename Value>
-            struct pred_
+            struct remove_base_fn
             {
-                Value value_;
-                template(typename T)(requires equality_comparable_with<T, Value const &>)
-                bool operator()(T && other) const
+            private:
+                template<typename Value>
+                struct pred_
                 {
-                    return static_cast<T &&>(other) == value_;
+                    Value value_;
+                    template(typename T)(
+                        requires equality_comparable_with<T, Value const &>) bool
+                    operator()(T && other) const
+                    {
+                        return static_cast<T &&>(other) == value_;
+                    }
+                };
+
+            public:
+                template(typename Rng, typename Value)(
+                    requires move_constructible<Value> AND viewable_range<Rng> AND
+                        input_range<Rng>
+                            AND indirectly_comparable<iterator_t<Rng>, Value const *,
+                                                      equal_to>) constexpr auto
+                operator()(Rng && rng, Value value) const
+                {
+                    return remove_if(static_cast<Rng &&>(rng),
+                                     pred_<Value>{eastl::move(value)});
+                }
+
+                template(typename Rng, typename Value, typename Proj)(
+                    requires move_constructible<Value> AND viewable_range<Rng> AND
+                        input_range<Rng>
+                            AND indirectly_comparable<iterator_t<Rng>, Value const *,
+                                                      equal_to, Proj>) constexpr auto
+                operator()(Rng && rng, Value value, Proj proj) const
+                {
+                    return remove_if(static_cast<Rng &&>(rng),
+                                     pred_<Value>{eastl::move(value)},
+                                     eastl::move(proj));
                 }
             };
 
-        public:
-            template(typename Rng, typename Value)(requires move_constructible<Value> AND viewable_range<Rng> AND input_range<Rng> AND indirectly_comparable<iterator_t<Rng>, Value const *, equal_to>)
-            constexpr auto operator()(Rng && rng, Value value) const
+            struct remove_bind_fn
             {
-                return remove_if(static_cast<Rng &&>(rng), pred_<Value>{eastl::move(value)});
-            }
+                template<typename Value>
+                constexpr auto operator()(
+                    Value value) const // TODO: underconstrained - Eric Niebler
+                {
+                    return make_view_closure(
+                        bind_back(remove_base_fn{}, eastl::move(value)));
+                }
+                template(typename Value, typename Proj)(
+                    requires(!range<Value>)) // TODO: underconstrained - Eric Niebler
+                    constexpr auto
+                    operator()(Value && value, Proj proj) const
+                {
+                    return make_view_closure(bind_back(remove_base_fn{},
+                                                       static_cast<Value &&>(value),
+                                                       eastl::move(proj)));
+                }
+            };
 
-            template(typename Rng, typename Value, typename Proj)(requires move_constructible<Value> AND viewable_range<Rng> AND input_range<Rng> AND indirectly_comparable<iterator_t<Rng>, Value const *, equal_to, Proj>)
-            constexpr auto operator()(Rng && rng, Value value, Proj proj) const
+            struct EARANGES_EMPTY_BASES remove_fn
+              : remove_base_fn
+              , remove_bind_fn
             {
-                return remove_if(static_cast<Rng &&>(rng),  pred_<Value>{eastl::move(value)}, eastl::move(proj));
-            }
-        };
+                using remove_base_fn::operator();
+                using remove_bind_fn::operator();
+            };
 
-        struct remove_bind_fn
-        {
-            template<typename Value>
-            constexpr auto operator()(Value value) const // TODO: underconstrained - Eric Niebler
-            {
-                return make_view_closure(bind_back(remove_base_fn{}, eastl::move(value)));
-            }
-            template(typename Value, typename Proj)(requires (!range<Value>)) // TODO: underconstrained - Eric Niebler
-            constexpr auto operator()(Value && value, Proj proj) const
-            {
-                return make_view_closure(bind_back(remove_base_fn{}, static_cast<Value &&>(value), eastl::move(proj)));
-            }
-        };
-
-        struct EARANGES_EMPTY_BASES remove_fn : remove_base_fn, remove_bind_fn
-        {
-            using remove_base_fn::operator();
-            using remove_bind_fn::operator();
-        };
-
-        /// \relates remove_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(remove_fn, remove)
-    } // namespace views
-    /// @}
-} // namespace ranges
+            /// \relates remove_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(remove_fn, remove)
+        } // namespace views
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

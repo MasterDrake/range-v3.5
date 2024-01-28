@@ -27,34 +27,40 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct sort_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename C, typename P = identity)(requires (!range<C>))
-            constexpr auto operator()(C pred, P proj = {}) const
+            struct sort_fn
             {
-                return make_action_closure(bind_back(sort_fn{}, eastl::move(pred), eastl::move(proj)));
-            }
+                template(typename C,
+                         typename P = identity)(requires(!range<C>)) constexpr auto
+                operator()(C pred, P proj = {}) const
+                {
+                    return make_action_closure(
+                        bind_back(sort_fn{}, eastl::move(pred), eastl::move(proj)));
+                }
 
-            template(typename Rng, typename C = less, typename P = identity)(requires forward_range<Rng> AND sortable<iterator_t<Rng>, C, P>)
-            Rng operator()(Rng && rng, C pred = {}, P proj = {}) const
-            {
-                ranges::sort(rng, eastl::move(pred), eastl::move(proj));
-                return static_cast<Rng &&>(rng);
-            }
-        };
+                template(typename Rng, typename C = less, typename P = identity)(
+                    requires forward_range<Rng> AND sortable<iterator_t<Rng>, C, P>) Rng
+                operator()(Rng && rng, C pred = {}, P proj = {}) const
+                {
+                    ranges::sort(rng, eastl::move(pred), eastl::move(proj));
+                    return static_cast<Rng &&>(rng);
+                }
+            };
 
-        /// \relates actions::sort_fn
-        /// \sa action_closure
-        EARANGES_INLINE_VARIABLE(action_closure<sort_fn>, sort)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            /// \relates actions::sort_fn
+            /// \sa action_closure
+            EARANGES_INLINE_VARIABLE(action_closure<sort_fn>, sort)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

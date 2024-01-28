@@ -27,44 +27,49 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct remove_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename V, typename P)(requires (!range<V>))
-            constexpr auto operator()(V && value, P proj) const
+            struct remove_fn
             {
-                return make_action_closure(bind_back(remove_fn{}, static_cast<V &&>(value), eastl::move(proj)));
-            }
+                template(typename V, typename P)(requires(!range<V>)) constexpr auto
+                operator()(V && value, P proj) const
+                {
+                    return make_action_closure(bind_back(
+                        remove_fn{}, static_cast<V &&>(value), eastl::move(proj)));
+                }
 
-            template<typename V>
-            constexpr auto operator()(V && value) const
-            {
-                return make_action_closure(bind_back(remove_fn{}, static_cast<V &&>(value), identity{}));
-            }
+                template<typename V>
+                constexpr auto operator()(V && value) const
+                {
+                    return make_action_closure(
+                        bind_back(remove_fn{}, static_cast<V &&>(value), identity{}));
+                }
 
-            template(typename Rng, typename V, typename P = identity)(
-                requires forward_range<Rng> AND permutable<iterator_t<Rng>> AND
-                        erasable_range<Rng, iterator_t<Rng>, sentinel_t<Rng>> AND
-                            indirect_relation<equal_to, projected<iterator_t<Rng>, P>,
-                                              V const *>)
-            Rng operator()(Rng && rng, V const & value, P proj = {}) const
-            {
-                auto it = ranges::remove(rng, value, eastl::move(proj));
-                ranges::erase(rng, it, ranges::end(rng));
-                return static_cast<Rng &&>(rng);
-            }
-        };
+                template(typename Rng, typename V, typename P = identity)(
+                    requires forward_range<Rng> AND permutable<iterator_t<Rng>> AND
+                        erasable_range<Rng, iterator_t<Rng>, sentinel_t<Rng>>
+                            AND indirect_relation<equal_to, projected<iterator_t<Rng>, P>,
+                                                  V const *>) Rng
+                operator()(Rng && rng, V const & value, P proj = {}) const
+                {
+                    auto it = ranges::remove(rng, value, eastl::move(proj));
+                    ranges::erase(rng, it, ranges::end(rng));
+                    return static_cast<Rng &&>(rng);
+                }
+            };
 
-        /// \relates actions::remove_fn
-        EARANGES_INLINE_VARIABLE(remove_fn, remove)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            /// \relates actions::remove_fn
+            EARANGES_INLINE_VARIABLE(remove_fn, remove)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

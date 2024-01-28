@@ -22,17 +22,19 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-utility Utility
-    /// @{
-    ///
-
-    /// \cond
-    namespace _get_
+    namespace ranges
     {
-        /// \endcond
-        // clang-format off
+        /// \addtogroup group-utility Utility
+        /// @{
+        ///
+
+        /// \cond
+        namespace _get_
+        {
+            /// \endcond
+            // clang-format off
         template<std::size_t I, typename TupleLike>
         constexpr auto CPP_auto_fun(get)(TupleLike &&t)
         (
@@ -43,30 +45,31 @@ namespace ranges
         (
             return detail::adl_get<T>(static_cast<TupleLike &&>(t))
         )
-            // clang-format on
+                // clang-format on
 
+                template<typename T>
+                T & get(meta::id_t<T> & value) noexcept
+            {
+                return value;
+            }
             template<typename T>
-            T & get(meta::id_t<T> & value) noexcept
-        {
-            return value;
-        }
-        template<typename T>
-        T const & get(meta::id_t<T> const & value) noexcept
-        {
-            return value;
-        }
-        template<typename T>
-        T && get(meta::id_t<T> && value) noexcept
-        {
-            return static_cast<T &&>(value);
-        }
-        /// \cond
-    } // namespace _get_
-    using namespace _get_;
-    /// \endcond
+            T const & get(meta::id_t<T> const & value) noexcept
+            {
+                return value;
+            }
+            template<typename T>
+            T && get(meta::id_t<T> && value) noexcept
+            {
+                return static_cast<T &&>(value);
+            }
+            /// \cond
+        } // namespace _get_
+        using namespace _get_;
+        /// \endcond
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

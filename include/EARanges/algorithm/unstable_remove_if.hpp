@@ -34,57 +34,64 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
 
-    /// unstable_remove have O(1) complexity for each element remove, unlike remove O(n)
-    /// [for worst case]. Each erased element overwritten (moved in) with last one.
-    /// unstable_remove_if does not preserve relative element order.
-    EARANGES_FUNC_BEGIN(unstable_remove_if)
+        /// unstable_remove have O(1) complexity for each element remove, unlike remove
+        /// O(n) [for worst case]. Each erased element overwritten (moved in) with last
+        /// one. unstable_remove_if does not preserve relative element order.
+        EARANGES_FUNC_BEGIN(unstable_remove_if)
 
-        /// \brief function template \c unstable_remove_if
-        template(typename I, typename C, typename P = identity)(
-            requires bidirectional_iterator<I> AND permutable<I> AND
-            indirect_unary_predicate<C, projected<I, P>>)
-        constexpr I EARANGES_FUNC(unstable_remove_if)(I first, I last, C pred, P proj = {})
-        {
-            while(true)
+            /// \brief function template \c unstable_remove_if
+            template(typename I, typename C, typename P = identity)(
+                requires bidirectional_iterator<I> AND permutable<I> AND
+                    indirect_unary_predicate<C, projected<I, P>>) constexpr I
+            EARANGES_FUNC(unstable_remove_if)(I first, I last, C pred, P proj = {})
             {
-                first = find_if(eastl::move(first), last, ranges::ref(pred), ranges::ref(proj));
-                if(first == last)
-                    return first;
+                while(true)
+                {
+                    first = find_if(
+                        eastl::move(first), last, ranges::ref(pred), ranges::ref(proj));
+                    if(first == last)
+                        return first;
 
-                last = next(find_if_not(make_reverse_iterator(eastl::move(last)),
-                                        make_reverse_iterator(next(first)),
-                                        ranges::ref(pred),
-                                        ranges::ref(proj)))
-                           .base();
-                if(first == last)
-                    return first;
+                    last = next(find_if_not(make_reverse_iterator(eastl::move(last)),
+                                            make_reverse_iterator(next(first)),
+                                            ranges::ref(pred),
+                                            ranges::ref(proj)))
+                               .base();
+                    if(first == last)
+                        return first;
 
-                *first = iter_move(last);
+                    *first = iter_move(last);
 
-                // discussion here: https://github.com/ericniebler/range-v3/issues/988
-                ++first;
+                    // discussion here: https://github.com/ericniebler/range-v3/issues/988
+                    ++first;
+                }
             }
-        }
 
-        /// \overload
-        template(typename Rng, typename C, typename P = identity)(
-            requires bidirectional_range<Rng> AND common_range<Rng> AND
-            permutable<iterator_t<Rng>> AND
-            indirect_unary_predicate<C, projected<iterator_t<Rng>, P>>)
-        constexpr borrowed_iterator_t<Rng> //
-        EARANGES_FUNC(unstable_remove_if)(Rng && rng, C pred, P proj = P{}) //
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename C, typename P = identity)(
+                requires bidirectional_range<Rng> AND common_range<Rng> AND
+                    permutable<iterator_t<Rng>>
+                        AND indirect_unary_predicate<
+                            C,
+                            projected<iterator_t<Rng>,
+                                      P>>) constexpr borrowed_iterator_t<Rng>   //
+            EARANGES_FUNC(unstable_remove_if)(Rng && rng, C pred, P proj = P{}) //
+            {
+                return (*this)(
+                    begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(unstable_remove_if)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(unstable_remove_if)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

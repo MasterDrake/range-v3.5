@@ -30,41 +30,47 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    namespace actions
+    namespace ranges
     {
-        struct unstable_remove_if_fn
+        /// \addtogroup group-actions
+        /// @{
+        namespace actions
         {
-            template(typename C, typename P = identity)(requires (!range<C>))
-            constexpr auto operator()(C pred, P proj = P{}) const
+            struct unstable_remove_if_fn
             {
-                return make_action_closure(bind_back(unstable_remove_if_fn{}, eastl::move(pred), eastl::move(proj)));
-            }
+                template(typename C,
+                         typename P = identity)(requires(!range<C>)) constexpr auto
+                operator()(C pred, P proj = P{}) const
+                {
+                    return make_action_closure(bind_back(
+                        unstable_remove_if_fn{}, eastl::move(pred), eastl::move(proj)));
+                }
 
-            template(typename Rng, typename C, typename P = identity)(
-                requires bidirectional_range<Rng> AND common_range<Rng> AND
-                    permutable<iterator_t<Rng>> AND
-                    indirect_unary_predicate<C, projected<iterator_t<Rng>, P>> AND
-                    erasable_range<Rng, iterator_t<Rng>, iterator_t<Rng>>)
-            Rng operator()(Rng && rng, C pred, P proj = P{}) const
-            {
-                auto it = ranges::unstable_remove_if(ranges::begin(rng),
-                                                     ranges::end(rng),
-                                                     eastl::move(pred),
-                                                     eastl::move(proj));
-                ranges::erase(rng, it, ranges::end(rng));
-                return static_cast<Rng &&>(rng);
-            }
-        };
+                template(typename Rng, typename C, typename P = identity)(
+                    requires bidirectional_range<Rng> AND common_range<Rng> AND
+                        permutable<iterator_t<Rng>>
+                            AND indirect_unary_predicate<C, projected<iterator_t<Rng>, P>>
+                                AND erasable_range<Rng, iterator_t<Rng>, iterator_t<Rng>>)
+                    Rng
+                    operator()(Rng && rng, C pred, P proj = P{}) const
+                {
+                    auto it = ranges::unstable_remove_if(ranges::begin(rng),
+                                                         ranges::end(rng),
+                                                         eastl::move(pred),
+                                                         eastl::move(proj));
+                    ranges::erase(rng, it, ranges::end(rng));
+                    return static_cast<Rng &&>(rng);
+                }
+            };
 
-        /// \sa `actions::unstable_remove_if_fn`
-        EARANGES_INLINE_VARIABLE(unstable_remove_if_fn, unstable_remove_if)
-    } // namespace actions
-    /// @}
-} // namespace ranges
+            /// \sa `actions::unstable_remove_if_fn`
+            EARANGES_INLINE_VARIABLE(unstable_remove_if_fn, unstable_remove_if)
+        } // namespace actions
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

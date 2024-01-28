@@ -25,39 +25,43 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-
-    namespace views
+    namespace ranges
     {
-        struct take_last_base_fn
+        /// \addtogroup group-views
+        /// @{
+
+        namespace views
         {
-            template(typename Rng)(requires viewable_range<Rng> AND sized_range<Rng>)
-            auto operator()(Rng && rng, range_difference_t<Rng> n) const
+            struct take_last_base_fn
             {
-                auto sz = ranges::distance(rng);
-                return drop_exactly(static_cast<Rng &&>(rng), sz > n ? sz - n : 0);
-            }
-        };
+                template(typename Rng)(
+                    requires viewable_range<Rng> AND sized_range<Rng>) auto
+                operator()(Rng && rng, range_difference_t<Rng> n) const
+                {
+                    auto sz = ranges::distance(rng);
+                    return drop_exactly(static_cast<Rng &&>(rng), sz > n ? sz - n : 0);
+                }
+            };
 
-        struct take_last_fn : take_last_base_fn
-        {
-            using take_last_base_fn::operator();
-
-            template(typename Int)(requires detail::integer_like_<Int>)
-            constexpr auto operator()(Int n) const
+            struct take_last_fn : take_last_base_fn
             {
-                return make_view_closure(bind_back(take_last_base_fn{}, n));
-            }
-        };
+                using take_last_base_fn::operator();
 
-        /// \relates take_last_fn
-        EARANGES_INLINE_VARIABLE(take_last_fn, take_last)
-    } // namespace views
-    /// @}
-} // namespace ranges
+                template(typename Int)(requires detail::integer_like_<Int>) constexpr auto
+                operator()(Int n) const
+                {
+                    return make_view_closure(bind_back(take_last_base_fn{}, n));
+                }
+            };
+
+            /// \relates take_last_fn
+            EARANGES_INLINE_VARIABLE(take_last_fn, take_last)
+        } // namespace views
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

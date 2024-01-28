@@ -23,40 +23,46 @@
          
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \cond
-    namespace adl_erase_detail
+    namespace ranges
     {
-        template(typename Cont, typename I, typename S)(requires lvalue_container_like<Cont> AND forward_iterator<I> AND sentinel_for<S, I>)
-        auto erase(Cont && cont, I first, S last)                            //
-            -> decltype(unwrap_reference(cont).erase(first, last))
+        /// \cond
+        namespace adl_erase_detail
         {
-            return unwrap_reference(cont).erase(first, last);
+            template(typename Cont, typename I, typename S)(
+                requires lvalue_container_like<Cont> AND forward_iterator<I> AND
+                    sentinel_for<S, I>) auto erase(Cont && cont, I first, S last) //
+                -> decltype(unwrap_reference(cont).erase(first, last))
+            {
+                return unwrap_reference(cont).erase(first, last);
+            }
+
+            struct erase_fn
+            {
+                template(typename Rng, typename I,
+                         typename S)(requires range<Rng> AND forward_iterator<I> AND
+                                         sentinel_for<S, I>) auto
+                operator()(Rng && rng, I first, S last) const
+                    -> decltype(erase((Rng &&)rng, first, last))
+                {
+                    return erase(static_cast<Rng &&>(rng), first, last);
+                }
+            };
+        } // namespace adl_erase_detail
+        /// \endcond
+
+        /// \ingroup group-actions
+        EARANGES_INLINE_VARIABLE(adl_erase_detail::erase_fn, erase)
+
+        namespace actions
+        {
+            using ranges::erase;
         }
 
-        struct erase_fn
-        {
-            template(typename Rng, typename I, typename S)(requires range<Rng> AND forward_iterator<I> AND sentinel_for<S, I>)
-            auto operator()(Rng && rng, I first, S last) const -> decltype(erase((Rng &&) rng, first, last))
-            {
-                return erase(static_cast<Rng &&>(rng), first, last);
-            }
-        };
-    } // namespace adl_erase_detail
-    /// \endcond
-
-    /// \ingroup group-actions
-    EARANGES_INLINE_VARIABLE(adl_erase_detail::erase_fn, erase)
-
-    namespace actions
-    {
-        using ranges::erase;
-    }
-
-    /// \addtogroup group-range
-    /// @{
-    // clang-format off
+        /// \addtogroup group-range
+        /// @{
+        // clang-format off
     /// \concept erasable_range_
     /// \brief The \c erasable_range_ concept
     template<typename Rng, typename I, typename S>
@@ -70,9 +76,10 @@ namespace ranges
     /// \brief The \c erasable_range concept
     template<typename Rng, typename I, typename S>
     CPP_concept erasable_range = range<Rng> && CPP_requires_ref(ranges::erasable_range_, Rng, I, S);
-    // clang-format on
-    /// @}
-} // namespace ranges
+        // clang-format on
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

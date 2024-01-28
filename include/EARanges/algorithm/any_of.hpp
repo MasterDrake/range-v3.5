@@ -29,34 +29,42 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(any_of)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(any_of)
 
-        /// \brief function template \c any_of
-        template(typename I, typename S, typename F, typename P = identity)(requires input_iterator<I> AND sentinel_for<S, I> AND indirect_unary_predicate<F, projected<I, P>>)
-        constexpr bool EARANGES_FUNC(any_of)(I first, S last, F pred, P proj = P{}) //
-        {
-            for(; first != last; ++first)
-                if(invoke(pred, invoke(proj, *first)))
-                    return true;
-            return false;
-        }
+            /// \brief function template \c any_of
+            template(typename I, typename S, typename F, typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    indirect_unary_predicate<F, projected<I, P>>) constexpr bool
+            EARANGES_FUNC(any_of)(I first, S last, F pred, P proj = P{}) //
+            {
+                for(; first != last; ++first)
+                    if(invoke(pred, invoke(proj, *first)))
+                        return true;
+                return false;
+            }
 
-        /// \overload
-        template(typename Rng, typename F, typename P = identity)(requires input_range<Rng> AND indirect_unary_predicate<F, projected<iterator_t<Rng>, P>>)
-        constexpr bool EARANGES_FUNC(any_of)(Rng && rng, F pred, P proj = P{}) //
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename F, typename P = identity)(
+                requires input_range<Rng> AND indirect_unary_predicate<
+                    F,
+                    projected<iterator_t<Rng>, P>>) constexpr bool
+            EARANGES_FUNC(any_of)(Rng && rng, F pred, P proj = P{}) //
+            {
+                return (*this)(
+                    begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(any_of)
+        EARANGES_FUNC_END(any_of)
 
-    /// @}
-} // namespace ranges
-
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 #include <EARanges/detail/epilogue.hpp>
 
 #endif

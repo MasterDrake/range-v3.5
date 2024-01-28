@@ -27,86 +27,91 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    template<typename I>
-    struct counted_view : view_interface<counted_view<I>, finite>
+    namespace ranges
     {
-    private:
-        friend range_access;
-        I it_;
-        iter_difference_t<I> n_;
+        /// \addtogroup group-views
+        /// @{
+        template<typename I>
+        struct counted_view : view_interface<counted_view<I>, finite>
+        {
+        private:
+            friend range_access;
+            I it_;
+            iter_difference_t<I> n_;
 
-    public:
-        counted_view() = default;
-        counted_view(I it, iter_difference_t<I> n)
-          : it_(it)
-          , n_(n)
-        {
-            EARANGES_EXPECT(0 <= n_);
-        }
-        counted_iterator<I> begin() const
-        {
-            return make_counted_iterator(it_, n_);
-        }
-        default_sentinel_t end() const
-        {
-            return {};
-        }
-        auto size() const
-        {
-            return static_cast<detail::iter_size_t<I>>(n_);
-        }
-    };
-
-    template<typename I>
-    EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<counted_view<I>> = true;
-
-#if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
-    template<typename I>
-    counted_view(I, iter_difference_t<I>) -> counted_view<I>;
-#endif
-
-    namespace views
-    {	//TODO: it's not used...
-        /*struct cpp20_counted_fn
-        {
-            template(typename I)(requires input_or_output_iterator<I> AND (!random_access_iterator<I>)) //
-            subrange<counted_iterator<I>, default_sentinel_t> //
-            operator()(I it, iter_difference_t<I> n) const
+        public:
+            counted_view() = default;
+            counted_view(I it, iter_difference_t<I> n)
+              : it_(it)
+              , n_(n)
             {
-                return {make_counted_iterator(eastl::move(it), n), default_sentinel};
+                EARANGES_EXPECT(0 <= n_);
             }
-            template(typename I)(requires random_access_iterator<I>)
-            subrange<I> operator()(I it, iter_difference_t<I> n) const
+            counted_iterator<I> begin() const
             {
-                return {it, it + n};
+                return make_counted_iterator(it_, n_);
             }
-        };*/
-
-        struct counted_fn
-        {
-            template(typename I)(requires input_or_output_iterator<I> AND (!random_access_iterator<I>)) //
-            counted_view<I> operator()(I it, iter_difference_t<I> n) const
+            default_sentinel_t end() const
             {
-                return {eastl::move(it), n};
+                return {};
             }
-            template(typename I)(requires random_access_iterator<I>)
-            subrange<I> operator()(I it, iter_difference_t<I> n) const
+            auto size() const
             {
-                return {it, it + n};
+                return static_cast<detail::iter_size_t<I>>(n_);
             }
         };
 
-        /// \relates counted_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(counted_fn, counted)
-    } // namespace views
+        template<typename I>
+        EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<counted_view<I>> = true;
 
-    /// @}
-} // namespace ranges
+#if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
+        template<typename I>
+        counted_view(I, iter_difference_t<I>) -> counted_view<I>;
+#endif
+
+        namespace views
+        { // TODO: it's not used...
+            /*struct cpp20_counted_fn
+            {
+                template(typename I)(requires input_or_output_iterator<I> AND
+            (!random_access_iterator<I>)) // subrange<counted_iterator<I>,
+            default_sentinel_t> // operator()(I it, iter_difference_t<I> n) const
+                {
+                    return {make_counted_iterator(eastl::move(it), n), default_sentinel};
+                }
+                template(typename I)(requires random_access_iterator<I>)
+                subrange<I> operator()(I it, iter_difference_t<I> n) const
+                {
+                    return {it, it + n};
+                }
+            };*/
+
+            struct counted_fn
+            {
+                template(typename I)(requires input_or_output_iterator<I> AND(
+                    !random_access_iterator<I>)) //
+                    counted_view<I>
+                    operator()(I it, iter_difference_t<I> n) const
+                {
+                    return {eastl::move(it), n};
+                }
+                template(typename I)(requires random_access_iterator<I>) subrange<I>
+                operator()(I it, iter_difference_t<I> n) const
+                {
+                    return {it, it + n};
+                }
+            };
+
+            /// \relates counted_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(counted_fn, counted)
+        } // namespace views
+
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 #include <EARanges/detail/satisfy_boost_range.hpp>

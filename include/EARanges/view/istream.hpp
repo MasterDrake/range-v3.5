@@ -25,86 +25,90 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    template<typename Val>
-    struct istream_view : view_facade<istream_view<Val>, unknown>
+    namespace ranges
     {
-    private:
-        friend range_access;
-        std::istream * sin_;
-        semiregular_box_t<Val> obj_;
-        struct cursor
+        /// \addtogroup group-views
+        /// @{
+        template<typename Val>
+        struct istream_view : view_facade<istream_view<Val>, unknown>
         {
         private:
             friend range_access;
-            using single_pass = eastl::true_type;
-            istream_view * rng_ = nullptr;
+            std::istream * sin_;
+            semiregular_box_t<Val> obj_;
+            struct cursor
+            {
+            private:
+                friend range_access;
+                using single_pass = eastl::true_type;
+                istream_view * rng_ = nullptr;
 
-        public:
-            cursor() = default;
-            explicit cursor(istream_view * rng)
-              : rng_(rng)
-            {}
+            public:
+                cursor() = default;
+                explicit cursor(istream_view * rng)
+                  : rng_(rng)
+                {}
+                void next()
+                {
+                    rng_->next();
+                }
+                Val & read() const noexcept
+                {
+                    return rng_->cached();
+                }
+                bool equal(default_sentinel_t) const
+                {
+                    return !rng_->sin_;
+                }
+                bool equal(cursor that) const
+                {
+                    return !rng_->sin_ == !that.rng_->sin_;
+                }
+            };
             void next()
             {
-                rng_->next();
+                if(!(*sin_ >> cached()))
+                    sin_ = nullptr;
             }
-            Val & read() const noexcept
+            cursor begin_cursor()
             {
-                return rng_->cached();
+                return cursor{this};
             }
-            bool equal(default_sentinel_t) const
+
+        public:
+            istream_view() = default;
+            explicit istream_view(std::istream & sin)
+              : sin_(&sin)
+              , obj_{}
             {
-                return !rng_->sin_;
+                next(); // prime the pump
             }
-            bool equal(cursor that) const
+            Val & cached() noexcept
             {
-                return !rng_->sin_ == !that.rng_->sin_;
+                return obj_;
             }
         };
-        void next()
-        {
-            if(!(*sin_ >> cached()))
-                sin_ = nullptr;
-        }
-        cursor begin_cursor()
-        {
-            return cursor{this};
-        }
 
-    public:
-        istream_view() = default;
-        explicit istream_view(std::istream & sin)
-          : sin_(&sin)
-          , obj_{}
-        {
-            next(); // prime the pump
-        }
-        Val & cached() noexcept
-        {
-            return obj_;
-        }
-    };
-
-    /// \cond
-    namespace _istream_
-    {
-        /// \endcond
-        template(typename Val)(requires copy_constructible<Val> AND default_constructible<Val>)
-        inline istream_view<Val> istream(std::istream & sin)
-        {
-            return istream_view<Val>{sin};
-        }
         /// \cond
-    } // namespace _istream_
-    using namespace _istream_;
-    /// \endcond
+        namespace _istream_
+        {
+            /// \endcond
+            template(typename Val)(
+                requires copy_constructible<Val> AND default_constructible<
+                    Val>) inline istream_view<Val> istream(std::istream & sin)
+            {
+                return istream_view<Val>{sin};
+            }
+            /// \cond
+        } // namespace _istream_
+        using namespace _istream_;
+        /// \endcond
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

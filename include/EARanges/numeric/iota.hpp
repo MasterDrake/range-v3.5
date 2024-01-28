@@ -22,30 +22,37 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-numerics
-    /// @{
-    struct iota_fn
+    namespace ranges
     {
-        template(typename O, typename S, typename T)(requires output_iterator<O, T const &> AND sentinel_for<S, O> AND weakly_incrementable<T>)
-        O operator()(O first, S last, T val) const
+        /// \addtogroup group-numerics
+        /// @{
+        struct iota_fn
         {
-            for(; first != last; ++first, ++val)
-                *first = detail::as_const(val);
-            return first;
-        }
+            template(typename O, typename S, typename T)(
+                requires output_iterator<O, T const &> AND sentinel_for<S, O> AND
+                    weakly_incrementable<T>) O
+            operator()(O first, S last, T val) const
+            {
+                for(; first != last; ++first, ++val)
+                    *first = detail::as_const(val);
+                return first;
+            }
 
-        template(typename Rng, typename T)(requires output_range<Rng, T const &> AND weakly_incrementable<T>)
-        borrowed_iterator_t<Rng> operator()(Rng && rng, T val) const //
-        {
-            return (*this)(begin(rng), end(rng), detail::move(val));
-        }
-    };
+            template(typename Rng,
+                     typename T)(requires output_range<Rng, T const &> AND
+                                     weakly_incrementable<T>) borrowed_iterator_t<Rng>
+            operator()(Rng && rng, T val) const //
+            {
+                return (*this)(begin(rng), end(rng), detail::move(val));
+            }
+        };
 
-    EARANGES_INLINE_VARIABLE(iota_fn, iota)
-    /// @}
-} // namespace ranges
+        EARANGES_INLINE_VARIABLE(iota_fn, iota)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -32,48 +32,50 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-actions
-    /// @{
-    struct make_action_closure_fn
+    namespace ranges
     {
-        template<typename Fun>
-        constexpr actions::action_closure<Fun> operator()(Fun fun) const
+        /// \addtogroup group-actions
+        /// @{
+        struct make_action_closure_fn
         {
-            return actions::action_closure<Fun>{static_cast<Fun &&>(fun)};
-        }
-    };
+            template<typename Fun>
+            constexpr actions::action_closure<Fun> operator()(Fun fun) const
+            {
+                return actions::action_closure<Fun>{static_cast<Fun &&>(fun)};
+            }
+        };
 
-    /// \sa make_action_closure_fn
-    EARANGES_INLINE_VARIABLE(make_action_closure_fn, make_action_closure)
+        /// \sa make_action_closure_fn
+        EARANGES_INLINE_VARIABLE(make_action_closure_fn, make_action_closure)
 
-    /// \cond
-    namespace detail
-    {
-        struct action_closure_base_
-        {};
-    }
-    /// \endcond
-
-    /// \concept invocable_action_closure_
-    /// \brief The \c invocable_action_closure_ concept
-    template(typename ActionFn, typename Rng)(
-    concept (invocable_action_closure_)(ActionFn, Rng),
-        !derived_from<invoke_result_t<ActionFn, Rng>, detail::action_closure_base_>
-    );
-    /// \concept invocable_action_closure
-    /// \brief The \c invocable_action_closure concept
-    template<typename ActionFn, typename Rng>
-    CPP_concept invocable_action_closure =
-        invocable<ActionFn, Rng> &&
-        CPP_concept_ref(ranges::invocable_action_closure_, ActionFn, Rng);
-
-    namespace actions
-    {
-        struct EARANGES_STRUCT_WITH_ADL_BARRIER(action_closure_base): detail::action_closure_base_
+        /// \cond
+        namespace detail
         {
-            // clang-format off
+            struct action_closure_base_
+            {};
+        } // namespace detail
+        /// \endcond
+
+        /// \concept invocable_action_closure_
+        /// \brief The \c invocable_action_closure_ concept
+        template(typename ActionFn, typename Rng)(
+            concept(invocable_action_closure_)(ActionFn, Rng),
+            !derived_from<invoke_result_t<ActionFn, Rng>, detail::action_closure_base_>);
+        /// \concept invocable_action_closure
+        /// \brief The \c invocable_action_closure concept
+        template<typename ActionFn, typename Rng>
+        CPP_concept invocable_action_closure =
+            invocable<ActionFn, Rng> &&
+            CPP_concept_ref(ranges::invocable_action_closure_, ActionFn, Rng);
+
+        namespace actions
+        {
+            struct EARANGES_STRUCT_WITH_ADL_BARRIER(action_closure_base)
+              : detail::action_closure_base_
+            {
+                // clang-format off
             // Piping requires things are passed by value.
             template(typename Rng, typename ActionFn)(requires (!eastl::is_lvalue_reference<Rng>::value) AND range<Rng> AND invocable_action_closure<ActionFn, Rng &>)
             friend constexpr auto operator|(Rng && rng, action_closure<ActionFn> act)
@@ -106,11 +108,11 @@ namespace ranges
                 static_cast<ActionFn &&>(act)(rng);
                 return rng;
             }
-            // clang-format on
-        };
+                // clang-format on
+            };
 
 #ifdef EARANGES_WORKAROUND_CLANG_43400
-        // clang-format off
+            // clang-format off
         namespace EARANGES_ADL_BARRIER_FOR(action_closure_base)
         {
             template(typename Rng, typename ActionFn)(  // *******************************
@@ -123,24 +125,29 @@ namespace ranges
             // *    When piping a range into an action, the range must be moved in.      *
             // ***************************************************************************
         } // namespace EARANGES_ADL_BARRIER_FOR(action_closure_base)
-        // clang-format on
-#endif    // EARANGES_WORKAROUND_CLANG_43400
+            // clang-format on
+#endif // EARANGES_WORKAROUND_CLANG_43400
+
+            template<typename ActionFn>
+            struct EARANGES_EMPTY_BASES action_closure
+              : action_closure_base
+              , ActionFn
+            {
+                action_closure() = default;
+
+                constexpr explicit action_closure(ActionFn fn)
+                  : ActionFn(static_cast<ActionFn &&>(fn))
+                {}
+            };
+
+        } // namespace actions
 
         template<typename ActionFn>
-        struct EARANGES_EMPTY_BASES action_closure: action_closure_base, ActionFn
-        {
-            action_closure() = default;
-
-            constexpr explicit action_closure(ActionFn fn): ActionFn(static_cast<ActionFn &&>(fn))
-            {}
-        };
-
-    } // namespace actions
-
-    template<typename ActionFn>
-    EARANGES_INLINE_VAR constexpr bool is_pipeable_v<actions::action_closure<ActionFn>> = true;
-    /// @}
-} // namespace ranges
+        EARANGES_INLINE_VAR constexpr bool
+            is_pipeable_v<actions::action_closure<ActionFn>> = true;
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

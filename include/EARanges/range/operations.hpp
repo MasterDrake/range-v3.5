@@ -27,92 +27,102 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// Checked indexed range access.
-    ///
-    /// \ingroup group-range
-    struct at_fn
+    namespace ranges
     {
-        /// \return `begin(rng)[n]`
-        template(typename Rng)(
-            requires random_access_range<Rng> AND sized_range<Rng> AND
-                borrowed_range<Rng>)
-        constexpr range_reference_t<Rng> //
-        operator()(Rng && rng, range_difference_t<Rng> n) const
+        /// Checked indexed range access.
+        ///
+        /// \ingroup group-range
+        struct at_fn
         {
-            // Workaround https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67371 in GCC 5
-            check_throw(rng, n);
-            return ranges::begin(rng)[n];
-        }
+            /// \return `begin(rng)[n]`
+            template(typename Rng)(
+                requires random_access_range<Rng> AND sized_range<Rng> AND
+                    borrowed_range<Rng>) constexpr range_reference_t<Rng> //
+            operator()(Rng && rng, range_difference_t<Rng> n) const
+            {
+                // Workaround https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67371 in GCC 5
+                check_throw(rng, n);
+                return ranges::begin(rng)[n];
+            }
 
-    private:
-        template<typename Rng>
-        static constexpr void check_throw(Rng && rng, range_difference_t<Rng> n)
+        private:
+            template<typename Rng>
+            static constexpr void check_throw(Rng && rng, range_difference_t<Rng> n)
+            {
+                (n < 0 || n >= ranges::distance(rng))
+                    ? throw std::out_of_range("ranges::at")//TODO: wrap throwing code around EASTL_EXCEPTIONS...
+                    : void(0);
+            }
+        };
+
+        /// Checked indexed range access.
+        ///
+        /// \ingroup group-range
+        /// \sa `at_fn`
+        EARANGES_INLINE_VARIABLE(at_fn, at)
+
+        /// Unchecked indexed range access.
+        ///
+        /// \ingroup group-range
+        struct index_fn
         {
-            (n < 0 || n >= ranges::distance(rng)) ? throw std::out_of_range("ranges::at")
-                                                  : void(0);
-        }
-    };
+            /// \return `begin(rng)[n]`
+            template(typename Rng, typename Int)(
+                requires random_access_range<Rng> AND integral<Int> AND
+                    borrowed_range<Rng>) constexpr range_reference_t<Rng>
+            operator()(Rng && rng, Int n) const //
+            {
+                using D = range_difference_t<Rng>;
+                EARANGES_EXPECT(0 <= static_cast<D>(n));
+                EARANGES_EXPECT(!(bool)sized_range<Rng> ||
+                                static_cast<D>(n) < ranges::distance(rng));
+                return ranges::begin(rng)[static_cast<D>(n)];
+            }
+        };
 
-    /// Checked indexed range access.
-    ///
-    /// \ingroup group-range
-    /// \sa `at_fn`
-    EARANGES_INLINE_VARIABLE(at_fn, at)
+        /// Unchecked indexed range access.
+        ///
+        /// \ingroup group-range
+        /// \sa `index_fn`
+        EARANGES_INLINE_VARIABLE(index_fn, index)
 
-    /// Unchecked indexed range access.
-    ///
-    /// \ingroup group-range
-    struct index_fn
-    {
-        /// \return `begin(rng)[n]`
-        template(typename Rng, typename Int)(requires random_access_range<Rng> AND integral<Int> AND borrowed_range<Rng>)
-        constexpr range_reference_t<Rng> operator()(Rng && rng, Int n) const //
+        /// \ingroup group-range
+        struct back_fn
         {
-            using D = range_difference_t<Rng>;
-            EARANGES_EXPECT(0 <= static_cast<D>(n));
-            EARANGES_EXPECT(!(bool)sized_range<Rng> || static_cast<D>(n) < ranges::distance(rng));
-            return ranges::begin(rng)[static_cast<D>(n)];
-        }
-    };
+            /// \return `*prev(end(rng))`
+            template(typename Rng)(
+                requires common_range<Rng> AND bidirectional_range<Rng> AND
+                    borrowed_range<Rng>) constexpr range_reference_t<Rng>
+            operator()(Rng && rng) const
+            {
+                return *prev(end(rng));
+            }
+        };
 
-    /// Unchecked indexed range access.
-    ///
-    /// \ingroup group-range
-    /// \sa `index_fn`
-    EARANGES_INLINE_VARIABLE(index_fn, index)
+        /// \ingroup group-range
+        /// \sa `back_fn`
+        EARANGES_INLINE_VARIABLE(back_fn, back)
 
-    /// \ingroup group-range
-    struct back_fn
-    {
-        /// \return `*prev(end(rng))`
-        template(typename Rng)(requires common_range<Rng> AND bidirectional_range<Rng> AND borrowed_range<Rng>)
-        constexpr range_reference_t<Rng> operator()(Rng && rng) const
+        /// \ingroup group-range
+        struct front_fn
         {
-            return *prev(end(rng));
-        }
-    };
+            /// \return `*begin(rng)`
+            template(typename Rng)(
+                requires forward_range<Rng> AND
+                    borrowed_range<Rng>) constexpr range_reference_t<Rng>
+            operator()(Rng && rng) const
+            {
+                return *begin(rng);
+            }
+        };
 
-    /// \ingroup group-range
-    /// \sa `back_fn`
-    EARANGES_INLINE_VARIABLE(back_fn, back)
-
-    /// \ingroup group-range
-    struct front_fn
-    {
-        /// \return `*begin(rng)`
-        template(typename Rng)(requires forward_range<Rng> AND borrowed_range<Rng>)
-        constexpr range_reference_t<Rng> operator()(Rng && rng) const
-        {
-            return *begin(rng);
-        }
-    };
-
-    /// \ingroup group-range
-    /// \sa `front_fn`
-    EARANGES_INLINE_VARIABLE(front_fn, front)
-} // namespace ranges
+        /// \ingroup group-range
+        /// \sa `front_fn`
+        EARANGES_INLINE_VARIABLE(front_fn, front)
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -32,7 +32,9 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace
+{
+    namespace ranges
 {
     /// \cond
     namespace detail
@@ -550,6 +552,7 @@ namespace ranges
 
     /// @}
 } // namespace ranges
+}
 
 #include <EARanges/detail/epilogue.hpp>
 

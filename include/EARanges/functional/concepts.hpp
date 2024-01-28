@@ -20,12 +20,14 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-functional
-    /// @{
+    namespace ranges
+    {
+        /// \addtogroup group-functional
+        /// @{
 
-    // clang-format off
+        // clang-format off
     // WORKAROUND mysterious msvc bug
 #if defined(_MSC_VER) && !defined(__clang__)
     /// \concept invocable
@@ -83,10 +85,11 @@ namespace ranges
     /// \brief The \c strict_weak_order concept
     template<typename R, typename T, typename U>
     CPP_concept strict_weak_order = relation<R, T, U>;
-    // clang-format on
+        // clang-format on
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -23,57 +23,67 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-functional
-    /// @{
-
-    struct pipeable_base;
-
-    template<typename T>
-    EARANGES_INLINE_VAR constexpr bool is_pipeable_v = META_IS_BASE_OF(pipeable_base, T);
-
-    template<typename T>
-    EARANGES_INLINE_VAR constexpr bool is_pipeable_v<T &> = META_IS_BASE_OF(pipeable_base, T);
-    template<typename T>
-    EARANGES_INLINE_VAR constexpr bool is_pipeable_v<T &&> = META_IS_BASE_OF(pipeable_base, T);
-    template<typename T>
-    using is_pipeable = meta::bool_<is_pipeable_v<T>>;
-
-    struct make_pipeable_fn
+    namespace ranges
     {
-        template<typename Fun, typename PipeableBase = pipeable_base>
-        constexpr auto operator()(Fun fun) const
+        /// \addtogroup group-functional
+        /// @{
+
+        struct pipeable_base;
+
+        template<typename T>
+        EARANGES_INLINE_VAR constexpr bool is_pipeable_v =
+            META_IS_BASE_OF(pipeable_base, T);
+
+        template<typename T>
+        EARANGES_INLINE_VAR constexpr bool is_pipeable_v<T &> =
+            META_IS_BASE_OF(pipeable_base, T);
+        template<typename T>
+        EARANGES_INLINE_VAR constexpr bool is_pipeable_v<T &&> =
+            META_IS_BASE_OF(pipeable_base, T);
+        template<typename T>
+        using is_pipeable = meta::bool_<is_pipeable_v<T>>;
+
+        struct make_pipeable_fn
         {
-            struct local : Fun , PipeableBase
+            template<typename Fun, typename PipeableBase = pipeable_base>
+            constexpr auto operator()(Fun fun) const
             {
-                constexpr explicit local(Fun && f): Fun(static_cast<Fun &&>(f))
-                {}
-            };
-            return local{static_cast<Fun &&>(fun)};
-        }
-    };
-
-    /// \ingroup group-functional
-    /// \sa `make_pipeable_fn`
-    EARANGES_INLINE_VARIABLE(make_pipeable_fn, make_pipeable)
-
-    struct pipeable_access
-    {
-        template<typename Pipeable>
-        struct impl : Pipeable
-        {
-            using Pipeable::pipe;
+                struct local
+                  : Fun
+                  , PipeableBase
+                {
+                    constexpr explicit local(Fun && f)
+                      : Fun(static_cast<Fun &&>(f))
+                    {}
+                };
+                return local{static_cast<Fun &&>(fun)};
+            }
         };
-    };
 
-    struct pipeable_base
-    {
-    private:
-        friend pipeable_access;
+        /// \ingroup group-functional
+        /// \sa `make_pipeable_fn`
+        EARANGES_INLINE_VARIABLE(make_pipeable_fn, make_pipeable)
 
-        // Evaluate the pipe with an argument
-        template(typename Arg, typename Pipe)(requires (!is_pipeable_v<Arg>) AND is_pipeable_v<Pipe> AND invocable<Pipe, Arg>) // clang-format off
+        struct pipeable_access
+        {
+            template<typename Pipeable>
+            struct impl : Pipeable
+            {
+                using Pipeable::pipe;
+            };
+        };
+
+        struct pipeable_base
+        {
+        private:
+            friend pipeable_access;
+
+            // Evaluate the pipe with an argument
+            template(typename Arg, typename Pipe)(
+                requires(!is_pipeable_v<Arg>) AND is_pipeable_v<Pipe> AND
+                    invocable<Pipe, Arg>) // clang-format off
         friend constexpr auto operator|(Arg &&arg, Pipe pipe) // clang-format off
         {
             return static_cast<Pipe &&>(pipe)(static_cast<Arg &&>(arg));
@@ -82,33 +92,36 @@ namespace ranges
         // Compose two pipes
         template(typename Pipe0, typename Pipe1)(requires is_pipeable_v<Pipe0> AND is_pipeable_v<Pipe1>) // clang-format off
         friend constexpr auto operator|(Pipe0 pipe0, Pipe1 pipe1) // clang-format on
-        {
-            return make_pipeable(compose(detail::move(pipe1), detail::move(pipe0)));
-        }
+            {
+                return make_pipeable(compose(detail::move(pipe1), detail::move(pipe0)));
+            }
 
-        template<typename Arg, typename Pipe>
-        friend auto operator|=(Arg & arg, Pipe pipe) //
-            -> CPP_broken_friend_ret(Arg &)(requires (is_pipeable_v<Pipe>) && (!is_pipeable_v<Arg>) && invocable<Pipe, Arg &>)
-        {
-            static_cast<Pipe &&>(pipe)(arg);
-            return arg;
-        }
+            template<typename Arg, typename Pipe>
+            friend auto operator|=(Arg & arg, Pipe pipe) //
+                -> CPP_broken_friend_ret(Arg &)(
+                    requires(is_pipeable_v<Pipe>) &&
+                    (!is_pipeable_v<Arg>)&&invocable<Pipe, Arg &>)
+            {
+                static_cast<Pipe &&>(pipe)(arg);
+                return arg;
+            }
 
-        // Default Pipe behavior just passes the argument to the pipe's function call
-        // operator
-        // clang-format off
+            // Default Pipe behavior just passes the argument to the pipe's function call
+            // operator
+            // clang-format off
         template<typename Arg, typename Pipe>
         static constexpr auto CPP_auto_fun(pipe)(Arg && arg, Pipe p)
         (
             return static_cast<Pipe &&>(p)(static_cast<Arg &&>(arg))
         )
-        // clang-format on
-    };
+            // clang-format on
+        };
 
-    /// \endcond
+        /// \endcond
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

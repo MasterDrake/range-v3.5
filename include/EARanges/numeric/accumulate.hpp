@@ -27,37 +27,47 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-numerics
-    /// @{
-    struct accumulate_fn
+    namespace ranges
     {
-        template(typename I, typename S, typename T, typename Op = plus, typename P = identity)(
-            requires sentinel_for<S, I> AND input_iterator<I> AND
-                indirectly_binary_invocable_<Op, T *, projected<I, P>> AND
-                assignable_from<T &, indirect_result_t<Op &, T *, projected<I, P>>>)
-        T operator()(I first, S last, T init, Op op = Op{},P proj = P{}) const
+        /// \addtogroup group-numerics
+        /// @{
+        struct accumulate_fn
         {
-            for(; first != last; ++first)
-                init = invoke(op, init, invoke(proj, *first));
-            return init;
-        }
+            template(typename I, typename S, typename T, typename Op = plus,
+                     typename P = identity)(
+                requires sentinel_for<S, I> AND input_iterator<I> AND
+                    indirectly_binary_invocable_<Op, T *, projected<I, P>>
+                        AND assignable_from<
+                            T &, indirect_result_t<Op &, T *, projected<I, P>>>) T
+            operator()(I first, S last, T init, Op op = Op{}, P proj = P{}) const
+            {
+                for(; first != last; ++first)
+                    init = invoke(op, init, invoke(proj, *first));
+                return init;
+            }
 
-        template(typename Rng, typename T, typename Op = plus, typename P = identity)(
-            requires input_range<Rng> AND
-                indirectly_binary_invocable_<Op, T *, projected<iterator_t<Rng>, P>> AND
-                assignable_from<T &, indirect_result_t<Op &, T *, projected<iterator_t<Rng>, P>>>)
-        T operator()(Rng && rng, T init, Op op = Op{}, P proj = P{}) const
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(init), eastl::move(op), eastl::move(proj));
-        }
-    };
+            template(typename Rng, typename T, typename Op = plus, typename P = identity)(
+                requires input_range<Rng> AND indirectly_binary_invocable_<
+                    Op, T *, projected<iterator_t<Rng>, P>>
+                    AND assignable_from<
+                        T &, indirect_result_t<Op &, T *, projected<iterator_t<Rng>, P>>>)
+                T
+                operator()(Rng && rng, T init, Op op = Op{}, P proj = P{}) const
+            {
+                return (*this)(begin(rng),
+                               end(rng),
+                               eastl::move(init),
+                               eastl::move(op),
+                               eastl::move(proj));
+            }
+        };
 
-    EARANGES_INLINE_VARIABLE(accumulate_fn, accumulate)
-    /// @}
-} // namespace ranges
-
+        EARANGES_INLINE_VARIABLE(accumulate_fn, accumulate)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 #include <EARanges/detail/epilogue.hpp>
 
 #endif

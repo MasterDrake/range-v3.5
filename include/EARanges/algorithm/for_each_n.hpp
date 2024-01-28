@@ -29,37 +29,47 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(for_each_n)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(for_each_n)
 
-        /// \brief function template \c for_each_n
-        template(typename I, typename F, typename P = identity)(requires input_iterator<I> AND indirectly_unary_invocable<F, projected<I, P>>)
-        constexpr I EARANGES_FUNC(for_each_n)(I first, iter_difference_t<I> n, F fun, P proj = P{})
-        {
-            EARANGES_EXPECT(0 <= n);
-            auto norig = n;
-            auto b = uncounted(first);
-            for(; 0 < n; ++b, --n)
-                invoke(fun, invoke(proj, *b));
-            return recounted(first, b, norig);
-        }
+            /// \brief function template \c for_each_n
+            template(typename I, typename F, typename P = identity)(
+                requires input_iterator<I> AND
+                    indirectly_unary_invocable<F, projected<I, P>>) constexpr I
+            EARANGES_FUNC(for_each_n)(
+                I first, iter_difference_t<I> n, F fun, P proj = P{})
+            {
+                EARANGES_EXPECT(0 <= n);
+                auto norig = n;
+                auto b = uncounted(first);
+                for(; 0 < n; ++b, --n)
+                    invoke(fun, invoke(proj, *b));
+                return recounted(first, b, norig);
+            }
 
-        /// \overload
-        template(typename Rng, typename F, typename P = identity)(requires input_range<Rng> AND indirectly_unary_invocable<F, projected<iterator_t<Rng>, P>>)
-        constexpr borrowed_iterator_t<Rng> EARANGES_FUNC(for_each_n)(Rng && rng, range_difference_t<Rng> n, F fun, P proj = P{})
-        {
-            if(sized_range<Rng>)
-                EARANGES_EXPECT(n <= distance(rng));
+            /// \overload
+            template(typename Rng, typename F, typename P = identity)(
+                requires input_range<Rng> AND indirectly_unary_invocable<
+                    F,
+                    projected<iterator_t<Rng>, P>>) constexpr borrowed_iterator_t<Rng>
+            EARANGES_FUNC(for_each_n)(
+                Rng && rng, range_difference_t<Rng> n, F fun, P proj = P{})
+            {
+                if(sized_range<Rng>)
+                    EARANGES_EXPECT(n <= distance(rng));
 
-            return (*this)(begin(rng), n, detail::move(fun), detail::move(proj));
-        }
+                return (*this)(begin(rng), n, detail::move(fun), detail::move(proj));
+            }
 
-    EARANGES_FUNC_END(for_each_n)
-    /// @}
-} // namespace ranges
+        EARANGES_FUNC_END(for_each_n)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

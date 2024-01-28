@@ -25,54 +25,59 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        // [&](auto&& i){ return invoke(pred, i, val); }
-        template<typename Pred, typename Val>
-        struct lower_bound_predicate
+        /// \cond
+        namespace detail
         {
-            Pred & pred_;
-            Val & val_;
-
-            template<typename T>
-            constexpr bool operator()(T && t) const
+            // [&](auto&& i){ return invoke(pred, i, val); }
+            template<typename Pred, typename Val>
+            struct lower_bound_predicate
             {
-                return invoke(pred_, static_cast<T &&>(t), val_);
-            }
-        };
+                Pred & pred_;
+                Val & val_;
 
-        template<typename Pred, typename Val>
-        constexpr lower_bound_predicate<Pred, Val> make_lower_bound_predicate(Pred & pred, Val & val)
-        {
-            return {pred, val};
-        }
-    } // namespace detail
-    /// \endcond
+                template<typename T>
+                constexpr bool operator()(T && t) const
+                {
+                    return invoke(pred_, static_cast<T &&>(t), val_);
+                }
+            };
 
-    namespace aux
-    {
-        struct lower_bound_n_fn
-        {
-            template(typename I, typename V, typename C = less, typename P = identity)(requires forward_iterator<I> AND indirect_strict_weak_order<C, V const *, projected<I, P>>)
-            constexpr I operator()(I first,
-                                   iter_difference_t<I> d,
-                                   V const & val,
-                                   C pred = C{},
-                                   P proj = P{}) const
+            template<typename Pred, typename Val>
+            constexpr lower_bound_predicate<Pred, Val> make_lower_bound_predicate(
+                Pred & pred, Val & val)
             {
-                return partition_point_n(eastl::move(first),
-                                         d,
-                                         detail::make_lower_bound_predicate(pred, val),
-                                         eastl::move(proj));
+                return {pred, val};
             }
-        };
+        } // namespace detail
+        /// \endcond
 
-        EARANGES_INLINE_VARIABLE(lower_bound_n_fn, lower_bound_n)
-    } // namespace aux
-} // namespace ranges
+        namespace aux
+        {
+            struct lower_bound_n_fn
+            {
+                template(typename I, typename V, typename C = less,
+                         typename P = identity)(
+                    requires forward_iterator<I> AND indirect_strict_weak_order<
+                        C, V const *, projected<I, P>>) constexpr I
+                operator()(I first, iter_difference_t<I> d, V const & val, C pred = C{},
+                           P proj = P{}) const
+                {
+                    return partition_point_n(
+                        eastl::move(first),
+                        d,
+                        detail::make_lower_bound_predicate(pred, val),
+                        eastl::move(proj));
+                }
+            };
+
+            EARANGES_INLINE_VARIABLE(lower_bound_n_fn, lower_bound_n)
+        } // namespace aux
+    }     // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

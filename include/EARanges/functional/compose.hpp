@@ -24,20 +24,22 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-functional
-    /// @{
-    template<typename Second, typename First>
-    struct composed
+    namespace ranges
     {
-    private:
-        EARANGES_NO_UNIQUE_ADDRESS
-        First first_;
-        EARANGES_NO_UNIQUE_ADDRESS
-        Second second_;
+        /// \addtogroup group-functional
+        /// @{
+        template<typename Second, typename First>
+        struct composed
+        {
+        private:
+            EARANGES_NO_UNIQUE_ADDRESS
+            First first_;
+            EARANGES_NO_UNIQUE_ADDRESS
+            Second second_;
 
-        // clang-format off
+            // clang-format off
         template<typename A, typename B, typename... Ts>
         static constexpr auto //
         CPP_auto_fun(do_)(A &&a, B &&b, eastl::false_type, Ts &&... ts)
@@ -51,12 +53,12 @@ namespace ranges
         )
     public:
         composed() = default;
-        // clang-format on
-        constexpr composed(Second second, First first)
-          : first_(eastl::move(first))
-          , second_(eastl::move(second))
-        {}
-        // clang-format off
+            // clang-format on
+            constexpr composed(Second second, First first)
+              : first_(eastl::move(first))
+              , second_(eastl::move(second))
+            {}
+            // clang-format off
         template<typename... Ts>
         constexpr auto CPP_auto_fun(operator())(Ts &&... ts)(mutable &)
         (
@@ -81,24 +83,24 @@ namespace ranges
                                  eastl::is_void<invoke_result_t<First &&, Ts...>>{},
                                  (Ts &&) ts...)
         )
-        // clang-format on
-    };
+            // clang-format on
+        };
 
-    struct compose_fn
-    {
-        template<typename Second, typename First>
-        constexpr composed<Second, First> operator()(Second second, First first) const
+        struct compose_fn
         {
-            return {eastl::move(second), eastl::move(first)};
-        }
-    };
+            template<typename Second, typename First>
+            constexpr composed<Second, First> operator()(Second second, First first) const
+            {
+                return {eastl::move(second), eastl::move(first)};
+            }
+        };
 
-    /// \ingroup group-functional
-    /// \sa `compose_fn`
-    EARANGES_INLINE_VARIABLE(compose_fn, compose)
-    /// @}
-} // namespace ranges
-
+        /// \ingroup group-functional
+        /// \sa `compose_fn`
+        EARANGES_INLINE_VARIABLE(compose_fn, compose)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 #include <EARanges/detail/epilogue.hpp>
 
 #endif

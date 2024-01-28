@@ -36,147 +36,156 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    template<typename Rng>
-    struct EARANGES_EMPTY_BASES drop_view
-      : view_interface<drop_view<Rng>,
-                       is_finite<Rng>::value ? finite : range_cardinality<Rng>::value>
-      , private detail::non_propagating_cache<iterator_t<Rng>, drop_view<Rng>,
-                                              !random_access_range<Rng>>
+    namespace ranges
     {
-    private:
-        using difference_type_ = range_difference_t<Rng>;
-        Rng rng_;
-        difference_type_ n_;
-
-        template(bool Const = true)(requires Const AND range<meta::const_if_c<Const, Rng>>)
-        iterator_t<meta::const_if_c<Const, Rng>> //
-        get_begin_(eastl::true_type, eastl::true_type) const
-        {
-            CPP_assert(random_access_range<meta::const_if_c<Const, Rng>>);
-            return next(ranges::begin(rng_), n_, ranges::end(rng_));
-        }
-        iterator_t<Rng> get_begin_(eastl::true_type, eastl::false_type)
-        {
-            CPP_assert(random_access_range<Rng>);
-            return next(ranges::begin(rng_), n_, ranges::end(rng_));
-        }
-        iterator_t<Rng> get_begin_(eastl::false_type, detail::ignore_t)
-        {
-            CPP_assert(!random_access_range<Rng>);
-            using cache_t =
-                detail::non_propagating_cache<iterator_t<Rng>, drop_view<Rng>>;
-            auto & begin_ = static_cast<cache_t &>(*this);
-            if(!begin_)
-                begin_ = next(ranges::begin(rng_), n_, ranges::end(rng_));
-            return *begin_;
-        }
-
-    public:
-        drop_view() = default;
-        drop_view(Rng rng, difference_type_ n)
-          : rng_(eastl::move(rng))
-          , n_(n)
-        {
-            EARANGES_EXPECT(n >= 0);
-        }
-        iterator_t<Rng> begin()
-        {
-            return this->get_begin_(meta::bool_<random_access_range<Rng>>{}, eastl::false_type{});
-        }
-        sentinel_t<Rng> end()
-        {
-            return ranges::end(rng_);
-        }
-        template(bool Const = true)(requires Const AND random_access_range<meta::const_if_c<Const, Rng>>)
-        iterator_t<meta::const_if_c<Const, Rng>> begin() const
-        {
-            return this->get_begin_(eastl::true_type{}, eastl::true_type{});
-        }
-        template(bool Const = true)( requires Const AND random_access_range<meta::const_if_c<Const, Rng>>)
-        sentinel_t<meta::const_if_c<Const, Rng>> end() const
-        {
-            return ranges::end(rng_);
-        }
-        CPP_auto_member
-        auto CPP_fun(size)()(const //
-            requires sized_range<Rng const>)
-        {
-            auto const s = ranges::size(rng_);
-            auto const n = static_cast<range_size_t<Rng const>>(n_);
-            return s < n ? 0 : s - n;
-        }
-        CPP_auto_member
-        auto CPP_fun(size)()(requires sized_range<Rng>)
-        {
-            auto const s = ranges::size(rng_);
-            auto const n = static_cast<range_size_t<Rng>>(n_);
-            return s < n ? 0 : s - n;
-        }
-        Rng base() const
-        {
-            return rng_;
-        }
-    };
-
-    template<typename Rng>
-    EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<drop_view<Rng>> = //
-        enable_borrowed_range<Rng>;
-
-#if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
-    template<typename Rng>
-    drop_view(Rng &&, range_difference_t<Rng>) -> drop_view<views::all_t<Rng>>;
-#endif
-
-    namespace views
-    {
-        struct drop_base_fn
+        /// \addtogroup group-views
+        /// @{
+        template<typename Rng>
+        struct EARANGES_EMPTY_BASES drop_view
+          : view_interface<drop_view<Rng>,
+                           is_finite<Rng>::value ? finite : range_cardinality<Rng>::value>
+          , private detail::non_propagating_cache<iterator_t<Rng>, drop_view<Rng>,
+                                                  !random_access_range<Rng>>
         {
         private:
-            template<typename Rng>
-            static auto impl_(Rng && rng, range_difference_t<Rng> n, input_range_tag) -> drop_view<all_t<Rng>>
+            using difference_type_ = range_difference_t<Rng>;
+            Rng rng_;
+            difference_type_ n_;
+
+            template(bool Const = true)(
+                requires Const AND range<meta::const_if_c<Const, Rng>>)
+                iterator_t<meta::const_if_c<Const, Rng>> //
+                get_begin_(eastl::true_type, eastl::true_type) const
             {
-                return {all(static_cast<Rng &&>(rng)), n};
+                CPP_assert(random_access_range<meta::const_if_c<Const, Rng>>);
+                return next(ranges::begin(rng_), n_, ranges::end(rng_));
             }
-            template(typename Rng)(requires borrowed_range<Rng> AND sized_range<Rng>)
-            static subrange<iterator_t<Rng>, sentinel_t<Rng>> //
-            impl_(Rng && rng, range_difference_t<Rng> n, random_access_range_tag)
+            iterator_t<Rng> get_begin_(eastl::true_type, eastl::false_type)
             {
-                return {begin(rng) + ranges::min(n, distance(rng)), end(rng)};
+                CPP_assert(random_access_range<Rng>);
+                return next(ranges::begin(rng_), n_, ranges::end(rng_));
+            }
+            iterator_t<Rng> get_begin_(eastl::false_type, detail::ignore_t)
+            {
+                CPP_assert(!random_access_range<Rng>);
+                using cache_t =
+                    detail::non_propagating_cache<iterator_t<Rng>, drop_view<Rng>>;
+                auto & begin_ = static_cast<cache_t &>(*this);
+                if(!begin_)
+                    begin_ = next(ranges::begin(rng_), n_, ranges::end(rng_));
+                return *begin_;
             }
 
         public:
-            template(typename Rng)(requires viewable_range<Rng> AND input_range<Rng>)
-            auto operator()(Rng && rng, range_difference_t<Rng> n) const
+            drop_view() = default;
+            drop_view(Rng rng, difference_type_ n)
+              : rng_(eastl::move(rng))
+              , n_(n)
             {
-                return drop_base_fn::impl_(static_cast<Rng &&>(rng), n, range_tag_of<Rng>{});
+                EARANGES_EXPECT(n >= 0);
+            }
+            iterator_t<Rng> begin()
+            {
+                return this->get_begin_(meta::bool_<random_access_range<Rng>>{},
+                                        eastl::false_type{});
+            }
+            sentinel_t<Rng> end()
+            {
+                return ranges::end(rng_);
+            }
+            template(bool Const = true)(
+                requires Const AND random_access_range<meta::const_if_c<Const, Rng>>)
+                iterator_t<meta::const_if_c<Const, Rng>> begin() const
+            {
+                return this->get_begin_(eastl::true_type{}, eastl::true_type{});
+            }
+            template(bool Const = true)(
+                requires Const AND random_access_range<meta::const_if_c<Const, Rng>>)
+                sentinel_t<meta::const_if_c<Const, Rng>> end() const
+            {
+                return ranges::end(rng_);
+            }
+            CPP_auto_member auto CPP_fun(size)()(const //
+                                                 requires sized_range<Rng const>)
+            {
+                auto const s = ranges::size(rng_);
+                auto const n = static_cast<range_size_t<Rng const>>(n_);
+                return s < n ? 0 : s - n;
+            }
+            CPP_auto_member auto CPP_fun(size)()(requires sized_range<Rng>)
+            {
+                auto const s = ranges::size(rng_);
+                auto const n = static_cast<range_size_t<Rng>>(n_);
+                return s < n ? 0 : s - n;
+            }
+            Rng base() const
+            {
+                return rng_;
             }
         };
 
-        struct drop_fn : drop_base_fn
+        template<typename Rng>
+        EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<drop_view<Rng>> = //
+            enable_borrowed_range<Rng>;
+
+#if EARANGES_CXX_DEDUCTION_GUIDES >= EARANGES_CXX_DEDUCTION_GUIDES_17
+        template<typename Rng>
+        drop_view(Rng &&, range_difference_t<Rng>) -> drop_view<views::all_t<Rng>>;
+#endif
+
+        namespace views
         {
-            using drop_base_fn::operator();
-
-            template(typename Int)(requires detail::integer_like_<Int>)
-            constexpr auto operator()(Int n) const
+            struct drop_base_fn
             {
-                return make_view_closure(bind_back(drop_base_fn{}, n));
-            }
-        };
+            private:
+                template<typename Rng>
+                static auto impl_(Rng && rng, range_difference_t<Rng> n, input_range_tag)
+                    -> drop_view<all_t<Rng>>
+                {
+                    return {all(static_cast<Rng &&>(rng)), n};
+                }
+                template(typename Rng)(
+                    requires borrowed_range<Rng> AND sized_range<
+                        Rng>) static subrange<iterator_t<Rng>, sentinel_t<Rng>> //
+                    impl_(Rng && rng, range_difference_t<Rng> n, random_access_range_tag)
+                {
+                    return {begin(rng) + ranges::min(n, distance(rng)), end(rng)};
+                }
 
-        /// \relates drop_fn
-        /// \ingroup group-views
-        EARANGES_INLINE_VARIABLE(drop_fn, drop)
-    } // namespace views
+            public:
+                template(typename Rng)(
+                    requires viewable_range<Rng> AND input_range<Rng>) auto
+                operator()(Rng && rng, range_difference_t<Rng> n) const
+                {
+                    return drop_base_fn::impl_(
+                        static_cast<Rng &&>(rng), n, range_tag_of<Rng>{});
+                }
+            };
 
-    /// @}
-} // namespace ranges
+            struct drop_fn : drop_base_fn
+            {
+                using drop_base_fn::operator();
+
+                template(typename Int)(requires detail::integer_like_<Int>) constexpr auto
+                operator()(Int n) const
+                {
+                    return make_view_closure(bind_back(drop_base_fn{}, n));
+                }
+            };
+
+            /// \relates drop_fn
+            /// \ingroup group-views
+            EARANGES_INLINE_VARIABLE(drop_fn, drop)
+        } // namespace views
+
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
-#include "../detail/satisfy_boost_range.hpp"
+#include <EARanges/detail/satisfy_boost_range.hpp>
 EARANGES_SATISFY_BOOST_RANGE(::ranges::drop_view)
 
 #endif

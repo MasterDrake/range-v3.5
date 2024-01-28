@@ -29,43 +29,51 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(find_if_not)
-        /// \brief template function \c find_if_not
-        ///
-        /// range-based version of the \c find_if_not eastl algorithm
-        ///
-        /// \pre `Rng` is a model of the `range` concept
-        /// \pre `I` is a model of the `input_iterator` concept
-        /// \pre `S` is a model of the `sentinel_for<I>` concept
-        /// \pre `P` is a model of the `invocable<V>` concept, where `V` is the
-        ///      value type of I.
-        /// \pre `F` models `predicate<X>`, where `X` is the result type
-        ///      of `invocable<P, V>`
-        template(typename I, typename S, typename F, typename P = identity)(requires input_iterator<I> AND sentinel_for<S, I> AND indirect_unary_predicate<F, projected<I, P>>)
-        constexpr I EARANGES_FUNC(find_if_not)(I first, S last, F pred, P proj = P{})
-        {
-            for(; first != last; ++first)
-                if(!invoke(pred, invoke(proj, *first)))
-                    break;
-            return first;
-        }
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(find_if_not)
+            /// \brief template function \c find_if_not
+            ///
+            /// range-based version of the \c find_if_not eastl algorithm
+            ///
+            /// \pre `Rng` is a model of the `range` concept
+            /// \pre `I` is a model of the `input_iterator` concept
+            /// \pre `S` is a model of the `sentinel_for<I>` concept
+            /// \pre `P` is a model of the `invocable<V>` concept, where `V` is the
+            ///      value type of I.
+            /// \pre `F` models `predicate<X>`, where `X` is the result type
+            ///      of `invocable<P, V>`
+            template(typename I, typename S, typename F, typename P = identity)(
+                requires input_iterator<I> AND sentinel_for<S, I> AND
+                    indirect_unary_predicate<F, projected<I, P>>) constexpr I
+            EARANGES_FUNC(find_if_not)(I first, S last, F pred, P proj = P{})
+            {
+                for(; first != last; ++first)
+                    if(!invoke(pred, invoke(proj, *first)))
+                        break;
+                return first;
+            }
 
-        /// \overload
-        template(typename Rng, typename F, typename P = identity)(requires input_range<Rng> AND indirect_unary_predicate<F, projected<iterator_t<Rng>, P>>)
-        constexpr borrowed_iterator_t<Rng> //
-        EARANGES_FUNC(find_if_not)(Rng && rng, F pred, P proj = P{})
-        {
-            return (*this)(begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename F, typename P = identity)(
+                requires input_range<Rng> AND indirect_unary_predicate<
+                    F,
+                    projected<iterator_t<Rng>, P>>) constexpr borrowed_iterator_t<Rng> //
+            EARANGES_FUNC(find_if_not)(Rng && rng, F pred, P proj = P{})
+            {
+                return (*this)(
+                    begin(rng), end(rng), eastl::move(pred), eastl::move(proj));
+            }
 
-    EARANGES_FUNC_END(find_if_not)
+        EARANGES_FUNC_END(find_if_not)
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

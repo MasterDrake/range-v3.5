@@ -31,44 +31,67 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    EARANGES_FUNC_BEGIN(clamp)
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        EARANGES_FUNC_BEGIN(clamp)
 
-        /// \brief function template \c clamp
-        template(typename T, typename C = less, typename P = identity)(requires indirect_strict_weak_order<C, projected<T const *, P>>)
-        constexpr T const & EARANGES_FUNC(clamp)(T const & val, T const & lo, T const & hi, C pred = C{}, P proj = P{}) //
-        {
-			return eastl::clamp(invoke(proj, val), invoke(proj, lo), invoke(proj, hi), pred);
-        }
-
-        /// \overload
-        template(typename Rng, typename C = less, typename P = identity)(requires input_range<Rng> AND indirect_strict_weak_order<C, projected<iterator_t<Rng>, P>> AND indirectly_copyable_storable<iterator_t<Rng>, range_value_t<Rng> *>)
-        constexpr range_value_t<Rng> const & //
-        EARANGES_FUNC(clamp)(Rng && rng, const range_value_t<Rng> & lo, const range_value_t<Rng> & hi, C pred = C{}, P proj = P{}) //
-        {
-            auto first = ranges::begin(rng);
-            const auto last = ranges::end(rng);
-            EARANGES_EXPECT(first != last);
-            while(++first != last)
+            /// \brief function template \c clamp
+            template(typename T, typename C = less, typename P = identity)(
+                requires indirect_strict_weak_order<
+                    C,
+                    projected<T const *, P>>) constexpr T const &
+            EARANGES_FUNC(clamp)(
+                T const & val, T const & lo, T const & hi, C pred = C{}, P proj = P{}) //
             {
-				*first = clamp(*first, lo, hi, pred, proj);
+                return eastl::clamp(
+                    invoke(proj, val), invoke(proj, lo), invoke(proj, hi), pred);
             }
-            return first;
-        }
 
-        /// \overload
-        template(typename T, typename C = less, typename P = identity)(requires copyable<T> AND indirect_strict_weak_order<C, projected<T const *, P>>)
-        constexpr range_value_t<Rng> const & EARANGES_FUNC(clamp)(std::initializer_list<T> const && rng, const range_value_t<Rng> & lo, const range_value_t<Rng>& hi, C pred = C{}, P proj = P{}) //
-        {
-            return (*this)(rng, lo, hi, eastl::move(pred), eastl::move(proj));
-        }
+            /// \overload
+            template(typename Rng, typename C = less, typename P = identity)(
+                requires input_range<Rng> AND
+                    indirect_strict_weak_order<C, projected<iterator_t<Rng>, P>>
+                        AND indirectly_copyable_storable<
+                            iterator_t<Rng>,
+                            range_value_t<Rng> *>) constexpr range_value_t<Rng> const & //
+            EARANGES_FUNC(clamp)(Rng && rng,
+                                 const range_value_t<Rng> & lo,
+                                 const range_value_t<Rng> & hi,
+                                 C pred = C{},
+                                 P proj = P{}) //
+            {
+                auto first = ranges::begin(rng);
+                const auto last = ranges::end(rng);
+                EARANGES_EXPECT(first != last);
+                while(++first != last)
+                {
+                    *first = clamp(*first, lo, hi, pred, proj);
+                }
+                return first;
+            }
 
-    EARANGES_FUNC_END(clamp)
-    /// @}
-} // namespace ranges
+            /// \overload
+            template(typename T, typename C = less, typename P = identity)(
+                requires copyable<T> AND indirect_strict_weak_order<
+                    C,
+                    projected<T const *, P>>) constexpr range_value_t<Rng> const &
+            EARANGES_FUNC(clamp)(std::initializer_list<T> const && rng,
+                                 const range_value_t<Rng> & lo,
+                                 const range_value_t<Rng> & hi,
+                                 C pred = C{},
+                                 P proj = P{}) //
+            {
+                return (*this)(rng, lo, hi, eastl::move(pred), eastl::move(proj));
+            }
+
+        EARANGES_FUNC_END(clamp)
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

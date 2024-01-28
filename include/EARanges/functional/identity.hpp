@@ -17,22 +17,25 @@
          
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-functional
-    /// @{
-    struct identity
+    namespace ranges
     {
-        template<typename T>
-        constexpr T && operator()(T && t) const noexcept
+        /// \addtogroup group-functional
+        /// @{
+        struct identity
         {
-            return (T &&) t;
-        }
-        using is_transparent = void;
-    };
+            template<typename T>
+            constexpr T && operator()(T && t) const noexcept
+            {
+                return (T &&)t;
+            }
+            using is_transparent = void;
+        };
 
-    /// @}
-} // namespace ranges
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

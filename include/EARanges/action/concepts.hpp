@@ -25,34 +25,36 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        template<typename T>
-        struct movable_input_iterator
+        /// \cond
+        namespace detail
         {
-            using iterator_category = eastl::input_iterator_tag;
-            using value_type = T;
-            using difference_type = std::ptrdiff_t;
-            using pointer = T *;
-            using reference = T &&;
+            template<typename T>
+            struct movable_input_iterator
+            {
+                using iterator_category = eastl::input_iterator_tag;
+                using value_type = T;
+                using difference_type = std::ptrdiff_t;
+                using pointer = T *;
+                using reference = T &&;
 
-            movable_input_iterator() = default;
-            movable_input_iterator & operator++();
-            movable_input_iterator operator++(int);
-            bool operator==(movable_input_iterator const &) const;
-            bool operator!=(movable_input_iterator const &) const;
-            T && operator*() const;
-        };
-    } // namespace detail
-      /// \endcond
+                movable_input_iterator() = default;
+                movable_input_iterator & operator++();
+                movable_input_iterator operator++(int);
+                bool operator==(movable_input_iterator const &) const;
+                bool operator!=(movable_input_iterator const &) const;
+                T && operator*() const;
+            };
+        } // namespace detail
+          /// \endcond
 
-    /// \addtogroup group-range
-    /// @{
+        /// \addtogroup group-range
+        /// @{
 
-    // clang-format off
+        // clang-format off
     /// \concept semi_container
     /// \brief The \c semi_container concept
     /// \c eastl::array is a \c semi_container, native arrays are not.
@@ -115,43 +117,44 @@ namespace ranges
     /// \brief The \c random_access_reservable concept
     template<typename C>
     CPP_concept random_access_reservable = reservable<C> && random_access_range<C>;
-    // clang-format on
+        // clang-format on
 
-    /// \cond
-    namespace detail
-    {
-        template(typename T)(requires container<T>)
-        eastl::true_type is_lvalue_container_like(T &) noexcept
+        /// \cond
+        namespace detail
         {
-            return {};
-        }
+            template(typename T)(requires container<T>) eastl::true_type
+                is_lvalue_container_like(T &) noexcept
+            {
+                return {};
+            }
 
-        template(typename T)(requires container<T>)
-        meta::not_<eastl::is_rvalue_reference<T>> //
-        is_lvalue_container_like(reference_wrapper<T>) noexcept
-        {
-            return {};
-        }
+            template(typename T)(
+                requires container<T>) meta::not_<eastl::is_rvalue_reference<T>> //
+                is_lvalue_container_like(reference_wrapper<T>) noexcept
+            {
+                return {};
+            }
 
-        template(typename T)( requires container<T>)
-        eastl::true_type is_lvalue_container_like(eastl::reference_wrapper<T>) noexcept
-        {
-            return {};
-        }
+            template(typename T)(requires container<T>) eastl::true_type
+                is_lvalue_container_like(eastl::reference_wrapper<T>) noexcept
+            {
+                return {};
+            }
 
-        template(typename T)(requires container<T>)
-        eastl::true_type is_lvalue_container_like(ref_view<T>) noexcept
-        {
-            return {};
-        }
+            template(typename T)(requires container<T>) eastl::true_type
+                is_lvalue_container_like(ref_view<T>) noexcept
+            {
+                return {};
+            }
 
-        template<typename T>
-        using is_lvalue_container_like_t = decltype(detail::is_lvalue_container_like(eastl::declval<T>()));
+            template<typename T>
+            using is_lvalue_container_like_t =
+                decltype(detail::is_lvalue_container_like(eastl::declval<T>()));
 
-    } // namespace detail
-      /// \endcond
+        } // namespace detail
+          /// \endcond
 
-    // clang-format off
+        // clang-format off
     /// \concept lvalue_container_like_
     /// \brief The \c lvalue_container_like_ concept
     template(typename T)(concept (lvalue_container_like_)(T), implicitly_convertible_to<detail::is_lvalue_container_like_t<T>, eastl::true_type>);
@@ -159,9 +162,10 @@ namespace ranges
     /// \brief The \c lvalue_container_like concept
     template<typename T>
     CPP_concept lvalue_container_like = forward_range<T> && CPP_concept_ref(ranges::lvalue_container_like_, T);
-    // clang-format on
-    /// @}
-} // namespace ranges
+        // clang-format on
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

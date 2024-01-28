@@ -25,39 +25,45 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    namespace aux
+    namespace ranges
     {
-        /// \ingroup group-utility
-        struct move_fn : move_tag
+        namespace aux
         {
-            template<typename T>
-            constexpr meta::_t<eastl::remove_reference<T>> && operator()(T && t) const //
-                noexcept
+            /// \ingroup group-utility
+            struct move_fn : move_tag
             {
-                return static_cast<meta::_t<eastl::remove_reference<T>> &&>(t);
-            }
+                template<typename T>
+                constexpr meta::_t<eastl::remove_reference<T>> && operator()(
+                    T && t) const //
+                    noexcept
+                {
+                    return static_cast<meta::_t<eastl::remove_reference<T>> &&>(t);
+                }
+
+                /// \ingroup group-utility
+                /// \sa `move_fn`
+                template<typename T>
+                friend constexpr decltype(auto) operator|(T && t, move_fn move) noexcept
+                {
+                    return move(t);
+                }
+            };
 
             /// \ingroup group-utility
             /// \sa `move_fn`
-            template<typename T>
-            friend constexpr decltype(auto) operator|(T && t, move_fn move) noexcept
-            {
-                return move(t);
-            }
-        };
+            EARANGES_INLINE_VARIABLE(move_fn, move)
 
-        /// \ingroup group-utility
-        /// \sa `move_fn`
-        EARANGES_INLINE_VARIABLE(move_fn, move)
-
-        /// \ingroup group-utility
-        /// \sa `move_fn`
-        template<typename R>
-        using move_t = meta::if_c<eastl::is_reference<R>::value, meta::_t<eastl::remove_reference<R>> &&, detail::decay_t<R>>;
-    } // namespace aux
-} // namespace ranges
+            /// \ingroup group-utility
+            /// \sa `move_fn`
+            template<typename R>
+            using move_t =
+                meta::if_c<eastl::is_reference<R>::value,
+                           meta::_t<eastl::remove_reference<R>> &&, detail::decay_t<R>>;
+        } // namespace aux
+    }     // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

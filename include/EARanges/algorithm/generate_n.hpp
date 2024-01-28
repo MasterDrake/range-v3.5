@@ -29,32 +29,37 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-algorithms
-    /// @{
-    template<typename O, typename F>
-    using generate_n_result = detail::out_fun_result<O, F>;
+    namespace ranges
+    {
+        /// \addtogroup group-algorithms
+        /// @{
+        template<typename O, typename F>
+        using generate_n_result = detail::out_fun_result<O, F>;
 
-    EARANGES_FUNC_BEGIN(generate_n)
+        EARANGES_FUNC_BEGIN(generate_n)
 
-        /// \brief function template \c generate_n
-        template(typename O, typename F)(requires invocable<F &> AND output_iterator<O, invoke_result_t<F &>>)
-        constexpr generate_n_result<O, F> //
-        EARANGES_FUNC(generate_n)(O first, iter_difference_t<O> n, F fun)
-        {
-            EARANGES_EXPECT(n >= 0);
-            auto norig = n;
-            auto b = uncounted(first);
-            for(; 0 != n; ++b, --n)
-                *b = invoke(fun);
-            return {recounted(first, b, norig), detail::move(fun)};
-        }
+            /// \brief function template \c generate_n
+            template(typename O, typename F)(
+                requires invocable<F &> AND output_iterator<
+                    O,
+                    invoke_result_t<F &>>) constexpr generate_n_result<O, F> //
+            EARANGES_FUNC(generate_n)(O first, iter_difference_t<O> n, F fun)
+            {
+                EARANGES_EXPECT(n >= 0);
+                auto norig = n;
+                auto b = uncounted(first);
+                for(; 0 != n; ++b, --n)
+                    *b = invoke(fun);
+                return {recounted(first, b, norig), detail::move(fun)};
+            }
 
-    EARANGES_FUNC_END(generate_n)
+        EARANGES_FUNC_END(generate_n)
 
-    // @}
-} // namespace ranges
+        // @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 

@@ -20,44 +20,48 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \addtogroup group-views
-    /// @{
-    template<typename T>
-    struct empty_view : view_interface<empty_view<T>, (cardinality)0>
+    namespace ranges
     {
-        static_assert(eastl::is_object<T>::value, "The template parameter to empty_view must be an object type.");
-        empty_view() = default;
-        static constexpr T * begin() noexcept
-        {
-            return nullptr;
-        }
-        static constexpr T * end() noexcept
-        {
-            return nullptr;
-        }
-        static constexpr std::size_t size() noexcept
-        {
-            return 0u;
-        }
-        static constexpr T * data() noexcept
-        {
-            return nullptr;
-        }
-    };
-
-    template<typename T>
-    EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<empty_view<T>> = true;
-
-    namespace views
-    {
+        /// \addtogroup group-views
+        /// @{
         template<typename T>
-        EARANGES_INLINE_VAR constexpr empty_view<T> empty{};
-    }
+        struct empty_view : view_interface<empty_view<T>, (cardinality)0>
+        {
+            static_assert(eastl::is_object<T>::value,
+                          "The template parameter to empty_view must be an object type.");
+            empty_view() = default;
+            static constexpr T * begin() noexcept
+            {
+                return nullptr;
+            }
+            static constexpr T * end() noexcept
+            {
+                return nullptr;
+            }
+            static constexpr std::size_t size() noexcept
+            {
+                return 0u;
+            }
+            static constexpr T * data() noexcept
+            {
+                return nullptr;
+            }
+        };
 
-    /// @}
-} // namespace ranges
+        template<typename T>
+        EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<empty_view<T>> = true;
+
+        namespace views
+        {
+            template<typename T>
+            EARANGES_INLINE_VAR constexpr empty_view<T> empty{};
+        }
+
+        /// @}
+    } // namespace ranges
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 #include <EARanges/detail/satisfy_boost_range.hpp>

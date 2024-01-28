@@ -24,15 +24,19 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-namespace ranges
+namespace eastl
 {
-    /// \cond
-    namespace detail
+    namespace ranges
     {
-        using eastl::addressof;
-    } // namespace detail
-    /// \endcond
-} // namespace ranges
+        /// \cond
+        namespace detail
+        {
+            using addressof;
+        } // namespace detail
+        /// \endcond
+    } // namespace ranges
+
+} // namespace eastl
 
 #include <EARanges/detail/epilogue.hpp>
 
