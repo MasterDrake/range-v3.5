@@ -26,7 +26,7 @@
 #include <EARanges/iterator/concepts.hpp>
 
 #include <EARanges/detail/prologue.hpp>
-
+//TODO: Avoid using char traits, somehow...
 namespace ranges
 {
     /// \addtogroup group-iterator

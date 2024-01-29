@@ -526,8 +526,8 @@ namespace eastl
 		template <typename OtherStringType> // Unfortunately we need the CtorConvert here because otherwise this function would collide with the value_type* constructor.
 		basic_string(CtorConvert, const OtherStringType& x);
 
-		//TODO:Should use decltype(*Iter) instead of iterator_traits. It doesn't work :/
-		template <typename Iter, typename = eastl::enable_if_t<eastl::is_same_v<typename eastl::iterator_traits<Iter>::value_type, value_type>>>
+		//TODO:Should use decltype(*Iter) instead of iterator_traits. It doesn't work :/ Should also use eastl::iterator_traits<typename eastl::decay<Iter>::type>
+		template <typename Iter, typename = eastl::enable_if_t<eastl::is_same_v<typename eastl::iterator_traits<typename eastl::decay<Iter>::type>::value_type, value_type>>>
 		basic_string(Iter first, Iter last, const allocator_type& allocator = EASTL_BASIC_STRING_DEFAULT_ALLOCATOR) : mPair(allocator)
 		{	
 			const auto n = eastl::distance(first, last);
