@@ -49,10 +49,9 @@ namespace ranges
         {
             for(; first != last; ++first)
             {
-                auto && x = *first;
-                if(!(invoke(pred, invoke(proj, x))))
+                if(!(invoke(pred, invoke(proj, *first))))
                 {
-                    *out = (decltype(x) &&)x;
+                    *out = eastl::move(*first);
                     ++out;
                 }
             }

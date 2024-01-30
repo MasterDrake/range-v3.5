@@ -132,15 +132,6 @@ namespace ranges
             EARANGES_ALGO_RESULT_AUX_2(out_fun_result, O, out, Fun, fun)
         };
 
-        template<typename T, typename U>
-        struct min_max_result
-        {
-            T min;
-            U max;
-
-            EARANGES_ALGO_RESULT_AUX_2(min_max_result, T, min, U, max)
-        };
-
         template<typename I1, typename I2, typename O>
         struct in1_in2_out_result
         {

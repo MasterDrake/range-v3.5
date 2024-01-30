@@ -38,13 +38,8 @@ namespace ranges
         template<typename I>
         constexpr void reverse_impl(I first, I last, eastl::bidirectional_iterator_tag)
         {
-            while(first != last)
-            {
-                if(first == --last)
-                    break;
+            for(; first != last && (first != --last); ++first)
                 ranges::iter_swap(first, last);
-                ++first;
-            }
         }
 
         template<typename I>

@@ -54,13 +54,7 @@ namespace ranges
             I first, S last, O out, C pred, T const & new_value, P proj = {}) //
         {
             for(; first != last; ++first, ++out)
-            {
-                auto && x = *first;
-                if(invoke(pred, invoke(proj, x)))
-                    *out = new_value;
-                else
-                    *out = (decltype(x) &&)x;
-            }
+                *out = invoke(pred, invoke(proj, *first)) ? new_value : *first;
             return {first, out};
         }
 

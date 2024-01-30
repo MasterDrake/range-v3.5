@@ -49,7 +49,7 @@ namespace ranges
                  typename P = identity)(requires forward_iterator<I> AND sentinel_for<S, I> AND  indirect_strict_weak_order<C, V const *, projected<I, P>>)
         constexpr bool EARANGES_FUNC(binary_search)(I first, S last, V const & val, C pred = C{}, P proj = P{})
         {
-            first =lower_bound(eastl::move(first), last, val, ranges::ref(pred), ranges::ref(proj));
+            first = lower_bound(eastl::move(first), last, val, ranges::ref(pred), ranges::ref(proj));
             return first != last && !invoke(pred, val, invoke(proj, *first));
         }
 

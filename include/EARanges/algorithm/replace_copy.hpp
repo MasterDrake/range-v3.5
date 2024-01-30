@@ -57,13 +57,7 @@ namespace ranges
                                                                       P proj = {}) //
         {
             for(; first != last; ++first, ++out)
-            {
-                auto && x = *first;
-                if(invoke(proj, x) == old_value)
-                    *out = new_value;
-                else
-                    *out = (decltype(x) &&)x;
-            }
+                *out = (invoke(proj, *first) == old_value) ? new_value : *first;
             return {first, out};
         }
 

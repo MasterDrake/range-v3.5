@@ -2343,77 +2343,81 @@ namespace eastl
 
 # using eastl::algorithms
 - Ranges algorithm use default implementation for the algorithms and not making use of the eastl ones.
+- But because of projections, we can't use eastl algorithms directly but we can make sure the implementation is similar.
+- The algorithm.h in extra just adds algorithms forgotten in the list.
+- Need some specification about the return values of the algorithms, iterator or sentinel, or both?
+- Here's the compatibility check-list:
 
-- [ ] adjacent_find
-- [ ] adjacent_find`<Compare>`
-- [ ] all_of (C++11)
-- [ ] any_of (C++11)
-- [ ] none_of (C++11)
-- [ ] binary_search
-- [ ] binary_search`<Compare>`
-- [ ] binary_search_i
-- [ ] binary_search_i`<Compare>`
+- [X] adjacent_find
+- [X] adjacent_find`<Compare>`
+- [X] all_of (C++11)
+- [X] any_of (C++11)
+- [X] none_of (C++11)
+- [X] binary_search
+- [X] binary_search`<Compare>`
+- [NO] binary_search_i
+- [NO] binary_search_i`<Compare>`
 - [ ] change_heap (Found in heap.h)
 - [ ] change_heap`<Compare>` (Found in heap.h)
-- [ ] clamp
-- [ ] copy
-- [ ] copy_if (C++11)
-- [ ] copy_n (C++11)
-- [ ] copy_backward
-- [ ] count
-- [ ] count_if
-- [ ] equal
-- [ ] equal`<Compare>`
-- [ ] equal_range
-- [ ] equal_range`<Compare>`
+- [X] clamp
+- [TODO] copy
+- [X] copy_if (C++11)
+- [TODO] copy_n (C++11)
+- [TODO] copy_backward
+- [X] count
+- [X] count_if
+- [X] equal
+- [X] equal`<Compare>`
+- [TODO] equal_range
+- [TODO] equal_range`<Compare>`
 - [ ] fill
 - [ ] fill_n
-- [ ] find
-- [ ] find_end
-- [ ] find_end`<Compare>`
-- [ ] find_first_of
-- [ ] find_first_of`<Compare>`
-- [ ] find_first_not_of
-- [ ] find_first_not_of`<Compare>`
-- [ ] find_last_of
-- [ ] find_last_of`<Compare>`
-- [ ] find_last_not_of
-- [ ] find_last_not_of`<Compare>`
-- [ ] find_if
-- [ ] find_if_not
-- [ ] for_each
-- [ ] generate
-- [ ] generate_n
-- [ ] identical
-- [ ] identical`<Compare>`
+- [X] find
+- [TODO] find_end
+- [TODO] find_end`<Compare>`
+- [X] find_first_of
+- [X] find_first_of`<Compare>`
+- [NO] find_first_not_of
+- [NO] find_first_not_of`<Compare>`
+- [NO] find_last_of
+- [NO] find_last_of`<Compare>`
+- [NO] find_last_not_of
+- [NO] find_last_not_of`<Compare>`
+- [X] find_if
+- [X] find_if_not
+- [X] for_each
+- [X] generate
+- [X] generate_n
+- [NO] identical
+- [NO] identical`<Compare>`
 - [ ] iter_swap
-- [ ] lexicographical_compare
-- [ ] lexicographical_compare`<Compare>`
-- [ ] lexicographical_compare_three_way
-- [ ] lower_bound
-- [ ] lower_bound`<Compare>`
+- [TODO] lexicographical_compare
+- [TODO] lexicographical_compare`<Compare>`
+- [TODO] lexicographical_compare_three_way
+- [TODO] lower_bound
+- [TODO] lower_bound`<Compare>`
 - [ ] make_heap (Found in heap.h)
 - [ ] make_heap`<Compare>` (Found in heap.h)
-- [ ] min
-- [ ] min`<Compare>`
-- [ ] max
-- [ ] max`<Compare>`
+- [X] min
+- [X] min`<Compare>`
+- [X] max
+- [X] max`<Compare>`
 - [ ] min_alt (Exists to work around the problem of conflicts with min/max #defines on some systems)
 - [ ] min_alt`<Compare>`
 - [ ] max_alt
 - [ ] max_alt`<Compare>`
-- [ ] median
-- [ ] median`<Compare>`
+- [NO] median
+- [NO] median`<Compare>`
 - [ ] merge (Found in sort.h)
 - [ ] merge`<Compare>` (Found in sort.h)
-- [ ] min_element
-- [ ] min_element`<Compare>`
-- [ ] max_element
-- [ ] max_element`<Compare>`
-- [ ] mismatch
-- [ ] mismatch`<Compare>`
-- [ ] move
-- [ ] move_backward
+- [X] min_element
+- [X] min_element`<Compare>`
+- [X] max_element
+- [X] max_element`<Compare>`
+- [X] mismatch
+- [X] mismatch`<Compare>`
+- [TODO] move
+- [TODO] move_backward
 - [ ] nth_element (Found in sort.h)
 - [ ] nth_element`<Compare>` (Found in sort.h)
 - [ ] partial_sort (Found in sort.h)
@@ -2422,39 +2426,40 @@ namespace eastl
 - [ ] push_heap`<Compare>` (Found in heap.h)
 - [ ] pop_heap (Found in heap.h)
 - [ ] pop_heap`<Compare>` (Found in heap.h)
-- [ ] random_shuffle`<Random>`
-- [ ] remove
-- [ ] remove_if
-- [ ] apply_and_remove
-- [ ] apply_and_remove_if
-- [ ] remove_copy
-- [ ] remove_copy_if
+- [NO] random_shuffle`<Random>`
+- [TODO-FIRST] remove
+- [TODO-FIRST] remove_if
+- [NO] apply_and_remove
+- [NO] apply_and_remove_if
+- [X] remove_copy
+- [X] remove_copy_if
 - [ ] remove_heap (Found in heap.h)
 - [ ] remove_heap`<Compare>` (Found in heap.h)
-- [ ] replace
-- [ ] replace_if
-- [ ] replace_copy
-- [ ] replace_copy_if
-- [ ] reverse_copy
-- [ ] reverse
-- [ ] random_shuffle
-- [ ] rotate
-- [ ] rotate_copy
-- [ ] search
-- [ ] search`<Compare>`
-- [ ] search_n
-- [ ] set_difference
-- [ ] set_difference`<Compare>`
-- [ ] set_difference_2
-- [ ] set_difference_2`<Compare>`
-- [ ] set_decomposition
-- [ ] set_decomposition`<Compare>`
-- [ ] set_intersection
-- [ ] set_intersection`<Compare>`
-- [ ] set_symmetric_difference
-- [ ] set_symmetric_difference`<Compare>`
-- [ ] set_union
-- [ ] set_union`<Compare>`
+- [X] replace
+- [X] replace_if
+- [X] replace_copy
+- [X] replace_copy_if
+- [X] reverse_copy
+- [X] reverse
+- [NO] random_shuffle
+- [TODO] rotate
+- [X] rotate_copy
+- [TODO] search
+- [TODO] search`<Compare>`
+- [TODO] search_n
+- [TODO-FIRST] set_difference
+- [TODO-FIRST] set_difference`<Compare>`
+- [TODO-FIRST] set_difference_2
+- [TODO-FIRST] set_difference_2`<Compare>`
+- [NO] set_decomposition
+- [NO] set_decomposition`<Compare>`
+- [TODO-FIRST] set_intersection
+- [TODO-FIRST] set_intersection`<Compare>`
+- [TODO-FIRST] set_symmetric_difference
+- [TODO-FIRST] set_symmetric_difference`<Compare>`
+- [TODO-FIRST] set_union
+- [TODO-FIRST] set_union`<Compare>`
+- [X] shuffle
 - [ ] sort (Found in sort.h)
 - [ ] sort`<Compare>` (Found in sort.h)
 - [ ] sort_heap (Found in heap.h)
@@ -2465,15 +2470,15 @@ namespace eastl
 - [ ] stable_partition (Found in sort.h)
 - [ ] swap
 - [ ] swap_ranges
-- [ ] transform
-- [ ] transform`<Operation>`
-- [ ] unique
-- [ ] unique`<Compare>`
-- [ ] upper_bound
-- [ ] upper_bound`<Compare>`
-- [ ] is_permutation
-- [ ] is_permutation`<Predicate>`
-- [ ] next_permutation
-- [ ] next_permutation`<Compare>`
-- [ ] is_partitioned
-- [ ] partition_point
+- [X] transform
+- [X] transform`<Operation>`
+- [X] unique
+- [X] unique`<Compare>`
+- [TODO] upper_bound
+- [TODO] upper_bound`<Compare>`
+- [TODO] is_permutation
+- [TODO] is_permutation`<Predicate>`
+- [TODO] next_permutation
+- [TODO] next_permutation`<Compare>`
+- [X] is_partitioned
+- [TODO] partition_point

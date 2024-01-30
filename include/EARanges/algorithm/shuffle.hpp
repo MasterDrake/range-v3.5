@@ -42,27 +42,26 @@ namespace ranges
 
         /// \brief function template \c shuffle
         template(typename I, typename S, typename Gen = detail::default_random_engine &)(requires random_access_iterator<I> AND sentinel_for<S, I> AND permutable<I> AND uniform_random_bit_generator<eastl::remove_reference_t<Gen>> AND convertible_to<invoke_result_t<Gen &>, iter_difference_t<I>>)
-        I EARANGES_FUNC(shuffle)(I const first, S const last, Gen && gen = detail::get_random_engine()) //
+        void EARANGES_FUNC(shuffle)(I const first, S const last, Gen && gen = detail::get_random_engine()) //
         {
-            auto mid = first;
-            if(mid == last)
-                return mid;
-            using D1 = iter_difference_t<I>;
-            using D2 = meta::conditional_t<eastl::is_integral<D1>::value, D1, std::ptrdiff_t>;
-            eastl::uniform_int_distribution<D2> uid{};
-            using param_t = typename decltype(uid)::param_type;
-            while(++mid != last)
+            if(first != last)
             {
-                EARANGES_ENSURE(mid - first <= PTRDIFF_MAX);
-                if(auto const i = uid(gen, param_t{0, D2(mid - first)}))
-                    ranges::iter_swap(mid - i, mid);
+                using diff_type = iter_difference_t<I>;
+                using udiff_type = eastl::make_unsigned_t<diff_type>;
+
+                eastl::uniform_int_distribution<udiff_type> uid{};
+                using param_t = typename decltype(uid)::param_type;
+
+                for(I i = first + 1; i != last; ++i)
+                {
+                    ranges::iter_swap(i, first + uid(gen, param_t{0, udiff_type(i - first)}));
+                }
             }
-            return mid;
         }
 
         /// \overload
         template(typename Rng, typename Gen = detail::default_random_engine &)(requires random_access_range<Rng> AND permutable<iterator_t<Rng>> AND uniform_random_bit_generator<eastl::remove_reference_t<Gen>> AND convertible_to<invoke_result_t<Gen &>, iter_difference_t<iterator_t<Rng>>>)
-        borrowed_iterator_t<Rng> //
+        void //
         EARANGES_FUNC(shuffle)(Rng && rng, Gen && rand = detail::get_random_engine()) //
         {
             return (*this)(begin(rng), end(rng), static_cast<Gen &&>(rand));

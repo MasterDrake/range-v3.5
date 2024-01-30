@@ -15,6 +15,7 @@
 #define EARANGES_ALGORITHM_MINMAX_HPP
 
 #include <EASTL/initializer_list.h>
+#include <EASTL/utility.h>
 
 #include <EARanges/range_fwd.hpp>
 
@@ -36,7 +37,7 @@ namespace ranges
     /// \addtogroup group-algorithms
     /// @{
     template<typename T>
-    using minmax_result = detail::min_max_result<T, T>;
+    using minmax_result = eastl::pair<T, T>;
 
     EARANGES_FUNC_BEGIN(minmax)
 
@@ -65,37 +66,37 @@ namespace ranges
             {
                 {
                     auto && tmp = *first;
-                    if(invoke(pred, invoke(proj, tmp), invoke(proj, result.min)))
-                        result.min = (decltype(tmp) &&)tmp;
+                    if(invoke(pred, invoke(proj, tmp), invoke(proj, result.first)))
+                        result.first = (decltype(tmp) &&)tmp;
                     else
-                        result.max = (decltype(tmp) &&)tmp;
+                        result.second = (decltype(tmp) &&)tmp;
                 }
                 while(++first != last)
                 {
                     range_value_t<Rng> tmp1 = *first;
                     if(++first == last)
                     {
-                        if(invoke(pred, invoke(proj, tmp1), invoke(proj, result.min)))
-                            result.min = eastl::move(tmp1);
-                        else if(!invoke(pred, invoke(proj, tmp1), invoke(proj, result.max)))
-                            result.max = eastl::move(tmp1);
+                        if(invoke(pred, invoke(proj, tmp1), invoke(proj, result.first)))
+                            result.first = eastl::move(tmp1);
+                        else if(!invoke(pred, invoke(proj, tmp1), invoke(proj, result.second)))
+                            result.second = eastl::move(tmp1);
                         break;
                     }
 
                     auto && tmp2 = *first;
                     if(invoke(pred, invoke(proj, tmp2), invoke(proj, tmp1)))
                     {
-                        if(invoke(pred, invoke(proj, tmp2), invoke(proj, result.min)))
-                            result.min = (decltype(tmp2) &&)tmp2;
-                        if(!invoke(pred, invoke(proj, tmp1), invoke(proj, result.max)))
-                            result.max = eastl::move(tmp1);
+                        if(invoke(pred, invoke(proj, tmp2), invoke(proj, result.first)))
+                            result.first = (decltype(tmp2) &&)tmp2;
+                        if(!invoke(pred, invoke(proj, tmp1), invoke(proj, result.second)))
+                            result.second = eastl::move(tmp1);
                     }
                     else
                     {
-                        if(invoke(pred, invoke(proj, tmp1), invoke(proj, result.min)))
-                            result.min = eastl::move(tmp1);
-                        if(!invoke(pred, invoke(proj, tmp2), invoke(proj, result.max)))
-                            result.max = (decltype(tmp2) &&)tmp2;
+                        if(invoke(pred, invoke(proj, tmp1), invoke(proj, result.first)))
+                            result.first = eastl::move(tmp1);
+                        if(!invoke(pred, invoke(proj, tmp2), invoke(proj, result.second)))
+                            result.second = (decltype(tmp2) &&)tmp2;
                     }
                 }
             }

@@ -50,8 +50,8 @@ namespace ranges
         {
             for(; first != last; ++first)
                 if(!invoke(pred, invoke(proj, *first)))
-                    break;
-            return first;
+                    return first;
+            return last;
         }
 
         /// \overload

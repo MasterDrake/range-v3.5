@@ -42,10 +42,10 @@ int main()
         ranges::shuffle(RandomAccessIterator<int*>(a.data()), Sentinel<int*>(a.data()+N), g1);
         CHECK(!ranges::equal(a, b));
 
-        CHECK(ranges::shuffle(b.begin(), b.end(), g1) == b.end());
+        ranges::shuffle(b.begin(), b.end(), g1);
         CHECK(!ranges::equal(a, b));
 
-        CHECK(ranges::shuffle(c.begin(), c.end(), g2) == c.end());
+        ranges::shuffle(c.begin(), c.end(), g2);
         CHECK(ranges::equal(a, c));
         CHECK(!ranges::equal(b, c));
     }
@@ -59,15 +59,15 @@ int main()
         ranges::shuffle(rng, g1);
         CHECK(!ranges::equal(a, b));
 
-        CHECK(ranges::shuffle(b, g2) == b.end());
+        ranges::shuffle(b, g2);
         CHECK(ranges::equal(a, b));
 
-        CHECK(ranges::shuffle(b, g1) == b.end());
+        ranges::shuffle(b, g1);
         CHECK(!ranges::equal(a, b));
         CHECK(!ranges::equal(b, c));
 
         ranges::iota(a, 0);
-        CHECK(::is_dangling(ranges::shuffle(eastl::move(rng), g1)));
+        ranges::shuffle(eastl::move(rng), g1);
         CHECK(!ranges::equal(a, c));
     }
 

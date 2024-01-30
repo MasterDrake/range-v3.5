@@ -50,9 +50,13 @@ namespace ranges
             if(first == last || ++first == last)
                 return result;
             if(invoke(pred, invoke(proj, *first), invoke(proj, *result.min)))
+            {
+                result.max = result.first;//TODO:To make it according to eastl::minmax_element but cppreference is the same as ranges, so who's right?
                 result.min = first;
+            }
             else
                 result.max = first;
+
             while(++first != last)
             {
                 I tmp = first;

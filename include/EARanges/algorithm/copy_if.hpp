@@ -35,9 +35,7 @@ namespace ranges
 {
     /// \addtogroup group-algorithms
     /// @{
-    template<typename I, typename O>
-    using copy_if_result = detail::in_out_result<I, O>;
-
+    /// 
     EARANGES_FUNC_BEGIN(copy_if)
 
         /// \brief function template \c copy_if
@@ -46,19 +44,18 @@ namespace ranges
                 weakly_incrementable<O> AND
                 indirect_unary_predicate<F, projected<I, P>> AND
                 indirectly_copyable<I, O>)
-        constexpr copy_if_result<I, O> //
-        EARANGES_FUNC(copy_if)(I first, S last, O out, F pred, P proj = P{}) //
+        constexpr O //
+        EARANGES_FUNC(copy_if)(I first, S last, O result, F pred, P proj = P{}) //
         {
+            // This implementation's performance could be improved by taking a more
+            // complicated approach like with the copy algorithm.
+
             for(; first != last; ++first)
             {
-                auto && x = *first;
-                if(invoke(pred, invoke(proj, x)))
-                {
-                    *out = (decltype(x) &&)x;
-                    ++out;
-                }
+               if(invoke(pred, invoke(proj, *first)))
+                   *result++ = *first;
             }
-            return {first, out};
+            return result;
         }
 
         /// \overload
@@ -66,7 +63,7 @@ namespace ranges
             requires input_range<Rng> AND weakly_incrementable<O> AND
             indirect_unary_predicate<F, projected<iterator_t<Rng>, P>> AND
             indirectly_copyable<iterator_t<Rng>, O>)
-        constexpr copy_if_result<borrowed_iterator_t<Rng>, O> //
+        constexpr O //
         EARANGES_FUNC(copy_if)(Rng && rng, O out, F pred, P proj = P{})
         {
             return (*this)(begin(rng), end(rng), eastl::move(out), eastl::move(pred), eastl::move(proj));

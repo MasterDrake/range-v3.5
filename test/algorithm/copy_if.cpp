@@ -26,8 +26,7 @@ constexpr bool test_constexpr()
     test::array<int, 4> a{{1, 2, 3, 4}};
     test::array<int, 4> b{{0, 0, 0, 0}};
     const auto res = copy_if(a, ranges::begin(b), is_even);
-    STATIC_CHECK_RETURN(res.in == end(a));
-    STATIC_CHECK_RETURN(res.out == begin(b) + 2);
+    STATIC_CHECK_RETURN(res == begin(b) + 2);
     STATIC_CHECK_RETURN(a[0] == 1);
     STATIC_CHECK_RETURN(a[1] == 2);
     STATIC_CHECK_RETURN(a[2] == 3);

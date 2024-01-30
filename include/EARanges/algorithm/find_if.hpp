@@ -48,9 +48,8 @@ namespace ranges
         template(typename I, typename S, typename F, typename P = identity)(requires input_iterator<I> AND sentinel_for<S, I> AND indirect_unary_predicate<F, projected<I, P>>)
         constexpr I EARANGES_FUNC(find_if)(I first, S last, F pred, P proj = P{})
         {
-            for(; first != last; ++first)
-                if(invoke(pred, invoke(proj, *first)))
-                    break;
+            while(first != last && !invoke(pred, invoke(proj, *first)))
+                    ++first;
             return first;
         }
 

@@ -46,9 +46,8 @@ namespace ranges
         template(typename I, typename S, typename V, typename P = identity)(requires input_iterator<I> AND sentinel_for<S, I> AND indirect_relation<equal_to, projected<I, P>, V const *>)
         constexpr I EARANGES_FUNC(find)(I first, S last, V const & val, P proj = P{})
         {
-            for(; first != last; ++first)
-                if(invoke(proj, *first) == val)
-                    break;
+            while((first != last) && !(invoke(proj, *first) == val))
+                ++first;
             return first;
         }
 

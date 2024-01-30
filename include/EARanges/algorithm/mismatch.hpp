@@ -39,7 +39,7 @@ namespace ranges
     /// \addtogroup group-algorithms
     /// @{
     template<typename I1, typename I2>
-    using mismatch_result = detail::in1_in2_result<I1, I2>;
+    using mismatch_result = eastl::pair<I1, I2>;
 
     EARANGES_FUNC_BEGIN(mismatch)
 
@@ -62,7 +62,7 @@ namespace ranges
                                                                 P1 proj1 = P1{},
                                                                 P2 proj2 = P2{}) //
         {
-            for(; begin1 != end1 && begin2 != end2; ++begin1, ++begin2)
+            for(; begin1 != end1  && (begin2 != end2); ++begin1, ++begin2) //TODO: <- C++ standard and eastl mismatch function doesn't check begin2/end2 but for the sake of the tests is needed
                 if(!invoke(pred, invoke(proj1, *begin1), invoke(proj2, *begin2)))
                     break;
             return {begin1, begin2};

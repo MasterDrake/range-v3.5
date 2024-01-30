@@ -44,9 +44,8 @@ namespace ranges
         constexpr for_each_result<I, F> EARANGES_FUNC(for_each)(I first, S last, F fun, P proj = P{})
         {
             for(; first != last; ++first)
-            {
                 invoke(fun, invoke(proj, *first));
-            }
+
             return {detail::move(first), detail::move(fun)};
         }
 

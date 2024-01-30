@@ -68,8 +68,7 @@ namespace ranges
         constexpr unary_transform_result<borrowed_iterator_t<Rng>, O> //
         EARANGES_FUNC(transform)(Rng && rng, O out, F fun, P proj = P{}) //
         {
-            return (*this)(
-                begin(rng), end(rng), eastl::move(out), eastl::move(fun), eastl::move(proj));
+            return (*this)(begin(rng), end(rng), eastl::move(out), eastl::move(fun), eastl::move(proj));
         }
 
         // Double-range variant, 4-iterator version

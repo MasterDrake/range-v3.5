@@ -40,8 +40,8 @@ namespace ranges
         {
             for(; first != last; ++first)
                 if(!invoke(pred, invoke(proj, *first)))
-                    break;
-            return first == last;
+                    return false;
+            return true;
         }
 
         /// \overload
