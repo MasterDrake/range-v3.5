@@ -2370,8 +2370,8 @@ namespace eastl
 - [X] equal`<Compare>`
 - [TODO] equal_range
 - [TODO] equal_range`<Compare>`
-- [ ] fill
-- [ ] fill_n
+- [NO-CONSTEXPR+NEW-HEADER] fill
+- [NO-CONSTEXPR+NEW-HEADER] fill_n
 - [X] find
 - [TODO] find_end
 - [TODO] find_end`<Compare>`
@@ -2402,10 +2402,10 @@ namespace eastl
 - [X] min`<Compare>`
 - [X] max
 - [X] max`<Compare>`
-- [ ] min_alt (Exists to work around the problem of conflicts with min/max #defines on some systems)
-- [ ] min_alt`<Compare>`
-- [ ] max_alt
-- [ ] max_alt`<Compare>`
+- [NO] min_alt (Exists to work around the problem of conflicts with min/max #defines on some systems)
+- [NO] min_alt`<Compare>`
+- [NO] max_alt
+- [NO] max_alt`<Compare>`
 - [NO] median
 - [NO] median`<Compare>`
 - [ ] merge (Found in sort.h)
@@ -2427,8 +2427,8 @@ namespace eastl
 - [ ] pop_heap (Found in heap.h)
 - [ ] pop_heap`<Compare>` (Found in heap.h)
 - [NO] random_shuffle`<Random>`
-- [TODO-FIRST] remove
-- [TODO-FIRST] remove_if
+- [FAIL] remove
+- [FAIL] remove_if
 - [NO] apply_and_remove
 - [NO] apply_and_remove_if
 - [X] remove_copy

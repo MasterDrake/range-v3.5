@@ -115,9 +115,9 @@ int main()
 
     {
         using IL = std::initializer_list<int>;
-        STATIC_CHECK(ranges::equal(fives(), IL{5, 5, 5, 5}));
-        STATIC_CHECK(ranges::equal(fives(2), IL{5, 5, 0, 0}));
-        STATIC_CHECK(!ranges::equal(fives(2), IL{5, 5, 5, 5}));
+        CHECK(ranges::equal(fives(), IL{5, 5, 5, 5}));
+        CHECK(ranges::equal(fives(2), IL{5, 5, 0, 0}));
+        CHECK(!ranges::equal(fives(2), IL{5, 5, 5, 5}));
     }
 
     return ::test_result();

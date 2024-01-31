@@ -13,6 +13,7 @@
 #ifndef EARANGES_ALGORITHM_FILL_HPP
 #define EARANGES_ALGORITHM_FILL_HPP
 
+#include <EARanges/algorithm/aux_/fill_help.hpp>
 #include <EARanges/range_fwd.hpp>
 
 #include <EARanges/iterator/concepts.hpp>
@@ -33,10 +34,8 @@ namespace ranges
         /// \brief function template \c fill
         template(typename O, typename S, typename V)(requires output_iterator<O, V const &> AND sentinel_for<S, O>)
         constexpr O EARANGES_FUNC(fill)(O first, S last, V const & val) //
-        {
-            for(; first != last; ++first)
-                *first = val;
-            return first;
+        {       
+            return detail::fill(first, last, val);
         }
 
         /// \overload

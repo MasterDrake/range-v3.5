@@ -13,7 +13,7 @@
 #ifndef EARANGES_ALGORITHM_FILL_N_HPP
 #define EARANGES_ALGORITHM_FILL_N_HPP
 
-#include <EASTL/utility.h>
+#include <EARanges/algorithm/aux_/fill_help.hpp>
 
 #include <EARanges/range_fwd.hpp>
 
@@ -35,13 +35,8 @@ namespace ranges
         /// \brief function template \c equal
         template(typename O, typename V)(requires output_iterator<O, V const &>)
         constexpr O EARANGES_FUNC(fill_n)(O first, iter_difference_t<O> n, V const & val)
-        {
-            EARANGES_EXPECT(n >= 0);
-            auto norig = n;
-            auto b = uncounted(first);
-            for(; n != 0; ++b, --n)
-                *b = val;
-            return recounted(first, b, norig);
+        {      
+            return detail::fill_n(first, n, val);
         }
 
     EARANGES_FUNC_END(fill_n)
