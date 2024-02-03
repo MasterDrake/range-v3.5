@@ -13,8 +13,7 @@
 #ifndef EARANGES_ALGORITHM_COPY_HPP
 #define EARANGES_ALGORITHM_COPY_HPP
 
-#include <EASTL/functional.h>
-#include <EASTL/utility.h>
+#include <EARanges/algorithm/aux_/copy_help.hpp>
 
 #include <EARanges/range_fwd.hpp>
 
@@ -43,9 +42,11 @@ namespace ranges
         /// \brief function template \c copy
         template(typename I, typename S, typename O)(requires input_iterator<I> AND sentinel_for<S, I> AND weakly_incrementable<O> AND indirectly_copyable<I, O>)
         constexpr copy_result<I, O> EARANGES_FUNC(copy)(I first, S last, O out) //
-        {
-            for(; first != last; ++first, ++out)
-                *out = *first;
+        {   
+            //HACKHACKHACK: Either accept this madness that will perform awfully with forward or input iterator or choose the return value. Or override all the return statements...
+            const auto dist = ranges::distance(first, last);
+            out = detail::copy(first, last, out);
+            ranges::advance(first, dist);
             return {first, out};
         }
 

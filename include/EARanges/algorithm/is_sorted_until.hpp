@@ -50,17 +50,18 @@ namespace ranges
         template(typename I, typename S, typename R = less, typename P = identity)(requires forward_iterator<I> AND sentinel_for<S, I> AND indirect_strict_weak_order<R, projected<I, P>>)
         constexpr I EARANGES_FUNC(is_sorted_until)(I first, S last, R pred = R{}, P proj = P{})
         {
-            auto i = first;
+            auto next = first;
             if(first != last)
             {
-                while(++i != last)
+                while(++next != last)
                 {
-                    if(invoke(pred, invoke(proj, *i), invoke(proj, *first)))
-                        return i;
-                    first = i;
+                    if(invoke(pred, invoke(proj, *next), invoke(proj, *first)))
+                        return next;
+
+                    first = next;
                 }
             }
-            return i;
+            return next;
         }
 
         /// \overload

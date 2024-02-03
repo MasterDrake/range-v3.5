@@ -2360,7 +2360,7 @@ namespace eastl
 - [ ] change_heap (Found in heap.h)
 - [ ] change_heap`<Compare>` (Found in heap.h)
 - [X] clamp
-- [TODO] copy
+- [X-with-problems] copy
 - [X] copy_if (C++11)
 - [TODO] copy_n (C++11)
 - [TODO] copy_backward
