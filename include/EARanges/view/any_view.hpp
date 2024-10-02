@@ -220,7 +220,7 @@ namespace ranges
         template<typename Ref>
         struct any_input_view_interface<Ref, true> : any_input_view_interface<Ref, false>
         {
-            virtual std::size_t size() = 0;
+            virtual eastl::size_t size() = 0;
         };
 
         template<typename Ref>
@@ -287,9 +287,9 @@ namespace ranges
             {
                 ++current_;
             }
-            std::size_t size() // override-ish
+            eastl::size_t size() // override-ish
             {
-                return static_cast<std::size_t>(ranges::size(rng_));
+                return static_cast<eastl::size_t>(ranges::size(rng_));
             }
 
             EARANGES_NO_UNIQUE_ADDRESS Rng rng_;
@@ -495,7 +495,7 @@ namespace ranges
         template<typename Ref, category Cat>
         struct any_view_interface<Ref, Cat, true> : any_view_interface<Ref, Cat, false>
         {
-            virtual std::size_t size() = 0;
+            virtual eastl::size_t size() = 0;
         };
 
         template<typename Ref, category Cat>
@@ -537,9 +537,9 @@ namespace ranges
             {
                 return detail::make_unique<any_view_impl>(range_box_t::get());
             }
-            std::size_t size() // override-ish
+            eastl::size_t size() // override-ish
             {
-                return static_cast<std::size_t>(ranges::size(range_box_t::get()));
+                return static_cast<eastl::size_t>(ranges::size(range_box_t::get()));
             }
         };
     } // namespace detail
@@ -578,7 +578,7 @@ namespace ranges
 
         CPP_member
         auto size() //
-            -> CPP_ret(std::size_t)(
+            -> CPP_ret(eastl::size_t)(
                 requires (category::sized == (Cat & category::sized)))
         {
             return ptr_ ? ptr_->size() : 0;
@@ -629,7 +629,7 @@ namespace ranges
 
         CPP_member
         auto size() //
-            -> CPP_ret(std::size_t)(requires (category::sized == (Cat & category::sized)))
+            -> CPP_ret(eastl::size_t)(requires (category::sized == (Cat & category::sized)))
         {
             return ptr_ ? ptr_->size() : 0;
         }

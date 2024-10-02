@@ -44,7 +44,7 @@ namespace ranges
         using result_t = invoke_result_t<G &>;
         semiregular_box_t<G> gen_;
         detail::non_propagating_cache<result_t> val_;
-        std::size_t n_;
+        eastl::size_t n_;
         struct cursor
         {
         private:
@@ -82,7 +82,7 @@ namespace ranges
 
     public:
         generate_n_view() = default;
-        explicit generate_n_view(G g, std::size_t n)
+        explicit generate_n_view(G g, eastl::size_t n)
           : gen_(eastl::move(g))
           , n_(n)
         {}
@@ -90,7 +90,7 @@ namespace ranges
         {
             return *val_;
         }
-        std::size_t size() const
+        eastl::size_t size() const
         {
             return n_;
         }
@@ -107,7 +107,7 @@ namespace ranges
                                        invoke_result_t<G &>> AND
                     assignable_from<detail::decay_t<invoke_result_t<G &>> &,
                                     invoke_result_t<G &>>)
-            generate_n_view<G> operator()(G g, std::size_t n) const
+            generate_n_view<G> operator()(G g, eastl::size_t n) const
             {
                 return generate_n_view<G>{eastl::move(g), n};
             }

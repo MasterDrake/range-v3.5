@@ -30,7 +30,7 @@ namespace ranges
     /// \cond
     namespace detail
     {
-        template<typename T, std::size_t N, typename Index>
+        template<typename T, eastl::size_t N, typename Index>
         struct indexed_datum<T[N], Index>
         {
         private:

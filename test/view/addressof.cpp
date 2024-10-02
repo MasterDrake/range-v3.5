@@ -45,7 +45,7 @@ private:
     struct cursor
     {
     private:
-        std::size_t i = 0;
+        eastl::size_t i = 0;
         eastl::vector<int> *list = nullptr;
     public:
         cursor() = default;

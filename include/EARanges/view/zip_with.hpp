@@ -298,7 +298,7 @@ namespace ranges
                         detail::max_);
             }
             // clang-format off
-            template<std::size_t... Is>
+            template<eastl::size_t... Is>
             auto CPP_auto_fun(move_)(meta::index_sequence<Is...>)(const)
             (
                 return invoke(fun_, move_tag{}, eastl::get<Is>(its_)...)
@@ -359,7 +359,7 @@ namespace ranges
             using size_type = common_type_t<range_size_t<Rngs const>...>;
             return range_cardinality<iter_zip_with_view>::value >= 0
                        ? size_type{(
-                             std::size_t)range_cardinality<iter_zip_with_view>::value}
+                             eastl::size_t)range_cardinality<iter_zip_with_view>::value}
                        : tuple_foldl(tuple_transform(rngs_,
                                                      [](auto && r) -> size_type {
                                                          return ranges::size(r);

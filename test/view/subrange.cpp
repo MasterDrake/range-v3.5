@@ -67,11 +67,11 @@ int main()
     CPP_assert(!constructible_from<subrange<const Base*, unreachable_sentinel_t>, Derived*, unreachable_sentinel_t>);
     CPP_assert(!constructible_from<subrange<Base*, unreachable_sentinel_t>, subrange<Derived*, unreachable_sentinel_t>>);
 
-    CPP_assert(constructible_from<subrange<Base*, Base*, subrange_kind::sized>, Base*, Base*, std::size_t>);
-    CPP_assert(!constructible_from<subrange<Base*, Base*, subrange_kind::sized>, Derived*, Base*, std::size_t>);
-    CPP_assert(constructible_from<subrange<const Base*, const Base*, subrange_kind::sized>, Base*, const Base*, std::size_t>);
-    CPP_assert(!constructible_from<subrange<const Base*, const Base*, subrange_kind::sized>, Derived*, const Base*, std::size_t>);
-    CPP_assert(!constructible_from<subrange<Base*, Base*, subrange_kind::sized>, subrange<Derived*, Base*>, std::size_t>);
+    CPP_assert(constructible_from<subrange<Base*, Base*, subrange_kind::sized>, Base*, Base*, eastl::size_t>);
+    CPP_assert(!constructible_from<subrange<Base*, Base*, subrange_kind::sized>, Derived*, Base*, eastl::size_t>);
+    CPP_assert(constructible_from<subrange<const Base*, const Base*, subrange_kind::sized>, Base*, const Base*, eastl::size_t>);
+    CPP_assert(!constructible_from<subrange<const Base*, const Base*, subrange_kind::sized>, Derived*, const Base*, eastl::size_t>);
+    CPP_assert(!constructible_from<subrange<Base*, Base*, subrange_kind::sized>, subrange<Derived*, Base*>, eastl::size_t>);
 
     CPP_assert(convertible_to<subrange<Base*, Base*>, eastl::pair<const Base*, const Base*>>);
     CPP_assert(!convertible_to<subrange<Derived*, Derived*>, eastl::pair<Base*, Base*>>);

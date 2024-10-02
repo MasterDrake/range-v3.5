@@ -224,7 +224,7 @@ int main()
     }
 
     {  // test views::indices/closed_indices
-        ::check_equal(views::indices | views::take(10), std::initializer_list<std::size_t>{0,1,2,3,4,5,6,7,8,9});
+        ::check_equal(views::indices | views::take(10), std::initializer_list<eastl::size_t>{0,1,2,3,4,5,6,7,8,9});
 
         ::check_equal(views::indices(0, 10), {0,1,2,3,4,5,6,7,8,9});
         ::check_equal(views::closed_indices(0, 10), {0,1,2,3,4,5,6,7,8,9,10});

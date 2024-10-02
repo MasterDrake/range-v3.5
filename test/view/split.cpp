@@ -44,13 +44,13 @@ namespace
     };
 
 #ifdef EARANGES_WORKAROUND_MSVC_790554
-    template<std::size_t N>
+    template<eastl::size_t N>
     auto c_str(char const (&sz)[N])
     {
         return ranges::subrange<char const*>{&sz[0], &sz[N-1]};
     }
 #else // ^^^ workaround / no workaround vvv
-    template<std::size_t N>
+    template<eastl::size_t N>
     ranges::subrange<char const*> c_str(char const (&sz)[N])
     {
         return {&sz[0], &sz[N-1]};

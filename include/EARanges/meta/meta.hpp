@@ -161,10 +161,10 @@ namespace meta
         using _t = defer<_t, T>;
     } // namespace lazy
 
-    /// An integral constant wrapper for \c std::size_t.
+    /// An integral constant wrapper for \c eastl::size_t.
     /// \ingroup integral
-    template<std::size_t N>
-    using size_t = eastl::integral_constant<std::size_t, N>;
+    template<eastl::size_t N>
+    using size_t = eastl::integral_constant<eastl::size_t, N>;
 
     /// An integral constant wrapper for \c bool.
     /// \ingroup integral
@@ -389,7 +389,7 @@ namespace meta
             recurse
         };
 
-        constexpr indices_strategy_ strategy_(std::size_t cur, std::size_t end)
+        constexpr indices_strategy_ strategy_(eastl::size_t cur, eastl::size_t end)
         {
             return cur >= end       ? indices_strategy_::done
                    : cur * 2 <= end ? indices_strategy_::repeat
@@ -397,13 +397,13 @@ namespace meta
         }
 
         template<typename T>
-        constexpr std::size_t range_distance_(T begin, T end)
+        constexpr eastl::size_t range_distance_(T begin, T end)
         {
-            return begin <= end ? static_cast<std::size_t>(end - begin)
+            return begin <= end ? static_cast<eastl::size_t>(end - begin)
                                 : throw "The start of the integer_sequence must not be greater than the end";
         }
 
-        template<std::size_t End, typename State, indices_strategy_ Status_>
+        template<eastl::size_t End, typename State, indices_strategy_ Status_>
         struct make_indices_
         {
             using type = State;
@@ -425,7 +425,7 @@ namespace meta
     {
         using value_type = T;
         /// \return `sizeof...(Is)`
-        static constexpr std::size_t size() noexcept
+        static constexpr eastl::size_t size() noexcept
         {
             return sizeof...(Is);
         }
@@ -435,10 +435,10 @@ namespace meta
     ///////////////////////////////////////////////////////////////////////////////////////////
     // index_sequence
     /// A container for a sequence of compile-time integer constants of type
-    /// \c std::size_t
+    /// \c eastl::size_t
     /// \ingroup integral
-    template<std::size_t... Is>
-    using index_sequence = integer_sequence<std::size_t, Is...>;
+    template<eastl::size_t... Is>
+    using index_sequence = integer_sequence<eastl::size_t, Is...>;
 
 #if META_HAS_MAKE_INTEGER_SEQ && !defined(META_DOXYGEN_INVOKED)
     // Implement make_integer_sequence and make_index_sequence with the
@@ -455,14 +455,14 @@ namespace meta
     template<typename T, T N>
     using make_integer_sequence = decltype(detail::make_integer_sequence_<T, N>());
 
-    template<std::size_t N>
-    using make_index_sequence = make_integer_sequence<std::size_t, N>;
+    template<eastl::size_t N>
+    using make_index_sequence = make_integer_sequence<eastl::size_t, N>;
 #else
     /// Generate \c index_sequence containing integer constants [0,1,2,...,N-1].
     /// \par Complexity
     /// `O(log(N))`.
     /// \ingroup integral
-    template<std::size_t N>
+    template<eastl::size_t N>
     using make_index_sequence =
         _t<detail::make_indices_<N, index_sequence<0>, detail::strategy_(1, N)>>;
 
@@ -472,7 +472,7 @@ namespace meta
     /// \ingroup integral
     template<typename T, T N>
     using make_integer_sequence = _t<
-        detail::coerce_indices_<T, 0, make_index_sequence<static_cast<std::size_t>(N)>>>;
+        detail::coerce_indices_<T, 0, make_index_sequence<static_cast<eastl::size_t>(N)>>>;
 #endif
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -492,7 +492,7 @@ namespace meta
         struct concat_indices_
         {};
 
-        template<std::size_t... Is, std::size_t... Js>
+        template<eastl::size_t... Is, eastl::size_t... Js>
         struct concat_indices_<index_sequence<Is...>, index_sequence<Js...>>
         {
             using type = index_sequence<Is..., (Js + sizeof...(Is))...>;
@@ -504,19 +504,19 @@ namespace meta
             using type = index_sequence<>;
         };
 
-        template<std::size_t End, std::size_t... Values>
+        template<eastl::size_t End, eastl::size_t... Values>
         struct make_indices_<End, index_sequence<Values...>, indices_strategy_::repeat>
           : make_indices_<End, index_sequence<Values..., (Values + sizeof...(Values))...>,
                           detail::strategy_(sizeof...(Values) * 2, End)>
         {};
 
-        template<std::size_t End, std::size_t... Values>
+        template<eastl::size_t End, eastl::size_t... Values>
         struct make_indices_<End, index_sequence<Values...>, indices_strategy_::recurse>
           : concat_indices_<index_sequence<Values...>,
                             make_index_sequence<End - sizeof...(Values)>>
         {};
 
-        template<typename T, T Offset, std::size_t... Values>
+        template<typename T, T Offset, eastl::size_t... Values>
         struct coerce_indices_<T, Offset, index_sequence<Values...>>
         {
             using type =
@@ -1624,9 +1624,9 @@ namespace meta
     ///////////////////////////////////////////////////////////////////////////////////////////
     // npos
     /// A special value used to indicate no matches. It equals the maximum
-    /// value representable by std::size_t.
+    /// value representable by eastl::size_t.
     /// \ingroup list
-    using npos = meta::size_t<std::size_t(-1)>;
+    using npos = meta::size_t<eastl::size_t(-1)>;
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // list
@@ -1637,7 +1637,7 @@ namespace meta
     {
         using type = list;
         /// \return `sizeof...(Ts)`
-        static constexpr std::size_t size() noexcept
+        static constexpr eastl::size_t size() noexcept
         {
             return sizeof...(Ts);
         }
@@ -1820,14 +1820,14 @@ namespace meta
     /// \cond
     namespace detail
     {
-        template<typename T, std::size_t>
+        template<typename T, eastl::size_t>
         using first_ = T;
 
         template<typename T, typename Ints>
         struct repeat_n_c_
         {};
 
-        template<typename T, std::size_t... Is>
+        template<typename T, eastl::size_t... Is>
         struct repeat_n_c_<T, index_sequence<Is...>>
         {
             using type = list<first_<T, Is>...>;
@@ -1839,7 +1839,7 @@ namespace meta
     /// \par Complexity
     /// `O(log N)`.
     /// \ingroup list
-    template<std::size_t N, typename T = void>
+    template<eastl::size_t N, typename T = void>
     using repeat_n_c = _t<detail::repeat_n_c_<T, make_index_sequence<N>>>;
 
     /// Generate `list<T,T,T...T>` of size \p N arguments.
@@ -1858,7 +1858,7 @@ namespace meta
 
         /// \sa 'meta::repeat_n_c'
         /// \ingroup lazy_list
-        template<std::size_t N, typename T = void>
+        template<eastl::size_t N, typename T = void>
         using repeat_n_c = defer<repeat_n, meta::size_t<N>, T>;
     } // namespace lazy
 
@@ -1868,11 +1868,11 @@ namespace meta
     namespace detail
     {
 #if META_HAS_TYPE_PACK_ELEMENT && !defined(META_DOXYGEN_INVOKED)
-        template<typename L, std::size_t N, typename = void>
+        template<typename L, eastl::size_t N, typename = void>
         struct at_
         {};
 
-        template<typename... Ts, std::size_t N>
+        template<typename... Ts, eastl::size_t N>
         struct at_<list<Ts...>, N, void_<__type_pack_element<N, Ts...>>>
         {
             using type = __type_pack_element<N, Ts...>;
@@ -1890,11 +1890,11 @@ namespace meta
             static T eval(VoidPtrs..., T *, Us *...);
         };
 
-        template<typename L, std::size_t N>
+        template<typename L, eastl::size_t N>
         struct at_
         {};
 
-        template<typename... Ts, std::size_t N>
+        template<typename... Ts, eastl::size_t N>
         struct at_<list<Ts...>, N>
           : decltype(at_impl_<repeat_n_c<N, void *>>::eval(
                 static_cast<id<Ts> *>(nullptr)...))
@@ -1907,7 +1907,7 @@ namespace meta
     /// \par Complexity
     /// Amortized `O(1)`.
     /// \ingroup list
-    template<META_TYPE_CONSTRAINT(list_like) L, std::size_t N>
+    template<META_TYPE_CONSTRAINT(list_like) L, eastl::size_t N>
     using at_c = _t<detail::at_<L, N>>;
 
     /// Return the \p N th element in the \c meta::list \p L.
@@ -1954,11 +1954,11 @@ namespace meta
             static id<list<Ts...>> eval(id<Ts> *...);
         };
 
-        template<typename L, std::size_t N>
+        template<typename L, eastl::size_t N>
         struct drop_
         {};
 
-        template<typename... Ts, std::size_t N>
+        template<typename... Ts, eastl::size_t N>
         struct drop_<list<Ts...>, N>
 #if META_CXX_VARIABLE_TEMPLATES
           : decltype(drop_impl_<repeat_n_c<N, void *>>::eval(
@@ -1975,7 +1975,7 @@ namespace meta
     /// \par Complexity
     /// `O(1)`.
     /// \ingroup transformation
-    template<META_TYPE_CONSTRAINT(list_like) L, std::size_t N>
+    template<META_TYPE_CONSTRAINT(list_like) L, eastl::size_t N>
     using drop_c = _t<detail::drop_<L, N>>;
 
     /// Return a new \c meta::list by removing the first \p N elements from \p L.
@@ -2220,8 +2220,8 @@ namespace meta
     namespace detail
     {
         // With thanks to Peter Dimov:
-        constexpr std::size_t find_index_i_(bool const * const first,
-                                            bool const * const last, std::size_t N = 0)
+        constexpr eastl::size_t find_index_i_(bool const * const first,
+                                            bool const * const last, eastl::size_t N = 0)
         {
             return first == last ? npos::value
                    : *first      ? N
@@ -2274,9 +2274,9 @@ namespace meta
     namespace detail
     {
         // With thanks to Peter Dimov:
-        constexpr std::size_t reverse_find_index_i_(bool const * const first,
+        constexpr eastl::size_t reverse_find_index_i_(bool const * const first,
                                                     bool const * const last,
-                                                    std::size_t N)
+                                                    eastl::size_t N)
         {
             return first == last ? npos::value
                    : *(last - 1) ? N - 1
@@ -2618,11 +2618,11 @@ namespace meta
         template<typename... Ts, typename T>
         struct count_<list<Ts...>, T>
         {
-            using type = meta::size_t<((std::size_t)META_IS_SAME(T, Ts) + ...)>;
+            using type = meta::size_t<((eastl::size_t)META_IS_SAME(T, Ts) + ...)>;
         };
 #else
-        constexpr std::size_t count_i_(bool const * const begin, bool const * const end,
-                                       std::size_t n)
+        constexpr eastl::size_t count_i_(bool const * const begin, bool const * const end,
+                                       eastl::size_t n)
         {
             return begin == end ? n : detail::count_i_(begin + 1, end, n + *begin);
         }
@@ -2674,7 +2674,7 @@ namespace meta
             requires(integral<invoke<Fn, Ts>> && ...)
         struct count_if_<list<Ts...>, Fn>
         {
-            using type = meta::size_t<((std::size_t)(bool)_v<invoke<Fn, Ts>> + ...)>;
+            using type = meta::size_t<((eastl::size_t)(bool)_v<invoke<Fn, Ts>> + ...)>;
         };
 #else
         template<typename L, typename Fn, typename = void>
@@ -2694,7 +2694,7 @@ namespace meta
         {
 #if META_CXX_FOLD_EXPRESSIONS
             using type =
-                meta::size_t<((std::size_t)(bool)invoke<Fn, L>::type::value + ...)>;
+                meta::size_t<((eastl::size_t)(bool)invoke<Fn, L>::type::value + ...)>;
 #else
 #ifdef META_WORKAROUND_LLVM_28385
             static constexpr bool s_v[sizeof...(L)] = {invoke<Fn, L>::type::value...};
@@ -3272,7 +3272,7 @@ namespace meta
         struct lambda_<list<As...>, false>
         {
         private:
-            static constexpr std::size_t arity = sizeof...(As) - 1;
+            static constexpr eastl::size_t arity = sizeof...(As) - 1;
             using Tags = list<As...>; // Includes the lambda body as the last arg!
             using Fn = back<Tags>;
             template<typename T, META_TYPE_CONSTRAINT(list_like) Args>

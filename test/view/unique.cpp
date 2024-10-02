@@ -32,7 +32,7 @@ struct ci_char_traits : std::char_traits<char>
     static bool eq(char c1, char c2) { return toupper(c1) == toupper(c2); }
     static bool ne(char c1, char c2) { return toupper(c1) != toupper(c2); }
     static bool lt(char c1, char c2) { return toupper(c1) <  toupper(c2); }
-    static int compare(const char* s1, const char* s2, std::size_t n)
+    static int compare(const char* s1, const char* s2, eastl::size_t n)
     {
         for(; n != 0; ++s1, ++s2, --n)
         {

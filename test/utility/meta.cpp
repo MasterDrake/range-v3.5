@@ -35,7 +35,7 @@ template<typename... Tuples,
           typename Res = apply<quote<eastl::tuple>, concat<as_list<Tuples>...>>>
 Res tuple_cat(Tuples &&... tpls)
 {
-    static constexpr std::size_t N = sizeof...(Tuples);
+    static constexpr eastl::size_t N = sizeof...(Tuples);
     // E.g. [0,0,0,2,2,2,3,3]
     using inner = join<
         transform<list<as_list<Tuples>...>,
@@ -43,7 +43,7 @@ Res tuple_cat(Tuples &&... tpls)
     // E.g. [0,1,2,0,1,2,0,1]
     using outer = join<
         transform<list<as_list<Tuples>...>,
-                  compose<quote<as_list>, quote_i<std::size_t, make_index_sequence>, quote<size>>>>;
+                  compose<quote<as_list>, quote_i<eastl::size_t, make_index_sequence>, quote<size>>>>;
     return tc_detail::tuple_cat_<Res>(inner{}, outer{},
                                       eastl::forward_as_tuple(eastl::forward<Tuples>(tpls)...));
 }
@@ -195,9 +195,9 @@ static_assert(fact<meta::size_t<2>>::value == 2, "");
 static_assert(fact<meta::size_t<3>>::value == 6, "");
 static_assert(fact<meta::size_t<4>>::value == 24, "");
 
-template<std::size_t N>
+template<eastl::size_t N>
 struct fact2
-    : let<lazy::if_c<(N > 0), lazy::multiplies<meta::size_t<N>, defer_i<std::size_t, fact2, N - 1>>,
+    : let<lazy::if_c<(N > 0), lazy::multiplies<meta::size_t<N>, defer_i<eastl::size_t, fact2, N - 1>>,
                      meta::size_t<1>>>
 {
 };
@@ -392,38 +392,38 @@ int main()
 
     // Check integer_range
     {
-        constexpr std::size_t a = meta::fold<meta::as_list<meta::integer_range<std::size_t, 0, 5>>,
+        constexpr eastl::size_t a = meta::fold<meta::as_list<meta::integer_range<eastl::size_t, 0, 5>>,
                                              meta::size_t<0>, meta::quote<meta::plus>>{};
 
         static_assert(a == 10, "");
 
-        constexpr std::size_t b = meta::fold<meta::as_list<meta::integer_range<std::size_t, 5, 10>>,
+        constexpr eastl::size_t b = meta::fold<meta::as_list<meta::integer_range<eastl::size_t, 5, 10>>,
                                              meta::size_t<0>, meta::quote<meta::plus>>{};
 
         static_assert(b == 35, "");
 
-        constexpr std::size_t c = meta::fold<meta::as_list<meta::integer_range<std::size_t, 0, 20>>,
+        constexpr eastl::size_t c = meta::fold<meta::as_list<meta::integer_range<eastl::size_t, 0, 20>>,
                                              meta::size_t<0>, meta::quote<meta::plus>>{};
 
         static_assert(c == 190, "");
 
-        using d = meta::integer_range<std::size_t, 5, 10>;
-        static_assert(eastl::is_same<d, meta::integer_sequence<std::size_t, 5, 6, 7, 8, 9>>{}, "");
+        using d = meta::integer_range<eastl::size_t, 5, 10>;
+        static_assert(eastl::is_same<d, meta::integer_sequence<eastl::size_t, 5, 6, 7, 8, 9>>{}, "");
     }
 
     // Check reverse_fold
     {
-        constexpr std::size_t a = meta::reverse_fold<meta::as_list<meta::integer_range<std::size_t, 0, 5>>,
+        constexpr eastl::size_t a = meta::reverse_fold<meta::as_list<meta::integer_range<eastl::size_t, 0, 5>>,
                                              meta::size_t<0>, meta::quote<meta::plus>>{};
 
         static_assert(a == 10, "");
 
-        constexpr std::size_t b = meta::reverse_fold<meta::as_list<meta::integer_range<std::size_t, 5, 10>>,
+        constexpr eastl::size_t b = meta::reverse_fold<meta::as_list<meta::integer_range<eastl::size_t, 5, 10>>,
                                              meta::size_t<0>, meta::quote<meta::plus>>{};
 
         static_assert(b == 35, "");
 
-        constexpr std::size_t c = meta::reverse_fold<meta::as_list<meta::integer_range<std::size_t, 0, 20>>,
+        constexpr eastl::size_t c = meta::reverse_fold<meta::as_list<meta::integer_range<eastl::size_t, 0, 20>>,
                                              meta::size_t<0>, meta::quote<meta::plus>>{};
 
         static_assert(c == 190, "");

@@ -39,21 +39,21 @@
 
 namespace ranges
 {
-    template<std::size_t I>
+    template<eastl::size_t I>
     struct emplaced_index_t;
 
-    template<std::size_t I>
+    template<eastl::size_t I>
     struct emplaced_index_t : meta::size_t<I>
     {};
 
 #if EARANGES_CXX_INLINE_VARIABLES < EARANGES_CXX_INLINE_VARIABLES_17
     namespace
     {
-        template<std::size_t I>
+        template<eastl::size_t I>
         constexpr auto & emplaced_index = static_const<emplaced_index_t<I>>::value;
     }
 #else  // EARANGES_CXX_INLINE_VARIABLES >= EARANGES_CXX_INLINE_VARIABLES_17
-    template<std::size_t I>
+    template<eastl::size_t I>
     inline constexpr emplaced_index_t<I> emplaced_index{};
 #endif // EARANGES_CXX_INLINE_VARIABLES
 
@@ -67,7 +67,7 @@ namespace ranges
         {}
     };
 
-    template<typename T, std::size_t Index>
+    template<typename T, eastl::size_t Index>
     struct indexed_element
     {
     private:
@@ -82,7 +82,7 @@ namespace ranges
             return *t_;
         }
     };
-    template<typename T, std::size_t Index>
+    template<typename T, eastl::size_t Index>
     struct indexed_element<T &&, Index>
     {
     private:
@@ -97,7 +97,7 @@ namespace ranges
             return static_cast<T &&>(*t_);
         }
     };
-    template<std::size_t Index>
+    template<eastl::size_t Index>
     struct indexed_element<void, Index>
     {
         void get() const noexcept
@@ -176,7 +176,7 @@ namespace ranges
             }
         };
 
-        template<typename T, std::size_t N, typename Index>
+        template<typename T, eastl::size_t N, typename Index>
         struct indexed_datum<T[N], Index>;
 
         template<typename T, typename Index>
@@ -232,7 +232,7 @@ namespace ranges
             }
         };
 
-        template<std::size_t Index, typename... Ts>
+        template<eastl::size_t Index, typename... Ts>
         using variant_datum_t =
             detail::indexed_datum<meta::at_c<meta::list<Ts...>, Index>,
                                   meta::size_t<Index>>;
@@ -269,7 +269,7 @@ namespace ranges
                     eastl::is_nothrow_constructible<head_t, Args...>::value)
                   : head{((Args &&) args)...}
                 {}
-                template<std::size_t N, typename... Args>
+                template<eastl::size_t N, typename... Args>
                 constexpr type(meta::size_t<N>, Args &&... args) noexcept(
                     eastl::is_nothrow_constructible<tail_t, meta::size_t<N - 1>,
                                                   Args...>::value)
@@ -300,7 +300,7 @@ namespace ranges
                     eastl::is_nothrow_constructible<head_t, Args...>::value)
                   : head{((Args &&) args)...}
                 {}
-                template<std::size_t N, typename... Args>
+                template<eastl::size_t N, typename... Args>
                 constexpr type(meta::size_t<N>, Args &&... args) noexcept(
                     eastl::is_nothrow_constructible<tail_t, meta::size_t<N - 1>,
                                                   Args...>::value)
@@ -314,36 +314,36 @@ namespace ranges
             meta::list<Ts...>, meta::as_list<meta::make_index_sequence<sizeof...(Ts)>>,
             meta::quote<indexed_datum>>>>;
 
-        inline std::size_t variant_move_copy_(std::size_t, variant_nil, variant_nil)
+        inline eastl::size_t variant_move_copy_(eastl::size_t, variant_nil, variant_nil)
         {
             return 0;
         }
         template<typename Data0, typename Data1>
-        std::size_t variant_move_copy_(std::size_t n, Data0 & self, Data1 && that)
+        eastl::size_t variant_move_copy_(eastl::size_t n, Data0 & self, Data1 && that)
         {
             using Head = typename Data0::head_t;
             return 0 == n
                        ? ((void)::new((void *)&self.head) Head(((Data1 &&) that).head), 0)
                        : variant_move_copy_(n - 1, self.tail, ((Data1 &&) that).tail) + 1;
         }
-        constexpr bool variant_equal_(std::size_t, variant_nil, variant_nil)
+        constexpr bool variant_equal_(eastl::size_t, variant_nil, variant_nil)
         {
             return true;
         }
         template<typename Data0, typename Data1>
-        constexpr bool variant_equal_(std::size_t n, Data0 const & self,
+        constexpr bool variant_equal_(eastl::size_t n, Data0 const & self,
                                       Data1 const & that)
         {
             return n == 0 ? self.head.get() == that.head.get()
                           : variant_equal_(n - 1, self.tail, that.tail);
         }
         template<typename Fun, typename Proj = indexed_element_fn>
-        constexpr int variant_visit_(std::size_t, variant_nil, Fun, Proj = {})
+        constexpr int variant_visit_(eastl::size_t, variant_nil, Fun, Proj = {})
         {
             return (EARANGES_EXPECT(false), 0);
         }
         template<typename Data, typename Fun, typename Proj = indexed_element_fn>
-        constexpr int variant_visit_(std::size_t n, Data & self, Fun fun, Proj proj = {})
+        constexpr int variant_visit_(eastl::size_t n, Data & self, Fun fun, Proj proj = {})
         {
             return 0 == n ? ((void)invoke(fun, invoke(proj, self.head)), 0)
                           : detail::variant_visit_(
@@ -405,12 +405,12 @@ namespace ranges
             }
         };
 
-        template<std::size_t N, typename... Ts>
+        template<eastl::size_t N, typename... Ts>
         struct construct_fn
         {
             eastl::tuple<Ts...> args_;
 
-            template<typename U, std::size_t... Is>
+            template<typename U, eastl::size_t... Is>
             void construct_(U & u, meta::index_sequence<Is...>) noexcept(
                 eastl::is_nothrow_constructible<U, Ts...>::value)
             {
@@ -422,7 +422,7 @@ namespace ranges
                 eastl::is_nothrow_constructible<eastl::tuple<Ts...>, Ts...>::value)
               : args_{static_cast<Ts &&>(ts)...}
             {}
-            template<typename U, std::size_t M>
+            template<typename U, eastl::size_t M>
             [[noreturn]] meta::if_c<N != M> operator()(
                 indexed_datum<U, meta::size_t<M>> &) noexcept
             {
@@ -445,12 +445,12 @@ namespace ranges
             }
         };
 
-        template<typename T, std::size_t N>
+        template<typename T, eastl::size_t N>
         struct get_fn
         {
             T ** t_;
 
-            template<typename U, std::size_t M>
+            template<typename U, eastl::size_t M>
             [[noreturn]] meta::if_c<M != N> operator()(indexed_element<U, M>) const
             {
                 throw bad_variant_access("bad variant access");
@@ -470,7 +470,7 @@ namespace ranges
             {}
         };
 
-        template<typename Variant, std::size_t N>
+        template<typename Variant, eastl::size_t N>
         struct emplace_fn
         {
             Variant * var_;
@@ -490,7 +490,7 @@ namespace ranges
             Variant * var_;
 
             // clang-format off
-            template<typename U, std::size_t N>
+            template<typename U, eastl::size_t N>
             auto CPP_auto_fun(operator())(indexed_element<U, N> u)
             (
                 return compose(emplace_fn<Variant, N>{var_}, fun_)(u)
@@ -514,13 +514,13 @@ namespace ranges
         {
             variant<To...> * var_;
 
-            template<typename T, std::size_t N>
+            template<typename T, eastl::size_t N>
             void operator()(indexed_element<T, N> t) const
             {
                 using E = meta::at_c<meta::list<From...>, N>;
                 static_assert(EARANGES_IS_SAME(T const, E const), "Is indexed_element broken?");
                 using F = meta::find<meta::list<To...>, E>;
-                static constexpr std::size_t M = sizeof...(To) - F::size();
+                static constexpr eastl::size_t M = sizeof...(To) - F::size();
                 compose(emplace_fn<variant<To...>, M>{var_}, get_datum_fn{})(t);
             }
         };
@@ -538,7 +538,7 @@ namespace ranges
         {
             //////////////////////////////////////////////////////////////////////////////
             // get
-            template<std::size_t N>
+            template<eastl::size_t N>
             friend meta::_t<eastl::add_lvalue_reference<meta::at_c<meta::as_list<Variant>, N>>>
             get(Variant & var)
             {
@@ -548,7 +548,7 @@ namespace ranges
                 detail::variant_visit_(var.index(), data_var, detail::get_fn<elem_t, N>{&elem});
                 return detail::variant_deref_(elem);
             }
-            template<std::size_t N>
+            template<eastl::size_t N>
             friend meta::_t<eastl::add_lvalue_reference<meta::at_c<meta::as_list<Variant>, N> const>>
             get(Variant const & var)
             {
@@ -558,7 +558,7 @@ namespace ranges
                 detail::variant_visit_(var.index(), data_var, detail::get_fn<elem_t, N>{&elem});
                 return detail::variant_deref_(elem);
             }
-            template<std::size_t N>
+            template<eastl::size_t N>
             friend meta::_t<eastl::add_rvalue_reference<meta::at_c<meta::as_list<Variant>, N>>>
             get(Variant && var)
             {
@@ -588,7 +588,7 @@ namespace ranges
         template<typename Fun, typename Types, typename Indices, typename = void>
         struct variant_visit_results
         {};
-        template<typename Fun, typename... Ts, std::size_t... Is>
+        template<typename Fun, typename... Ts, eastl::size_t... Is>
         struct variant_visit_results<
             Fun, meta::list<Ts...>, meta::index_sequence<Is...>,
             meta::void_<invoke_result_t<Fun &, indexed_element<Ts, Is>>...>>
@@ -614,7 +614,7 @@ namespace ranges
         template<typename...>
         friend struct variant;
         friend detail::variant_base<variant, false>;
-        template<std::size_t Index>
+        template<eastl::size_t Index>
         using datum_t = detail::variant_datum_t<Index, Ts...>;
         template<typename T>
         using add_const_t = meta::if_<eastl::is_void<T>, void, T const>;
@@ -633,14 +633,14 @@ namespace ranges
             return static_cast<detail::variant_data<Ts...> &&>(*this);
         }
 
-        std::size_t index_;
+        eastl::size_t index_;
 
         void clear_() noexcept
         {
             if(valid())
             {
                 detail::variant_visit_(index_, data_(), detail::delete_fn{}, identity{});
-                index_ = (std::size_t)-1;
+                index_ = (eastl::size_t)-1;
             }
         }
         template<typename That>
@@ -652,7 +652,7 @@ namespace ranges
         }
         constexpr variant(detail::empty_variant_tag) noexcept
           : detail::variant_data<Ts...>{}
-          , index_((std::size_t)-1)
+          , index_((eastl::size_t)-1)
         {}
         template(typename... Args)(
             requires (sizeof...(Args) == sizeof...(Ts))) //
@@ -673,14 +673,14 @@ namespace ranges
                 requires default_constructible<datum_t<0>>)
           : variant{emplaced_index<0>}
         {}
-        template(std::size_t N, typename... Args)(
+        template(eastl::size_t N, typename... Args)(
             requires constructible_from<datum_t<N>, Args...>)
             constexpr variant(emplaced_index_t<N>, Args &&... args) noexcept(
                 eastl::is_nothrow_constructible<datum_t<N>, Args...>::value)
           : detail::variant_data<Ts...>{meta::size_t<N>{}, static_cast<Args &&>(args)...}
           , index_(N)
         {}
-        template(std::size_t N, typename T, typename... Args)(
+        template(eastl::size_t N, typename T, typename... Args)(
             requires constructible_from<datum_t<N>, std::initializer_list<T> &,
                                         Args...>)
             constexpr variant(
@@ -694,7 +694,7 @@ namespace ranges
                                         static_cast<Args &&>(args)...}
           , index_(N)
         {}
-        template(std::size_t N)(
+        template(eastl::size_t N)(
             requires constructible_from<datum_t<N>, meta::nil_>)
         constexpr variant(emplaced_index_t<N>, meta::nil_)
             noexcept(eastl::is_nothrow_constructible<datum_t<N>, meta::nil_>::value)
@@ -740,11 +740,11 @@ namespace ranges
             this->assign_(that);
             return *this;
         }
-        static constexpr std::size_t size() noexcept
+        static constexpr eastl::size_t size() noexcept
         {
             return sizeof...(Ts);
         }
-        template(std::size_t N, typename... Args)(
+        template(eastl::size_t N, typename... Args)(
             requires constructible_from<datum_t<N>, Args...>)
         void emplace(Args &&... args)
         {
@@ -755,9 +755,9 @@ namespace ranges
         }
         constexpr bool valid() const noexcept
         {
-            return index() != (std::size_t)-1;
+            return index() != (eastl::size_t)-1;
         }
-        constexpr std::size_t index() const noexcept
+        constexpr eastl::size_t index() const noexcept
         {
             return index_;
         }
@@ -823,7 +823,7 @@ namespace ranges
 
     //////////////////////////////////////////////////////////////////////////////////////
     // emplace
-    template(std::size_t N, typename... Ts, typename... Args)(requires constructible_from<detail::variant_datum_t<N, Ts...>, Args...>)
+    template(eastl::size_t N, typename... Ts, typename... Args)(requires constructible_from<detail::variant_datum_t<N, Ts...>, Args...>)
     void emplace(variant<Ts...> & var, Args &&... args)
     {
         var.template emplace<N>(static_cast<Args &&>(args)...);

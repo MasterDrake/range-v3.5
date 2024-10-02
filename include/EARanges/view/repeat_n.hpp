@@ -99,9 +99,9 @@ namespace ranges
           : value_(detail::move(value))
           , n_((EARANGES_EXPECT(0 <= n), n))
         {}
-        constexpr std::size_t size() const
+        constexpr eastl::size_t size() const
         {
-            return static_cast<std::size_t>(n_);
+            return static_cast<eastl::size_t>(n_);
         }
     };
 

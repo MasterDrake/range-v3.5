@@ -440,7 +440,7 @@ namespace eastl
         using difference_type = typename ::ranges::move_iterator<I>::difference_type;
         using value_type = typename ::ranges::move_iterator<I>::value_type;
         using reference = typename ::ranges::move_iterator<I>::reference;
-        using pointer = meta::_t<eastl::add_pointer<reference>>;
+        using pointer = ::meta::_t<eastl::add_pointer<reference>>;
     };
 } // namespace eastl
 

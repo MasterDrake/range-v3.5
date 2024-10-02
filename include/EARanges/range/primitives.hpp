@@ -115,14 +115,14 @@ namespace ranges
                     R>;
 
         public:
-            template<typename R, std::size_t N>
-            constexpr std::size_t operator()(R (&)[N], int) const noexcept
+            template<typename R, eastl::size_t N>
+            constexpr eastl::size_t operator()(R (&)[N], int) const noexcept
             {
                 return N;
             }
 
-            template<typename R, std::size_t N>
-            constexpr std::size_t operator()(R(&&)[N]) const noexcept
+            template<typename R, eastl::size_t N>
+            constexpr eastl::size_t operator()(R(&&)[N]) const noexcept
             {
                 return N;
             }

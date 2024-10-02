@@ -201,58 +201,58 @@ int main()
     // Check move-only types
     {
         eastl::vector<eastl::unique_ptr<int> > v(1000);
-        for(int i = 0; (std::size_t)i < v.size(); ++i)
+        for(int i = 0; (eastl::size_t)i < v.size(); ++i)
             v[i].reset(new int((int)v.size() - i - 1));
         ranges::stable_sort(v, indirect_less());
-        for(int i = 0; (std::size_t)i < v.size(); ++i)
+        for(int i = 0; (eastl::size_t)i < v.size(); ++i)
             CHECK(*v[i] == i);
     }
 
     // Check projections
     {
         eastl::vector<S> v(1000, S{});
-        for(int i = 0; (std::size_t)i < v.size(); ++i)
+        for(int i = 0; (eastl::size_t)i < v.size(); ++i)
         {
             v[i].i = (int)v.size() - i - 1;
             v[i].j = i;
         }
         ranges::stable_sort(v, eastl::less<int>{}, &S::i);
-        for(int i = 0; (std::size_t)i < v.size(); ++i)
+        for(int i = 0; (eastl::size_t)i < v.size(); ++i)
         {
             CHECK(v[i].i == i);
-            CHECK((std::size_t)v[i].j == v.size() - i - 1);
+            CHECK((eastl::size_t)v[i].j == v.size() - i - 1);
         }
     }
 
     // Check rvalue container
     {
         eastl::vector<S> v(1000, S{});
-        for(int i = 0; (std::size_t)i < v.size(); ++i)
+        for(int i = 0; (eastl::size_t)i < v.size(); ++i)
         {
             v[i].i = (int)v.size() - i - 1;
             v[i].j = i;
         }
         CHECK(::is_dangling(ranges::stable_sort(eastl::move(v), eastl::less<int>{}, &S::i)));
-        for(int i = 0; (std::size_t)i < v.size(); ++i)
+        for(int i = 0; (eastl::size_t)i < v.size(); ++i)
         {
             CHECK(v[i].i == i);
-            CHECK((std::size_t)v[i].j == v.size() - i - 1);
+            CHECK((eastl::size_t)v[i].j == v.size() - i - 1);
         }
     }
 
     // Check rvalue forwarding range
     {
         eastl::vector<S> v(1000, S{});
-        for(int i = 0; (std::size_t)i < v.size(); ++i)
+        for(int i = 0; (eastl::size_t)i < v.size(); ++i)
         {
             v[i].i = (int)v.size() - i - 1;
             v[i].j = i;
         }
         CHECK(ranges::stable_sort(ranges::views::all(v), eastl::less<int>{}, &S::i) == v.end());
-        for(int i = 0; (std::size_t)i < v.size(); ++i)
+        for(int i = 0; (eastl::size_t)i < v.size(); ++i)
         {
             CHECK(v[i].i == i);
-            CHECK((std::size_t)v[i].j == v.size() - i - 1);
+            CHECK((eastl::size_t)v[i].j == v.size() - i - 1);
         }
     }
 #endif // Avoid #890

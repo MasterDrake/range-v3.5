@@ -27,7 +27,7 @@ int main()
 
     {
         auto irng = linear_distribute(0, 1, 2);
-        CHECK(ranges::size(irng) == std::size_t{2});
+        CHECK(ranges::size(irng) == eastl::size_t{2});
         CPP_assert(ranges::forward_range<decltype(irng)>);
         CPP_assert(ranges::sized_range<decltype(irng)>);
         auto il = {0, 1};
@@ -37,7 +37,7 @@ int main()
         auto irng = linear_distribute(1, 3, 3);
         auto il = {1, 2, 3};
         check_equal(irng, il);
-        CHECK(ranges::size(irng) == std::size_t{3});
+        CHECK(ranges::size(irng) == eastl::size_t{3});
     }
     {
         auto irng = linear_distribute(0, 21, 22);
@@ -48,9 +48,9 @@ int main()
         auto frng = linear_distribute(0.0, 1.0, 11);
         CPP_assert(ranges::forward_range<decltype(frng)>);
         CPP_assert(ranges::sized_range<decltype(frng)>);
-        CHECK(ranges::size(frng) == std::size_t{11});
+        CHECK(ranges::size(frng) == eastl::size_t{11});
         auto il = {0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
-        CHECK(ranges::size(il) == std::size_t{11});
+        CHECK(ranges::size(il) == eastl::size_t{11});
         CHECK(ranges::equal(frng, il, float_eq));
     }
     {
@@ -64,19 +64,19 @@ int main()
     }
     {   // empty interval
         auto irng = linear_distribute(0, 0, 1);
-        CHECK(ranges::size(irng) == std::size_t{1});
+        CHECK(ranges::size(irng) == eastl::size_t{1});
         check_equal(irng, {0});
 
         auto irng1 = linear_distribute(0, 0, 10);
-        CHECK(ranges::size(irng1) == std::size_t{10});
+        CHECK(ranges::size(irng1) == eastl::size_t{10});
         check_equal(irng1, {0,0,0,0,0,0,0,0,0,0});
 
         auto irng2 = linear_distribute(1, 1, 3);
-        CHECK(ranges::size(irng2) == std::size_t{3});
+        CHECK(ranges::size(irng2) == eastl::size_t{3});
         check_equal(irng2, {1,1,1});
 
         auto frng = linear_distribute(0., 0., 3);
-        CHECK(ranges::size(frng) == std::size_t{3});
+        CHECK(ranges::size(frng) == eastl::size_t{3});
         CHECK(ranges::equal(frng, std::initializer_list<double>{0.,0.,0.}, float_eq));
     }
     {   // regression test for #1088

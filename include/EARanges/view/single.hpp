@@ -83,7 +83,7 @@ namespace ranges
         {
             return data() + 1;
         }
-        static constexpr std::size_t size() noexcept
+        static constexpr eastl::size_t size() noexcept
         {
             return 1u;
         }

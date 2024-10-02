@@ -204,7 +204,7 @@ namespace ranges
         template<typename T>
         struct readable_traits_1_<T[]> : with_value_type_<T>
         {};
-        template<typename T, std::size_t N>
+        template<typename T, eastl::size_t N>
         struct readable_traits_1_<T[N]> : with_value_type_<T>
         {};
         template<typename T>

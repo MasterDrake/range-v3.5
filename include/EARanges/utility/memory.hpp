@@ -43,7 +43,7 @@ namespace ranges
     namespace detail
     {
         template<typename T>
-        eastl::pair<T *, std::ptrdiff_t> get_temporary_buffer_impl(std::size_t n) noexcept
+        eastl::pair<T *, std::ptrdiff_t> get_temporary_buffer_impl(eastl::size_t n) noexcept
         {
             if(n > PTRDIFF_MAX / sizeof(T))
                 n = PTRDIFF_MAX / sizeof(T);
@@ -70,7 +70,7 @@ namespace ranges
         eastl::pair<T *, std::ptrdiff_t> get_temporary_buffer(D count) noexcept
         {
             EARANGES_EXPECT(count >= 0);
-            return detail::get_temporary_buffer_impl<T>(static_cast<std::size_t>(count));
+            return detail::get_temporary_buffer_impl<T>(static_cast<eastl::size_t>(count));
         }
 
         struct return_temporary_buffer

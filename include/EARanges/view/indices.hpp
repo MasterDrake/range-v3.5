@@ -30,7 +30,7 @@ namespace ranges
     namespace views
     {
         /// Half-open range of indices: [from, to).
-        struct indices_fn : iota_view<std::size_t>
+        struct indices_fn : iota_view<eastl::size_t>
         {
             indices_fn() = default;
 

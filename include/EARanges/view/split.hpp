@@ -47,7 +47,7 @@ namespace ranges
         // clang-format off
 #if defined(_MSC_VER) && !defined(__clang__) && \
     EARANGES_CXX_VER <= EARANGES_CXX_STD_17
-        template<typename R, std::size_t Sz = static_cast<std::size_t>(R::size())>
+        template<typename R, eastl::size_t Sz = static_cast<eastl::size_t>(R::size())>
         constexpr bool _is_tiny_range_(R const *) noexcept
         {
             return R::size() <= 1u;

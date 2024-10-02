@@ -62,7 +62,7 @@ namespace ranges
         struct c_str_fn
         {
             // Fixed-length
-            template(typename Char, std::size_t N)(requires detail::is_char_type<Char>::value) //
+            template(typename Char, eastl::size_t N)(requires detail::is_char_type<Char>::value) //
             ranges::subrange<Char *> operator()(Char (&sz)[N]) const
             {
                 return {&sz[0], &sz[N - 1]};

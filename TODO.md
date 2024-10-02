@@ -66,6 +66,7 @@
 
  ## Reverse iterator
  - For sized ranges, eastl::reverse_iterator must be able to: i - s and s - i and return a value whose type is better left to the compiler.
+ - Remove the operation- that uses reverse_iterator::difference_type
  ```c++
 	template <typename Iterator1, typename Iterator2>
 	EA_CPP14_CONSTEXPR inline auto

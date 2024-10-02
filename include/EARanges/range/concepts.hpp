@@ -190,7 +190,7 @@ namespace ranges
     template<typename Char>
    EARANGES_INLINE_VAR constexpr bool enable_view<eastl::basic_string_view<Char>> = true;
 
-    template<typename T, std::size_t N>
+    template<typename T, eastl::size_t N>
     EARANGES_INLINE_VAR constexpr bool enable_view<eastl::span<T, N>> = true;
 
     //

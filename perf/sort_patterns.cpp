@@ -36,9 +36,9 @@ namespace
 {
   /// Creates an geometric infinite sequence starting at 1 where the
   /// successor is multiplied by \p V
-  auto geometric_sequence(std::size_t V)
+  auto geometric_sequence(eastl::size_t V)
   {
-    std::size_t N = 1;
+    eastl::size_t N = 1;
     return ranges::views::generate([N, V]() mutable
     {
       auto old = N;
@@ -49,9 +49,9 @@ namespace
 
   /// Creates an geometric infinite sequence starting at 1 where the
   /// successor is multiplied by \p V
-  auto geometric_sequence_n(std::size_t V, std::size_t limit)
+  auto geometric_sequence_n(eastl::size_t V, eastl::size_t limit)
   {
-    return geometric_sequence(V) | ranges::views::take_while([limit](std::size_t n) { return n <= limit; });
+    return geometric_sequence(V) | ranges::views::take_while([limit](eastl::size_t n) { return n <= limit; });
   }
 
   /// Random uniform integer sequence
@@ -59,7 +59,7 @@ namespace
   {
     std::default_random_engine gen;
     std::uniform_int_distribution<> dist;
-    auto operator()(std::size_t)
+    auto operator()(eastl::size_t)
     {
       return ranges::views::generate([&]{ return dist(gen); });
     }
@@ -68,13 +68,13 @@ namespace
 
   struct ascending_integer_sequence
   {
-    auto operator()(std::size_t) { return ranges::views::iota(1); }
+    auto operator()(eastl::size_t) { return ranges::views::iota(1); }
     static eastl::string name() { return "ascending_integer_sequence"; }
   };
 
   struct descending_integer_sequence
   {
-    auto operator()(std::size_t)
+    auto operator()(eastl::size_t)
     {
       return ranges::views::iota(0ll, eastl::numeric_limits<long long>::max()) | ranges::views::reverse;
     }
@@ -87,26 +87,26 @@ namespace
   struct even_odd_integer_sequence
   {
     static eastl::string name() { return "even_odd_integer_sequence"; }
-    auto operator()(std::size_t n)
+    auto operator()(eastl::size_t n)
     {
-      return ranges::views::concat(ranges::views::ints(std::size_t{0}, n) | ranges::views::filter(even),
-                                  ranges::views::ints(std::size_t{0}, n) | ranges::views::filter(odd));
+      return ranges::views::concat(ranges::views::ints(eastl::size_t{0}, n) | ranges::views::filter(even),
+                                  ranges::views::ints(eastl::size_t{0}, n) | ranges::views::filter(odd));
     }
   };
 
   struct organ_pipe_integer_sequence
   {
     static eastl::string name() { return "organ_pipe_integer_sequence"; }
-    auto operator()(std::size_t n) 
+    auto operator()(eastl::size_t n) 
     {
-      return ranges::views::concat(ranges::views::ints(std::size_t{0}, n/2),
-                                  ranges::views::ints(std::size_t{0}, n/2 + 1)
+      return ranges::views::concat(ranges::views::ints(eastl::size_t{0}, n/2),
+                                  ranges::views::ints(eastl::size_t{0}, n/2 + 1)
                                   | ranges::views::reverse);
     }
   };
 
   template<typename Seq>
-  void print(Seq seq, std::size_t n)
+  void print(Seq seq, eastl::size_t n)
   {
     std::cout << "sequence: " << seq.name().c_str() << '\n';
     EARANGES_FOR(auto i , seq(n) | ranges::views::take(n))
@@ -160,20 +160,20 @@ namespace
       duration_t mean_t;
       duration_t max_t;
       duration_t min_t;
-      std::size_t size;
+      eastl::size_t size;
       duration_t deviation;
     };
     eastl::vector<result_t> results;
 
     template<typename Computation, typename Sizes>
-    benchmark(Computation &&c, Sizes &&sizes, double target_deviation = 0.25, std::size_t max_iters = 100, std::size_t min_iters = 5)
+    benchmark(Computation &&c, Sizes &&sizes, double target_deviation = 0.25, eastl::size_t max_iters = 100, eastl::size_t min_iters = 5)
     {
       EARANGES_FOR(auto size , sizes)
       {
         eastl::vector<duration_t> durations;
         duration_t deviation;
         duration_t mean_duration;
-        std::size_t iter;
+        eastl::size_t iter;
 
         for (iter = 0; iter < max_iters; ++iter)
         {
@@ -205,12 +205,12 @@ namespace
   {
     Seq seq;
     Comp comp;
-    eastl::vector<ranges::range_value_t<decltype(seq(std::size_t{}))>> data;
-    computation_on_sequence(Seq s, Comp c, std::size_t max_size) : seq(eastl::move(s)), comp(eastl::move(c))
+    eastl::vector<ranges::range_value_t<decltype(seq(eastl::size_t{}))>> data;
+    computation_on_sequence(Seq s, Comp c, eastl::size_t max_size) : seq(eastl::move(s)), comp(eastl::move(c))
     {
       data.reserve(max_size);
     }
-    void init(std::size_t size)
+    void init(eastl::size_t size)
     {
       data.resize(size);
       ranges::copy(seq(size) | ranges::views::take(size), ranges::begin(data));
@@ -219,12 +219,12 @@ namespace
   };
 
   template<typename Seq, typename Comp>
-  auto make_computation_on_sequence(Seq s, Comp c, std::size_t max_size)
+  auto make_computation_on_sequence(Seq s, Comp c, eastl::size_t max_size)
   {
     return computation_on_sequence<Seq, Comp>(eastl::move(s), eastl::move(c), max_size);
   }
 
-  template<typename Seq> void benchmark_sort(Seq &&seq, std::size_t max_size)
+  template<typename Seq> void benchmark_sort(Seq &&seq, eastl::size_t max_size)
   {
     auto ranges_sort_comp = make_computation_on_sequence(seq, ranges::sort, max_size);
 
@@ -253,7 +253,7 @@ namespace
 
 int main()
 {
-  constexpr std::size_t max_size = 2000000;
+  constexpr eastl::size_t max_size = 2000000;
 
   print(random_uniform_integer_sequence(), 20);
   print(ascending_integer_sequence(), 20);

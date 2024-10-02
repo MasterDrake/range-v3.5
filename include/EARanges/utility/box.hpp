@@ -284,18 +284,18 @@ namespace ranges
             return detail::move(b).get();
         }
         // Get by index
-        template<std::size_t I, typename Element, detail::box_compress BC>
+        template<eastl::size_t I, typename Element, detail::box_compress BC>
         constexpr Element & get(box<Element, meta::size_t<I>, BC> & b) noexcept
         {
             return b.get();
         }
-        template<std::size_t I, typename Element, detail::box_compress BC>
+        template<eastl::size_t I, typename Element, detail::box_compress BC>
         constexpr Element const & get(
             box<Element, meta::size_t<I>, BC> const & b) noexcept
         {
             return b.get();
         }
-        template<std::size_t I, typename Element, detail::box_compress BC>
+        template<eastl::size_t I, typename Element, detail::box_compress BC>
         constexpr Element && get(box<Element, meta::size_t<I>, BC> && b) noexcept
         {
             return detail::move(b).get();

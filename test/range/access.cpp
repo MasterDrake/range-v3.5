@@ -53,7 +53,7 @@ void test_initializer_list()
             CHECK(*p == --count);
         }
     }
-    CHECK(ranges::size(il) == std::size_t{3});
+    CHECK(ranges::size(il) == eastl::size_t{3});
     CHECK(ranges::data(il) == &*il.begin());
     CHECK(ranges::empty(il) == false);
 }
@@ -213,7 +213,7 @@ namespace begin_testing
 
 namespace X
 {
-    template<class T, std::size_t N>
+    template<class T, eastl::size_t N>
     struct array
     {
         T elements_[N];
@@ -223,13 +223,13 @@ namespace X
         constexpr T const *data() const noexcept { return elements_; }
     };
 
-    template<class T, std::size_t N>
+    template<class T, eastl::size_t N>
     constexpr T* begin(array<T, N> &a) noexcept { return a.elements_; }
-    template<class T, std::size_t N>
+    template<class T, eastl::size_t N>
     constexpr T* end(array<T, N> &a) noexcept { return a.elements_ + N; }
-    template<class T, std::size_t N>
+    template<class T, eastl::size_t N>
     constexpr T const *begin(array<T, N> const &a) noexcept { return a.elements_; }
-    template<class T, std::size_t N>
+    template<class T, eastl::size_t N>
     constexpr T const *end(array<T, N> const &a) noexcept { return a.elements_ + N; }
 } // namespace X
 

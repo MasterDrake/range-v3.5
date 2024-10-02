@@ -43,6 +43,7 @@
 #define EARANGES_CXX_HAS_SLOC_BUILTINS
 #endif
 
+/*
 #if defined(EARANGES_CXX_HAS_SLOC_BUILTINS) && defined(__has_include)
 #if __has_include(<source_location>)
 #include <source_location>
@@ -58,6 +59,7 @@ using source_location = std::experimental::source_location;
 #endif
 #endif
 #endif
+*/
 
 #ifndef EARANGES_HAS_SLOC
 struct source_location

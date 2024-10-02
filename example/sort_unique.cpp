@@ -19,7 +19,6 @@
 #include <EARanges/action/sort.hpp>
 #include <EARanges/action/unique.hpp>
 #include <EARanges/view/all.hpp>
-using std::cout;
 
 #include "../test/eastl_utils.h"
 
@@ -31,6 +30,6 @@ int main()
     using namespace ranges;
     vi |= actions::sort | actions::unique;
     // prints: [0,1,2,3,4,5,6,7,8,9]
-    cout << views::all(vi) << '\n';
+    std::cout << views::all(vi) << '\n';
 }
 ///[sort_unique]

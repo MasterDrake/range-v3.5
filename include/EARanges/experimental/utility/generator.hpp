@@ -59,7 +59,7 @@ namespace ranges
     namespace experimental
     {
         // The type of size() for a sized_generator
-        using generator_size_t = std::size_t;
+        using generator_size_t = eastl::size_t;
 
         // Type upon which to co_await to set the size of a sized_generator
         enum struct generator_size : generator_size_t

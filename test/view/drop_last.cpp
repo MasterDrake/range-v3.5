@@ -85,10 +85,10 @@ void test_range(Rng&& src)
 template<class Rng>
 void test_size(Rng&& src)
 {
-    CHECK( (src | views::drop_last(0)).size() == std::size_t(4) );
-    CHECK( (src | views::drop_last(2)).size() == std::size_t(2) );
-    CHECK( (src | views::drop_last(4)).size() == std::size_t(0) );
-    CHECK( (src | views::drop_last(5)).size() == std::size_t(0) );
+    CHECK( (src | views::drop_last(0)).size() == eastl::size_t(4) );
+    CHECK( (src | views::drop_last(2)).size() == eastl::size_t(2) );
+    CHECK( (src | views::drop_last(4)).size() == eastl::size_t(0) );
+    CHECK( (src | views::drop_last(5)).size() == eastl::size_t(0) );
 }
 
 template<class Rng>

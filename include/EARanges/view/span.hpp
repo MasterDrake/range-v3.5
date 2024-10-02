@@ -62,7 +62,7 @@ namespace ranges
         {
             return n == dynamic_extent ? dynamic_extent
                                        : (EARANGES_EXPECT(n >= 0),
-                                          EARANGES_EXPECT(narrow_cast<std::size_t>(n) <=
+                                          EARANGES_EXPECT(narrow_cast<eastl::size_t>(n) <=
                                                         PTRDIFF_MAX / sizeof(T)),
                                           n * narrow_cast<span_index_t>(sizeof(T)));
         }

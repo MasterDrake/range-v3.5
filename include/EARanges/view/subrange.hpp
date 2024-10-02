@@ -60,7 +60,7 @@ namespace ranges
                 not_same_as_<eastl::remove_pointer_t<decay_t<From>>,
                              eastl::remove_pointer_t<decay_t<To>>>));
 
-        template<std::size_t N, typename T>
+        template<eastl::size_t N, typename T>
         using tuple_element_fun_t = void (*)(meta::_t<eastl::tuple_element<N, T>> const &);
 
         /// \concept pair_like_impl_
@@ -171,12 +171,12 @@ namespace ranges
         struct adl_hook
         {};
 
-        template(std::size_t N, typename I, typename S, subrange_kind K)(requires (N == 0)) //
+        template(eastl::size_t N, typename I, typename S, subrange_kind K)(requires (N == 0)) //
         constexpr I get(subrange<I, S, K> const & r)
         {
             return r.begin();
         }
-        template(std::size_t N, typename I, typename S, subrange_kind K)(
+        template(eastl::size_t N, typename I, typename S, subrange_kind K)(
             requires (N == 1)) //
         constexpr S get(subrange<I, S, K> const & r)
         {

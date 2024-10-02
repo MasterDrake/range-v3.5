@@ -202,7 +202,7 @@ namespace ranges
              *     http://www.pcg-random.org/posts/developing-a-seed_seq-alternative.html
              */
 
-            template<std::size_t count, typename IntRep = std::uint32_t>
+            template<eastl::size_t count, typename IntRep = std::uint32_t>
             struct seed_seq_fe
             {
             public:
@@ -210,7 +210,7 @@ namespace ranges
                 typedef IntRep result_type;
 
             private:
-                static constexpr std::size_t mix_rounds = 1 + (count <= 2);
+                static constexpr eastl::size_t mix_rounds = 1 + (count <= 2);
 
                 static constexpr std::uint32_t INIT_A = 0x43b0d7e5;
                 static constexpr std::uint32_t MULT_A = 0x931e8875;
@@ -298,7 +298,7 @@ namespace ranges
                     }
                 }
 
-                constexpr std::size_t size() const
+                constexpr eastl::size_t size() const
                 {
                     return count;
                 }
@@ -310,7 +310,7 @@ namespace ranges
                     constexpr IntRep MIX_INV_L = randutils::fast_exp(MIX_MULT_L, IntRep(-1));
 
                     auto mixer_copy = mixer_;
-                    for(std::size_t round = 0; round < mix_rounds; ++round)
+                    for(eastl::size_t round = 0; round < mix_rounds; ++round)
                     {
                         // Advance to the final value.  We'll backtrack from that.
                         auto hash_const = INIT_A * randutils::fast_exp(MULT_A, IntRep(count * count));
@@ -351,7 +351,7 @@ namespace ranges
                     mix_entropy(first, last);
                     // For very small sizes, we do some additional mixing.  For normal
                     // sizes, this loop never performs any iterations.
-                    for(std::size_t i = 1; i < mix_rounds; ++i)
+                    for(eastl::size_t i = 1; i < mix_rounds; ++i)
                         stir();
                 }
 
@@ -396,7 +396,7 @@ namespace ranges
                 auto_seeded()
                   : auto_seeded(randutils::get_entropy())
                 {}
-                template<std::size_t N>
+                template<eastl::size_t N>
                 auto_seeded(eastl::array<std::uint32_t, N> const & seeds)
                   : SeedSeq(seeds.begin(), seeds.end())
                 {}

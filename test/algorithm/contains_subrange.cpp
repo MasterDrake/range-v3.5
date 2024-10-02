@@ -32,7 +32,7 @@ bool counting_equals(const T & a, const T & b)
 
 namespace {
 
-template <class T, std::size_t N>
+template <class T, eastl::size_t N>
 struct array
 {
     T elems[N];

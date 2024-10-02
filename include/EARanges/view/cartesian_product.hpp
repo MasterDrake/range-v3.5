@@ -178,7 +178,7 @@ namespace ranges
                 EARANGES_EXPECT(i != last);
                 ++i;
             }
-            template<std::size_t N>
+            template<eastl::size_t N>
             void next_(meta::size_t<N>)
             {
                 auto & v = eastl::get<N - 1>(view_->views_);
@@ -195,7 +195,7 @@ namespace ranges
             {
                 EARANGES_EXPECT(false);
             }
-            template<std::size_t N>
+            template<eastl::size_t N>
             void prev_(meta::size_t<N>)
             {
                 auto & v = eastl::get<N - 1>(view_->views_);
@@ -214,7 +214,7 @@ namespace ranges
             {
                 return true;
             }
-            template<std::size_t N>
+            template<eastl::size_t N>
             bool equal_(cursor const & that, meta::size_t<N>) const
             {
                 return eastl::get<N - 1>(its_) == eastl::get<N - 1>(that.its_) &&
@@ -224,7 +224,7 @@ namespace ranges
             {
                 return difference_type{eastl::get<0>(that.its_) - eastl::get<0>(its_)};
             }
-            template<std::size_t N>
+            template<eastl::size_t N>
             difference_type distance_(cursor const & that, meta::size_t<N>) const
             {
                 difference_type const d = distance_(that, meta::size_t<N - 1>{});
@@ -238,7 +238,7 @@ namespace ranges
             }
             EARANGES_DIAGNOSTIC_PUSH
             EARANGES_DIAGNOSTIC_IGNORE_DIVIDE_BY_ZERO
-            template<std::size_t N>
+            template<eastl::size_t N>
             void advance_(meta::size_t<N>, difference_type n)
             {
                 if(n == 0)
@@ -293,7 +293,7 @@ namespace ranges
                 if(at_end)
                     ranges::advance(eastl::get<0>(its_), ranges::end(eastl::get<0>(view_->views_)));
             }
-            template<std::size_t N>
+            template<eastl::size_t N>
             void check_at_end_(meta::size_t<N>, bool at_end = false)
             {
                 return check_at_end_(
@@ -408,9 +408,9 @@ namespace ranges
           : views_{detail::move(views)...}
         {}
         template(typename...)(requires (my_cardinality >= 0)) //
-        static constexpr std::size_t size() noexcept
+        static constexpr eastl::size_t size() noexcept
         {
-            return std::size_t{my_cardinality};
+            return eastl::size_t{my_cardinality};
         }
         CPP_auto_member
         auto CPP_fun(size)()(const //

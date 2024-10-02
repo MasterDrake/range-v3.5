@@ -30,7 +30,7 @@ void test_bug632()
     const eastl::vector<double> scores = { 3.0, 1.0, 2.0 };
     eastl::vector<int> indices = { 0, 1, 2 };
 
-    indices |= ranges::actions::stable_sort(ranges::less{}, [&] (const int &x) { return scores[ (std::size_t)x ]; } );
+    indices |= ranges::actions::stable_sort(ranges::less{}, [&] (const int &x) { return scores[ (eastl::size_t)x ]; } );
 
     ::check_equal( indices, {1, 2, 0} );
 }

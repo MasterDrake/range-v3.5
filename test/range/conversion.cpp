@@ -33,7 +33,7 @@ struct vector_like
 private:
     eastl::vector<T> data_;
 public:
-    using size_type = std::size_t;
+    using size_type = eastl::size_t;
 
     vector_like() = default;
     template<typename I>
@@ -177,10 +177,10 @@ int main()
 #endif // EARANGES_WORKAROUND_MSVC_779708
 
     {
-        const std::size_t N = 4096;
+        const eastl::size_t N = 4096;
         auto vl = views::iota(0, int{N}) | to<vector_like<int>>();
         CPP_assert(same_as<decltype(vl), vector_like<int>>);
-        CHECK(vl.reservation_count == std::size_t{1});
+        CHECK(vl.reservation_count == eastl::size_t{1});
         CHECK(vl.last_reservation == N);
     }
 

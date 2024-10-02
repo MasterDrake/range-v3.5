@@ -15,7 +15,7 @@ else()
 endif()
 
 if (WIN32)
-	#set(VCPKG_TARGET_TRIPLET x64-windows)
+	set(VCPKG_TARGET_TRIPLET x64-windows-static)
 	include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 elseif (UNIX)
 	set(VCPKG_TARGET_TRIPLET x64-linux)
@@ -30,7 +30,10 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Export compilation data-base
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-find_package(EASTL CONFIG REQUIRED)
+set(EASTL_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/first-party)
+add_subdirectory(first-party/EASTL)
+
+#find_package(EASTL CONFIG REQUIRED)
 find_package(benchmark CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
 
@@ -213,4 +216,4 @@ if (EARANGES_INSTALL)
 endif()
 
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/extra/ DESTINATION ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include/EASTL)
+#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/extra/ DESTINATION ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include/EASTL)

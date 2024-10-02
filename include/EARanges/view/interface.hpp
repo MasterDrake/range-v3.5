@@ -201,9 +201,9 @@ namespace ranges
         /// return it.
         template(bool True = true, int = 42)(
             requires True AND (Cardinality >= 0)) //
-        static constexpr std::size_t size() noexcept
+        static constexpr eastl::size_t size() noexcept
         {
-            return static_cast<std::size_t>(Cardinality);
+            return static_cast<eastl::size_t>(Cardinality);
         }
         /// If `sized_sentinel_for<sentinel_t<Derived>, iterator_t<Derived>>` is
         /// satisfied, and if `Derived` is a `forward_range`, then return

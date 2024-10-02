@@ -33,7 +33,7 @@ namespace ranges
     {
         /// \endcond
         // clang-format off
-        template<std::size_t I, typename TupleLike>
+        template<eastl::size_t I, typename TupleLike>
         constexpr auto CPP_auto_fun(get)(TupleLike &&t)
         (
             return detail::adl_get<I>(static_cast<TupleLike &&>(t))

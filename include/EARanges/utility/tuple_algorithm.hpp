@@ -41,7 +41,7 @@ namespace ranges
     {
         // clang-format off
     private:
-        template<typename Fun, typename Tup, std::size_t... Is>
+        template<typename Fun, typename Tup, eastl::size_t... Is>
         static constexpr auto //
         CPP_auto_fun(impl)(Fun &&fun, Tup &&tup, meta::index_sequence<Is...>)
         (
@@ -67,7 +67,7 @@ namespace ranges
     {
         // clang-format off
     private:
-        template<typename Tup, typename Fun, std::size_t... Is>
+        template<typename Tup, typename Fun, eastl::size_t... Is>
         static constexpr auto //
         CPP_auto_fun(impl1)(Tup &&tup, Fun &fun, meta::index_sequence<Is...>)
         (
@@ -76,7 +76,7 @@ namespace ranges
                 fun(detail::adl_get<Is>(static_cast<Tup &&>(
                     tup)))...}
         )
-        template<typename Tup0, typename Tup1, typename Fun, std::size_t... Is>
+        template<typename Tup0, typename Tup1, typename Fun, eastl::size_t... Is>
         static constexpr auto CPP_auto_fun(impl2)(Tup0 &&tup0, Tup1 &&tup1, Fun &fun,
                                         meta::index_sequence<Is...>)
         (
@@ -117,7 +117,7 @@ namespace ranges
             return val;
         }
         // clang-format off
-        template<std::size_t I0, std::size_t... Is, typename Tup, typename Val,
+        template<eastl::size_t I0, eastl::size_t... Is, typename Tup, typename Val,
                  typename Fun, typename Impl = tuple_foldl_fn>
         static constexpr auto CPP_auto_fun(impl)(Tup &&tup, Val val, Fun &fun)
         (
@@ -126,7 +126,7 @@ namespace ranges
                 fun(eastl::move(val), detail::adl_get<I0>(static_cast<Tup &&>(tup))),
                 fun)
         )
-        template<typename Tup, typename Val, typename Fun, std::size_t... Is>
+        template<typename Tup, typename Val, typename Fun, eastl::size_t... Is>
         static constexpr auto CPP_auto_fun(impl2)(Tup &&tup, Val val, Fun &fun,
                                         meta::index_sequence<Is...>)
         (
@@ -153,7 +153,7 @@ namespace ranges
     struct tuple_for_each_fn
     {
     private:
-        template<typename Tup, typename Fun, std::size_t... Is>
+        template<typename Tup, typename Fun, eastl::size_t... Is>
         static constexpr void impl(Tup && tup, Fun & fun, meta::index_sequence<Is...>)
         {
             (void)std::initializer_list<int>{

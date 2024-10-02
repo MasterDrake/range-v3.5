@@ -244,7 +244,7 @@ void test_bug_1269()
 {
     // https://github.com/ericniebler/range-v3/issues/1269
     int data0[2]{}, data1[3]{}, data2[5]{}, data3[7]{};
-    constexpr std::size_t N = ranges::size(data0) * ranges::size(data1) *
+    constexpr eastl::size_t N = ranges::size(data0) * ranges::size(data1) *
         ranges::size(data2) * ranges::size(data3);
     CPP_assert(N < INT_MAX);
 
@@ -264,8 +264,8 @@ void test_bug_1269()
 void test_bug_1279()
 {
     // https://github.com/ericniebler/range-v3/issues/1279
-    auto const xs = ranges::views::indices(std::size_t{0}, std::size_t{10});
-    auto const ys = ranges::views::indices(std::size_t{0}, std::size_t{10});
+    auto const xs = ranges::views::indices(eastl::size_t{0}, eastl::size_t{10});
+    auto const ys = ranges::views::indices(eastl::size_t{0}, eastl::size_t{10});
 
     for(auto r : ranges::views::cartesian_product(ys, xs))
     {

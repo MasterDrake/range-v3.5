@@ -76,7 +76,7 @@ int main()
     // vector<T, Allocator>::insert(const_iterator position, InputIterator first, InputIterator last)
 
     {
-       const std::size_t N = 1024;
+       const eastl::size_t N = 1024;
        vector_like<int> vl;
        insert(vl, vl.end(), views::iota(0, int{N}));
        CHECK(vl.reservation_count == 1u);

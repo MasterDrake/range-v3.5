@@ -82,9 +82,9 @@ namespace ranges
         eastl::integral_constant<cardinality, finite> test_cardinality(void *);
         template<cardinality Card>
         eastl::integral_constant<cardinality, Card> test_cardinality(basic_view<Card> *);
-        template<typename T, std::size_t N>
+        template<typename T, eastl::size_t N>
         eastl::integral_constant<cardinality, static_cast<cardinality>(N)> test_cardinality(T (*)[N]);
-        template<typename T, std::size_t N>
+        template<typename T, eastl::size_t N>
         eastl::integral_constant<cardinality, static_cast<cardinality>(N)> test_cardinality(eastl::array<T, N> *);
     } // namespace detail
     /// \endcond

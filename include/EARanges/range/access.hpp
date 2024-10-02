@@ -41,7 +41,7 @@ namespace ranges
     template<class CharT>
     EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<eastl::basic_string_view<CharT>> = true;
 
-    template<class T, std::size_t N>
+    template<class T, eastl::size_t N>
     EARANGES_INLINE_VAR constexpr bool enable_borrowed_range<eastl::span<T, N>> = true;
 
     namespace detail
@@ -129,10 +129,10 @@ namespace ranges
                     R>;
 
         public:
-            template<typename R, std::size_t N>
+            template<typename R, eastl::size_t N>
             void operator()(R(&&)[N]) const = delete;
 
-            template<typename R, std::size_t N>
+            template<typename R, eastl::size_t N>
             constexpr R * operator()(R (&array)[N]) const noexcept
             {
                 return array;
@@ -247,10 +247,10 @@ namespace ranges
                                              meta::id<Int>>>;
 
         public:
-            template<typename R, std::size_t N>
+            template<typename R, eastl::size_t N>
             void operator()(R(&&)[N]) const = delete;
 
-            template<typename R, std::size_t N>
+            template<typename R, eastl::size_t N>
             constexpr R * operator()(R (&array)[N]) const noexcept
             {
                 return array + N;
@@ -298,7 +298,7 @@ namespace ranges
     {
         struct fn
         {
-            template<typename T, std::size_t N>
+            template<typename T, eastl::size_t N>
             void operator()(T(&&)[N]) const = delete;
 
             template<typename R>
@@ -322,7 +322,7 @@ namespace ranges
     {
         struct fn
         {
-            template<typename T, std::size_t N>
+            template<typename T, eastl::size_t N>
             void operator()(T(&&)[N]) const = delete;
 
             template<typename R>
@@ -350,7 +350,7 @@ namespace ranges
         // and returning a eastl::reverse_iterator.
         template<typename T>
         void rbegin(std::initializer_list<T>) = delete;
-        template<typename T, std::size_t N>
+        template<typename T, eastl::size_t N>
         void rbegin(T (&)[N]) = delete;
 
         // clang-format off
@@ -494,7 +494,7 @@ namespace ranges
         // and returning a eastl::reverse_iterator.
         template<typename T>
         void rend(std::initializer_list<T>) = delete;
-        template<typename T, std::size_t N>
+        template<typename T, eastl::size_t N>
         void rend(T (&)[N]) = delete;
 
         // clang-format off
@@ -632,7 +632,7 @@ namespace ranges
     {
         struct fn
         {
-            template<typename T, std::size_t N>
+            template<typename T, eastl::size_t N>
             void operator()(T(&&)[N]) const = delete;
 
             template<typename R>
@@ -656,7 +656,7 @@ namespace ranges
     {
         struct fn
         {
-            template<typename T, std::size_t N>
+            template<typename T, eastl::size_t N>
             void operator()(T(&&)[N]) const = delete;
 
             template<typename R>

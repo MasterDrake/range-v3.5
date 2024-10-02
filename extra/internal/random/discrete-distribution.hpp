@@ -53,7 +53,7 @@ namespace eastl
 
     /*
      * Class holding the weights of a discrete distribution.
-     * It allowsefficient reweighting and searching.
+     * It allows efficient reweighting and searching.
      */
     class discrete_weights
     {

@@ -71,7 +71,7 @@ namespace ranges
     private:
         friend range_access;
         using difference_type_ = common_type_t<range_difference_t<Rngs>...>;
-        static constexpr std::size_t cranges{sizeof...(Rngs)};
+        static constexpr eastl::size_t cranges{sizeof...(Rngs)};
         eastl::tuple<Rngs...> rngs_;
 
         template<bool IsConst>
@@ -113,7 +113,7 @@ namespace ranges
             concat_view_t * rng_;
             variant<iterator_t<constify_if<Rngs>>...> its_;
 
-            template<std::size_t N>
+            template<eastl::size_t N>
             void satisfy(meta::size_t<N>)
             {
                 EARANGES_EXPECT(its_.index() == N);
@@ -130,7 +130,7 @@ namespace ranges
             struct next_fun
             {
                 cursor * pos;
-                template(typename I, std::size_t N)(
+                template(typename I, eastl::size_t N)(
                     requires input_iterator<I>)
                 void operator()(indexed_element<I, N> it) const
                 {
@@ -149,7 +149,7 @@ namespace ranges
                     EARANGES_ASSERT(it.get() != begin(eastl::get<0>(pos->rng_->rngs_)));
                     --it.get();
                 }
-                template(typename I, std::size_t N)(
+                template(typename I, eastl::size_t N)(
                     requires (N != 0) AND bidirectional_iterator<I>)
                 void operator()(indexed_element<I, N> it) const
                 {
@@ -175,7 +175,7 @@ namespace ranges
                 {
                     ranges::advance(it.get(), n);
                 }
-                template(typename I, std::size_t N)(
+                template(typename I, eastl::size_t N)(
                     requires random_access_iterator<I>)
                 void operator()(indexed_element<I, N> it) const
                 {
@@ -200,7 +200,7 @@ namespace ranges
                 {
                     ranges::advance(it.get(), n);
                 }
-                template(typename I, std::size_t N)(
+                template(typename I, eastl::size_t N)(
                     requires random_access_iterator<I>)
                 void operator()(indexed_element<I, N> it) const
                 {
@@ -227,7 +227,7 @@ namespace ranges
             {
                 EARANGES_EXPECT(false);
             }
-            template<std::size_t N>
+            template<eastl::size_t N>
             static difference_type distance_to_(meta::size_t<N>, cursor const & from,
                                                 cursor const & to)
             {
@@ -358,10 +358,10 @@ namespace ranges
         {}
         CPP_member
         constexpr auto size() const //
-            -> CPP_ret(std::size_t)(
+            -> CPP_ret(eastl::size_t)(
                 requires (detail::concat_cardinality<Rngs...>::value >= 0))
         {
-            return static_cast<std::size_t>(detail::concat_cardinality<Rngs...>::value);
+            return static_cast<eastl::size_t>(detail::concat_cardinality<Rngs...>::value);
         }
         CPP_auto_member
         constexpr auto CPP_fun(size)()(const //

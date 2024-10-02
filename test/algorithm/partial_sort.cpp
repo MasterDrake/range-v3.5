@@ -142,8 +142,8 @@ namespace
 
 constexpr bool test_constexpr()
 {
-    test::array<std::size_t, 10> v{{0}};
-    for(std::size_t i = 0; i < v.size(); ++i)
+    test::array<eastl::size_t, 10> v{{0}};
+    for(eastl::size_t i = 0; i < v.size(); ++i)
     {
         v[i] = v.size() - i - 1;
     }
@@ -183,16 +183,16 @@ int main()
     // Check projections
     {
         eastl::vector<S> v(1000, S{});
-        for(int j = 0; (std::size_t)j < v.size(); ++j)
+        for(int j = 0; (eastl::size_t)j < v.size(); ++j)
         {
             v[j].i = (int)v.size() - j - 1;
             v[j].j = j;
         }
         ranges::partial_sort(v, v.begin() + v.size()/2, eastl::less<int>{}, &S::i);
-        for(int j = 0; (std::size_t)j < v.size()/2; ++j)
+        for(int j = 0; (eastl::size_t)j < v.size()/2; ++j)
         {
             CHECK(v[j].i == j);
-            CHECK((std::size_t)v[j].j == v.size() - j - 1);
+            CHECK((eastl::size_t)v[j].j == v.size() - j - 1);
         }
     }
     {

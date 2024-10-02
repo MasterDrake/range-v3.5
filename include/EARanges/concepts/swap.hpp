@@ -165,7 +165,7 @@ namespace concepts
         template<typename T>
         eastl::unused swap(T &, T &) = delete;
 
-        template<typename T, std::size_t N>
+        template<typename T, eastl::size_t N>
         eastl::unused swap(T (&)[N], T (&)[N]) = delete;
 
         eastl::unused swap(eastl::argument_sink, eastl::argument_sink) = delete;
@@ -212,7 +212,7 @@ namespace concepts
             // For arrays of intrinsically swappable (i.e., movable) types
             // for which a swap overload cannot be found via ADL, swap array
             // elements by moving.
-            template<typename T, typename U, std::size_t N>
+            template<typename T, typename U, eastl::size_t N>
             CPP_CXX14_CONSTEXPR
             meta::if_c<
                 !is_adl_swappable_v<T (&)[N], U (&)[N]> &&
@@ -220,7 +220,7 @@ namespace concepts
             operator()(T (&t)[N], U (&u)[N]) const
                 noexcept(is_nothrow_swappable_with<T &, U &>::value)
             {
-                for(std::size_t i = 0; i < N; ++i)
+                for(eastl::size_t i = 0; i < N; ++i)
                     (*this)(t[i], u[i]);
             }
 
@@ -258,7 +258,7 @@ namespace concepts
             {
                 return 0;
             }
-            template<typename T, typename U, std::size_t ...Is>
+            template<typename T, typename U, eastl::size_t ...Is>
             CPP_CXX14_CONSTEXPR
             static void impl(T &&left, U &&right, meta::index_sequence<Is...>)
             {

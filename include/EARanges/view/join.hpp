@@ -157,10 +157,10 @@ namespace ranges
         // Not to spec
         CPP_member
         static constexpr auto size() //
-            -> CPP_ret(std::size_t)(
+            -> CPP_ret(eastl::size_t)(
                 requires (detail::join_cardinality<Rng>() >= 0))
         {
-            return static_cast<std::size_t>(detail::join_cardinality<Rng>());
+            return static_cast<eastl::size_t>(detail::join_cardinality<Rng>());
         }
         // Not to spec
         CPP_auto_member
@@ -373,10 +373,10 @@ namespace ranges
         {}
         CPP_member
         static constexpr auto size() //
-            -> CPP_ret(std::size_t)(
+            -> CPP_ret(eastl::size_t)(
                 requires (detail::join_cardinality<Rng, ValRng>() >= 0))
         {
-            return static_cast<std::size_t>(detail::join_cardinality<Rng, ValRng>());
+            return static_cast<eastl::size_t>(detail::join_cardinality<Rng, ValRng>());
         }
         CPP_auto_member
         auto CPP_fun(size)()(const //

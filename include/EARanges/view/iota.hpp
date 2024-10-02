@@ -47,7 +47,7 @@ namespace ranges
     /// \cond
     namespace detail
     {
-        template<std::size_t N, typename = void>
+        template<eastl::size_t N, typename = void>
         struct promote_as_signed_
         {
             // This shouldn't cause us to LOSE precision, but maybe it doesn't net us any either.
@@ -55,19 +55,19 @@ namespace ranges
             using difference_type = diffmax_t;
         };
 
-        template<std::size_t N>
+        template<eastl::size_t N>
         struct promote_as_signed_<N, enable_if_t<(N < 16)>>
         {
             using difference_type = std::int_fast16_t;
         };
 
-        template<std::size_t N>
+        template<eastl::size_t N>
         struct promote_as_signed_<N, enable_if_t<(N >= 16 && N < 32)>>
         {
             using difference_type = std::int_fast32_t;
         };
 
-        template<std::size_t N>
+        template<eastl::size_t N>
         struct promote_as_signed_<N, enable_if_t<(N >= 32 && N < 64)>>
         {
             using difference_type = std::int_fast64_t;

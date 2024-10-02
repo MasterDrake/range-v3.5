@@ -38,29 +38,29 @@ namespace ranges
     /// \cond
     namespace detail
     {
-        template<typename... Us, typename Tup, std::size_t... Is>
+        template<typename... Us, typename Tup, eastl::size_t... Is>
         eastl::tuple<Us...> to_std_tuple(Tup && tup, meta::index_sequence<Is...>)
         {
             return eastl::tuple<Us...>{adl_get<Is>(static_cast<Tup &&>(tup))...};
         }
 
 #ifdef EARANGES_WORKAROUND_MSVC_786312
-        template<std::size_t, typename...>
+        template<eastl::size_t, typename...>
         struct args_;
 
         template<typename, typename>
         inline constexpr bool argstructible = false;
-        template<std::size_t N, typename... Ts, typename... Us>
+        template<eastl::size_t N, typename... Ts, typename... Us>
         inline constexpr bool argstructible<args_<N, Ts...>, args_<N, Us...>> =(META_IS_CONSTRUCTIBLE(Ts, Us) && ...);
 
         template<typename, typename>
         inline constexpr bool argsignable = false;
-        template<std::size_t N, typename... Ts, typename... Us>
+        template<eastl::size_t N, typename... Ts, typename... Us>
         inline constexpr bool argsignable<args_<N, Ts...>, args_<N, Us...>> =
             (eastl::is_assignable_v<Ts &, Us> && ...);
 #endif // EARANGES_WORKAROUND_MSVC_786312
 
-        template<std::size_t N, typename... Ts>
+        template<eastl::size_t N, typename... Ts>
         struct args_
         {
             template<typename... Us>
@@ -97,7 +97,7 @@ namespace ranges
     struct common_tuple : _tuple_wrapper_::forward_tuple_interface<eastl::tuple<Ts...>>
     {
     private:
-        template<typename That, std::size_t... Is>
+        template<typename That, eastl::size_t... Is>
         common_tuple(That && that, meta::index_sequence<Is...>)
           : common_tuple::forward_tuple_interface{
                 detail::adl_get<Is>(static_cast<That &&>(that))...}

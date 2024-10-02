@@ -37,7 +37,7 @@ namespace ranges
         {
             return nullptr;
         }
-        static constexpr std::size_t size() noexcept
+        static constexpr eastl::size_t size() noexcept
         {
             return 0u;
         }

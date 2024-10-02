@@ -35,14 +35,14 @@ EARANGES_DIAGNOSTIC_IGNORE_GLOBAL_CONSTRUCTORS
 
 namespace
 {
-    template<typename T, std::size_t N>
+    template<typename T, eastl::size_t N>
     struct input_array
     {
         T elements_[N];
 
         InputIterator<T*> begin() { return InputIterator<T*>{elements_ + 0}; }
         InputIterator<T*> end() { return InputIterator<T*>{elements_ + N}; }
-        constexpr std::size_t size() const { return N; }
+        constexpr eastl::size_t size() const { return N; }
     };
 
     static int N = 0;
@@ -219,7 +219,7 @@ int main()
 
     {
         auto rng = views::iota(0,4)
-            | views::transform([](int i) {return eastl::string((std::size_t) i, char('a'+i));})
+            | views::transform([](int i) {return eastl::string((eastl::size_t) i, char('a'+i));})
             | views::join;
         check_equal(rng, {'b','c','c','d','d','d'});
         CPP_assert(input_range<decltype(rng)>);
@@ -230,7 +230,7 @@ int main()
 
     {
         auto rng = views::iota(0,4)
-            | views::transform([](int i) {return eastl::string((std::size_t) i, char('a'+i));})
+            | views::transform([](int i) {return eastl::string((eastl::size_t) i, char('a'+i));})
             | views::join('-');
         check_equal(rng, {'-','b','-','c','c','-','d','d','d'});
         CPP_assert(input_range<decltype(rng)>);

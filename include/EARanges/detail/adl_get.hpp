@@ -30,7 +30,7 @@ namespace ranges
             template<typename>
             void get();
 
-            template<std::size_t I, typename TupleLike>
+            template<eastl::size_t I, typename TupleLike>
             constexpr auto adl_get(TupleLike && t) noexcept
                 -> decltype(get<I>(static_cast<TupleLike &&>(t)))
             {
@@ -85,25 +85,25 @@ namespace ranges
 #endif
 
             // clang-format off
-            template<std::size_t I, typename U = TupleLike>
+            template<eastl::size_t I, typename U = TupleLike>
             friend constexpr auto CPP_auto_fun(get)(
                 forward_tuple_interface<TupleLike> &wb)
             (
                 return detail::adl_get<I>(static_cast<U &>(wb))
             )
-            template<std::size_t I, typename U = TupleLike>
+            template<eastl::size_t I, typename U = TupleLike>
             friend constexpr auto CPP_auto_fun(get)(
                 forward_tuple_interface<TupleLike> const &wb)
             (
                 return detail::adl_get<I>(static_cast<U const &>(wb))
             )
-            template<std::size_t I, typename U = TupleLike>
+            template<eastl::size_t I, typename U = TupleLike>
             friend constexpr auto CPP_auto_fun(get)(
                 forward_tuple_interface<TupleLike> &&wb)
             (
                 return detail::adl_get<I>(static_cast<U &&>(wb))
             )
-            template<std::size_t I, typename U = TupleLike>
+            template<eastl::size_t I, typename U = TupleLike>
             friend constexpr auto CPP_auto_fun(get)(
                 forward_tuple_interface<TupleLike> const &&wb)
             (

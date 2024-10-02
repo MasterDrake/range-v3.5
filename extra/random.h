@@ -174,7 +174,8 @@ namespace eastl
         // TODO:3) Maybe we should use xoshiro or something like that. Tehcnically we
         // should do like Eric Niebler and put the license on top besides the real
         // license.txt
-        //static_assert(sizeof(typename Generator::result_type) == 4, "Int distribution generator result_type should be at least 4 bytes.");
+        // static_assert(sizeof(typename Generator::result_type) == 4, "Int distribution
+        // generator result_type should be at least 4 bytes.");
         const auto range = params.b() - params.a();
         uint32_t x = g();
         uint64_t m = uint64_t(x) * uint64_t(range);
@@ -396,8 +397,8 @@ namespace eastl
                       "Generator result type should be at least 8 bytes.");
         // TODO:https://prng.di.unimi.it/#remarks#Generating uniform doubles in the unit
         // interval
-        //TODO: This won't work on linux 
-        //return params.a() + (g() >> 11) * 0x1.0p-53 * (params.b() - params.a());
+        // TODO: This won't work on linux
+        // return params.a() + (g() >> 11) * 0x1.0p-53 * (params.b() - params.a());
         return 0;
     }
 

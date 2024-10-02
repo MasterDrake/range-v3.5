@@ -79,7 +79,7 @@ namespace ranges
         struct emplace_fn
         {
             variant<I, S> * data_;
-            template<typename T, std::size_t N>
+            template<typename T, eastl::size_t N>
             void operator()(indexed_element<T, N> t) const
             {
                 ranges::emplace<N>(*data_, t.get());

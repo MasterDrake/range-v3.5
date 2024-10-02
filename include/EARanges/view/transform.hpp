@@ -409,9 +409,9 @@ namespace ranges
         {}
         CPP_member
         static constexpr auto size() //
-            -> CPP_ret(std::size_t)(requires (my_cardinality >= 0))
+            -> CPP_ret(eastl::size_t)(requires (my_cardinality >= 0))
         {
-            return static_cast<std::size_t>(my_cardinality);
+            return static_cast<eastl::size_t>(my_cardinality);
         }
         template(bool True = true)(
             requires (my_cardinality < 0) AND sized_range<Rng1 const> AND
