@@ -43,11 +43,7 @@ namespace ranges
         template(typename I, typename S, typename F, typename P = identity)(requires input_iterator<I> AND sentinel_for<S, I> AND indirectly_unary_invocable<F, projected<I, P>>)
         constexpr for_each_result<I, F> EARANGES_FUNC(for_each)(I first, S last, F fun, P proj = P{})
         {
-            for(; first != last; ++first)
-            {
-                invoke(fun, invoke(proj, *first));
-            }
-            return {detail::move(first), detail::move(fun)};
+            return eastl::for_each(first, last, ref(fun), detail::move(proj));
         }
 
         /// \overload

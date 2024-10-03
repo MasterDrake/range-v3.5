@@ -43,10 +43,7 @@ namespace ranges
         constexpr I EARANGES_FUNC(replace_if)(
             I first, S last, C pred, T const & new_value, P proj = P{}) //
         {
-            for(; first != last; ++first)
-                if(invoke(pred, invoke(proj, *first)))
-                    *first = new_value;
-            return first;
+            return eastl::replace_if(first, last, eastl::move(pred), new_value, eastl::move(proj));
         }
 
         /// \overload

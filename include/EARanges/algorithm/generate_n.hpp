@@ -43,12 +43,7 @@ namespace ranges
         constexpr generate_n_result<O, F> //
         EARANGES_FUNC(generate_n)(O first, iter_difference_t<O> n, F fun)
         {
-            EARANGES_EXPECT(n >= 0);
-            auto norig = n;
-            auto b = uncounted(first);
-            for(; 0 != n; ++b, --n)
-                *b = invoke(fun);
-            return {recounted(first, b, norig), detail::move(fun)};
+            return eastl::generate_n(first, n, eastl::move(fun));
         }
 
     EARANGES_FUNC_END(generate_n)

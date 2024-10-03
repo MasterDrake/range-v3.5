@@ -55,9 +55,7 @@ namespace ranges
         constexpr unary_transform_result<I, O> //
         EARANGES_FUNC(transform)(I first, S last, O out, F fun, P proj = P{}) //
         {
-            for(; first != last; ++first, ++out)
-                *out = invoke(fun, invoke(proj, *first));
-            return {first, out};
+            return eastl::transform(first, last, out, eastl::move(fun), eastl::move(proj));
         }
 
         /// \overload
@@ -68,8 +66,7 @@ namespace ranges
         constexpr unary_transform_result<borrowed_iterator_t<Rng>, O> //
         EARANGES_FUNC(transform)(Rng && rng, O out, F fun, P proj = P{}) //
         {
-            return (*this)(
-                begin(rng), end(rng), eastl::move(out), eastl::move(fun), eastl::move(proj));
+            return (*this)(begin(rng), end(rng), eastl::move(out), eastl::move(fun), eastl::move(proj));
         }
 
         // Double-range variant, 4-iterator version
@@ -85,9 +82,7 @@ namespace ranges
             requires input_iterator<I0> AND sentinel_for<S0, I0> AND
                 input_iterator<I1> AND sentinel_for<S1, I1> AND
                 weakly_incrementable<O> AND copy_constructible<F> AND
-                indirectly_writable<
-                    O,
-                    indirect_result_t<F &, projected<I0, P0>, projected<I1, P1>>>)
+                indirectly_writable<O, indirect_result_t<F &, projected<I0, P0>, projected<I1, P1>>>)
         constexpr binary_transform_result<I0, I1, O> //
         EARANGES_FUNC(transform)(I0 begin0,
                                S0 end0,
@@ -98,9 +93,7 @@ namespace ranges
                                P0 proj0 = P0{},
                                P1 proj1 = P1{}) //
         {
-            for(; begin0 != end0 && begin1 != end1; ++begin0, ++begin1, ++out)
-                *out = invoke(fun, invoke(proj0, *begin0), invoke(proj1, *begin1));
-            return {begin0, begin1, out};
+            return eastl::transform(begin0, end0, begin1, end1, out, eastl::move(fun), eastl::move(proj0), eastl::move(proj1));
         }
 
         /// \overload
@@ -120,8 +113,7 @@ namespace ranges
         constexpr binary_transform_result<borrowed_iterator_t<Rng0>,
                                           borrowed_iterator_t<Rng1>,
                                           O> //
-        EARANGES_FUNC(transform)(
-            Rng0 && rng0, Rng1 && rng1, O out, F fun, P0 proj0 = P0{}, P1 proj1 = P1{}) //
+        EARANGES_FUNC(transform)(Rng0 && rng0, Rng1 && rng1, O out, F fun, P0 proj0 = P0{}, P1 proj1 = P1{}) //
         {
             return (*this)(begin(rng0),
                            end(rng0),

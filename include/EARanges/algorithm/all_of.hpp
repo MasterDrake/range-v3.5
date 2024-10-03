@@ -38,10 +38,7 @@ namespace ranges
         template(typename I, typename S, typename F, typename P = identity)(requires input_iterator<I> AND sentinel_for<S, I> AND indirect_unary_predicate<F, projected<I, P>>)
         constexpr bool EARANGES_FUNC(all_of)(I first, S last, F pred, P proj = P{}) //
         {
-            for(; first != last; ++first)
-                if(!invoke(pred, invoke(proj, *first)))
-                    break;
-            return first == last;
+            return eastl::all_of(first, last, eastl::move(pred), eastl::move(proj));
         }
 
         /// \overload

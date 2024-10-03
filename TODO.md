@@ -2345,11 +2345,11 @@ namespace eastl
 # using eastl::algorithms
 - Ranges algorithm use default implementation for the algorithms and not making use of the eastl ones.
 
-- [ ] adjacent_find
-- [ ] adjacent_find`<Compare>`
-- [ ] all_of (C++11)
-- [ ] any_of (C++11)
-- [ ] none_of (C++11)
+- [X] adjacent_find
+- [X] adjacent_find`<Compare>`
+- [X] all_of (C++11)
+- [X] any_of (C++11)
+- [X] none_of (C++11)
 - [ ] binary_search
 - [ ] binary_search`<Compare>`
 - [ ] binary_search_i
@@ -2358,18 +2358,18 @@ namespace eastl
 - [ ] change_heap`<Compare>` (Found in heap.h)
 - [ ] clamp
 - [ ] copy
-- [ ] copy_if (C++11)
+- [X] copy_if (C++11)
 - [ ] copy_n (C++11)
 - [ ] copy_backward
-- [ ] count
-- [ ] count_if
+- [X] count
+- [X] count_if
 - [ ] equal
 - [ ] equal`<Compare>`
 - [ ] equal_range
 - [ ] equal_range`<Compare>`
 - [ ] fill
 - [ ] fill_n
-- [ ] find
+- [X] find
 - [ ] find_end
 - [ ] find_end`<Compare>`
 - [ ] find_first_of
@@ -2380,11 +2380,11 @@ namespace eastl
 - [ ] find_last_of`<Compare>`
 - [ ] find_last_not_of
 - [ ] find_last_not_of`<Compare>`
-- [ ] find_if
-- [ ] find_if_not
-- [ ] for_each
-- [ ] generate
-- [ ] generate_n
+- [X] find_if
+- [X] find_if_not
+- [X] for_each
+- [X] generate
+- [X] generate_n
 - [ ] identical
 - [ ] identical`<Compare>`
 - [ ] iter_swap
@@ -2407,10 +2407,10 @@ namespace eastl
 - [ ] median`<Compare>`
 - [ ] merge (Found in sort.h)
 - [ ] merge`<Compare>` (Found in sort.h)
-- [ ] min_element
-- [ ] min_element`<Compare>`
-- [ ] max_element
-- [ ] max_element`<Compare>`
+- [X] min_element
+- [X] min_element`<Compare>`
+- [X] max_element
+- [X] max_element`<Compare>`
 - [ ] mismatch
 - [ ] mismatch`<Compare>`
 - [ ] move
@@ -2432,10 +2432,10 @@ namespace eastl
 - [ ] remove_copy_if
 - [ ] remove_heap (Found in heap.h)
 - [ ] remove_heap`<Compare>` (Found in heap.h)
-- [ ] replace
-- [ ] replace_if
-- [ ] replace_copy
-- [ ] replace_copy_if
+- [X] replace
+- [X] replace_if
+- [X] replace_copy
+- [X] replace_copy_if
 - [ ] reverse_copy
 - [ ] reverse
 - [ ] random_shuffle
@@ -2466,8 +2466,8 @@ namespace eastl
 - [ ] stable_partition (Found in sort.h)
 - [ ] swap
 - [ ] swap_ranges
-- [ ] transform
-- [ ] transform`<Operation>`
+- [X] transform
+- [X] transform`<Operation>`
 - [ ] unique
 - [ ] unique`<Compare>`
 - [ ] upper_bound

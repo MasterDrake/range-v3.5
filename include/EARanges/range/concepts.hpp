@@ -20,7 +20,6 @@
 #include <EASTL/utility.h>
 #include <EASTL/initializer_list.h>
 
-
 #include <EASTL/span.h>
 
 #include <EASTL/string_view.h>
@@ -188,7 +187,7 @@ namespace ranges
     EARANGES_INLINE_VAR constexpr bool enable_view = ext::enable_view<T>::value;
 
     template<typename Char>
-   EARANGES_INLINE_VAR constexpr bool enable_view<eastl::basic_string_view<Char>> = true;
+    EARANGES_INLINE_VAR constexpr bool enable_view<eastl::basic_string_view<Char>> = true;
 
     template<typename T, eastl::size_t N>
     EARANGES_INLINE_VAR constexpr bool enable_view<eastl::span<T, N>> = true;

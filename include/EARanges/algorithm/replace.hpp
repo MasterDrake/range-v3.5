@@ -42,10 +42,7 @@ namespace ranges
                 indirect_relation<equal_to, projected<I, P>, T1 const *>)
         constexpr I EARANGES_FUNC(replace)(I first, S last, T1 const & old_value, T2 const & new_value, P proj = {}) //
         {
-            for(; first != last; ++first)
-                if(invoke(proj, *first) == old_value)
-                    *first = new_value;
-            return first;
+            return eastl::replace(first, last, old_value, new_value, eastl::move(proj));
         }
 
         /// \overload

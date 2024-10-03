@@ -42,9 +42,7 @@ namespace ranges
         template(typename O, typename S, typename F)(requires invocable<F &> AND output_iterator<O, invoke_result_t<F &>> AND sentinel_for<S, O>)
         constexpr generate_result<O, F> EARANGES_FUNC(generate)(O first, S last, F fun) //
         {
-            for(; first != last; ++first)
-                *first = invoke(fun);
-            return {detail::move(first), detail::move(fun)};
+            return eastl::generate(first, last, eastl::move(fun));
         }
 
         /// \overload

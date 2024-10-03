@@ -39,11 +39,7 @@ namespace ranges
         template(typename I, typename S, typename C = less, typename P = identity)(requires forward_iterator<I> AND sentinel_for<S, I> AND indirect_strict_weak_order<C, projected<I, P>>)
         constexpr I EARANGES_FUNC(max_element)(I first, S last, C pred = C{}, P proj = P{})
         {
-            if(first != last)
-                for(auto tmp = next(first); tmp != last; ++tmp)
-                    if(invoke(pred, invoke(proj, *first), invoke(proj, *tmp)))
-                        first = tmp;
-            return first;
+            return eastl::max_element(first, last, eastl::move(pred), eastl::move(proj));
         }
 
         /// \overload

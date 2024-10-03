@@ -39,11 +39,7 @@ namespace ranges
         constexpr iter_difference_t<I> //
         EARANGES_FUNC(count)(I first, S last, V const & val, P proj = P{})
         {
-            iter_difference_t<I> n = 0;
-            for(; first != last; ++first)
-                if(invoke(proj, *first) == val)
-                    ++n;
-            return n;
+            return eastl::count(first, last, val, eastl::move(proj));
         }
 
         /// \overload

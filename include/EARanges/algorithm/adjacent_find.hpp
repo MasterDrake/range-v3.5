@@ -41,13 +41,7 @@ namespace ranges
         template(typename I, typename S, typename C = equal_to, typename P = identity)(requires forward_iterator<I> AND sentinel_for<S, I> AND indirect_relation<C, projected<I, P>>)
         constexpr I EARANGES_FUNC(adjacent_find)(I first, S last, C pred = C{}, P proj = P{})
         {
-            if(first == last)
-                return first;
-            auto inext = first;
-            for(; ++inext != last; first = inext)
-                if(invoke(pred, invoke(proj, *first), invoke(proj, *inext)))
-                    return first;
-            return inext;
+            return eastl::adjacent_find(first, last, eastl::move(pred), eastl::move(proj));
         }
 
         /// \overload

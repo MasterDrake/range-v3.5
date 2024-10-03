@@ -56,15 +56,7 @@ namespace ranges
                                                                       T2 const & new_value,
                                                                       P proj = {}) //
         {
-            for(; first != last; ++first, ++out)
-            {
-                auto && x = *first;
-                if(invoke(proj, x) == old_value)
-                    *out = new_value;
-                else
-                    *out = (decltype(x) &&)x;
-            }
-            return {first, out};
+            return eastl::replace_copy(first, last, out, old_value, new_value, eastl::move(proj));
         }
 
         /// \overload
