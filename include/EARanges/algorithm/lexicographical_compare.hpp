@@ -52,15 +52,7 @@ namespace ranges
                                                             P0 proj0 = P0{},
                                                             P1 proj1 = P1{})
         {
-            for(; begin1 != end1; ++begin0, ++begin1)
-            {
-                if(begin0 == end0 ||
-                   invoke(pred, invoke(proj0, *begin0), invoke(proj1, *begin1)))
-                    return true;
-                if(invoke(pred, invoke(proj1, *begin1), invoke(proj0, *begin0)))
-                    return false;
-            }
-            return false;
+            return eastl::lexicographical_compare(begin0, end0, begin1, end1, eastl::move(pred), eastl::move(proj0), eastl::move(proj1));
         }
 
         /// \overload

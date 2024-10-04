@@ -2363,34 +2363,35 @@ namespace eastl
 - [ ] copy_backward
 - [X] count
 - [X] count_if
-- [ ] equal
-- [ ] equal`<Compare>`
+- [X] equal
+- [X] equal`<Compare>`
 - [ ] equal_range
 - [ ] equal_range`<Compare>`
 - [ ] fill
 - [ ] fill_n
 - [X] find
-- [ ] find_end
-- [ ] find_end`<Compare>`
-- [ ] find_first_of
-- [ ] find_first_of`<Compare>`
-- [ ] find_first_not_of
-- [ ] find_first_not_of`<Compare>`
-- [ ] find_last_of
-- [ ] find_last_of`<Compare>`
-- [ ] find_last_not_of
-- [ ] find_last_not_of`<Compare>`
+- [TODO] find_end
+- [TODO] find_end`<Compare>`
+- [X] find_first_of
+- [X] find_first_of`<Compare>`
+- [NO] find_first_not_of
+- [NO] find_first_not_of`<Compare>`
+- [NO] find_last_of
+- [NO] find_last_of`<Compare>`
+- [NO] find_last_not_of
+- [NO] find_last_not_of`<Compare>`
 - [X] find_if
 - [X] find_if_not
 - [X] for_each
+- [X] for_each_n_
 - [X] generate
 - [X] generate_n
-- [ ] identical
-- [ ] identical`<Compare>`
+- [NO] identical
+- [NO] identical`<Compare>`
 - [ ] iter_swap
-- [ ] lexicographical_compare
-- [ ] lexicographical_compare`<Compare>`
-- [ ] lexicographical_compare_three_way
+- [X] lexicographical_compare
+- [X] lexicographical_compare`<Compare>`
+- [MAYBE] lexicographical_compare_three_way
 - [ ] lower_bound
 - [ ] lower_bound`<Compare>`
 - [ ] make_heap (Found in heap.h)
@@ -2399,20 +2400,20 @@ namespace eastl
 - [ ] min`<Compare>`
 - [ ] max
 - [ ] max`<Compare>`
-- [ ] min_alt (Exists to work around the problem of conflicts with min/max #defines on some systems)
-- [ ] min_alt`<Compare>`
-- [ ] max_alt
-- [ ] max_alt`<Compare>`
-- [ ] median
-- [ ] median`<Compare>`
+- [NO] min_alt (Exists to work around the problem of conflicts with min/max #defines on some systems)
+- [NO] min_alt`<Compare>`
+- [NO] max_alt
+- [NO] max_alt`<Compare>`
+- [NO] median
+- [NO] median`<Compare>`
 - [ ] merge (Found in sort.h)
 - [ ] merge`<Compare>` (Found in sort.h)
 - [X] min_element
 - [X] min_element`<Compare>`
 - [X] max_element
 - [X] max_element`<Compare>`
-- [ ] mismatch
-- [ ] mismatch`<Compare>`
+- [X] mismatch
+- [X] mismatch`<Compare>`
 - [ ] move
 - [ ] move_backward
 - [ ] nth_element (Found in sort.h)
@@ -2423,24 +2424,24 @@ namespace eastl
 - [ ] push_heap`<Compare>` (Found in heap.h)
 - [ ] pop_heap (Found in heap.h)
 - [ ] pop_heap`<Compare>` (Found in heap.h)
-- [ ] random_shuffle`<Random>`
+- [NO] random_shuffle`<Random>`
 - [ ] remove
 - [ ] remove_if
-- [ ] apply_and_remove
-- [ ] apply_and_remove_if
-- [ ] remove_copy
-- [ ] remove_copy_if
+- [NO] apply_and_remove
+- [NO] apply_and_remove_if
+- [X] remove_copy
+- [X] remove_copy_if
 - [ ] remove_heap (Found in heap.h)
 - [ ] remove_heap`<Compare>` (Found in heap.h)
 - [X] replace
 - [X] replace_if
 - [X] replace_copy
 - [X] replace_copy_if
-- [ ] reverse_copy
-- [ ] reverse
-- [ ] random_shuffle
+- [X] reverse_copy
+- [X-caveat] reverse
+- [NO] random_shuffle
 - [ ] rotate
-- [ ] rotate_copy
+- [X] rotate_copy
 - [ ] search
 - [ ] search`<Compare>`
 - [ ] search_n
@@ -2448,8 +2449,8 @@ namespace eastl
 - [ ] set_difference`<Compare>`
 - [ ] set_difference_2
 - [ ] set_difference_2`<Compare>`
-- [ ] set_decomposition
-- [ ] set_decomposition`<Compare>`
+- [NO] set_decomposition
+- [NO] set_decomposition`<Compare>`
 - [ ] set_intersection
 - [ ] set_intersection`<Compare>`
 - [ ] set_symmetric_difference
@@ -2465,16 +2466,16 @@ namespace eastl
 - [ ] partition (Found in sort.h)
 - [ ] stable_partition (Found in sort.h)
 - [ ] swap
-- [ ] swap_ranges
+- [NOT-IMPLEMENTED] swap_ranges
 - [X] transform
 - [X] transform`<Operation>`
-- [ ] unique
-- [ ] unique`<Compare>`
-- [ ] upper_bound
-- [ ] upper_bound`<Compare>`
-- [ ] is_permutation
-- [ ] is_permutation`<Predicate>`
-- [ ] next_permutation
-- [ ] next_permutation`<Compare>`
-- [ ] is_partitioned
-- [ ] partition_point
+- [X] unique
+- [X] unique`<Compare>`
+- [TODO] upper_bound
+- [TODO] upper_bound`<Compare>`
+- [TODO] is_permutation
+- [TODO] is_permutation`<Predicate>`
+- [TODO] next_permutation
+- [TODO] next_permutation`<Compare>`
+- [X] is_partitioned
+- [TODO] partition_point

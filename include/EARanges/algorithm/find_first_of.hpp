@@ -60,11 +60,7 @@ namespace ranges
                                                 P0 proj0 = P0{},
                                                 P1 proj1 = P1{}) //
         {
-            for(; begin0 != end0; ++begin0)
-                for(auto tmp = begin1; tmp != end1; ++tmp)
-                    if(invoke(pred, invoke(proj0, *begin0), invoke(proj1, *tmp)))
-                        return begin0;
-            return begin0;
+            return eastl::find_first_of(begin0, end0, begin1, end1, eastl::move(pred), eastl::move(proj0), eastl::move(proj1));
         }
 
         /// \overload

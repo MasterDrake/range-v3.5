@@ -39,12 +39,7 @@ namespace ranges
         template(typename I, typename F, typename P = identity)(requires input_iterator<I> AND indirectly_unary_invocable<F, projected<I, P>>)
         constexpr I EARANGES_FUNC(for_each_n)(I first, iter_difference_t<I> n, F fun, P proj = P{})
         {
-            EARANGES_EXPECT(0 <= n);
-            auto norig = n;
-            auto b = uncounted(first);
-            for(; 0 < n; ++b, --n)
-                invoke(fun, invoke(proj, *b));
-            return recounted(first, b, norig);
+            return eastl::for_each_n(first, n, eastl::move(fun), eastl::move(proj));
         }
 
         /// \overload

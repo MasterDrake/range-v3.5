@@ -50,16 +50,7 @@ namespace ranges
         template(typename I, typename S, typename C = equal_to, typename P = identity)(requires sortable<I, C, P> AND sentinel_for<S, I>)
         constexpr I EARANGES_FUNC(unique)(I first, S last, C pred = C{}, P proj = P{})
         {
-            first = adjacent_find(eastl::move(first), last, ranges::ref(pred), ranges::ref(proj));
-
-            if(first != last)
-            {
-                for(I i = next(first); ++i != last;)
-                    if(!invoke(pred, invoke(proj, *first), invoke(proj, *i)))
-                        *++first = iter_move(i);
-                ++first;
-            }
-            return first;
+            return eastl::unique(first, last, eastl::move(pred), eastl::move(proj));
         }
 
         /// \overload

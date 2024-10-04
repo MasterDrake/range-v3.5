@@ -42,10 +42,7 @@ namespace ranges
         template(typename I, typename S, typename O)(requires bidirectional_iterator<I> AND sentinel_for<S, I> AND weakly_incrementable<O> AND indirectly_copyable<I, O>)
         constexpr reverse_copy_result<I, O> EARANGES_FUNC(reverse_copy)(I first, S end_, O out) //
         {
-            I last = ranges::next(first, end_), res = last;
-            for(; first != last; ++out)
-                *out = *--last;
-            return {res, out};
+            return eastl::reverse_copy(first, end_, out);
         }
 
         /// \overload

@@ -48,16 +48,7 @@ namespace ranges
         constexpr remove_copy_result<I, O> EARANGES_FUNC(remove_copy)(
             I first, S last, O out, T const & val, P proj = P{}) //
         {
-            for(; first != last; ++first)
-            {
-                auto && x = *first;
-                if(!(invoke(proj, x) == val))
-                {
-                    *out = (decltype(x) &&)x;
-                    ++out;
-                }
-            }
-            return {first, out};
+           return eastl::remove_copy(first, last, eastl::move(out), val, eastl::move(proj));
         }
 
         /// \overload

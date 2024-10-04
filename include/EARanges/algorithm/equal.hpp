@@ -30,7 +30,6 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-//TODO: Check deprecated in equal. I fucked up cleaning some of these overloads... Now it explains the errors
 namespace ranges
 {
     /// \addtogroup group-algorithms
@@ -42,10 +41,7 @@ namespace ranges
         template<typename I0, typename S0, typename I1, typename S1, typename C, typename P0, typename P1>
         constexpr bool equal_nocheck(I0 begin0, S0 end0, I1 begin1, S1 end1, C pred, P0 proj0, P1 proj1)
         {
-            for(; begin0 != end0 && begin1 != end1; ++begin0, ++begin1)
-                if(!invoke(pred, invoke(proj0, *begin0), invoke(proj1, *begin1)))
-                    return false;
-            return begin0 == end0 && begin1 == end1;
+            return eastl::equal(begin0, end0, begin1, end1, eastl::move(pred), eastl::move(proj0), eastl::move(proj1));
         }
     } // namespace detail
     /// \endcond
