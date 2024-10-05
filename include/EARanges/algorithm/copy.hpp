@@ -44,9 +44,7 @@ namespace ranges
         template(typename I, typename S, typename O)(requires input_iterator<I> AND sentinel_for<S, I> AND weakly_incrementable<O> AND indirectly_copyable<I, O>)
         constexpr copy_result<I, O> EARANGES_FUNC(copy)(I first, S last, O out) //
         {
-            for(; first != last; ++first, ++out)
-                *out = *first;
-            return {first, out};
+            return eastl::copy(first, last, out);
         }
 
         /// \overload

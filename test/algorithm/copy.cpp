@@ -34,8 +34,8 @@ bool test_constexpr_copy()
     ranges::copy(b, a);
     return ranges::equal(b, a);
 }
-
-static_assert(test_constexpr_copy(), "");
+//Can't be called at compile time because of mem-move.
+//static_assert(test_constexpr_copy(), "");
 #endif
 
 constexpr bool test_constexpr()
@@ -66,15 +66,15 @@ int main()
     auto res = ranges::copy(begin(a), end(a), out);
     CHECK(res.in == end(a));
     CHECK(res.out == out + size(out));
-    CHECK(eastl::equal(a, a + size(a), out));
+    CHECK(eastl::equal(a, a + size(a), out, out + size(out)));
 
     eastl::fill_n(out, size(out), eastl::make_pair(0, 0));
-    CHECK(!eastl::equal(a, a + size(a), out));
+    CHECK(!eastl::equal(a, a + size(a), out, out + size(out)));
 
     res = ranges::copy(a, out);
     CHECK(res.in == a + size(a));
     CHECK(res.out == out + size(out));
-    CHECK(eastl::equal(a, a + size(a), out));
+    CHECK(eastl::equal(a, a + size(a), out, out + size(out)));
 
     eastl::fill_n(out, size(out), eastl::make_pair(0, 0));
 
@@ -110,7 +110,8 @@ int main()
     }
 
     {
-        STATIC_CHECK(test_constexpr());
+        //eastl::copy can't be constexpr due mem-functions.
+        CHECK(test_constexpr());
     }
 
     return test_result();

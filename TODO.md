@@ -2357,7 +2357,7 @@ namespace eastl
 - [ ] change_heap (Found in heap.h)
 - [ ] change_heap`<Compare>` (Found in heap.h)
 - [ ] clamp
-- [ ] copy
+- [X] copy
 - [X] copy_if (C++11)
 - [ ] copy_n (C++11)
 - [ ] copy_backward
@@ -2396,10 +2396,10 @@ namespace eastl
 - [ ] lower_bound`<Compare>`
 - [ ] make_heap (Found in heap.h)
 - [ ] make_heap`<Compare>` (Found in heap.h)
-- [ ] min
-- [ ] min`<Compare>`
-- [ ] max
-- [ ] max`<Compare>`
+- [NO] min
+- [NO] min`<Compare>`
+- [NO] max
+- [NO] max`<Compare>`
 - [NO] min_alt (Exists to work around the problem of conflicts with min/max #defines on some systems)
 - [NO] min_alt`<Compare>`
 - [NO] max_alt
@@ -2478,4 +2478,4 @@ namespace eastl
 - [TODO] next_permutation
 - [TODO] next_permutation`<Compare>`
 - [X] is_partitioned
-- [TODO] partition_point
+- [X] partition_point

@@ -53,27 +53,7 @@ namespace ranges
             indirect_unary_predicate<C, projected<I, P>>)
         constexpr I EARANGES_FUNC(partition_point)(I first, S last, C pred, P proj = P{})
         {
-            if(EARANGES_CONSTEXPR_IF(sized_sentinel_for<S, I>))
-            {
-                auto len = distance(first, eastl::move(last));
-                return aux::partition_point_n(eastl::move(first), len, eastl::move(pred), eastl::move(proj));
-            }
-
-            // Probe exponentially for either last-of-range or an iterator
-            // that is past the partition point (i.e., does not satisfy pred).
-            auto len = iter_difference_t<I>{1};
-            while(true)
-            {
-                auto mid = first;
-                auto d = advance(mid, len, last);
-                if(mid == last || !invoke(pred, invoke(proj, *mid)))
-                {
-                    len -= d;
-                    return aux::partition_point_n(eastl::move(first), len, ranges::ref(pred), ranges::ref(proj));
-                }
-                first = eastl::move(mid);
-                len *= 2;
-            }
+            return eastl::partition_point(first, last, eastl::move(pred), eastl::move(proj));
         }
 
         /// \overload
