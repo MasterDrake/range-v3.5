@@ -34,9 +34,7 @@ namespace ranges
         template(typename O, typename S, typename V)(requires output_iterator<O, V const &> AND sentinel_for<S, O>)
         constexpr O EARANGES_FUNC(fill)(O first, S last, V const & val) //
         {
-            for(; first != last; ++first)
-                *first = val;
-            return first;
+            return eastl::fill(first, last, val);
         }
 
         /// \overload

@@ -2367,8 +2367,8 @@ namespace eastl
 - [X] equal`<Compare>`
 - [ ] equal_range
 - [ ] equal_range`<Compare>`
-- [ ] fill
-- [ ] fill_n
+- [X] fill
+- [NO-TEST] fill_n
 - [X] find
 - [TODO] find_end
 - [TODO] find_end`<Compare>`
