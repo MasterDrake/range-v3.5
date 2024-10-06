@@ -220,7 +220,7 @@ namespace eastl
 	template <class T, size_t X, class U, size_t Y>
 	EA_CONSTEXPR bool operator==(span<T, X> l, span<U, Y> r)
 	{
-		return (l.size() == r.size()) && eastl::equal(l.begin(), l.end(), r.begin());
+		return (l.size() == r.size()) && eastl::equal(l.begin(), l.end(), r.begin(), r.end());
 	}
 
 	template <class T, size_t X, class U, size_t Y>

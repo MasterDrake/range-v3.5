@@ -47,7 +47,7 @@ int main()
         auto res = ranges::copy_backward(begin(a), end(a), end(out));
         CHECK(res.in == end(a));
         CHECK(res.out == begin(out));
-        CHECK(eastl::equal(a, a + size(a), out));
+        CHECK(eastl::equal(a, a + size(a), out, out + size(out)));
     }
 
     {
@@ -55,7 +55,7 @@ int main()
         auto res = ranges::copy_backward(a, end(out));
         CHECK(res.in == end(a));
         CHECK(res.out == begin(out));
-        CHECK(eastl::equal(a, a + size(a), out));
+        CHECK(eastl::equal(a, a + size(a), out, out + size(out))));
     }
 
 #ifndef EARANGES_WORKAROUND_MSVC_573728
@@ -64,7 +64,7 @@ int main()
         auto res = ranges::copy_backward(eastl::move(a), end(out));
         CHECK(::is_dangling(res.in));
         CHECK(res.out == begin(out));
-        CHECK(eastl::equal(a, a + size(a), out));
+        CHECK(eastl::equal(a, a + size(a), out, out + size(out)));
     }
 #endif
 
@@ -74,7 +74,7 @@ int main()
         auto res = ranges::copy_backward(eastl::move(vec), end(out));
         CHECK(::is_dangling(res.in));
         CHECK(res.out == begin(out));
-        CHECK(eastl::equal(a, a + size(a), out));
+        CHECK(eastl::equal(a, a + size(a), out, out + size(out)));
     }
 
     {
@@ -82,7 +82,7 @@ int main()
         auto res = ranges::copy_backward(ranges::views::all(a), end(out));
         CHECK(res.in == end(a));
         CHECK(res.out == begin(out));
-        CHECK(eastl::equal(a, a + size(a), out));
+        CHECK(eastl::equal(a, a + size(a), out, out + size(out)));
     }
 
     {

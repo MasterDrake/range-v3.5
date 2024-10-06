@@ -1997,7 +1997,7 @@ namespace eastl
 	template <typename T, typename Allocator>
 	inline bool operator==(const vector<T, Allocator>& a, const vector<T, Allocator>& b)
 	{
-		return ((a.size() == b.size()) && eastl::equal(a.begin(), a.end(), b.begin()));
+		return ((a.size() == b.size()) && eastl::equal(a.begin(), a.end(), b.begin(), b.end()));
 	}
 
 #if defined(EA_COMPILER_HAS_THREE_WAY_COMPARISON)

@@ -17,6 +17,8 @@
 #include <string.h> // memcpy, memcmp, memmove
 
 #include <EARanges/algorithm/result_types.hpp>
+#include <EARanges/iterator/concepts.hpp>  // For iterator_category
+#include <EARanges/range/access.hpp>  // For iterator_category
 
 namespace eastl
 {
@@ -100,7 +102,7 @@ namespace eastl
 		template <typename InputIterator, typename InputSentinel = InputIterator, typename OutputIterator>
 		EA_CONSTEXPR static ranges::detail::in_out_result<InputIterator, OutputIterator> move_or_copy(InputIterator first, InputSentinel last, OutputIterator result)
 		{
-			typedef typename eastl::iterator_traits<InputIterator>::difference_type difference_type;
+			typedef ranges::iter_difference_t<InputIterator> difference_type;
 
 			for(difference_type n = (last - first); n > 0; --n, ++first, ++result)
 				*result = eastl::move(*first);
@@ -151,10 +153,10 @@ namespace eastl
 		template <typename InputIterator, typename OutputIterator>
 		struct can_be_memmoved_helper
 		{
-			using IIC = typename eastl::iterator_traits<InputIterator>::iterator_category;
-			using OIC = typename eastl::iterator_traits<OutputIterator>::iterator_category;
-			using value_type_input = typename eastl::iterator_traits<InputIterator>::value_type;
-			using value_type_output = typename eastl::iterator_traits<OutputIterator>::value_type;
+			using IIC = typename eastl::iterator_traits<typename ranges::iterator_t<InputIterator>>::iterator_category;
+			using OIC = typename eastl::iterator_traits<typename ranges::iterator_t<OutputIterator>>::iterator_category;
+			using value_type_input = typename ranges::iter_value_t<InputIterator>;
+			using value_type_output = typename ranges::iter_value_t<OutputIterator>;
 
 			static constexpr bool value = eastl::is_trivially_copyable<value_type_output>::value &&
 				                          eastl::is_same<value_type_input, value_type_output>::value &&
@@ -167,8 +169,8 @@ namespace eastl
 	template <bool isMove, typename InputIterator, typename InputSentinel = InputIterator, typename OutputIterator>
 	EA_CONSTEXPR inline ranges::detail::in_out_result<InputIterator, OutputIterator> move_and_copy_chooser(InputIterator first, InputSentinel last, OutputIterator result)
 	{
-		typedef typename eastl::iterator_traits<InputIterator>::iterator_category  IIC;
-
+		//typedef typename eastl::iterator_traits<InputIterator>::iterator_category  IIC;
+		using IIC = typename eastl::iterator_traits<typename ranges::iterator_t<InputIterator>>::iterator_category;
 		const bool canBeMemmoved = internal::can_be_memmoved_helper<InputIterator, OutputIterator>::value;
 
 		// Need to choose based on the input iterator tag and not the output iterator tag, because containers accept input ranges of iterator types different than self.

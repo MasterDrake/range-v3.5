@@ -113,7 +113,7 @@ int main()
     }
 
     {
-        STATIC_CHECK(test_constexpr());
+        CHECK(test_constexpr());
     }
 
     return ::test_result();

@@ -511,7 +511,7 @@ namespace eastl
 	template <typename T, size_t N>
 	EA_CPP14_CONSTEXPR inline bool operator==(const array<T, N>& a, const array<T, N>& b)
 	{
-		return eastl::equal(&a.mValue[0], &a.mValue[N], &b.mValue[0]);
+		return eastl::equal(&a.mValue[0], &a.mValue[N], &b.mValue[0], &b.mValue[N]);
 	}
 
 #if defined(EA_COMPILER_HAS_THREE_WAY_COMPARISON)
@@ -532,7 +532,7 @@ namespace eastl
 	template <typename T, size_t N>
 	EA_CPP14_CONSTEXPR inline bool operator!=(const array<T, N>& a, const array<T, N>& b)
 	{
-		return !eastl::equal(&a.mValue[0], &a.mValue[N], &b.mValue[0]);
+		return !eastl::equal(&a.mValue[0], &a.mValue[N], &b.mValue[0], &b.mValue[N]);
 	}
 
 

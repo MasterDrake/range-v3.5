@@ -327,7 +327,7 @@ int main()
     }
 
     {
-        STATIC_CHECK(test_constexpr());
+        CHECK(test_constexpr());
     }
 #endif
 
