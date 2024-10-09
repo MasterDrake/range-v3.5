@@ -467,7 +467,7 @@ namespace eastl
 		          typename TT2 = T2,
 		          class = eastl::enable_if_t<eastl::is_default_constructible_v<TT1> &&
 		                                     eastl::is_default_constructible_v<TT2>>>
-		EA_CONSTEXPR pair()
+		EA_CONSTEXPR pair() EA_NOEXCEPT
 		    : first(), second()
 		{
 		}
@@ -509,7 +509,7 @@ namespace eastl
 	#endif
 
 		template <typename TT1 = T1, typename TT2 = T2, typename = single_pair_ctor_sfinae<TT2>>
-		EA_CPP14_CONSTEXPR pair(pair_first_construct_t, const TT1& x)
+		EA_CPP14_CONSTEXPR pair(pair_first_construct_t, const TT1& x) EA_NOEXCEPT
 		    : first(x), second()
 		{
 		}
@@ -521,7 +521,7 @@ namespace eastl
 		// error: with 'eastl::pair<T1, T2>::pair(const T1&) [with T1 = const int&; T2 = const int&]'
 		#if !defined(EA_COMPILER_GNUC)
 			template <typename TT2 = T2, typename = single_pair_ctor_sfinae<TT2>>
-			EA_CPP14_CONSTEXPR pair(pair_first_construct_t, T1&& x)
+			EA_CPP14_CONSTEXPR pair(pair_first_construct_t, T1&& x) EA_NOEXCEPT
 				: first(eastl::move(x)), second()
 			{
 			}
@@ -531,21 +531,21 @@ namespace eastl
 		    typename TT1 = T1,
 		    typename TT2 = T2,
 		    class = eastl::enable_if_t<eastl::is_copy_constructible_v<TT1> && eastl::is_copy_constructible_v<TT2>>>
-		EA_CPP14_CONSTEXPR pair(const T1& x, const T2& y)
+		    EA_CPP14_CONSTEXPR pair(const T1& x, const T2& y) EA_NOEXCEPT
 		    : first(x), second(y)
 		{
 		}
 
-		EA_CPP14_CONSTEXPR pair(pair&& p) = default;
-		EA_CPP14_CONSTEXPR pair(const pair&) = default;
-		EA_CPP14_CONSTEXPR pair& operator=(const pair&) = default;
-		EA_CPP14_CONSTEXPR pair& operator=(pair&&) = default;
+		EA_CPP14_CONSTEXPR pair(pair&& p) EA_NOEXCEPT = default;
+		EA_CPP14_CONSTEXPR pair(const pair&) EA_NOEXCEPT = default;
+		EA_CPP14_CONSTEXPR pair& operator=(const pair&) EA_NOEXCEPT = default;
+		EA_CPP14_CONSTEXPR pair& operator=(pair&&) EA_NOEXCEPT = default;
 
 		template <
 		    typename U,
 		    typename V,
 		    class = eastl::enable_if_t<eastl::is_convertible_v<const U&, T1> && eastl::is_convertible_v<const V&, T2>>>
-		EA_CPP14_CONSTEXPR pair(const pair<U, V>& p)
+		EA_CPP14_CONSTEXPR pair(const pair<U, V>& p) EA_NOEXCEPT
 		    : first(p.first), second(p.second)
 		{
 		}
@@ -553,19 +553,19 @@ namespace eastl
 		template <typename U,
 		          typename V,
 		          typename = eastl::enable_if_t<eastl::is_convertible_v<U, T1> && eastl::is_convertible_v<V, T2>>>
-		EA_CPP14_CONSTEXPR pair(U&& u, V&& v)
+		EA_CPP14_CONSTEXPR pair(U&& u, V&& v) EA_NOEXCEPT
 		    : first(eastl::forward<U>(u)), second(eastl::forward<V>(v))
 		{
 		}
 
 		template <typename U, typename = eastl::enable_if_t<eastl::is_convertible_v<U, T1>>>
-		EA_CPP14_CONSTEXPR pair(U&& x, const T2& y)
+		EA_CPP14_CONSTEXPR pair(U&& x, const T2& y) EA_NOEXCEPT
 			: first(eastl::forward<U>(x)), second(y)
 		{
 		}
 
 		template <typename V, typename = eastl::enable_if_t<eastl::is_convertible_v<V, T2>>>
-		EA_CPP14_CONSTEXPR pair(const T1& x, V&& y)
+		EA_CPP14_CONSTEXPR pair(const T1& x, V&& y) EA_NOEXCEPT
 			: first(x), second(eastl::forward<V>(y))
 		{
 		}
@@ -573,7 +573,7 @@ namespace eastl
 		template <typename U,
 		          typename V,
 		          typename = eastl::enable_if_t<eastl::is_convertible_v<U, T1> && eastl::is_convertible_v<V, T2>>>
-		EA_CPP14_CONSTEXPR pair(pair<U, V>&& p)
+		EA_CPP14_CONSTEXPR pair(pair<U, V>&& p) EA_NOEXCEPT
 		    : first(eastl::forward<U>(p.first)), second(eastl::forward<V>(p.second))
 		{
 		}
@@ -584,7 +584,7 @@ namespace eastl
 		          class... Args2,
 		          typename = eastl::enable_if_t<eastl::is_constructible_v<first_type, Args1&&...> &&
 		                                        eastl::is_constructible_v<second_type, Args2&&...>>>
-		pair(eastl::piecewise_construct_t pwc, eastl::tuple<Args1...> first_args, eastl::tuple<Args2...> second_args)
+		pair(eastl::piecewise_construct_t pwc, eastl::tuple<Args1...> first_args, eastl::tuple<Args2...> second_args) EA_NOEXCEPT
 		    : pair(pwc,
 		           eastl::move(first_args),
 		           eastl::move(second_args),
@@ -600,7 +600,7 @@ namespace eastl
 			 eastl::tuple<Args1...> first_args,
 			 eastl::tuple<Args2...> second_args,
 			 eastl::index_sequence<I1...>,
-			 eastl::index_sequence<I2...>)
+		     eastl::index_sequence<I2...>) EA_NOEXCEPT
 			: first(eastl::forward<Args1>(eastl::get<I1>(first_args))...)
 			, second(eastl::forward<Args2>(eastl::get<I2>(second_args))...)
 		{
@@ -610,7 +610,7 @@ namespace eastl
 		template <typename U,
 		          typename V,
 		          typename = eastl::enable_if_t<eastl::is_convertible_v<U, T1> && eastl::is_convertible_v<V, T2>>>
-		pair& operator=(const pair<U, V>& p)
+		pair& operator=(const pair<U, V>& p) EA_NOEXCEPT
 		{
 			first = p.first;
 			second = p.second;
@@ -620,7 +620,7 @@ namespace eastl
 		template <typename U,
 		          typename V,
 		          typename = eastl::enable_if_t<eastl::is_convertible_v<U, T1> && eastl::is_convertible_v<V, T2>>>
-		pair& operator=(pair<U, V>&& p)
+		pair& operator=(pair<U, V>&& p) EA_NOEXCEPT
 		{
 			first = eastl::forward<U>(p.first);
 			second = eastl::forward<V>(p.second);

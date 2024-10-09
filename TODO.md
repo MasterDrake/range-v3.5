@@ -2383,7 +2383,7 @@ namespace eastl
 - [X] find_if
 - [X] find_if_not
 - [X] for_each
-- [X] for_each_n_
+- [X*] for_each_n_
 - [X] generate
 - [X] generate_n
 - [NO] identical
@@ -2408,10 +2408,10 @@ namespace eastl
 - [NO] median`<Compare>`
 - [ ] merge (Found in sort.h)
 - [ ] merge`<Compare>` (Found in sort.h)
-- [X] min_element
-- [X] min_element`<Compare>`
-- [X] max_element
-- [X] max_element`<Compare>`
+- [X*] min_element
+- [X*] min_element`<Compare>`
+- [X*] max_element
+- [X*] max_element`<Compare>`
 - [X] mismatch
 - [X] mismatch`<Compare>`
 - [ ] move
@@ -2437,11 +2437,11 @@ namespace eastl
 - [X] replace_if
 - [X] replace_copy
 - [X] replace_copy_if
-- [X] reverse_copy
-- [X-caveat] reverse
+- [NO] reverse_copy
+- [NO] reverse
 - [NO] random_shuffle
 - [ ] rotate
-- [X] rotate_copy
+- [NO] rotate_copy
 - [ ] search
 - [ ] search`<Compare>`
 - [ ] search_n
@@ -2478,4 +2478,4 @@ namespace eastl
 - [TODO] next_permutation
 - [TODO] next_permutation`<Compare>`
 - [X] is_partitioned
-- [X] partition_point
+- [NO] partition_point

@@ -44,7 +44,8 @@ namespace ranges
         constexpr rotate_copy_result<I, O> //
         EARANGES_FUNC(rotate_copy)(I first, I middle, S last, O out) //
         {
-            return eastl::rotate_copy(first, middle, last, out);
+            auto res = ranges::copy(middle, eastl::move(last), eastl::move(out));
+            return {eastl::move(res.in), ranges::copy(eastl::move(first), middle, eastl::move(res.out)).out};
         }
 
         /// \overload

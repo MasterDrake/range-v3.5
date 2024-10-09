@@ -55,7 +55,7 @@ int main()
         auto res = ranges::copy_backward(a, end(out));
         CHECK(res.in == end(a));
         CHECK(res.out == begin(out));
-        CHECK(eastl::equal(a, a + size(a), out, out + size(out))));
+        CHECK(eastl::equal(a, a + size(a), out, out + size(out)));
     }
 
 #ifndef EARANGES_WORKAROUND_MSVC_573728

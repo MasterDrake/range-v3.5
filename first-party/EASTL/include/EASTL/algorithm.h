@@ -255,7 +255,6 @@
 
 #include <EARanges/functional/identity.hpp>
 #include <EARanges/functional/invoke.hpp>
-#include <EARanges/functional/reference_wrapper.hpp>
 #include <EARanges/iterator/traits.hpp>
 #include <EARanges/algorithm/result_types.hpp>
 
@@ -314,7 +313,26 @@ namespace eastl
 	/// corresponding comparisons.
 	///
 	template <typename ForwardIterator, typename ForwardSentinel = ForwardIterator, typename Compare = ranges::less, typename Projection = ranges::identity>
-	EA_CONSTEXPR ForwardIterator min_element(ForwardIterator first, ForwardSentinel last, Compare compare = {}, Projection proj = {});
+	EA_CONSTEXPR ForwardIterator min_element(ForwardIterator first, ForwardSentinel last, Compare compare = {}, Projection proj = {})
+	{
+		if (first != last)
+		{
+			ForwardIterator currentMin = first;
+
+			while (++first != last)
+			{
+				if (ranges::invoke(compare, ranges::invoke(proj, *first), ranges::invoke(proj, *currentMin)))
+					currentMin = first;
+			}
+			return currentMin;
+		}
+		return first;
+		//if (first != last)
+		//	for (auto tmp = ranges::next(first); tmp != last; ++tmp)
+		//		if (ranges::invoke(compare, ranges::invoke(proj, *tmp), ranges::invoke(proj, *first)))
+		//			first = tmp;
+		//return first;
+	}
 
 
 	/// max_element
@@ -332,8 +350,26 @@ namespace eastl
 	/// corresponding comparisons.
 	///
 	template <typename ForwardIterator, typename ForwardSentinel = ForwardIterator, typename Compare = ranges::less, typename Projection = ranges::identity>
-	EA_CONSTEXPR ForwardIterator max_element(ForwardIterator first, ForwardSentinel last, Compare compare = {}, Projection proj = {});
+	EA_CONSTEXPR ForwardIterator max_element(ForwardIterator first, ForwardSentinel last, Compare compare = {}, Projection proj = {})
+	{
+		if (first != last)
+		{
+			ForwardIterator currentMax = first;
 
+			while (++first != last)
+			{
+				if (ranges::invoke(compare, ranges::invoke(proj, *currentMax), ranges::invoke(proj, *first)))
+					currentMax = first;
+			}
+			return currentMax;
+		}
+		return first;
+		//if (first != last)
+		//	for (auto tmp = ranges::next(first); tmp != last; ++tmp)
+		//		if (ranges::invoke(compare, ranges::invoke(proj, *first), ranges::invoke(proj, *tmp)))
+		//			first = tmp;
+		//return first;
+	}
 
 	#if EASTL_MINMAX_ENABLED
 
@@ -1530,7 +1566,18 @@ namespace eastl
 	///
 	template <typename InputIterator, typename Function, typename Projection = ranges::identity>
 	EA_CPP14_CONSTEXPR inline InputIterator
-	for_each_n(InputIterator first, ranges::iter_difference_t<InputIterator> n, Function fun, Projection proj = {});
+	for_each_n(InputIterator first, ranges::iter_difference_t<InputIterator> n, Function fun, Projection proj = {})
+	{
+		for (ranges::iter_difference_t<InputIterator> i = 0; i < n; ++first, i++)
+			ranges::invoke(fun, ranges::invoke(proj,*first));
+		return first;
+		//EARANGES_EXPECT(0 <= n);
+		//auto norig = n;
+		//auto b = ranges::uncounted(first);
+		//for (; 0 < n; ++b, --n)
+		//	ranges::invoke(fun, ranges::invoke(proj, *b));
+		//return ranges::recounted(first, b, norig);
+	}
 
 
 	/// generate
@@ -1561,7 +1608,18 @@ namespace eastl
 	///
 	template <typename OutputIterator, typename Generator>
 	EA_CONSTEXPR inline ranges::detail::out_fun_result<OutputIterator, Generator>
-	generate_n(OutputIterator first, ranges::iter_difference_t<OutputIterator> n, Generator gen);
+	generate_n(OutputIterator first, ranges::iter_difference_t<OutputIterator> n, Generator gen)
+	{
+		for (; n > 0; --n, ++first)
+			*first = ranges::invoke(gen);
+		return {first, ranges::detail::move(gen)};
+		//EARANGES_EXPECT(n >= 0);
+		//auto norig = n;
+		//auto b = ranges::uncounted(first);
+		//for (; 0 != n; ++b, --n)
+		//	*b = ranges::invoke(gen);
+		//return {ranges::recounted(first, b, norig), ranges::detail::move(gen)};
+	}
 
 
 	/// transform
@@ -2540,7 +2598,18 @@ namespace eastl
 	/// Complexity: Exactly '(last - first) / 2' swaps.
 	///
 	template <typename BidirectionalIterator, typename BidirectionalSentinel = BidirectionalIterator>
-	EA_CONSTEXPR inline BidirectionalIterator reverse(BidirectionalIterator first, BidirectionalSentinel end_);
+	EA_CONSTEXPR inline BidirectionalIterator reverse(BidirectionalIterator first, BidirectionalSentinel last)
+	{
+		typedef typename eastl::iterator_traits<BidirectionalIterator>::iterator_category IC;
+		eastl::reverse_impl(first, last, IC());
+		return first;
+		//BidirectionalIterator last = ranges::next(first, end_);
+		//typedef typename eastl::iterator_traits<BidirectionalIterator>::iterator_category IC;
+		//// TODO:It should work ... eastl::reverse_impl(first, last, ranges::iterator_tag_of<BidirectionalIterator>{});
+		//
+		//eastl::reverse_impl(first, last, IC{});
+		//return last;
+	}	
 
 
 
@@ -2561,8 +2630,13 @@ namespace eastl
 	/// Complexity: Exactly 'last - first' assignments.
 	///
 	template <typename BidirectionalIterator, typename BidirectionalSentinel = BidirectionalIterator, typename OutputIterator>
-	EA_CONSTEXPR inline ranges::detail::in_out_result<BidirectionalIterator, OutputIterator>
-	reverse_copy(BidirectionalIterator first, BidirectionalSentinel end, OutputIterator out);
+	EA_CONSTEXPR inline BidirectionalIterator
+	reverse_copy(BidirectionalIterator first, BidirectionalSentinel last, OutputIterator result)
+	{
+		for (; first != last; ++result)
+			*result = *--last;
+		return result;
+	}
 
 
 
@@ -2927,7 +3001,33 @@ namespace eastl
 	///
 	template <typename ForwardIterator, typename ForwardSentinel = ForwardIterator, typename Predicate = ranges::equal_to, typename Projection = ranges::identity>
 	EA_CONSTEXPR ForwardIterator
-	unique(ForwardIterator first, ForwardSentinel last, Predicate pred = {}, Projection proj = {});
+	unique(ForwardIterator first, ForwardSentinel last, Predicate pred = {}, Projection proj = {})
+	{
+		first = eastl::adjacent_find(first, last, eastl::move(pred), eastl::move(proj));//BUG: this should be ranges::ref but it doesn't work for reasons...
+
+		if (first != last) // We expect that there are duplicated items, else the user wouldn't be calling this function.
+		{
+			ForwardIterator dest(first);
+
+			for (++first; first != last; ++first)
+			{
+				if (!ranges::invoke(pred, ranges::invoke(proj, *dest), ranges::invoke(proj, *first)))
+					*++dest = *first;
+			}
+			return ++dest;
+		}
+		return first;
+		//first = adjacent_find(eastl::move(first), last, ranges::ref(pred), ranges::ref(proj));
+		//
+		//if (first != last)
+		//{
+		//	for (ForwardIterator i = ranges::next(first); ++i != last;)
+		//		if (!ranges::invoke(pred, ranges::invoke(proj, *first), ranges::invoke(proj, *i)))
+		//			*++first = ranges::iter_move(i);
+		//	++first;
+		//}
+		//return first;
+	}
 
 	// find_end
 	//
@@ -3936,7 +4036,12 @@ namespace eastl
 	/// (i.e. result + (last - first))
 	///
 	template <typename ForwardIterator, typename ForwardSentinel = ForwardIterator, typename OutputIterator, typename Projection = ranges::identity>
-	EA_CONSTEXPR ranges::detail::in_out_result<ForwardIterator, OutputIterator> rotate_copy(ForwardIterator first, ForwardIterator middle, ForwardSentinel last, OutputIterator out);
+	EA_CONSTEXPR OutputIterator rotate_copy(ForwardIterator first, ForwardIterator middle, ForwardSentinel last, OutputIterator out)
+	{
+		return eastl::copy(first, middle, eastl::copy(middle, last, out));
+		//auto res = ranges::copy(middle, eastl::move(last), eastl::move(out));
+		//return {eastl::move(res.in), ranges::copy(eastl::move(first), middle, eastl::move(res.out)).out};
+	}
 
 	/// clamp
 	///
@@ -3993,11 +4098,27 @@ namespace eastl
 	/// Note: this is a more general version of lower_bound.
 	template <class ForwardIterator, class ForwardSentinel = ForwardIterator, class UnaryPredicate, class Projection = ranges::identity>
 	EA_CONSTEXPR ForwardIterator
-	partition_point(ForwardIterator first, ForwardSentinel last, UnaryPredicate predicate, Projection proj = {});
+	partition_point(ForwardIterator first, ForwardSentinel last, UnaryPredicate predicate, Projection proj = {})
+	{
+		// Just binary chop our way to the first one where predicate(x) is false
+		for (auto length = eastl::distance(first, last); 0 < length;)
+		{
+			const auto half = length / 2;
+			const auto middle = eastl::next(first, half);
+			if (predicate(*middle))
+			{
+				first = eastl::next(middle);
+				length -= (half + 1);
+			}
+			else
+			{
+				length = half;
+			}
+		}
+
+		return first;
+	}
 
 } // namespace eastl
-
-
-#include "algorithm_impl.h"
 
 #endif // Header include guard

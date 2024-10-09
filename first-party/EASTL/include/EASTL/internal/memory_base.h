@@ -37,7 +37,7 @@ namespace eastl
 	}
 
 	template <typename T>
-	const T* addressof(const T&& value) = delete;
+	const T* addressof(const T&& value) EA_NOEXCEPT = delete;
 
 } // namespace eastl
 
