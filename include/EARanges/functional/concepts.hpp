@@ -26,7 +26,7 @@ namespace ranges
     /// @{
 
     // clang-format off
-    // WORKAROUND mysterious msvc bug
+    // WORKAROUND mysterious msvc bug //TODO:Check if it's still valid
 #if defined(_MSC_VER) && !defined(__clang__)
     /// \concept invocable
     /// \brief The \c invocable concept

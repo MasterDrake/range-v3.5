@@ -62,11 +62,11 @@
 #endif
 
 #ifndef META_CXX_VARIABLE_TEMPLATES
-#ifdef __cpp_variable_templates
-#define META_CXX_VARIABLE_TEMPLATES __cpp_variable_templates
-#else
-#define META_CXX_VARIABLE_TEMPLATES (META_CXX_VER >= META_CXX_STD_14)
-#endif
+//#ifdef __cpp_variable_templates
+//#define META_CXX_VARIABLE_TEMPLATES __cpp_variable_templates
+//#else
+#define META_CXX_VARIABLE_TEMPLATES 0
+//#endif
 #endif
 
 #ifndef META_CXX_INLINE_VARIABLES
@@ -134,29 +134,29 @@
 #endif
 #endif
 
-#if META_CXX_FOLD_EXPRESSIONS
-#if !META_CXX_VARIABLE_TEMPLATES
-#error Fold expressions, but no variable templates?
-#endif
-#endif
+//#if META_CXX_FOLD_EXPRESSIONS
+//#if !META_CXX_VARIABLE_TEMPLATES
+//#error Fold expressions, but no variable templates?
+//#endif
+//#endif
 
-#if (defined(__cpp_concepts) && __cpp_concepts > 0) || defined(META_DOXYGEN_INVOKED)
-#if !META_CXX_VARIABLE_TEMPLATES
-#error Concepts, but no variable templates?
-#endif
-#if __cpp_concepts <= 201507L && !defined(META_DOXYGEN_INVOKED)
-#define META_CONCEPT concept bool
-// TS concepts subsumption barrier for atomic expressions
-#define META_CONCEPT_BARRIER(...) ::meta::detail::barrier<__VA_ARGS__>
+//#if (defined(__cpp_concepts) && __cpp_concepts > 0) || defined(META_DOXYGEN_INVOKED)
+//#if !META_CXX_VARIABLE_TEMPLATES
+//#error Concepts, but no variable templates?
+//#endif
+//#if __cpp_concepts <= 201507L && !defined(META_DOXYGEN_INVOKED)
+//#define META_CONCEPT concept bool
+//// TS concepts subsumption barrier for atomic expressions
+//#define META_CONCEPT_BARRIER(...) ::meta::detail::barrier<__VA_ARGS__>
+//#define META_TYPE_CONSTRAINT(...) typename
+//#else
+//#define META_CONCEPT concept
+//#define META_CONCEPT_BARRIER(...) __VA_ARGS__
+//#define META_TYPE_CONSTRAINT(...) __VA_ARGS__
+//#endif
+//#else
 #define META_TYPE_CONSTRAINT(...) typename
-#else
-#define META_CONCEPT concept
-#define META_CONCEPT_BARRIER(...) __VA_ARGS__
-#define META_TYPE_CONSTRAINT(...) __VA_ARGS__
-#endif
-#else
-#define META_TYPE_CONSTRAINT(...) typename
-#endif
+//#endif
 
 #if (defined(__cpp_lib_type_trait_variable_templates) && \
     __cpp_lib_type_trait_variable_templates > 0)
@@ -165,32 +165,32 @@
 #define META_CXX_TRAIT_VARIABLE_TEMPLATES 0
 #endif
 
-#if defined(__clang__)
-#define META_IS_SAME(...) __is_same(__VA_ARGS__)
-#elif defined(__GNUC__) && __GNUC__ >= 6
-#define META_IS_SAME(...) __is_same_as(__VA_ARGS__)
-#elif META_CXX_TRAIT_VARIABLE_TEMPLATES
-#define META_IS_SAME(...) eastl::is_same_v<__VA_ARGS__>
-#else
+//#if defined(__clang__)
+//#define META_IS_SAME(...) __is_same(__VA_ARGS__)
+//#elif defined(__GNUC__) && __GNUC__ >= 6
+//#define META_IS_SAME(...) __is_same_as(__VA_ARGS__)
+//#elif META_CXX_TRAIT_VARIABLE_TEMPLATES
+//#define META_IS_SAME(...) eastl::is_same_v<__VA_ARGS__>
+//#else
 #define META_IS_SAME(...) eastl::is_same<__VA_ARGS__>::value
-#endif
+//#endif
 
-#if defined(__GNUC__) || defined(_MSC_VER)
-#define META_IS_BASE_OF(...) __is_base_of(__VA_ARGS__)
-#elif META_CXX_TRAIT_VARIABLE_TEMPLATES
-#define META_IS_BASE_OF(...) eastl::is_base_of_v<__VA_ARGS__>
-#else
+//#if defined(__GNUC__) || defined(_MSC_VER)
+//#define META_IS_BASE_OF(...) __is_base_of(__VA_ARGS__)
+//#elif META_CXX_TRAIT_VARIABLE_TEMPLATES
+//#define META_IS_BASE_OF(...) eastl::is_base_of_v<__VA_ARGS__>
+//#else
 #define META_IS_BASE_OF(...) eastl::is_base_of<__VA_ARGS__>::value
-#endif
+//#endif
 
-#if defined(__clang__) || defined(_MSC_VER) || \
-    (defined(__GNUC__) && __GNUC__ >= 8)
-#define META_IS_CONSTRUCTIBLE(...) __is_constructible(__VA_ARGS__)
-#elif META_CXX_TRAIT_VARIABLE_TEMPLATES
-#define META_IS_CONSTRUCTIBLE(...) eastl::is_constructible_v<__VA_ARGS__>
-#else
+//#if defined(__clang__) || defined(_MSC_VER) || \
+//    (defined(__GNUC__) && __GNUC__ >= 8)
+//#define META_IS_CONSTRUCTIBLE(...) __is_constructible(__VA_ARGS__)
+//#elif META_CXX_TRAIT_VARIABLE_TEMPLATES
+//#define META_IS_CONSTRUCTIBLE(...) eastl::is_constructible_v<__VA_ARGS__>
+//#else
 #define META_IS_CONSTRUCTIBLE(...) eastl::is_constructible<__VA_ARGS__>::value
-#endif
+//#endif
 
 /// \cond
 // Non-portable forward declarations of standard containers

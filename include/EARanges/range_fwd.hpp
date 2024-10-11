@@ -440,10 +440,11 @@ namespace ranges
     struct not_equal_to;
     struct equal_to;
     struct less;
-#if __cplusplus > 201703L && __has_include(<compare>) && \
-    defined(__cpp_concepts) && defined(__cpp_impl_three_way_comparison)
-    struct compare_three_way;
-#endif // __cplusplus
+    //TODO: I should add eastl::compare_three_way
+//#if __cplusplus > 201703L && __has_include(<compare>) && \
+//    defined(__cpp_concepts) && defined(__cpp_impl_three_way_comparison)
+//    struct compare_three_way;
+//#endif // __cplusplus
     struct identity;
     template<typename Pred>
     struct logical_negate;

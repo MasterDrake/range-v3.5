@@ -682,105 +682,105 @@ EARANGES_BEGIN_NAMESPACE_STD
       : tuple_element<N, tuple<Ts...>>
     {};
 
-#if EARANGES_CXX_VER > EARANGES_CXX_STD_17
-EARANGES_BEGIN_NAMESPACE_VERSION
-    template<typename...>
-    struct common_type;
-
-    // common_type for pairs
-    template<typename F1, typename S1, typename F2, typename S2>
-    struct common_type<eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>>
-      : ::ranges::detail::common_type_tuple_like<
-            eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>,
-            ::meta::quote<::ranges::common_pair>>
-    {};
-    template<typename F1, typename S1, typename F2, typename S2>
-    struct common_type<::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>>
-      : ::ranges::detail::common_type_tuple_like<
-            ::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>,
-            ::meta::quote<::ranges::common_pair>>
-    {};
-    template<typename F1, typename S1, typename F2, typename S2>
-    struct common_type<::ranges::common_pair<F1, S1>, ::ranges::common_pair<F2, S2>>
-      : ::ranges::detail::common_type_tuple_like<::ranges::common_pair<F1, S1>,
-                                               ::ranges::common_pair<F2, S2>,
-                                               ::meta::quote<::ranges::common_pair>>
-    {};
-    // common_type for tuples
-    template<typename... Ts, typename... Us>
-    struct common_type<::ranges::common_tuple<Ts...>, eastl::tuple<Us...>>
-      : ::ranges::detail::common_type_tuple_like<
-            ::ranges::common_tuple<Ts...>, eastl::tuple<Us...>,
-            ::meta::quote<::ranges::common_tuple>>
-    {};
-    template<typename... Ts, typename... Us>
-    struct common_type<eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>>
-      : ::ranges::detail::common_type_tuple_like<
-            eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>,
-            ::meta::quote<::ranges::common_tuple>>
-    {};
-    template<typename... Ts, typename... Us>
-    struct common_type<::ranges::common_tuple<Ts...>, ::ranges::common_tuple<Us...>>
-      : ::ranges::detail::common_type_tuple_like<::ranges::common_tuple<Ts...>,
-                                               ::ranges::common_tuple<Us...>,
-                                               ::meta::quote<::ranges::common_tuple>>
-    {};
-
-    template<typename, typename, template<typename> class, template<typename> class>
-    struct basic_common_reference;
-
-    // common reference for pairs
-    template<typename F1, typename S1, typename F2, typename S2,
-             template<typename> class Qual1, template<typename> class Qual2>
-    struct basic_common_reference<::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>, Qual1,
-                                  Qual2>
-      : ::ranges::detail::common_ref_tuple_like<
-            ::ranges::common_pair<Qual1<F1>, Qual1<S1>>, eastl::pair<Qual2<F2>, Qual2<S2>>,
-            ::meta::quote<::ranges::common_pair>>
-    {};
-    template<typename F1, typename S1, typename F2, typename S2,
-             template<typename> class Qual1, template<typename> class Qual2>
-    struct basic_common_reference<eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>, Qual1,
-                                  Qual2>
-      : ::ranges::detail::common_ref_tuple_like<
-            eastl::pair<Qual1<F1>, Qual1<S1>>, ::ranges::common_pair<Qual2<F2>, Qual2<S2>>,
-            ::meta::quote<::ranges::common_pair>>
-    {};
-    template<typename F1, typename S1, typename F2, typename S2,
-             template<typename> class Qual1, template<typename> class Qual2>
-    struct basic_common_reference<::ranges::common_pair<F1, S1>,
-                                  ::ranges::common_pair<F2, S2>, Qual1, Qual2>
-      : ::ranges::detail::common_ref_tuple_like<::ranges::common_pair<Qual1<F1>, Qual1<S1>>,
-                                              ::ranges::common_pair<Qual2<F2>, Qual2<S2>>,
-                                              ::meta::quote<::ranges::common_pair>>
-    {};
-    // common reference for tuples
-    template<typename... Ts, typename... Us, template<typename> class Qual1,
-             template<typename> class Qual2>
-    struct basic_common_reference<::ranges::common_tuple<Ts...>, eastl::tuple<Us...>, Qual1,
-                                  Qual2>
-      : ::ranges::detail::common_ref_tuple_like<
-            ::ranges::common_tuple<Qual1<Ts>...>, eastl::tuple<Qual2<Us>...>,
-            ::meta::quote<::ranges::common_tuple>>
-    {};
-    template<typename... Ts, typename... Us, template<typename> class Qual1,
-             template<typename> class Qual2>
-    struct basic_common_reference<eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>, Qual1,
-                                  Qual2>
-      : ::ranges::detail::common_ref_tuple_like<
-            eastl::tuple<Qual1<Ts>...>, ::ranges::common_tuple<Qual2<Us>...>,
-            ::meta::quote<::ranges::common_tuple>>
-    {};
-    template<typename... Ts, typename... Us, template<typename> class Qual1,
-             template<typename> class Qual2>
-    struct basic_common_reference<::ranges::common_tuple<Ts...>,
-                                  ::ranges::common_tuple<Us...>, Qual1, Qual2>
-      : ::ranges::detail::common_ref_tuple_like<::ranges::common_tuple<Qual1<Ts>...>,
-                                              ::ranges::common_tuple<Qual2<Us>...>,
-                                              ::meta::quote<::ranges::common_tuple>>
-    {};
-EARANGES_END_NAMESPACE_VERSION
-#endif // EARANGES_CXX_VER > EARANGES_CXX_STD_17
+//#if EARANGES_CXX_VER > EARANGES_CXX_STD_17
+//EARANGES_BEGIN_NAMESPACE_VERSION
+//    template<typename...>
+//    struct common_type;
+//
+//    // common_type for pairs
+//    template<typename F1, typename S1, typename F2, typename S2>
+//    struct common_type<eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>>
+//      : ::ranges::detail::common_type_tuple_like<
+//            eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>,
+//            ::meta::quote<::ranges::common_pair>>
+//    {};
+//    template<typename F1, typename S1, typename F2, typename S2>
+//    struct common_type<::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>>
+//      : ::ranges::detail::common_type_tuple_like<
+//            ::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>,
+//            ::meta::quote<::ranges::common_pair>>
+//    {};
+//    template<typename F1, typename S1, typename F2, typename S2>
+//    struct common_type<::ranges::common_pair<F1, S1>, ::ranges::common_pair<F2, S2>>
+//      : ::ranges::detail::common_type_tuple_like<::ranges::common_pair<F1, S1>,
+//                                               ::ranges::common_pair<F2, S2>,
+//                                               ::meta::quote<::ranges::common_pair>>
+//    {};
+//    // common_type for tuples
+//    template<typename... Ts, typename... Us>
+//    struct common_type<::ranges::common_tuple<Ts...>, eastl::tuple<Us...>>
+//      : ::ranges::detail::common_type_tuple_like<
+//            ::ranges::common_tuple<Ts...>, eastl::tuple<Us...>,
+//            ::meta::quote<::ranges::common_tuple>>
+//    {};
+//    template<typename... Ts, typename... Us>
+//    struct common_type<eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>>
+//      : ::ranges::detail::common_type_tuple_like<
+//            eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>,
+//            ::meta::quote<::ranges::common_tuple>>
+//    {};
+//    template<typename... Ts, typename... Us>
+//    struct common_type<::ranges::common_tuple<Ts...>, ::ranges::common_tuple<Us...>>
+//      : ::ranges::detail::common_type_tuple_like<::ranges::common_tuple<Ts...>,
+//                                               ::ranges::common_tuple<Us...>,
+//                                               ::meta::quote<::ranges::common_tuple>>
+//    {};
+//
+//    template<typename, typename, template<typename> class, template<typename> class>
+//    struct basic_common_reference;
+//
+//    // common reference for pairs
+//    template<typename F1, typename S1, typename F2, typename S2,
+//             template<typename> class Qual1, template<typename> class Qual2>
+//    struct basic_common_reference<::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>, Qual1,
+//                                  Qual2>
+//      : ::ranges::detail::common_ref_tuple_like<
+//            ::ranges::common_pair<Qual1<F1>, Qual1<S1>>, eastl::pair<Qual2<F2>, Qual2<S2>>,
+//            ::meta::quote<::ranges::common_pair>>
+//    {};
+//    template<typename F1, typename S1, typename F2, typename S2,
+//             template<typename> class Qual1, template<typename> class Qual2>
+//    struct basic_common_reference<eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>, Qual1,
+//                                  Qual2>
+//      : ::ranges::detail::common_ref_tuple_like<
+//            eastl::pair<Qual1<F1>, Qual1<S1>>, ::ranges::common_pair<Qual2<F2>, Qual2<S2>>,
+//            ::meta::quote<::ranges::common_pair>>
+//    {};
+//    template<typename F1, typename S1, typename F2, typename S2,
+//             template<typename> class Qual1, template<typename> class Qual2>
+//    struct basic_common_reference<::ranges::common_pair<F1, S1>,
+//                                  ::ranges::common_pair<F2, S2>, Qual1, Qual2>
+//      : ::ranges::detail::common_ref_tuple_like<::ranges::common_pair<Qual1<F1>, Qual1<S1>>,
+//                                              ::ranges::common_pair<Qual2<F2>, Qual2<S2>>,
+//                                              ::meta::quote<::ranges::common_pair>>
+//    {};
+//    // common reference for tuples
+//    template<typename... Ts, typename... Us, template<typename> class Qual1,
+//             template<typename> class Qual2>
+//    struct basic_common_reference<::ranges::common_tuple<Ts...>, eastl::tuple<Us...>, Qual1,
+//                                  Qual2>
+//      : ::ranges::detail::common_ref_tuple_like<
+//            ::ranges::common_tuple<Qual1<Ts>...>, eastl::tuple<Qual2<Us>...>,
+//            ::meta::quote<::ranges::common_tuple>>
+//    {};
+//    template<typename... Ts, typename... Us, template<typename> class Qual1,
+//             template<typename> class Qual2>
+//    struct basic_common_reference<eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>, Qual1,
+//                                  Qual2>
+//      : ::ranges::detail::common_ref_tuple_like<
+//            eastl::tuple<Qual1<Ts>...>, ::ranges::common_tuple<Qual2<Us>...>,
+//            ::meta::quote<::ranges::common_tuple>>
+//    {};
+//    template<typename... Ts, typename... Us, template<typename> class Qual1,
+//             template<typename> class Qual2>
+//    struct basic_common_reference<::ranges::common_tuple<Ts...>,
+//                                  ::ranges::common_tuple<Us...>, Qual1, Qual2>
+//      : ::ranges::detail::common_ref_tuple_like<::ranges::common_tuple<Qual1<Ts>...>,
+//                                              ::ranges::common_tuple<Qual2<Us>...>,
+//                                              ::meta::quote<::ranges::common_tuple>>
+//    {};
+//EARANGES_END_NAMESPACE_VERSION
+//#endif // EARANGES_CXX_VER > EARANGES_CXX_STD_17
 EARANGES_END_NAMESPACE_STD
 EARANGES_DIAGNOSTIC_POP
 

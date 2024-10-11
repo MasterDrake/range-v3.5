@@ -104,68 +104,69 @@ namespace concepts
     template<typename... Ts, typename... Us, template<typename> class Qual1, template<typename> class Qual2>
     struct basic_common_reference<::ranges::common_tuple<Ts...>, ::ranges::common_tuple<Us...>, Qual1, Qual2>;
 } // namespace concepts
+
 //TODO: perche serve c++20????
-#if EARANGES_CXX_VER > EARANGES_CXX_STD_17
-EARANGES_DIAGNOSTIC_PUSH
-EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
-EARANGES_BEGIN_NAMESPACE_STD
-EARANGES_BEGIN_NAMESPACE_VERSION
-
-    template<typename...>
-    struct common_type;
-
-    // common_type for eastl::pairs
-    template<typename F1, typename S1, typename F2, typename S2>
-    struct common_type<eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>>;
-
-    template<typename F1, typename S1, typename F2, typename S2>
-    struct common_type<::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>>;
-
-    template<typename F1, typename S1, typename F2, typename S2>
-    struct common_type<::ranges::common_pair<F1, S1>, ::ranges::common_pair<F2, S2>>;
-
-    // common_type for eastl::tuples
-    template<typename... Ts, typename... Us>
-    struct common_type<::ranges::common_tuple<Ts...>, eastl::tuple<Us...>>;
-
-    template<typename... Ts, typename... Us>
-    struct common_type<eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>>;
-
-    template<typename... Ts, typename... Us>
-    struct common_type<::ranges::common_tuple<Ts...>, ::ranges::common_tuple<Us...>>;
-
-    template<typename, typename, template<typename> class, template<typename> class>
-    struct basic_common_reference;
-
-    // A common reference for eastl::pairs
-    template<typename F1, typename S1, typename F2, typename S2, template<typename> class Qual1, template<typename> class Qual2>
-    struct basic_common_reference<::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>, Qual1, Qual2>;
-
-    template<typename F1, typename S1, typename F2, typename S2,
-             template<typename> class Qual1, template<typename> class Qual2>
-    struct basic_common_reference<eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>, Qual1, Qual2>;
-
-    template<typename F1, typename S1, typename F2, typename S2,
-             template<typename> class Qual1, template<typename> class Qual2>
-    struct basic_common_reference<::ranges::common_pair<F1, S1>, ::ranges::common_pair<F2, S2>, Qual1, Qual2>;
-
-    // A common reference for eastl::tuples
-    template<typename... Ts, typename... Us, template<typename> class Qual1,
-             template<typename> class Qual2>
-    struct basic_common_reference<::ranges::common_tuple<Ts...>, eastl::tuple<Us...>, Qual1, Qual2>;
-
-    template<typename... Ts, typename... Us, template<typename> class Qual1,
-             template<typename> class Qual2>
-    struct basic_common_reference<eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>, Qual1, Qual2>;
-
-    template<typename... Ts, typename... Us, template<typename> class Qual1,
-             template<typename> class Qual2>
-    struct basic_common_reference<::ranges::common_tuple<Ts...>, ::ranges::common_tuple<Us...>, Qual1, Qual2>;
-
-EARANGES_END_NAMESPACE_VERSION
-EARANGES_END_NAMESPACE_STD
-EARANGES_DIAGNOSTIC_POP
-#endif // EARANGES_CXX_VER > EARANGES_CXX_STD_17
+//#if EARANGES_CXX_VER > EARANGES_CXX_STD_17
+//EARANGES_DIAGNOSTIC_PUSH
+//EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS
+//EARANGES_BEGIN_NAMESPACE_STD
+//EARANGES_BEGIN_NAMESPACE_VERSION
+//
+//    template<typename...>
+//    struct common_type;
+//
+//    // common_type for eastl::pairs
+//    template<typename F1, typename S1, typename F2, typename S2>
+//    struct common_type<eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>>;
+//
+//    template<typename F1, typename S1, typename F2, typename S2>
+//    struct common_type<::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>>;
+//
+//    template<typename F1, typename S1, typename F2, typename S2>
+//    struct common_type<::ranges::common_pair<F1, S1>, ::ranges::common_pair<F2, S2>>;
+//
+//    // common_type for eastl::tuples
+//    template<typename... Ts, typename... Us>
+//    struct common_type<::ranges::common_tuple<Ts...>, eastl::tuple<Us...>>;
+//
+//    template<typename... Ts, typename... Us>
+//    struct common_type<eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>>;
+//
+//    template<typename... Ts, typename... Us>
+//    struct common_type<::ranges::common_tuple<Ts...>, ::ranges::common_tuple<Us...>>;
+//
+//    template<typename, typename, template<typename> class, template<typename> class>
+//    struct basic_common_reference;
+//
+//    // A common reference for eastl::pairs
+//    template<typename F1, typename S1, typename F2, typename S2, template<typename> class Qual1, template<typename> class Qual2>
+//    struct basic_common_reference<::ranges::common_pair<F1, S1>, eastl::pair<F2, S2>, Qual1, Qual2>;
+//
+//    template<typename F1, typename S1, typename F2, typename S2,
+//             template<typename> class Qual1, template<typename> class Qual2>
+//    struct basic_common_reference<eastl::pair<F1, S1>, ::ranges::common_pair<F2, S2>, Qual1, Qual2>;
+//
+//    template<typename F1, typename S1, typename F2, typename S2,
+//             template<typename> class Qual1, template<typename> class Qual2>
+//    struct basic_common_reference<::ranges::common_pair<F1, S1>, ::ranges::common_pair<F2, S2>, Qual1, Qual2>;
+//
+//    // A common reference for eastl::tuples
+//    template<typename... Ts, typename... Us, template<typename> class Qual1,
+//             template<typename> class Qual2>
+//    struct basic_common_reference<::ranges::common_tuple<Ts...>, eastl::tuple<Us...>, Qual1, Qual2>;
+//
+//    template<typename... Ts, typename... Us, template<typename> class Qual1,
+//             template<typename> class Qual2>
+//    struct basic_common_reference<eastl::tuple<Ts...>, ::ranges::common_tuple<Us...>, Qual1, Qual2>;
+//
+//    template<typename... Ts, typename... Us, template<typename> class Qual1,
+//             template<typename> class Qual2>
+//    struct basic_common_reference<::ranges::common_tuple<Ts...>, ::ranges::common_tuple<Us...>, Qual1, Qual2>;
+//
+//EARANGES_END_NAMESPACE_VERSION
+//EARANGES_END_NAMESPACE_STD
+//EARANGES_DIAGNOSTIC_POP
+//#endif // EARANGES_CXX_VER > EARANGES_CXX_STD_17
 /// \endcond
 
 #include <EARanges/detail/epilogue.hpp>

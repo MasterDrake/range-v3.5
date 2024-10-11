@@ -174,13 +174,13 @@ namespace ranges
                 else
                 {
                     // cannot always delegate to size() member on GCC with ConceptsTS
-#if defined(__cpp_concepts) && __cpp_concepts <= 201507
-                    auto s = ranges::min(
-                        static_cast<range_difference_t<Rng>>(count_),
-                        static_cast<range_difference_t<Rng>>(ranges::size(base_)));
-#else
+//#if defined(__cpp_concepts) && __cpp_concepts <= 201507
+//                    auto s = ranges::min(
+//                        static_cast<range_difference_t<Rng>>(count_),
+//                        static_cast<range_difference_t<Rng>>(ranges::size(base_)));
+//#else
                     auto s = static_cast<range_difference_t<Rng>>(size());
-#endif
+//#endif
                     return make_counted_iterator(ranges::begin(base_), s);
                 }
             else

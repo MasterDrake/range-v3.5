@@ -134,15 +134,15 @@ namespace ranges
             if(that.engaged_)
                 this->construct_from(that.data_);
         }
-#if defined(__cpp_conditional_explicit) && 0 < __cpp_conditional_explicit
-        template(typename U)(
-            requires (!same_as<uncvref_t<U>, semiregular_box>) AND
-                constructible_from<T, U>)
-        explicit(!convertible_to<U, T>) constexpr semiregular_box(U && u)
-            noexcept(eastl::is_nothrow_constructible<T, U>::value)
-          : semiregular_box(in_place, static_cast<U &&>(u))
-        {}
-#else
+//#if defined(__cpp_conditional_explicit) && 0 < __cpp_conditional_explicit
+//        template(typename U)(
+//            requires (!same_as<uncvref_t<U>, semiregular_box>) AND
+//                constructible_from<T, U>)
+//        explicit(!convertible_to<U, T>) constexpr semiregular_box(U && u)
+//            noexcept(eastl::is_nothrow_constructible<T, U>::value)
+//          : semiregular_box(in_place, static_cast<U &&>(u))
+//        {}
+//#else
         template(typename U)(
             requires (!same_as<uncvref_t<U>, semiregular_box>) AND
                 constructible_from<T, U> AND (!convertible_to<U, T>)) //
@@ -157,7 +157,7 @@ namespace ranges
             noexcept(eastl::is_nothrow_constructible<T, U>::value)
           : semiregular_box(in_place, static_cast<U &&>(u))
         {}
-#endif
+//#endif
         template(typename... Args)(
             requires constructible_from<T, Args...>)
         constexpr semiregular_box(in_place_t, Args &&... args) //

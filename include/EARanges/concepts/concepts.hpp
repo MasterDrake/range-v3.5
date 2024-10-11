@@ -28,8 +28,7 @@
 #include <EARanges/concepts/swap.hpp>
 #include <EARanges/concepts/type_traits.hpp>
 
-// Disable buggy clang compatibility warning about "requires" and "concept" being
-// C++20 keywords.
+// Disable buggy clang compatibility warning about "requires" and "concept" being C++20 keywords.
 // https://bugs.llvm.org/show_bug.cgi?id=43708
 #if defined(__clang__) && __cplusplus <= 201703L
 #define CPP_PP_IGNORE_CXX2A_COMPAT_BEGIN                                                \
@@ -93,12 +92,12 @@
 
 // CPP_CXX_VA_OPT
 #ifndef CPP_CXX_VA_OPT
-#if __cplusplus > 201703L
-#define CPP_CXX_VA_OPT_(...) CPP_PP_CHECK(__VA_OPT__(,) 1)
-#define CPP_CXX_VA_OPT CPP_CXX_VA_OPT_(~)
-#else
+//if __cplusplus > 201703L
+//define CPP_CXX_VA_OPT_(...) CPP_PP_CHECK(__VA_OPT__(,) 1)
+//define CPP_CXX_VA_OPT CPP_CXX_VA_OPT_(~)
+//else
 #define CPP_CXX_VA_OPT 0
-#endif
+//#endif
 #endif // CPP_CXX_VA_OPT
 
 // The final CPP_PP_EXPAND here is to avoid
@@ -169,18 +168,20 @@
             CPP_PP_PROBE_EMPTY_PROBE_,                                          \
             CPP_PP_PROBE_EMPTY __VA_ARGS__ ()))
 
-#if defined(_MSC_VER) && !defined(__clang__) && (__cplusplus <= 201703L)
+//BUGBUGBUG Avoid c++ version switching
+//#if defined(_MSC_VER) && !defined(__clang__) && (__cplusplus <= 201703L)
 #define CPP_BOOL(...) ::meta::bool_<__VA_ARGS__>::value
 #define CPP_TRUE_FN                                                             \
     !::concepts::detail::instance_<                                             \
         decltype(CPP_true_fn(::concepts::detail::xNil{}))>
 
 #define CPP_NOT(...) (!CPP_BOOL(__VA_ARGS__))
-#else
-#define CPP_BOOL(...) __VA_ARGS__
-#define CPP_TRUE_FN CPP_true_fn(::concepts::detail::xNil{})
-#define CPP_NOT(...) (!(__VA_ARGS__))
-#endif
+//#else
+// #define CPP_BOOL(...) __VA_ARGS__
+// #define CPP_TRUE_FN CPP_true_fn(::concepts::detail::xNil{})
+// #define CPP_NOT(...) (!(__VA_ARGS__))
+//#endif
+
 
 #define CPP_assert(...)                                                         \
     static_assert(static_cast<bool>(__VA_ARGS__),                               \
@@ -188,15 +189,15 @@
 
 #define CPP_assert_msg static_assert
 
-#if CPP_CXX_CONCEPTS || defined(CPP_DOXYGEN_INVOKED)
-#define CPP_concept META_CONCEPT
-#define CPP_and &&
-
-#else
+//#if CPP_CXX_CONCEPTS || defined(CPP_DOXYGEN_INVOKED)
+//#define CPP_concept META_CONCEPT
+//#define CPP_and &&
+//
+//#else
 #define CPP_concept CPP_INLINE_VAR constexpr bool
 #define CPP_and CPP_and_sfinae
-
-#endif
+//
+//#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // CPP_template

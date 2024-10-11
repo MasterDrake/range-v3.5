@@ -529,24 +529,24 @@ namespace ranges
           : base_t(in_place, il, static_cast<Args &&>(args)...)
         {}
 
-#if defined(__cpp_conditional_explicit) && __cpp_conditional_explicit > 0
-        template(typename U = T)(
-            requires (!same_as<detail::decay_t<U>, in_place_t>) AND
-                (!same_as<detail::decay_t<U>, optional>) AND
-                constructible_from<T, U>)
-        constexpr explicit(!convertible_to<U, T>) optional(U && v)
-          : base_t(in_place, static_cast<U &&>(v))
-        {}
-
-        template(typename U)(
-            requires optional_should_convert<U, T> AND
-                constructible_from<T, U const &>)
-        explicit(!convertible_to<U const &, T>) optional(optional<U> const & that)
-        {
-            if(that.has_value())
-                base_t::construct_from(*that);
-        }
-#else
+//#if defined(__cpp_conditional_explicit) && __cpp_conditional_explicit > 0
+//        template(typename U = T)(
+//            requires (!same_as<detail::decay_t<U>, in_place_t>) AND
+//                (!same_as<detail::decay_t<U>, optional>) AND
+//                constructible_from<T, U>)
+//        constexpr explicit(!convertible_to<U, T>) optional(U && v)
+//          : base_t(in_place, static_cast<U &&>(v))
+//        {}
+//
+//        template(typename U)(
+//            requires optional_should_convert<U, T> AND
+//                constructible_from<T, U const &>)
+//        explicit(!convertible_to<U const &, T>) optional(optional<U> const & that)
+//        {
+//            if(that.has_value())
+//                base_t::construct_from(*that);
+//        }
+//#else
         template(typename U = T)(
             requires (!same_as<detail::decay_t<U>, in_place_t>) AND
                 (!same_as<detail::decay_t<U>, optional>) AND
@@ -582,7 +582,7 @@ namespace ranges
             if(that.has_value())
                 base_t::construct_from(*that);
         }
-#endif
+//#endif
 
         template(typename U)(
             requires optional_should_convert<U, T> AND constructible_from<T, U> AND

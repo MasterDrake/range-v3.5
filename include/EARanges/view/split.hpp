@@ -45,24 +45,25 @@ namespace ranges
     namespace detail
     {
         // clang-format off
-#if defined(_MSC_VER) && !defined(__clang__) && \
-    EARANGES_CXX_VER <= EARANGES_CXX_STD_17
-        template<typename R, eastl::size_t Sz = static_cast<eastl::size_t>(R::size())>
-        constexpr bool _is_tiny_range_(R const *) noexcept
-        {
-            return R::size() <= 1u;
-        }
-        constexpr bool _is_tiny_range_(void const*) noexcept
-        {
-            return false;
-        }
-        /// \concept tiny_range
-        /// \brief The \c tiny_range concept
-        template<typename R>
-        CPP_concept tiny_range =
-            sized_range<R> &&
-            detail::_is_tiny_range_(static_cast<eastl::add_pointer_t<R>>(nullptr));
-#else // ^^^^ workaround / no workaround vvvv
+        // BUGBUGBUG: Don't forget to check this out
+//#if defined(_MSC_VER) && !defined(__clang__) && \
+//     EARANGES_CXX_VER <= EARANGES_CXX_STD_17
+//        template<typename R, eastl::size_t Sz = static_cast<eastl::size_t>(R::size())>
+//        constexpr bool _is_tiny_range_(R const *) noexcept
+//        {
+//            return R::size() <= 1u;
+//        }
+//        constexpr bool _is_tiny_range_(void const*) noexcept
+//        {
+//            return false;
+//        }
+//        /// \concept tiny_range
+//        /// \brief The \c tiny_range concept
+//        template<typename R>
+//        CPP_concept tiny_range =
+//            sized_range<R> &&
+//            detail::_is_tiny_range_(static_cast<eastl::add_pointer_t<R>>(nullptr));
+//#else // ^^^^ workaround / no workaround vvvv
         /// \concept tiny_range_
         /// \brief The \c tiny_range_ concept
         template(typename R)(
@@ -77,7 +78,7 @@ namespace ranges
         CPP_concept tiny_range =
             sized_range<R> &&
             CPP_concept_ref(detail::tiny_range_, eastl::remove_reference_t<R>);
-#endif
+//#endif
         // clang-format on
     } // namespace detail
 

@@ -279,14 +279,6 @@ namespace ranges
                                       // workaround]
 #define EARANGES_WORKAROUND_MSVC_934264 // Explicitly-defaulted inherited default
                                       // constructor is not correctly implicitly constexpr
-#if _MSVC_LANG <= 201703L
-#define EARANGES_WORKAROUND_MSVC_OLD_LAMBDA
-#endif
-
-#if _MSVC_LANG <= 201703L
-#define EARANGES_WORKAROUND_MSVC_UNUSABLE_SPAN // MSVC provides a <span> header that is
-                                             // guarded against use with std <= 17
-#endif
 
 #elif defined(__GNUC__) || defined(__clang__)
 #define EARANGES_PRAGMA(X) _Pragma(#X)
@@ -419,11 +411,12 @@ namespace ranges
 #endif
 
 #ifndef EARANGES_CXX_VARIABLE_TEMPLATES
-#ifdef __cpp_variable_templates
-#define EARANGES_CXX_VARIABLE_TEMPLATES __cpp_variable_templates
-#else
-#define EARANGES_CXX_VARIABLE_TEMPLATES EARANGES_CXX_FEATURE(VARIABLE_TEMPLATES)
-#endif
+//#ifdef __cpp_variable_templates
+//#define EARANGES_CXX_VARIABLE_TEMPLATES __cpp_variable_templates
+//#else
+// #define EARANGES_CXX_VARIABLE_TEMPLATES EARANGES_CXX_FEATURE(VARIABLE_TEMPLATES)
+#define EARANGES_CXX_VARIABLE_TEMPLATES 0
+//#endif
 #endif
 
 #if(defined(__cpp_lib_type_trait_variable_templates) && \
@@ -619,13 +612,13 @@ namespace ranges
 
 // __VA_OPT__
 #ifndef EARANGES_CXX_VA_OPT
-#if __cplusplus > 201703L
-#define EARANGES_CXX_THIRD_ARG_(A, B, C, ...) C
-#define EARANGES_CXX_VA_OPT_I_(...) EARANGES_CXX_THIRD_ARG_(__VA_OPT__(, ), 1, 0, ?)
-#define EARANGES_CXX_VA_OPT EARANGES_CXX_VA_OPT_I_(?)
-#else
+//#if __cplusplus > 201703L
+//#define EARANGES_CXX_THIRD_ARG_(A, B, C, ...) C
+//#define EARANGES_CXX_VA_OPT_I_(...) EARANGES_CXX_THIRD_ARG_(__VA_OPT__(, ), 1, 0, ?)
+//#define EARANGES_CXX_VA_OPT EARANGES_CXX_VA_OPT_I_(?)
+//#else
 #define EARANGES_CXX_VA_OPT 0
-#endif
+//#endif
 #endif // EARANGES_CXX_VA_OPT
 
 #ifndef EARANGES_CXX_IF_CONSTEXPR
@@ -651,21 +644,21 @@ namespace ranges
 #endif
 #endif // EARANGES_CXX_ALIGNED_NEW
 
-#if defined(__clang__)
-#define EARANGES_IS_SAME(...) __is_same(__VA_ARGS__)
-#elif defined(__GNUC__) && __GNUC__ >= 6
-#define EARANGES_IS_SAME(...) __is_same_as(__VA_ARGS__)
-#elif EARANGES_CXX_TRAIT_VARIABLE_TEMPLATES
-#define EARANGES_IS_SAME(...) eastl::is_same_v<__VA_ARGS__>
-#else
+//#if defined(__clang__)
+//#define EARANGES_IS_SAME(...) __is_same(__VA_ARGS__)
+//#elif defined(__GNUC__) && __GNUC__ >= 6
+//#define EARANGES_IS_SAME(...) __is_same_as(__VA_ARGS__)
+//#elif EARANGES_CXX_TRAIT_VARIABLE_TEMPLATES
+//#define EARANGES_IS_SAME(...) eastl::is_same_v<__VA_ARGS__>
+//#else
 #define EARANGES_IS_SAME(...) eastl::is_same<__VA_ARGS__>::value
-#endif
-
-#if defined(__has_cpp_attribute) && __has_cpp_attribute(no_unique_address)
-#define EARANGES_NO_UNIQUE_ADDRESS [[no_unique_address]]
-#else
+//#endif
+//TODO: Check alternatives in eastl for this.
+//#if defined(__has_cpp_attribute) && __has_cpp_attribute(no_unique_address)
+//#define EARANGES_NO_UNIQUE_ADDRESS [[no_unique_address]]
+//#else
 #define EARANGES_NO_UNIQUE_ADDRESS
-#endif
+//#endif
 
 #if defined(__clang__)
 #if __has_attribute(no_sanitize)
