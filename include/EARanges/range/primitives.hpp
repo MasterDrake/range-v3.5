@@ -278,15 +278,6 @@ namespace ranges
                   ? nullptr
                   : detail::addressof(*ranges::begin((R &&) r));
             }
-
-#if EARANGES_CXX_STD <= EARANGES_CXX_STD_14
-            template<typename charT, typename Alloc>
-            constexpr charT * operator()(eastl::basic_string<charT, Alloc>& s) const noexcept
-            {
-                // string doesn't have non-const data before C++17
-                return const_cast<charT *>(detail::as_const(s).data());
-            }
-#endif
         };
 
         template<typename R>

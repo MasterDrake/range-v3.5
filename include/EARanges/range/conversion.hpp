@@ -325,7 +325,7 @@ namespace ranges
 
         template<typename MetaFn>
         using to_container_fn = to_container_closure<MetaFn, to_container::fn<MetaFn>>;
-
+       
         template<template<typename...> class ContT>
         struct from_range
         {
@@ -334,8 +334,7 @@ namespace ranges
             template<typename Rng>
             static auto from_rng_(int) //
                 -> decltype(ContT(range_cpp17_iterator_t<Rng>{}, range_cpp17_iterator_t<Rng>{}));
-            // No deduction guide. Fallback to instantiating with the
-            // iterator's value type.
+            // No deduction guide. Fallback to instantiating with the iterator's value type.
             template<typename Rng>
             static auto from_rng_(long) //
                 -> meta::invoke<meta::quote<ContT>, range_value_t<Rng>>;

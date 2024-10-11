@@ -268,6 +268,8 @@ namespace eastl
 		size_type size() const EA_NOEXCEPT;
 		size_type capacity() const EA_NOEXCEPT;
 
+		size_type max_size() const EA_NOEXCEPT;
+
 		void resize(size_type n, const value_type& value);
 		void resize(size_type n);
 		void reserve(size_type n);
@@ -406,7 +408,9 @@ namespace eastl
 
 
 
-
+	// Deduction guide for eastl::vector
+	template <typename T>
+	vector(T) -> vector<T>; // Deduce type T from the constructor argument
 
 
 	///////////////////////////////////////////////////////////////////////
@@ -605,7 +609,6 @@ namespace eastl
 	{
 		DoInit(first, last, is_integral<InputIterator>());
 	}
-
 
 	template <typename T, typename Allocator>
 	inline vector<T, Allocator>::~vector()
@@ -810,6 +813,12 @@ namespace eastl
 		return (size_type)(mpEnd - mpBegin);
 	}
 
+	template <typename T, typename Allocator>
+	inline typename vector<T, Allocator>::size_type
+	vector<T, Allocator>::max_size() const EA_NOEXCEPT
+	{
+		return base_type::kMaxSize;
+	}
 
 	template <typename T, typename Allocator>
 	inline typename vector<T, Allocator>::size_type

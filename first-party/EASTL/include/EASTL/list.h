@@ -451,7 +451,9 @@ namespace eastl
 	}; // class list
 
 
-
+	// Deduction guide for single type
+	template <typename T>
+	list(T) -> list<T>; // For `eastl::list` to deduce the type from a single argument.
 
 
 	///////////////////////////////////////////////////////////////////////
