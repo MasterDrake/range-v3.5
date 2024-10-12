@@ -263,7 +263,7 @@ public:
 
         // compare
         unordered_list |= actions::sort;
-        //TODO: BREAKS IN linux-gcc release mode
+        //TODO: BREAKS IN linux-gcc release mode, can't seem to add a  friend std::ostream& operator<<(std::ostream& os, const Int& obj); to Int -.-
         //CHECK(ordered_list == unordered_list);
     }
 };

@@ -25,10 +25,8 @@
 
 #include <EASTL/utility.h>
 #include <EASTL/unique_ptr.h>
-// TODO: Capire quale header da eliminare in inplace merge che usa stl::pair e unique_ptr
 #include <EASTL/functional.h>
 #include <EASTL/memory.h>
-//TODO:Serve???#include <new>
 #include <EASTL/type_traits.h>
 
 #include <EARanges/range_fwd.hpp>

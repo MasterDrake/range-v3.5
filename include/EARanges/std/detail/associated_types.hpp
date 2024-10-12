@@ -241,57 +241,6 @@ namespace ranges
             using reference = void;
             using pointer = void;
         };
-        /*
-        // For testing whether a particular instantiation of eastl::iterator_traits
-        // is user-specified or not. //TODO: Altri cazzi qua, quandi si attiva c++20.
-#if defined(_MSVC_STL_UPDATE) && defined(__cpp_lib_concepts) && _MSVC_STL_UPDATE >= 201908L
-        template<typename I>
-        inline constexpr bool is_std_iterator_traits_specialized_v = !std::_Is_from_primary<eastl::iterator_traits<I>>;
-#else
-#if defined(__GLIBCXX__)
-        template<typename I>
-        char (&is_std_iterator_traits_specialized_impl_(eastl::iterator_traits<I>*))[2];
-        template<typename I>
-        char is_std_iterator_traits_specialized_impl_(void *);
-#elif defined(_LIBCPP_VERSION)
-        // In older versions of libc++, the base template inherits from std::__iterator_traits<typename, bool>.
-        template<template<typename, bool> class IteratorTraitsBase, typename I, bool B>
-        char (&libcpp_iterator_traits_base_impl(IteratorTraitsBase<I, B> *))[2];
-        template<template<typename, bool> class IteratorTraitsBase, typename I>
-        char libcpp_iterator_traits_base_impl(void *);
-
-        // In newer versions, the base template has only one template parameter and provides the
-        // __primary_template typedef which aliases the iterator_traits specialization.
-        template<template<typename> class, typename I>
-        char (&libcpp_iterator_traits_base_impl(typename std::iterator_traits<I>::__primary_template *))[2];
-        template<template<typename> class, typename I>
-        char libcpp_iterator_traits_base_impl(void *);
-
-        template<typename I>
-        auto is_std_iterator_traits_specialized_impl_(std::iterator_traits<I>* traits)
-            -> decltype(libcpp_iterator_traits_base_impl<std::__iterator_traits, I>(traits));
-#elif defined(_MSVC_STL_VERSION) || defined(_IS_WRS)
-        template<typename I>
-       // char (&is_std_iterator_traits_specialized_impl_(std::_Iterator_traits_base<I> *))[2];//TODO: OH NO, serve???????
-        char (&is_std_iterator_traits_specialized_impl_(eastl::iterator_traits<I>*))[2];//TODO: OH NO, serve???????
-        template<typename I>
-        char is_std_iterator_traits_specialized_impl_(void *);
-#else
-        template<typename I>
-        char (&is_std_iterator_traits_specialized_impl_(void *))[2];
-#endif
-        template<typename, typename T>
-        char (&is_std_iterator_traits_specialized_impl_(eastl::iterator_traits<T *> *))[2];
-
-        template<typename I>
-        EARANGES_INLINE_VAR constexpr bool is_std_iterator_traits_specialized_v = 1 == sizeof(is_std_iterator_traits_specialized_impl_<I>(static_cast<eastl::iterator_traits<I> *>(nullptr)));
-#endif
-        // The standard iterator_traits<T *> specialization(s) do not count
-        // as user-specialized. This will no longer be necessary in C++20.
-        // This helps with `T volatile*` and `void *`.
-        template<typename T>
-        EARANGES_INLINE_VAR constexpr bool is_std_iterator_traits_specialized_v<T *> = false;
-        */
     } // namespace detail
     /// \endcond
 } // namespace ranges

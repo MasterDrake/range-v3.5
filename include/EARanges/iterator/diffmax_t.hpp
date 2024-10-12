@@ -330,7 +330,6 @@ namespace eastl
     template<>
     struct numeric_limits<::ranges::detail::diffmax_t>
     {
-        //TODO: The only worrying thing is: is_signed and maybe has denorm
         static constexpr bool is_specialized = true;
         static constexpr bool is_signed = false;
         static constexpr bool is_integer = true;

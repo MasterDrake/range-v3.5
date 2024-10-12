@@ -1055,14 +1055,12 @@ void test_case_interop_with_std_regex()
     CHECK(match[0].first == f_it);
     CHECK(match[0].second == (f_it + 1));
 }
-//TODO: Dont'w ork on linux gcc for some reason :/
+
 void test_case_default_constructible()
 {
-    /*
     CHECK((eastl::is_default_constructible<span<int>>::value));
     CHECK((eastl::is_default_constructible<span<int, 0>>::value));
     CHECK((eastl::is_default_constructible<span<int, 42>>::value));
-    */
 }
 
 int main() {

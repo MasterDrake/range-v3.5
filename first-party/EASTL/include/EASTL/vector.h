@@ -409,9 +409,10 @@ namespace eastl
 
 
 	// Deduction guide for eastl::vector
+	#ifdef __cpp_deduction_guides
 	template <typename T>
 	vector(T) -> vector<T>; // Deduce type T from the constructor argument
-
+	#endif
 
 	///////////////////////////////////////////////////////////////////////
 	// VectorBase

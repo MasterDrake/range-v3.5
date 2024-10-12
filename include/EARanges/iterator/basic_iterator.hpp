@@ -938,7 +938,7 @@ namespace concepts
                     ::ranges::range_access::cursor_value_t<Cur2>>
     {};
 } // namespace concepts
-//TODO:Capire perch� serve solo se c++20 :/
+
 #if EARANGES_CXX_VER > EARANGES_CXX_STD_17
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS

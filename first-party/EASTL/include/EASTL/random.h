@@ -6,6 +6,33 @@
 // This file defines random number generation like the std C++ <random> header.
 ///////////////////////////////////////////////////////////////////////////////
 
+/*
+ * A C++ implementation methods and benchmarks for random numbers in a range
+ * (64-bit version)
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Melissa E. O'Neill
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
 #ifndef EASTL_RANDOM_H
 #define EASTL_RANDOM_H
 
@@ -82,6 +109,9 @@ namespace eastl
 		result_type operator()(Generator& g) const;
 
 		template <class Generator>
+		result_type operator()(Generator& g, result_type range) const;
+
+		template <class Generator>
 		result_type operator()(Generator& g, const param_type& params) const;
 
 		result_type a() const;
@@ -143,44 +173,62 @@ namespace eastl
 
 	template <class IntType>
 	template <class Generator>
-	inline typename uniform_int_distribution<IntType>::result_type uniform_int_distribution<IntType>::operator()(
-	    Generator& g) const
+	inline typename uniform_int_distribution<IntType>::result_type uniform_int_distribution<IntType>::operator()(Generator& g) const
 	{
 		return operator()(g, mParam);
 	}
 
 	template <class IntType>
 	template <class Generator>
+	inline typename uniform_int_distribution<IntType>::result_type uniform_int_distribution<IntType>::operator()(Generator& g, result_type range) const
+	{
+		return operator()(g, {0, range - 1});
+	}
+
+	template <class IntType>
+	template <class Generator>
 	inline typename uniform_int_distribution<IntType>::result_type uniform_int_distribution<IntType>::operator()(Generator& g, const param_type& params) const
 	{
-		// TODO:3) This code is taken from Conclusions here
-		// https://www.pcg-random.org/posts/bounded-rands.html
-		// TODO:3) Maybe we should use xoshiro or something like that. Tehcnically we
-		// should do like Eric Niebler and put the license on top besides the real
-		// license.txt
-		// static_assert(sizeof(typename Generator::result_type) == 4, "Int distribution generator result_type should be at least 4 bytes.");
-		const uint64_t range = params.b() - params.a();
-		typename Generator::result_type x = g();
-		uint64_t m = uint64_t(x) * uint64_t(range);
-		uint32_t l = uint32_t(m);
-		if (l < range)
+		//This code is taken from Conclusions here:
+		//https://github.com/imneme/bounded-rands/tree/master
+		//https://www.pcg-random.org/posts/bounded-rands.html
+
+		const auto range = params.b() - params.a();
+		EA_CONSTEXPR_IF(sizeof(typename Generator::result_type) == 4)
 		{
-			//TODO: ??? uint32_t t = -range;
-			uint64_t t = range;
-			if (t >= range)
-			{
-				t -= range;
-				if (t >= range)
+			    uint32_t x = g();
+				uint64_t m = uint64_t(x) * uint64_t(range);
+				uint32_t l = uint32_t(m);
+				if (l < range) {
+				uint32_t t = -range;
+				if (t >= range) {
+					t -= range;
+					if (t >= range) 
 					t %= range;
-			}
-			while (l < t)
+				}
+				while (l < t) {
+					x = g();
+					m = uint64_t(x) * uint64_t(range);
+					l = uint32_t(m);
+				}
+				}
+				return m >> 32;
+		}
+		EA_CONSTEXPR_IF(sizeof(typename Generator::result_type) == 8)
+		{
+			uint64_t x, r;
+			do
 			{
 				x = g();
-				m = uint64_t(x) * uint64_t(range);
-				l = uint32_t(m);
-			}
-		}
-		return m >> 32;
+				r = x;
+				if (r >= range) {
+					r -= range;
+					if (r >= range)
+					r %= range;
+				}
+			} while (x - r > uint64_t(-range));
+			return r;
+		}		
 	}
 
 	template <class IntType>
@@ -355,17 +403,14 @@ namespace eastl
 
 	template <class RealType>
 	template <class Generator>
-	inline typename uniform_real_distribution<RealType>::result_type uniform_real_distribution<RealType>::operator()(
-	    Generator& g,
-	    const param_type& params) const
+	inline typename uniform_real_distribution<RealType>::result_type uniform_real_distribution<RealType>::operator()(Generator& g, const param_type& params) const
 	{
-		static_assert(sizeof(typename Generator::result_type) == 8,
-		              "Generator result type should be at least 8 bytes.");
-		// TODO:https://prng.di.unimi.it/#remarks#Generating uniform doubles in the unit
-		// interval
-		// TODO: This won't work on linux
-		// return params.a() + (g() >> 11) * 0x1.0p-53 * (params.b() - params.a());
-		return 0;
+		static_assert(sizeof(typename Generator::result_type) == 8, "Generator result type should be at least 8 bytes.");
+		//TODO: find license for this https://prng.di.unimi.it/#remarks#Generating uniform doubles in the unit interval
+		
+		constexpr double scale = (1.1102230246251565E-16); //0x1.0p-53
+
+		return params.a() + (g() >> 11) * scale * (params.b() - params.a());
 	}
 
 	template <class RealType>
@@ -428,8 +473,5 @@ namespace eastl
 	// template<class CharT, class Traits, class ResultType>
 	// eastl::basic_istream<CharT, Traits>& operator>>(eastl::basic_istream<CharT,Traits>& is, uniform_real_distribution& uid);
 } // namespace eastl
-
-// TODO: including this breaks everything, fix it :/ #include
-// <EASTL/internal/random/discrete-distribution.hpp>
 
 #endif // Header include guard

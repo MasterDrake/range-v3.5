@@ -25,7 +25,6 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-//TODO: or forward declare it :/
 #include <EASTL/string.h>
 
 namespace ranges

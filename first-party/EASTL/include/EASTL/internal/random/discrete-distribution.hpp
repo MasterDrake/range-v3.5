@@ -22,6 +22,7 @@
 // FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
+#pragma once
 
 #ifndef INCLUDED_SNSINFU_DISCRETE_DISTRIBUTION_HPP
 #define INCLUDED_SNSINFU_DISCRETE_DISTRIBUTION_HPP
@@ -37,13 +38,7 @@
 //
 // See: https://github.com/snsinfu/cxx-distr/
 
-
-//TODO:I wonder what's algorithm is for since it's already in eastl vector...
-#include <EASTL/algorithm.h>
-//#include <cstddef>
 #include <EASTL/initializer_list.h>
-//#include <istream>
-//#include <ostream>
 #include <EASTL/random.h>
 #include <EASTL/vector.h>
 
@@ -62,7 +57,6 @@ namespace eastl
         using pointer = double const*;
         using iterator = double const*;
 
-
         //Default constructor creates an empty object.
         discrete_weights() = default;
 
@@ -75,14 +69,14 @@ namespace eastl
          * Time complexity:
          *   O(N) where N is the number of events (= `weights.size()`).
          */
-        explicit discrete_weights(eastl::vector<double> const& weights)
+        explicit discrete_weights(const eastl::vector<double>& weights)
         {
             // Construct a complete binary tree in which the leaves contain
             // the weights and internal nodes contain the sums of the weights
             // of children.
 
             // Determine the number of leaves.
-            std::size_t leaves = 1;
+            eastl::size_t leaves = 1;
 
             for (;;)
             {
@@ -102,12 +96,12 @@ namespace eastl
             EASTL_ASSERT(_leaves >= _events);
 
             // Fill the leaves.
-            for (std::size_t i = 0; i < _events; i++)
+            for (eastl::size_t i = 0; i < _events; i++)
                 _sumtree[_leaves + i - 1] = weights[i];
 
             // Then, fill internal nodes from leaves to the root.
             // Recall that each node contains the sum of the weights of its children.
-            for (std::size_t layer = 1; ; layer++)
+            for (eastl::size_t layer = 1; ; layer++)
             {
                 auto const layer_size = leaves >> layer;
                 if (layer_size == 0)
@@ -119,7 +113,7 @@ namespace eastl
                 EASTL_ASSERT(end < _leaves);
                 EASTL_ASSERT(start < end);
 
-                for (std::size_t node = start; node < end; node++)
+                for (eastl::size_t node = start; node < end; node++)
                 {
                     auto const lchild = 2 * node + 1;
                     auto const rchild = 2 * node + 2;
@@ -135,12 +129,12 @@ namespace eastl
          * Params:
          *   weights = Weight values. The weights must be non-negative finite numbers.
          */
-        discrete_weights(std::initializer_list<double> const& weights): discrete_weights{ eastl::vector<double>{weights} }
+        discrete_weights(const std::initializer_list<double>& weights): discrete_weights{eastl::vector<double>{weights} }
         {
         }
 
         //Returns the number of events.
-        inline std::size_t size() const noexcept
+        inline eastl::size_t size() const noexcept
         {
             return _events;
         }
@@ -164,7 +158,7 @@ namespace eastl
         }
 
         //Returns the weight of the i-th event.
-        inline double operator[](std::size_t i) const
+        inline double operator[](eastl::size_t i) const
         {
             return *(data() + i);
         }
@@ -194,7 +188,7 @@ namespace eastl
          * Time complexity:
          *   O(log N) where N is the number of events.
          */
-        void update(std::size_t i, double weight)
+        void update(eastl::size_t i, double weight)
         {
             EASTL_ASSERT(i < _events);
             EASTL_ASSERT(weight >= 0);
@@ -202,7 +196,8 @@ namespace eastl
             auto node = _leaves + i - 1;
             _sumtree[node] = weight;
 
-            do {
+            do
+            {
                 node = (node - 1) / 2;
                 auto const lchild = 2 * node + 1;
                 auto const rchild = 2 * node + 2;
@@ -232,9 +227,9 @@ namespace eastl
          * Time complexity:
          *   O(log N) where N is the number of events.
          */
-        std::size_t find(double probe) const
+        eastl::size_t find(double probe) const
         {
-            std::size_t node = 0;
+            eastl::size_t node = 0;
 
             for (;;)
             {
@@ -265,12 +260,12 @@ namespace eastl
         }
     private:
         eastl::vector<double> _sumtree;
-        std::size_t _leaves = 0;
-        std::size_t _events = 0;
+        eastl::size_t _leaves = 0;
+        eastl::size_t _events = 0;
     };
 
 
-    inline bool operator==(eastl::discrete_weights const& w1, eastl::discrete_weights const& w2)
+    inline bool operator==(const eastl::discrete_weights& w1, const eastl::discrete_weights& w2)
     {
         if (w1.size() != w2.size())
             return false;
@@ -278,7 +273,7 @@ namespace eastl
         return eastl::equal(w1.begin(), w1.end(), w2.begin());
     }
 
-    inline bool operator!=(eastl::discrete_weights const& w1, eastl::discrete_weights const& w2)
+    inline bool operator!=(const eastl::discrete_weights& w1, const eastl::discrete_weights& w2)
     {
         return !(w1 == w2);
     }
@@ -291,7 +286,7 @@ namespace eastl
     //
     //    if (sentry_type sentry{ is })
     //    {
-    //        std::size_t size;
+    //        eastl::size_t size;
     //        if (!(is >> size))
     //            return is;
     //
@@ -339,7 +334,6 @@ namespace eastl
         //Type of generated integer.
         using result_type = T;
 
-
         //Class holding distribution parameter set, namely, the weights.
         class param_type : public eastl::discrete_weights
         {
@@ -360,7 +354,6 @@ namespace eastl
         //Default constructor creates an empty distribution.
         discrete_distribution() = default;
 
-
         /*
          * Creates a discrete distribution over `[0, N)` with given weights
          * where `N = weights.size()`.
@@ -368,7 +361,7 @@ namespace eastl
          * Params:
          *   weights = Weight values. The weights must be non-negative finite numbers.
          */
-        explicit discrete_distribution(eastl::vector<double> const& weights) : _weights{ weights }
+        explicit discrete_distribution(const eastl::vector<double>& weights) : _weights{ weights }
         {
         }
 
@@ -378,7 +371,7 @@ namespace eastl
          * Params:
          *   weights = Weight values. The weights must be non-negative finite numbers.
          */
-        discrete_distribution(std::initializer_list<double> const& weights) : _weights{ weights }
+        discrete_distribution(const std::initializer_list<double>& weights) : _weights{ weights }
         {
         }
 
@@ -388,7 +381,7 @@ namespace eastl
          * Params:
          *   param = A `eastl::discrete_weights` object.
          */
-        explicit discrete_distribution(param_type const& param) : _weights{ param }
+        explicit discrete_distribution(const param_type& param) : _weights{ param }
         {
         }
 
@@ -398,14 +391,14 @@ namespace eastl
         }
 
         //Returns the parameter set of this distribution. It is convertible to `eastl::discrete_weights`.
-        param_type const& param() const noexcept
+        const param_type& param() const noexcept
         {
             return _weights;
         }
 
         //Reconfigures the distribution using given parameter set.
         //It is convertible from `eastl::discrete_weights`.
-        void param(param_type const& new_param)
+        void param(const param_type& new_param)
         {
             _weights = new_param;
         }
@@ -445,7 +438,7 @@ namespace eastl
          */
         void update(result_type i, double weight)
         {
-            return _weights.update(std::size_t(i), weight);
+            return _weights.update(eastl::size_t(i), weight);
         }
 
         /*
@@ -464,7 +457,6 @@ namespace eastl
             return result_type(_weights.find(uniform(random)));
         }
 
-
     private:
         param_type _weights;
     };
@@ -475,7 +467,6 @@ namespace eastl
     {
         return d1.param() == d2.param();
     }
-
 
     template<typename T>
     inline bool operator!=( eastl::discrete_distribution<T> const& d1, eastl::discrete_distribution<T> const& d2)

@@ -33,7 +33,6 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-//TODO: remove the uneeded function overload in mismatch
 namespace ranges
 {
     /// \addtogroup group-algorithms

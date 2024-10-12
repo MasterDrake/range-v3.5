@@ -18,8 +18,6 @@
 #include "../simple_test.hpp"
 #include "../eastl_utils.h"
 
-//TODO:24) eastl has checks for exceptions, so I think we should surrounder those calls with those defines.
-
 int main()
 {
 #if EASTL_EXCEPTIONS_ENABLED

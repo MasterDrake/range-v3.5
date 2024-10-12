@@ -17,7 +17,6 @@
 #include <EARanges/range/primitives.hpp>
 #include "../simple_test.hpp"
 
-// BUGBUGBUG
 namespace eastl
 {
     template<typename F, typename S>

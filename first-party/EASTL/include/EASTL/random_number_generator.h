@@ -57,7 +57,7 @@ namespace eastl
             eastl::swap(rng, other.rng);
             return *this;
         }
-        // TODO: if removecvref is used, everything falls apart :( But shhh
+        
         template<typename SeedSeq, typename = eastl::enable_if_t<!eastl::is_same_v<eastl::remove_reference_t<SeedSeq>, RNG>>>
         RNG(SeedSeq && seedSeq) : rng(seedSeq)
         {}

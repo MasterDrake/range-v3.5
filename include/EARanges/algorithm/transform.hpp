@@ -33,7 +33,6 @@
 
 #include <EARanges/detail/prologue.hpp>
 
-//TODO: Rimuovere i deprecati e il namespace
 namespace ranges
 {
     /// \addtogroup group-algorithms

@@ -145,49 +145,6 @@ configure_file(version.hpp.in include/EARanges/version.hpp @ONLY)
 file(STRINGS ${CMAKE_CURRENT_BINARY_DIR}/include/EARanges/version.hpp EARANGES_OLD_VERSION_HPP)
 file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/include/EARanges/version.hpp EARANGES_NEW_VERSION_HPP)
 
-# If the new version.hpp is materially different from the one in the source directory, update it, commit, and tag.
-#TODO: or maybe not, who cares.
-#if(NOT EARANGES_NEW_VERSION_HPP STREQUAL EARANGES_OLD_VERSION_HPP)
-#  # Check that doc/release_notes.md and Version.cmake are the only changed file:
-#  execute_process(
-#    COMMAND ${GIT_EXECUTABLE} -C "${CMAKE_CURRENT_SOURCE_DIR}" status --porcelain -uno
-#    OUTPUT_VARIABLE RANGE_V3_GIT_STATUS
-#    OUTPUT_STRIP_TRAILING_WHITESPACE
-#  )
-#  string(REPLACE "\n" ";"  RANGE_V3_GIT_STATUS ${RANGE_V3_GIT_STATUS})
-#  if (NOT "x${RANGE_V3_GIT_STATUS}" STREQUAL "x M Version.cmake; M doc/release_notes.md")
-#    message(FATAL_ERROR "Cannot update version.hpp: range-v3 source directory has a dirty status")
-#  endif()
-#  file(
-#    COPY ${CMAKE_CURRENT_BINARY_DIR}/include/range/v3/version.hpp
-#    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/include/range/v3
-#  )
-#  execute_process(
-#    COMMAND ${GIT_EXECUTABLE} -C "${CMAKE_CURRENT_SOURCE_DIR}" add -u
-#  )
-#  execute_process(
-#    COMMAND ${GIT_EXECUTABLE} -C "${CMAKE_CURRENT_SOURCE_DIR}" commit -m "${RANGE_V3_VERSION}"
-#  )
-#  execute_process(
-#    COMMAND ${GIT_EXECUTABLE} -C "${CMAKE_CURRENT_SOURCE_DIR}" tag -f -a "${RANGE_V3_VERSION}" -m "${RANGE_V3_VERSION}"
-#  )
-#  find_program(CONAN_EXECUTABLE NAMES conan conan.exe)
-#  if (NOT "x${CONAN_EXECUTABLE}" STREQUAL "xCONAN_EXECUTABLE-NOTFOUND")
-#    message(STATUS "Exporting conanfile for new version")
-#    execute_process(
-#      COMMAND ${CONAN_EXECUTABLE} create . range-v3/${RANGE_V3_VERSION}@ericniebler/stable
-#      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-#    )
-#  endif()
-#  message(STATUS "Version updated to ${RANGE_V3_VERSION}. Don't forget to:")
-#  message(STATUS "  git push origin <feature-branch>")
-#  message(STATUS "and (after that is merged to master) then:")
-#  message(STATUS "  conan remote add range-v3 https://api.bintray.com/conan/range-v3/range-v3")
-#  message(STATUS "  conan create ${CMAKE_CURRENT_SOURCE_DIR} range-v3/${RANGE_V3_VERSION}@ericniebler/stable")
-#  message(STATUS "  conan upload --all range-v3/${RANGE_V3_VERSION}@ericniebler/stable -r=range-v3")
-#endif()
-
-
 if (EARANGES_INSTALL)
   include(CMakePackageConfigHelpers)
 

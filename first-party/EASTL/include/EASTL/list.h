@@ -452,9 +452,10 @@ namespace eastl
 
 
 	// Deduction guide for single type
+	#ifdef __cpp_deduction_guides
 	template <typename T>
 	list(T) -> list<T>; // For `eastl::list` to deduce the type from a single argument.
-
+	#endif
 
 	///////////////////////////////////////////////////////////////////////
 	// ListNodeBase

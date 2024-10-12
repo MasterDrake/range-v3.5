@@ -104,7 +104,7 @@ namespace concepts
     template<typename... Ts, typename... Us, template<typename> class Qual1, template<typename> class Qual2>
     struct basic_common_reference<::ranges::common_tuple<Ts...>, ::ranges::common_tuple<Us...>, Qual1, Qual2>;
 } // namespace concepts
-//TODO: perche serve c++20????
+
 #if EARANGES_CXX_VER > EARANGES_CXX_STD_17
 EARANGES_DIAGNOSTIC_PUSH
 EARANGES_DIAGNOSTIC_IGNORE_MISMATCHED_TAGS

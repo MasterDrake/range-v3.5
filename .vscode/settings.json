@@ -101,7 +101,11 @@
         "cfenv": "cpp",
         "__bits": "cpp",
         "numbers": "cpp",
-        "semaphore": "cpp"
+        "semaphore": "cpp",
+        "any": "cpp",
+        "rope": "cpp",
+        "future": "cpp",
+        "scoped_allocator": "cpp"
     },
     "C_Cpp.configurationWarnings": "Disabled",
     "cmake.configureOnOpen": true,
