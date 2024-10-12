@@ -62,7 +62,7 @@ elseif("x${EARANGES_CXX_STD}" STREQUAL "xdefault")
   if (EARANGES_CXX_COMPILER_CLANGCL OR EARANGES_CXX_COMPILER_MSVC)
     set(EARANGES_CXX_STD 17)
   else()
-    set(EARANGES_CXX_STD 14)
+    set(EARANGES_CXX_STD 17)
   endif()
 endif()
 
@@ -76,7 +76,7 @@ if (EARANGES_CXX_COMPILER_CLANGCL OR EARANGES_CXX_COMPILER_MSVC)
     # The MSVC STL before VS 2019v16.6 with Clang 10 requires -fms-compatibility in C++17 mode, and
     # doesn't support C++20 mode at all. Let's drop this flag until AppVeyor updates to VS2016v16.6.
     # EARanges_append_flag(EARANGES_HAS_FNO_MS_COMPATIBIILITY "-fno-ms-compatibility")
-    EARanges_append_flag(EARANGES_HAS_FNO_DELAYED_TEMPLATE_PARSING "-fno-delayed-template-parsing")
+    EARanges_append_flag(EARANGES_HAS_FNO_DELAYED_TEMPLATE_PARSING "-fno-delayed-template-parsing") 
   endif()
   # Enable "normal" warnings and make them errors:
   EARanges_append_flag(EARANGES_HAS_W3 /W3)

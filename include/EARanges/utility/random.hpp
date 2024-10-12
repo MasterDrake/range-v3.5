@@ -415,7 +415,7 @@ namespace ranges
             using auto_seed_128 = auto_seeded<seed_seq_fe128>;
             using auto_seed_256 = auto_seeded<seed_seq_fe256>;
         } // namespace randutils
-        using default_URNG = meta::if_c<(sizeof(void *) >= sizeof(long long)), eastl::RNG64, eastl::RNG32>;
+        using default_URNG = meta::if_c<(sizeof(void*) >= sizeof(long long)), eastl::RNG64, eastl::RNG32>;
 
 #if !EARANGES_CXX_THREAD_LOCAL
         template<typename URNG>

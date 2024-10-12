@@ -19,7 +19,7 @@ if (WIN32)
 	include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 elseif (UNIX)
 	set(VCPKG_TARGET_TRIPLET x64-linux)
- 	include("/home/drake/GameDev/Libraries/vcpkg/scripts/buildsystems/vcpkg.cmake")
+ 	include("/home/ilies/GameDev/Libraries/vcpkg/scripts/buildsystems/vcpkg.cmake")
 endif()
 
 set(VCPKG_LIBRARY_LINKAGE static)
@@ -30,10 +30,10 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Export compilation data-base
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-set(EASTL_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/first-party)
-add_subdirectory(first-party/EASTL)
+#set(EASTL_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/first-party)
+#add_subdirectory(first-party/EASTL)
 
-#find_package(EASTL CONFIG REQUIRED)
+find_package(EASTL CONFIG REQUIRED)
 find_package(benchmark CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
 

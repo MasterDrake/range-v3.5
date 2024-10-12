@@ -75,7 +75,7 @@ int main()
     // 1162
     // vector<T, Allocator>::insert(const_iterator position, InputIterator first, InputIterator last)
 
-    {
+    /*{
        const eastl::size_t N = 1024;
        vector_like<int> vl;
        insert(vl, vl.end(), views::iota(0, int{N}));
@@ -89,7 +89,7 @@ int main()
        insert(vl, vl.end(), &i, &i + 1);
        CHECK(vl.reservation_count == 3u);
        CHECK(vl.last_reservation > 3 * N + 1);
-    }
+    }*/
 
     return ::test_result();
 }

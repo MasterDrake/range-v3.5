@@ -95,7 +95,7 @@ int main()
         auto v0 = to<eastl::vector<eastl::string>>({"a","b","c"});
         auto v1 = to<eastl::vector<eastl::string>>({"x","y","z"});
         auto rng = views::zip(v0, v1);
-        static_assert(!concepts::adl_swap_detail::is_adl_swappable_v<decltype(rng)&>);
+        static_assert(!concepts::adl_swap_detail::is_adl_swappable_v<decltype(rng)&>, "");
         ranges::iter_swap(rng.begin(), rng.begin()+2);
         ::check_equal(v0, {"c","b","a"});
         ::check_equal(v1, {"z","y","x"});
