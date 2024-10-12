@@ -423,12 +423,10 @@ namespace eastl
 	// in the meantime.
 	//
 	// template<class CharT, class Traits, class ResultType>
-	// eastl::basic_ostream<CharT, Traits>& operator<<(eastl::basic_ostream<CharT,
-	// Traits>& os, const uniform_real_distribution& uid);
+	// eastl::basic_ostream<CharT, Traits>& operator<<(eastl::basic_ostream<CharT,Traits>& os, const uniform_real_distribution& uid);
 	//
 	// template<class CharT, class Traits, class ResultType>
-	// eastl::basic_istream<CharT, Traits>& operator>>(eastl::basic_istream<CharT,
-	// Traits>& is, uniform_real_distribution& uid);
+	// eastl::basic_istream<CharT, Traits>& operator>>(eastl::basic_istream<CharT,Traits>& is, uniform_real_distribution& uid);
 } // namespace eastl
 
 // TODO: including this breaks everything, fix it :/ #include

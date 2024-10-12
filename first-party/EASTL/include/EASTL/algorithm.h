@@ -634,7 +634,6 @@ namespace eastl
 	EA_CONSTEXPR ranges::detail::min_max_result<ForwardIterator, ForwardIterator>
 	minmax_element(ForwardIterator first, ForwardSentinel last, Predicate pred = {}, Projection proj = {})
 	{
-		//detail::min_max_result<I, I> result{first, first};
 		ranges::detail::min_max_result<ForwardIterator, ForwardIterator> result{first, first};
 		if (first == last || ++first == last)
 			return result;

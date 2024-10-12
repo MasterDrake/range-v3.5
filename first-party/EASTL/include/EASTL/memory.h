@@ -608,7 +608,7 @@ namespace eastl
 			template <typename InputIterator, typename ForwardIterator>
 			static ForwardIterator impl(InputIterator first, InputIterator last, ForwardIterator dest)
 			{
-				typedef typename eastl::iterator_traits<ForwardIterator>::value_type value_type;
+				//typedef typename eastl::iterator_traits<ForwardIterator>::value_type value_type;
 
 				for (; first != last; ++first, ++dest)
 					//HACKHACKHACKmemmove(eastl::addressof(*dest), eastl::addressof(*first), sizeof(value_type));
